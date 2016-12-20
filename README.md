@@ -8,11 +8,11 @@ jars.
 
 You need Ant and a JDK version >= 1.4 to build this software.  You
 also need to download some libraries in order to compile this code, to
-be put in `xgrammar/lib`; grab for this
+be put in `../lib`; grab for this
 https://www.w3.org/2013/01/qt-applets/xgrammar_libs.zip .
 
-Go to `grammar/parser` and run e.g. `ant xpath30.jar` or `ant
-xquery30.jar`.  The resulting files are in `grammar/parser/applet/`.
+Go to `parser` and run e.g. `ant xpath30.jar` or `ant xquery30.jar`.
+The resulting files are in `parser/applet/`.
 
 
 # Running
@@ -29,8 +29,7 @@ or an expression from a file, as in e.g.
 
 # Licensing
 
-All files except for `grammar/parser/XQueryXConvertBase-xpath30.java'
-are
+All files except for `parser/XQueryXConvertBase-xpath30.java' are
 
 Copyright (c) 2005 W3C(r) (http://www.w3.org/) (MIT
 (http://www.lcs.mit.edu/), INRIA (http://www.inria.fr/), Keio
