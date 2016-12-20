@@ -114,7 +114,7 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
             cc.transformChildren(node.getChild(0));
             xw.putEndTag(node);
             xw.putStartTag(node, "xqx:forExpr");
-            cc.transformChildren(node.getChild(1));
+            cc.transform(node.getChild(1));
             xw.putEndTag(node);
             xw.putEndTag(node);
             return true;
@@ -134,17 +134,17 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
         }
             
         case JJTSIMPLELETCLAUSE:
-            xw.putStartTag(node, "xqx:letClauseItem");
             cc.transformChildren(node);
-            xw.putEndTag(node);
             return true;
             
         case JJTSIMPLELETBINDING:
+            xw.putStartTag(node, "xqx:letClauseItem");
             xw.putStartTag(node, "xqx:typedVariableBinding");
             cc.transformChildren(node.getChild(0));
             xw.putEndTag(node);
             xw.putStartTag(node, "xqx:letExpr");
-            cc.transformChildren(node.getChild(1));
+            cc.transform(node.getChild(1));
+            xw.putEndTag(node);
             xw.putEndTag(node);
             return true;
             
