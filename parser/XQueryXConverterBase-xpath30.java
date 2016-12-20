@@ -17,8 +17,7 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
         {"xmlns:xqx", "http://www.w3.org/2005/XQueryX"},
         {"xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"},
         {"xsi:schemaLocation",
-         "http://www.w3.org/2005/XQueryX"
-         + "\n                                http://www.w3.org/2005/XQueryX/xqueryx.xsd"}
+         "http://www.w3.org/2005/XQueryX xpathx.xsd"}
     };
     Stack _openXMLElemStack = new Stack();
 
@@ -48,8 +47,12 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
             return true;
             
         case JJTXPATH:
-            xw.putStartTag(node, "xqx:queryBody", xsd_attributes, true);
+            xw.putStartTag(node, "xqx:module", xsd_attributes, true);
+            xw.putStartTag(node, "xqx:mainModule");
+            xw.putStartTag(node, "xqx:queryBody");
             cc.transformChildren(node);
+            xw.putEndTag(node);
+            xw.putEndTag(node);
             xw.putEndTag(node);
             return true;
             
@@ -790,7 +793,7 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
                 if (pid == JJTTYPENAME)
                 {
                     // The TypeName's parent could be:
-                    //  - a ValidateExpr, an AttributeTest, or an ElementTest,
+                    //  - an AttributeTest, or an ElementTest,
                     //    for which xqx:typeName is the correct result,
                     //  or
                     //  - a SimpleTypeName (in a SingleType), and
@@ -806,7 +809,7 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
                 else if (pid == JJTFUNCTIONCALL || pid == JJTNAMEDFUNCTIONREF )
                     xqx_element_name = "xqx:functionName";
                 else
-                    xqx_element_name = "xqx:QName";
+                    xqx_element_name = "xqx:varName";
                 transform_name(node, xqx_element_name);
                 return true;
             }
