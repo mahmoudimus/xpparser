@@ -102,7 +102,7 @@ Example:  build jars test
   <property name="update-regression-tests"   value="../tests/update.xquery"/>
   <property name="pathx1-tests"              value="../tests/pathx1-tests.xml"/>
   <!--
-  <property name="javacchome"                value="../../lib"/>
+  <property name="javacchome"                value="../lib"/>
   -->
 
   <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
@@ -211,7 +211,7 @@ Example:  build jars test
     </copy>
 
     <copy todir="xgrammar/lib" includeEmptyDirs="false">
-      <fileset dir="../../lib" > 
+      <fileset dir="../lib" > 
         <include name="*"/>
       </fileset>
     </copy>
@@ -563,10 +563,10 @@ Example:  build jars test
       <assertions><enable/></assertions>
       <classpath>
         <pathelement path="${jarfilename}" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
       </classpath>
 <!--      <arg value="${dump}"/> -->
@@ -584,10 +584,10 @@ Example:  build jars test
       <assertions><enable/></assertions>
       <classpath>
         <pathelement path="${jarfilename}" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
       </classpath>
 <!--      <arg value="${dump}"/> -->
@@ -600,8 +600,8 @@ Example:  build jars test
     <java fork="yes" maxmemory="128m" classname="org.w3c.xqparser.Test">
       <assertions><enable/></assertions>
       <classpath>
-        <pathelement path="../../lib/xml-apis.jar" />
-        <pathelement path="../../lib/xercesImpl.jar" />
+        <pathelement path="../lib/xml-apis.jar" />
+        <pathelement path="../lib/xercesImpl.jar" />
         <pathelement path="${jarfilename}" />
         <pathelement path="${java.class.path}/" />
       </classpath>
@@ -616,8 +616,8 @@ Example:  build jars test
     <java fork="yes" maxmemory="128m" classname="org.w3c.xqparser.Test">
       <assertions><enable/></assertions>
       <classpath>
-        <pathelement path="../../lib/xml-apis.jar" />
-        <pathelement path="../../lib/xercesImpl.jar" />
+        <pathelement path="../lib/xml-apis.jar" />
+        <pathelement path="../lib/xercesImpl.jar" />
         <pathelement path="${jarfilename}" />
         <pathelement path="${java.class.path}/" />
       </classpath>
@@ -869,10 +869,10 @@ Example:  build jars test
       <assertions><enable/></assertions>
       <classpath>
         <pathelement path="${jarfilename}" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
       </classpath>
 <!--      <arg value="${dump}"/> -->
@@ -889,10 +889,10 @@ Example:  build jars test
       <assertions><enable/></assertions>
       <classpath>
         <pathelement path="${jarfilename}" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
       </classpath>
 <!--      <arg value="${dump}"/> -->
@@ -1204,7 +1204,7 @@ Example:  build jars test
     <xslt style="jjtree.xsl" in="${extracted-grammar}"
            out="${jjt}" force="yes" extension=".jjt" destdir="${java-gen}">
       <classpath>
-        <pathelement path="../../lib/saxon9.jar"/>
+        <pathelement path="../lib/saxon9.jar"/>
       </classpath>
     </xslt>
   </target>
@@ -1216,7 +1216,7 @@ Example:  build jars test
     <xslt style="noast.xsl" in="${extracted-grammar}"
            out="${jj}" force="yes" extension=".jj" destdir="${java-gen}">
       <classpath>
-        <pathelement path="../../lib/xalan.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
       </classpath>
     </xslt>
   </target>
@@ -1228,10 +1228,10 @@ Example:  build jars test
     <java fork="yes" classname="jjtree">
        <classpath>
          <pathelement path="${java.class.path}/" />
-         <pathelement path="../../lib/javacc.jar"/>
-         <pathelement path="../../lib/optional.jar"/>
-         <pathelement path="../../lib/xalan.jar"/>
-         <pathelement path="../../lib/xml-apis.jar"/>
+         <pathelement path="../lib/javacc.jar"/>
+         <pathelement path="../lib/optional.jar"/>
+         <pathelement path="../lib/xalan.jar"/>
+         <pathelement path="../lib/xml-apis.jar"/>
        </classpath>
        <arg line="-OUTPUT_DIRECTORY=${java-gen}/org/w3c/xqparser ${jjt}"/>
      </java>
@@ -1243,10 +1243,10 @@ Example:  build jars test
     <java fork="yes" classname="jjtree">
        <classpath>
          <pathelement path="${java.class.path}/" />
-         <pathelement path="../../lib/javacc.jar"/>
-         <pathelement path="../../lib/optional.jar"/>
-         <pathelement path="../../lib/xalan.jar"/>
-         <pathelement path="../../lib/xml-apis.jar"/>
+         <pathelement path="../lib/javacc.jar"/>
+         <pathelement path="../lib/optional.jar"/>
+         <pathelement path="../lib/xalan.jar"/>
+         <pathelement path="../lib/xml-apis.jar"/>
        </classpath>
        <arg line="-OUTPUT_DIRECTORY=${java-gen} ${jjt}"/>
      </java>
@@ -1264,10 +1264,10 @@ Example:  build jars test
     <java fork="yes" classname="javacc">
       <classpath>
         <pathelement path="${java.class.path}/" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
       </classpath>
       <arg line="-OUTPUT_DIRECTORY=${java-gen}/org/w3c/xqparser -DEBUG_LOOKAHEAD=${debug} -DEBUG_TOKEN_MANAGER=${debug} -DEBUG_PARSER=${debug} -JAVA_UNICODE_ESCAPE=${unicodeinput} ${jj}"/>
     </java>
@@ -1291,10 +1291,10 @@ Example:  build jars test
     <java fork="yes" classname="javacc">
       <classpath>
         <pathelement path="${java.class.path}/" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
       </classpath>
       <arg line="-OUTPUT_DIRECTORY=${java-gen}/org/w3c/xqparser -DEBUG_LOOKAHEAD=${debug} -DEBUG_TOKEN_MANAGER=${debug} -DEBUG_PARSER=${debug} -JAVA_UNICODE_ESCAPE=${unicodeinput} ${jj}"/>
     </java>
@@ -1318,10 +1318,10 @@ Example:  build jars test
     <java fork="yes" classname="javacc">
       <classpath>
         <pathelement path="${java.class.path}/" />
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
       </classpath>
         <arg line="-OUTPUT_DIRECTORY=${java-gen} -DEBUG_LOOKAHEAD=${debug} -DEBUG_TOKEN_MANAGER=${debug} -DEBUG_PARSER=${debug} -JAVA_UNICODE_ESCAPE=${unicodeinput} ${jj-extra}"/>
     </java>
@@ -1342,10 +1342,10 @@ Example:  build jars test
     <mkdir dir="${class-root}"/>
     <java_compile srcdir="${java-gen}" destdir="${class-root}">
       <classpath>
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
         <pathelement path="${class-root}/" />
       </classpath>
@@ -1425,10 +1425,10 @@ Example:  build jars test
           description="Build a jjdoc-produced BNF.">
     <java fork="yes" classname="org.javacc.jjdoc.JJDocMain">
       <classpath>
-        <pathelement path="../../lib/javacc.jar"/>
-        <pathelement path="../../lib/optional.jar"/>
-        <pathelement path="../../lib/xalan.jar"/>
-        <pathelement path="../../lib/xml-apis.jar"/>
+        <pathelement path="../lib/javacc.jar"/>
+        <pathelement path="../lib/optional.jar"/>
+        <pathelement path="../lib/xalan.jar"/>
+        <pathelement path="../lib/xml-apis.jar"/>
         <pathelement path="${java.class.path}/" />
       </classpath>
       <arg line="-ONE_TABLE=true -OUTPUT_FILE=${jjdoc-output} ${jj}"/>
