@@ -8,11 +8,11 @@ jars.
 
 You need Ant and a JDK version >= 1.4 to build this software.  You
 also need to download some libraries in order to compile this code, to
-be put in `xgrammar/lib'; grab for this
+be put in `xgrammar/lib`; grab for this
 https://www.w3.org/2013/01/qt-applets/xgrammar_libs.zip .
 
-Go to `grammar/parser' and run e.g. `ant xpath30.jar' or `ant
-xquery30.jar'.  The resulting files are in `grammar/parser/applet/'.
+Go to `grammar/parser` and run e.g. `ant xpath30.jar` or `ant
+xquery30.jar`.  The resulting files are in `grammar/parser/applet/`.
 
 
 # Running
