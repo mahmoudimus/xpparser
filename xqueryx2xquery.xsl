@@ -1906,9 +1906,9 @@
   </xsl:template>
 
 
-  <xsl:template match="/xqx:*">
+  <!--xsl:template match="/xqx:*">
    <xsl:message terminate="yes">Incorrect XQueryX: The only top-level element permitted is xqx:module</xsl:message>
-  </xsl:template>
+  </xsl:template-->
 
 
 </xsl:stylesheet>

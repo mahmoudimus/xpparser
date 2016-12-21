@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- XML format for XPath, by simplifying the XQueryX format. -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://www.w3.org/2005/XQueryX"
             targetNamespace="http://www.w3.org/2005/XQueryX"
@@ -990,6 +989,7 @@
   </xsd:complexType>
 
   <xsd:element name="mainModule" type="mainModule"/>
+  <xsd:element name="queryBody" type="exprWrapper"/>
 
 <!-- there is a phrase with diff of chg after sequence and endphrase before typedeclaration -->
   <xsd:complexType name="param">

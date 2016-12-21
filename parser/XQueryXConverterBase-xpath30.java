@@ -47,12 +47,8 @@ public class XQueryXConverter_xpath30 extends XQueryXConverter {
             return true;
             
         case JJTXPATH:
-            xw.putStartTag(node, "xqx:module", xsd_attributes, true);
-            xw.putStartTag(node, "xqx:mainModule");
-            xw.putStartTag(node, "xqx:queryBody");
+            xw.putStartTag(node, "xqx:queryBody", xsd_attributes, true);
             cc.transformChildren(node);
-            xw.putEndTag(node);
-            xw.putEndTag(node);
             xw.putEndTag(node);
             return true;
             
