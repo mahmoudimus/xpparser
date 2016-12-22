@@ -8,6 +8,9 @@ import java.nio.file.Files;
 import javax.xml.xpath.*;
 import javax.xml.parsers.*;
 import javax.xml.XMLConstants;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource; 
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 
 /**
@@ -80,10 +83,23 @@ public class Main {
                     filenames.add(path.toString());
                 }
 
-            // build the translator and output            
+            // build the translator and output 
+            final DocumentBuilderFactory dbf
+                = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            dbf.setXIncludeAware(true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
+            
             XMLWriter xw = new XMLWriter();
             XPathXPrinter xpp = new XPathXPrinter(xw);
             xw.putXMLDecl();
+
+            // testing stuff
+            Document doc = db.newDocument();
+            Element root = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "benchmark");
+            doc.appendChild(root);
             
             //------------------------------ if `--xml' or `--xslt' was used
             if (xml) {
@@ -91,7 +107,7 @@ public class Main {
 
                 // We use a special XML parser that handles line/col numbers
                 // and also processes the namespace information
-                final PositionalXMLReader read = new PositionalXMLReader();
+                final PositionalXMLReader read = new PositionalXMLReader(db);
                 final XPath xp = XPathFactory.newInstance().newXPath();
                 xp.setNamespaceContext(read);
                 
@@ -109,19 +125,19 @@ public class Main {
                         org.w3c.dom.Node n = nl.item(j);
 
                         // its XPath contents
-                        String s;
+                        String q;
                         switch (n.getNodeType()) {
                         case org.w3c.dom.Node.ATTRIBUTE_NODE:
-                            s = n.getNodeValue().trim();
+                            q = n.getNodeValue().trim();
                             n = ((Attr)n).getOwnerElement();
                             break;
                         case org.w3c.dom.Node.TEXT_NODE:
-                            s = n.getNodeValue().trim();
+                            q = n.getNodeValue().trim();
                             n = n.getParentNode();
                             break;
                             
                         case org.w3c.dom.Node.ELEMENT_NODE:
-                            s = n.getTextContent().trim();
+                            q = n.getTextContent().trim();
                             break;
 
                         default:
@@ -136,14 +152,21 @@ public class Main {
                             ((String)n.getUserData
                              (PositionalXMLReader.NAMESPACES_KEY_NAME));
                         
-                        System.out.println(s+" at line "+
-                                           n.getUserData(PositionalXMLReader.LINE_NUMBER_KEY_NAME)+" and column "+n.getUserData(PositionalXMLReader.COL_NUMBER_KEY_NAME)+"\n  namespaces: "+ns.toString());
-
-                      // parse the XPath string
-                      Reader r = new StringReader(s);
-                      XParser parser = new XParser(r);
-                      SimpleNode ast = parser.START();
-                      xpp.transform(ast, System.out);
+                        // parse the XPath string
+                        Element astElement = append
+                            (root,
+                             doc,
+                             q,
+                             file,
+                             (String)n.getUserData
+                             (PositionalXMLReader.LINE_NUMBER_KEY_NAME),
+                             (String)n.getUserData
+                             (PositionalXMLReader.COL_NUMBER_KEY_NAME),
+                             ns);
+                        Reader r = new StringReader(q);
+                        XParser parser = new XParser(r);
+                        SimpleNode ast = parser.START();
+                        xpp.transform(ast, System.out);
                     }
                 }
             }
@@ -152,23 +175,32 @@ public class Main {
             else if (xquery) {
                 Iterator<String> filename = filenames.iterator();
                 for (BufferedReader stream : streams) {
-                    System.out.println(filename.next());
+                    String file = filename.next();
                     XParser parser = new XParser(stream);
                     SimpleNode ast = parser.START();
 
                     List<SimpleNode> nl = XPathVisitor.visit(ast);
                     for (SimpleNode n : nl) {
                         Map<String,String> ns = declaredNamespaces(n);
-                        System.out.println(n.toString()+" at line "+
-                                           n.beginLine+" and column "+n.beginColumn+"\n  namespaces: "+ns.toString());
+                        Element astElement = append
+                            (root,
+                             doc,
+                             "",
+                             file,
+                             String.valueOf(n.beginLine),
+                             String.valueOf(n.beginColumn),
+                             ns);
+                        
                         xpp.transform(n, System.out);
                     }
                 }
             }
-            xw.flush();
+            print(doc);
+            System.out.flush();
         }
         catch (Exception e) {
             System.err.println("xqparser: " + e.toString());
+            e.printStackTrace(System.err);
             System.exit(0);
         }
         System.exit(1);
@@ -213,14 +245,108 @@ public class Main {
             SimpleNode c;
             for (int i = 0; i < n.jjtGetNumChildren(); i++)
                 if ((c = n.getChild(i)).id ==
-                    XParserTreeConstants.JJTNAMESPACEDECL)
-                    ret.put(c.getChild(0).getValue(),
-                            c.getChild(1).getChild(0).getValue());
-                else if (c.id ==
-                         XParserTreeConstants.JJTDEFAULTNAMESPACEDECL)
-                    ret.put(XMLConstants.DEFAULT_NS_PREFIX,
-                            c.getChild(0).getChild(0).getValue());
+                    XParserTreeConstants.JJTNAMESPACEDECL) {
+                    String uri = c.getChild(1).getChild(0).getValue();
+                    uri = uri.substring(1,uri.length() - 1);
+                    ret.put(c.getChild(0).getValue(), uri);
+                }
+            /* We do not care about default namespaces! */
+            // else if (c.id ==
+            //          XParserTreeConstants.JJTDEFAULTNAMESPACEDECL) {
+            //     String uri = c.getChild(0).getChild(0).getValue();
+            //     uri = uri.substring(1,uri.length() - 1);                    
+            //     ret.put(XMLConstants.DEFAULT_NS_PREFIX,
+            //             uri);
+            // }
         }
         return ret;
+    }
+
+    /**
+     * Pretty-print a DOM Node.
+     * @param doc The document to print.
+     * @param os The chosen output.
+     */
+    private static void print(org.w3c.dom.Node node, OutputStream os)
+        throws IOException, TransformerConfigurationException,
+               TransformerException {
+        
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+        DOMSource source = new DOMSource(node);
+        StreamResult result = new StreamResult(os);
+        transformer.transform(source, result);
+    }
+    private static void print(org.w3c.dom.Node node)
+        throws IOException, TransformerConfigurationException,
+               TransformerException  {
+        print(node, System.out);
+    }
+
+    /**
+     * Append a new `xpath' Element to our output document.
+     * @param root The root element to which this xpath element should
+     *             be appended.
+     * @param doc  The DOM Document.
+     * @param q    The XPath query text
+     * @param f    The name of the input file.
+     * @param l    The line number (as a String).
+     * @param c    The column number (as a String).
+     * @param ns   A namespace mapping from prefixes to URIs.
+     * @return The XQueryX subelement.
+     */
+    private static Element append(Element root,
+                                  Document doc,
+                                  String q,
+                                  String f,
+                                  String l,
+                                  String c,
+                                  Map<String,String> ns) {
+        System.out.println("\n"+q);
+        System.out.println(f);
+        System.out.println(l);
+        System.out.println(c);
+        System.out.println(ns+"\n");
+        
+        Element ast   = doc.createElementNS
+            (XMLConstants.DEFAULT_NS_PREFIX, "ast");
+        Element xpath = doc.createElementNS
+            (XMLConstants.DEFAULT_NS_PREFIX, "xpath");
+            
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "filename", f);
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "line", l);
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "column", c);
+        for (Map.Entry<String,String> pair : ns.entrySet()) {
+            /* We do not care about default namespaces! */
+            // if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
+            //     xpath.setAttributeNS
+            //         (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+            //          XMLConstants.XMLNS_ATTRIBUTE,
+            //          pair.getValue());
+            // else
+            xpath.setAttributeNS
+                (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                 XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
+                 pair.getValue());                
+        }
+
+        if (!q.isEmpty()) {
+            Element query = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "query");
+            Text    text  = doc.createTextNode(q);
+            query.appendChild(text);        
+            xpath.appendChild(query);
+        }
+        
+        xpath.appendChild(ast);
+        root.appendChild(xpath);
+        return ast;
     }
 }

@@ -3,9 +3,7 @@
  */
 package org.w3c.xqparser;
 
-//import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-//import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,21 +45,19 @@ public class PositionalXMLReader implements NamespaceContext {
     /**
      * Basic constructor.
      */
-    public PositionalXMLReader () throws SAXException {        
+    public PositionalXMLReader (DocumentBuilder db)
+        throws SAXException {
+
+        this.db = db;
+
         try {
             final SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
             factory.setXIncludeAware(true);
             parser = factory.newSAXParser();
-            final DocumentBuilderFactory dbf
-                = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            dbf.setXIncludeAware(true);
-            db = dbf.newDocumentBuilder();
         } catch (final ParserConfigurationException e) {
             throw new
-                RuntimeException("Can't create SAX parser / DOM builder.",
-                                 e);
+                RuntimeException("Can't create SAX parser.", e);
         }
     }
 
@@ -70,7 +66,9 @@ public class PositionalXMLReader implements NamespaceContext {
      * @param prefix a string like `xml', `xsl', etc.
      * @return the URI for this prefix.
      */
-     public String getNamespaceURI(final String prefix) throws IllegalArgumentException {
+     public String getNamespaceURI(final String prefix)
+         throws IllegalArgumentException {
+
          if (prefix == null)
              throw new IllegalArgumentException("No prefix");
          else if (prefix.equals(XMLConstants.XML_NS_PREFIX))
@@ -87,7 +85,9 @@ public class PositionalXMLReader implements NamespaceContext {
      * @param uri An URI.
      * @return a prefix.
      */
-     public String getPrefix(final String uri) throws IllegalArgumentException {
+     public String getPrefix(final String uri)
+         throws IllegalArgumentException {
+
          if (uri == null)
              throw new IllegalArgumentException("No URI");
          else if (uri.equals(XMLConstants.XML_NS_PREFIX))
@@ -104,7 +104,9 @@ public class PositionalXMLReader implements NamespaceContext {
      * @param uri
      * @return An Iterator
      */
-    public Iterator getPrefixes(final String uri) throws IllegalArgumentException {
+    public Iterator getPrefixes(final String uri)
+        throws IllegalArgumentException {
+
         if (uri == null)
             throw new IllegalArgumentException("No URI");
         else if (uri.equals(XMLConstants.XML_NS_PREFIX)) {

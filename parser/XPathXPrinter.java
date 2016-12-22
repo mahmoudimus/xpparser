@@ -16,9 +16,9 @@
  */
 package org.w3c.xqparser;
 
+import java.util.Stack;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Stack;
 
 /**
  * Transforms an XPath AST into a XQueryX XML stream.
