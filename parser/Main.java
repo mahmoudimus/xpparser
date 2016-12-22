@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import javax.xml.xpath.*;
 import javax.xml.parsers.*;
-import javax.xml.namespace.*;
 import javax.xml.XMLConstants;
 import org.w3c.dom.*;
 
@@ -80,69 +79,65 @@ public class Main {
                     streams.add(br);
                     filenames.add(path.toString());
                 }
+
+            // build the translator and output            
+            XMLWriter xw = new XMLWriter();
+            XPathXPrinter xpp = new XPathPrinter(xw);
+            xw.putXMLDecl();
             
             // if `--xml' or `--xslt' was used
             if (xml) {
                 final Iterator<String> filename = filenames.iterator();
 
-                // boilerplate
+                // We use a special XML parser that handles line/col numbers
+                // and also processes the namespace information
                 final PositionalXMLReader read = new PositionalXMLReader();
-                // final XPath xp = XPathFactory.newInstance().newXPath();
-                // // there's no default implementation for
-                // // NamespaceContext... seems kind of silly, no?
-                // xp.setNamespaceContext(new NamespaceContext() {
-                //         public String getNamespaceURI(String prefix) {
-                //             return read.getNamespaceURI(prefix);
-                //         }
-
-                //         // This method isn't necessary for XPath processing.
-                //         public String getPrefix(String uri) {
-                //             throw new UnsupportedOperationException();
-                //         }
-                        
-                //         // This method isn't necessary for XPath processing.
-                //         public Iterator getPrefixes(String uri) {
-                //             throw new UnsupportedOperationException();
-                //         }
-                //     });
-                // final XPathExpression e = xp.compile(filter);
-                // final XPathExpression ns = xp.compile("namespace::*");
-
-
+                final XPath xp = XPathFactory.newInstance().newXPath();
+                xp.setNamespaceContext(read);
+                final XPathExpression ns = xp.compile("namespace::*");
                 
                 for (BufferedReader stream : streams) {
                     String file = filename.next();
                     // parse the input XML
                     Document d = read.parse(stream);
 
-                    // recover namespace information from the document
-                    System.out.println(file+": ");
-                    System.out.print(read.ns.toString()+"\n");
-                    
-                    // apply filter
-                    // NodeList nl =
-                    //     (NodeList) e.evaluate(d, XPathConstants.NODESET);
-                    // for (int j = 0; j < nl.getLength(); j++) {
-                    //     // our element
-                    //     org.w3c.dom.Node n = nl.item(j);
+                    // apply filter (using namespace info from `read')
+                    NodeList nl =
+                        (NodeList) xp.evaluate(filter, d,
+                                               XPathConstants.NODESET);
+                    for (int j = 0; j < nl.getLength(); j++) {
+                        // our element
+                        org.w3c.dom.Node n = nl.item(j);
 
-                    //     // its XPath contents
-                    //     String s;
-                    //     switch (n.getNodeType()) {
-                    //     case org.w3c.dom.Node.ATTRIBUTE_NODE:
-                    //     case org.w3c.dom.Node.TEXT_NODE:
-                    //         s = n.getNodeValue();
-                    //         break;
+                        // its XPath contents
+                        String s;
+                        switch (n.getNodeType()) {
+                        case org.w3c.dom.Node.ATTRIBUTE_NODE:
+                            s = n.getNodeValue().trim();
+                            n = ((Attr)n).getOwnerElement();
+                            break;
+                        case org.w3c.dom.Node.TEXT_NODE:
+                            s = n.getNodeValue().trim();
+                            n = n.getParentNode();
+                            break;
                             
-                    //     case org.w3c.dom.Node.ELEMENT_NODE:
-                    //         s = n.getTextContent();
-                    //         break;
+                        case org.w3c.dom.Node.ELEMENT_NODE:
+                            s = n.getTextContent().trim();
+                            break;
 
-                    //     default:
-                    //         throw new XPathExpressionException("Couldn't process node "+n.getTextContent()+" in "+ file);
-                    //     }       
-                    //   System.out.println(s);                 
-                    // }
+                        default:
+                            throw new XPathExpressionException("Couldn't process node "+n.getTextContent()+" in "+ file);
+                        }
+
+                      System.out.println(s+" at line "+
+                                         n.getUserData(PositionalXMLReader.LINE_NUMBER_KEY_NAME)+" and column "+n.getUserData(PositionalXMLReader.COL_NUMBER_KEY_NAME)+"\n  namespaces: "+n.getUserData(PositionalXMLReader.NAMESPACES_KEY_NAME));
+
+                      // parse the XPath string
+                      Reader r = new StringReader(s);
+                      XParser parser = new XParser(r);
+                      SimpleNode ast = parser.START();
+                      xpp.transform(ast, System.out);
+                    }
                 }
             }
             // if `--xquery' or no option was used
@@ -150,9 +145,18 @@ public class Main {
                 Iterator<String> filename = filenames.iterator();
                 for (BufferedReader stream : streams) {
                     System.out.println(filename.next());
-                    
+                    XParser parser = new XParser(stream);
+                    SimpleNode ast = parser.START();
+
+                    List<SimpleNode> nl = XPathVisitor.visit(ast);
+                    for (SimpleNode n : nl) {
+                        System.out.println(n.toString()+" at line "+
+                                           n.beginLine+" and column "+n.beginColumn);
+                        xpp.transform(n, System.out);
+                    }
                 }
-            }            
+            }
+            xw.flush();
         }
         catch (Exception e) {
             System.err.println("xqparser: " + e.toString());

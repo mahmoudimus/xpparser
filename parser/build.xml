@@ -1184,6 +1184,7 @@ Example:  build jars test
     <copy file="XMLWriter.java"                     todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="XMLValidator.java"                  todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="XPathVisitor.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XPathXPrinter.java"                  todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="PositionalXMLReader.java"        todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="Main.java"                  todir="${java-gen}/org/w3c/xqparser"/>
   </target>
