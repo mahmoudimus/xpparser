@@ -82,10 +82,10 @@ public class Main {
 
             // build the translator and output            
             XMLWriter xw = new XMLWriter();
-            XPathXPrinter xpp = new XPathPrinter(xw);
+            XPathXPrinter xpp = new XPathXPrinter(xw);
             xw.putXMLDecl();
             
-            // if `--xml' or `--xslt' was used
+            //------------------------------ if `--xml' or `--xslt' was used
             if (xml) {
                 final Iterator<String> filename = filenames.iterator();
 
@@ -94,7 +94,6 @@ public class Main {
                 final PositionalXMLReader read = new PositionalXMLReader();
                 final XPath xp = XPathFactory.newInstance().newXPath();
                 xp.setNamespaceContext(read);
-                final XPathExpression ns = xp.compile("namespace::*");
                 
                 for (BufferedReader stream : streams) {
                     String file = filename.next();
@@ -126,11 +125,19 @@ public class Main {
                             break;
 
                         default:
-                            throw new XPathExpressionException("Couldn't process node "+n.getTextContent()+" in "+ file);
+                            throw new XPathExpressionException
+                                ("Couldn't process node "
+                                 + n.getTextContent() + " in " + file);
                         }
-
-                      System.out.println(s+" at line "+
-                                         n.getUserData(PositionalXMLReader.LINE_NUMBER_KEY_NAME)+" and column "+n.getUserData(PositionalXMLReader.COL_NUMBER_KEY_NAME)+"\n  namespaces: "+n.getUserData(PositionalXMLReader.NAMESPACES_KEY_NAME));
+                        
+                        // its namespace information
+                        Map<String,String> ns =
+                            parseNamespaces
+                            ((String)n.getUserData
+                             (PositionalXMLReader.NAMESPACES_KEY_NAME));
+                        
+                        System.out.println(s+" at line "+
+                                           n.getUserData(PositionalXMLReader.LINE_NUMBER_KEY_NAME)+" and column "+n.getUserData(PositionalXMLReader.COL_NUMBER_KEY_NAME)+"\n  namespaces: "+ns.toString());
 
                       // parse the XPath string
                       Reader r = new StringReader(s);
@@ -140,7 +147,8 @@ public class Main {
                     }
                 }
             }
-            // if `--xquery' or no option was used
+            
+            //-------------------------- if `--xquery' or no option was used
             else if (xquery) {
                 Iterator<String> filename = filenames.iterator();
                 for (BufferedReader stream : streams) {
@@ -150,8 +158,9 @@ public class Main {
 
                     List<SimpleNode> nl = XPathVisitor.visit(ast);
                     for (SimpleNode n : nl) {
+                        Map<String,String> ns = declaredNamespaces(n);
                         System.out.println(n.toString()+" at line "+
-                                           n.beginLine+" and column "+n.beginColumn);
+                                           n.beginLine+" and column "+n.beginColumn+"\n  namespaces: "+ns.toString());
                         xpp.transform(n, System.out);
                     }
                 }
@@ -165,4 +174,53 @@ public class Main {
         System.exit(1);
     }
 
+    /**
+     * Helper method to parse a string obtained by HashMap.toString().
+     * @param s The string to parse.  There are no checks at all!
+     * @return A HashMap
+     */
+    private static Map<String,String> parseNamespaces(final String s) {
+        Map<String,String> ret = new HashMap<String,String>();
+        String[] split = s.substring(1,s.length() - 1).split("=|, ");
+        for (int i = 0; i < split.length; i += 2)
+            ret.put(split[i], split[i+1]);
+        return ret;
+    }
+
+    /**
+     * Helper method to recover namespace information from an XQuery
+     * AST.
+     * @param node  A node of the AST.
+     * @return A HashMap
+     */
+    private static Map<String,String> declaredNamespaces
+        (final SimpleNode node) {
+        
+        SimpleNode n = node;
+        Map<String,String> ret = new HashMap<String,String>();
+
+        // go up the AST to the Prolog
+        while (n.id != XParserTreeConstants.JJTSTART
+               && n.id != XParserTreeConstants.JJTMAINMODULE
+               && n.id != XParserTreeConstants.JJTQUERYBODY)
+            n = n.getParent();
+
+        if (n.id == XParserTreeConstants.JJTQUERYBODY) {
+            // recover sibling Prolog node
+            n = n.getParent().getChild(0);
+            assert(n.id == XParserTreeConstants.JJTPROLOG);
+
+            SimpleNode c;
+            for (int i = 0; i < n.jjtGetNumChildren(); i++)
+                if ((c = n.getChild(i)).id ==
+                    XParserTreeConstants.JJTNAMESPACEDECL)
+                    ret.put(c.getChild(0).getValue(),
+                            c.getChild(1).getChild(0).getValue());
+                else if (c.id ==
+                         XParserTreeConstants.JJTDEFAULTNAMESPACEDECL)
+                    ret.put(XMLConstants.DEFAULT_NS_PREFIX,
+                            c.getChild(0).getChild(0).getValue());
+        }
+        return ret;
+    }
 }

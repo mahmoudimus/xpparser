@@ -6,7 +6,7 @@ import java.util.LinkedList;
 /**
  * Finds XPath fragments inside an XQuery Parse tree.
  */
-public class XPathVisitor implements XParserVisitor {
+public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
     private SimpleNode node;
     
     public XPathVisitor(final SimpleNode node) {
@@ -19,9 +19,9 @@ public class XPathVisitor implements XParserVisitor {
     public class NodeList {
         
         private boolean first;
-        private List second;
+        private List<SimpleNode> second;
 
-        public NodeList(boolean first, List second) {
+        public NodeList(boolean first, List<SimpleNode> second) {
             this.first = first;
             this.second = second;
         }
@@ -31,7 +31,7 @@ public class XPathVisitor implements XParserVisitor {
          */
         public NodeList() {
             this.first = false;
-            this.second = new LinkedList();
+            this.second = new LinkedList<SimpleNode>();
         }
 
         public void setBool(boolean first) {
@@ -83,9 +83,10 @@ public class XPathVisitor implements XParserVisitor {
      * @param node The node to be processed.
      * @return The list of nodes that are actually XPath 3.0 expressions.
      */
-    public static List visit(final SimpleNode node) {
-        NodeList nl = (NodeList) node.jjtAccept(new XPathVisitor(node),
-                                                new LinkedList());
+    public static List<SimpleNode> visit(final SimpleNode node) {
+        NodeList nl = (NodeList)
+            node.jjtAccept(new XPathVisitor(node),
+                           new LinkedList<SimpleNode>());
         return nl.getList();
     }
 
@@ -98,12 +99,13 @@ public class XPathVisitor implements XParserVisitor {
      *         return true, and with the concatenation of nl with the
      *         children's visits.
      */
-    private NodeList visitChildren(final SimpleNode node, List l) {
+    private NodeList visitChildren(final SimpleNode node,
+                                   List<SimpleNode> l) {
         boolean allTrue = true;
         int nChildren = node.jjtGetNumChildren();
-        List concatList = l;
+        List<SimpleNode> concatList = l;
         for (int i = 0; i < nChildren; i++) {
-            NodeList ret = visit(node.getChild(i), concatList);
+            NodeList ret = (NodeList) visit(node.getChild(i), concatList);
             allTrue = allTrue && ret.getBool();
             concatList = ret.getList();
         }
@@ -119,14 +121,17 @@ public class XPathVisitor implements XParserVisitor {
      * @return A NodeList with Boolean value true iff all the children
      *         return true.
      */
-    private NodeList nonTransparentVisit(final SimpleNode node, List l) {
-        NodeList nl = visitChildren(node, new LinkedList());
-        if (nl.getBool())
-            return new NodeList(true,
-                                ((List) data).add(node));
-        else
-            return new NodeList(false,
-                                ((List) data).addAll(nl.getList()));
+    private NodeList nonTransparentVisit(final SimpleNode node,
+                                         List<SimpleNode> l) {
+        NodeList nl = visitChildren(node, new LinkedList<SimpleNode>());
+        if (nl.getBool()) {
+            l.add(node);
+            return new NodeList(true, l);
+        }
+        else {
+            l.addAll(nl.getList());
+            return new NodeList(false, l);
+        }
     }
         
     /**
@@ -135,7 +140,7 @@ public class XPathVisitor implements XParserVisitor {
      * @param data  A List of other nodes found in the surrounding context.
      * @return The list of nodes that are actually XPath 3.0 expressions.
      */
-    public NodeList visit(final SimpleNode node, Object data) {
+    public Object visit(final SimpleNode node, Object data) {
         assert(data instanceof List);
         int id = node.id;
         
@@ -201,7 +206,7 @@ public class XPathVisitor implements XParserVisitor {
         case JJTCOMPTEXTCONSTRUCTOR:            
         case JJTCOMPCOMMENTCONSTRUCTOR:            
         case JJTCOMPPICONSTRUCTOR: {
-            NodeList nl = visitChildren(node, (List) data);
+            NodeList nl = visitChildren(node, (List<SimpleNode>) data);
             return new NodeList(false, nl.getList());
         }
 
@@ -254,7 +259,8 @@ public class XPathVisitor implements XParserVisitor {
         case JJTELEMENTDECLARATION:
         case JJTANYFUNCTIONTEST:
         case JJTURILITERAL:
-            return new NodeList(true, (List) data);
+        case JJTINTERMEDIATECLAUSE:
+            return new NodeList(true, (List<SimpleNode>) data);
 
             // ignore children and return false:
             // (does not contain any XPath)
@@ -329,7 +335,7 @@ public class XPathVisitor implements XParserVisitor {
         case JJTDIRPICONTENTS:
         case JJTPROCESSINGINSTRUCTIONSTART:
         case JJTPROCESSINGINSTRUCTIONEND:
-            return new NodeList(false, (List) data);
+            return new NodeList(false, (List<SimpleNode>) data);
 
             // transparent:
             // if all children are XPath expressions, return them
@@ -351,10 +357,9 @@ public class XPathVisitor implements XParserVisitor {
         case JJTFORBINDING:
         case JJTLETBINDING:
         case JJTINITIALCLAUSE:
-        case JJTINTERMEDIATECLAUSE:
         case JJTFORCLAUSE:
         case JJTLETCLAUSE:
-            return visitChildren(node, (List) data);
+            return visitChildren(node, (List<SimpleNode>) data);
 
             // non-transparent: if all children are XPath expressions,
             // return the node itself
@@ -395,7 +400,7 @@ public class XPathVisitor implements XParserVisitor {
         case JJTIFEXPR:
         case JJTQUANTIFIEDEXPR:
         case JJTFLWOREXPR11:
-            return nonTransparentVisit(node, (List) data);
+            return nonTransparentVisit(node, (List<SimpleNode>) data);
 
             // nodes with special work required:
         case JJTQNAME: {
@@ -404,134 +409,134 @@ public class XPathVisitor implements XParserVisitor {
                 if (node.m_value.equals("switch")
                     || node.m_value.equals("typeswitch")
                     || node.m_value.equals("while"))
-                    return new NodeList(false, (List) data);
+                    return new NodeList(false, (List<SimpleNode>) data);
                 else
-                    return new NodeList(true, (List) data);
+                    return new NodeList(true, (List<SimpleNode>) data);
             }
             else
-                return nonTransparentVisit(node, (List) data);
+                return nonTransparentVisit(node, (List<SimpleNode>) data);
         }
             
         case JJTFUNCTIONQNAME: {
             // some built-in function names are not available in XPath
             if (node.m_value != null) {
                 if (node.m_value.equals("NaN")
-                    || node.value.equals("after")
-                    || node.value.equals("all")
-                    || node.value.equals("allowing")
-                    || node.value.equals("any")
-                    || node.value.equals("at")
-                    || node.value.equals("base-uri")
-                    || node.value.equals("before")
-                    || node.value.equals("block")
-                    || node.value.equals("boundary-space")
-                    || node.value.equals("by")
-                    || node.value.equals("case")
-                    || node.value.equals("catch")
-                    || node.value.equals("collation")
-                    || node.value.equals("construction")
-                    || node.value.equals("contains")
-                    || node.value.equals("content")
-                    || node.value.equals("context")
-                    || node.value.equals("copy")
-                    || node.value.equals("copy-namespaces")
-                    || node.value.equals("declare")
-                    || node.value.equals("default")
-                    || node.value.equals("delete")
-                    || node.value.equals("diacritics")
-                    || node.value.equals("different")
-                    || node.value.equals("distance")
-                    || node.value.equals("div")
-                    || node.value.equals("document")
-                    || node.value.equals("empty")
-                    || node.value.equals("encoding")
-                    || node.value.equals("end")
-                    || node.value.equals("entire")
-                    || node.value.equals("exactly")
-                    || node.value.equals("exit")
-                    || node.value.equals("first")
-                    || node.value.equals("from")
-                    || node.value.equals("ft-option")
-                    || node.value.equals("ftand")
-                    || node.value.equals("ftnot")
-                    || node.value.equals("ftor")
-                    || node.value.equals("function")
-                    || node.value.equals("group")
-                    || node.value.equals("grouping-separator")
-                    || node.value.equals("import")
-                    || node.value.equals("infinity")
-                    || node.value.equals("inherit")
-                    || node.value.equals("insensitive")
-                    || node.value.equals("insert")
-                    || node.value.equals("into")
-                    || node.value.equals("key")
-                    || node.value.equals("language")
-                    || node.value.equals("last")
-                    || node.value.equals("lax")
-                    || node.value.equals("levels")
-                    || node.value.equals("lowercase")
-                    || node.value.equals("minus-sign")
-                    || node.value.equals("modify")
-                    || node.value.equals("next")
-                    || node.value.equals("no")
-                    || node.value.equals("no-inherit")
-                    || node.value.equals("no-preserve")
-                    || node.value.equals("nodes")
-                    || node.value.equals("only")
-                    || node.value.equals("order")
-                    || node.value.equals("ordered")
-                    || node.value.equals("ordering")
-                    || node.value.equals("paragraph")
-                    || node.value.equals("paragraphs")
-                    || node.value.equals("pattern-separator")
-                    || node.value.equals("per-mille")
-                    || node.value.equals("percent")
-                    || node.value.equals("phrase")
-                    || node.value.equals("preserve")
-                    || node.value.equals("previous")
-                    || node.value.equals("relationship")
-                    || node.value.equals("rename")
-                    || node.value.equals("replace")
-                    || node.value.equals("returning")
-                    || node.value.equals("revalidation")
-                    || node.value.equals("same")
-                    || node.value.equals("schema")
-                    || node.value.equals("score")
-                    || node.value.equals("sensitive")
-                    || node.value.equals("sentence")
-                    || node.value.equals("sentences")
-                    || node.value.equals("skip")
-                    || node.value.equals("sliding")
-                    || node.value.equals("stable")
-                    || node.value.equals("start")
-                    || node.value.equals("stemming")
-                    || node.value.equals("stop")
-                    || node.value.equals("strict")
-                    || node.value.equals("strip")
-                    || node.value.equals("thesaurus")
-                    || node.value.equals("times")
-                    || node.value.equals("try")
-                    || node.value.equals("tumbling")
-                    || node.value.equals("type")
-                    || node.value.equals("unordered")
-                    || node.value.equals("updating")
-                    || node.value.equals("uppercase")
-                    || node.value.equals("using")
-                    || node.value.equals("validate")
-                    || node.value.equals("value")
-                    || node.value.equals("variable")
-                    || node.value.equals("version")
-                    || node.value.equals("weight")
-                    || node.value.equals("when")
-                    || node.value.equals("where")
-                    || node.value.equals("wildcards")
-                    || node.value.equals("window")
-                    || node.value.equals("with")
-                    || node.value.equals("without")
-                    || node.value.equals("word")
-                    || node.value.equals("words")
-                    || node.value.equals("xquery")
-                    || node.value.equals("zero-digit"))
+                    || node.m_value.equals("after")
+                    || node.m_value.equals("all")
+                    || node.m_value.equals("allowing")
+                    || node.m_value.equals("any")
+                    || node.m_value.equals("at")
+                    || node.m_value.equals("base-uri")
+                    || node.m_value.equals("before")
+                    || node.m_value.equals("block")
+                    || node.m_value.equals("boundary-space")
+                    || node.m_value.equals("by")
+                    || node.m_value.equals("case")
+                    || node.m_value.equals("catch")
+                    || node.m_value.equals("collation")
+                    || node.m_value.equals("construction")
+                    || node.m_value.equals("contains")
+                    || node.m_value.equals("content")
+                    || node.m_value.equals("context")
+                    || node.m_value.equals("copy")
+                    || node.m_value.equals("copy-namespaces")
+                    || node.m_value.equals("declare")
+                    || node.m_value.equals("default")
+                    || node.m_value.equals("delete")
+                    || node.m_value.equals("diacritics")
+                    || node.m_value.equals("different")
+                    || node.m_value.equals("distance")
+                    || node.m_value.equals("div")
+                    || node.m_value.equals("document")
+                    || node.m_value.equals("empty")
+                    || node.m_value.equals("encoding")
+                    || node.m_value.equals("end")
+                    || node.m_value.equals("entire")
+                    || node.m_value.equals("exactly")
+                    || node.m_value.equals("exit")
+                    || node.m_value.equals("first")
+                    || node.m_value.equals("from")
+                    || node.m_value.equals("ft-option")
+                    || node.m_value.equals("ftand")
+                    || node.m_value.equals("ftnot")
+                    || node.m_value.equals("ftor")
+                    || node.m_value.equals("function")
+                    || node.m_value.equals("group")
+                    || node.m_value.equals("grouping-separator")
+                    || node.m_value.equals("import")
+                    || node.m_value.equals("infinity")
+                    || node.m_value.equals("inherit")
+                    || node.m_value.equals("insensitive")
+                    || node.m_value.equals("insert")
+                    || node.m_value.equals("into")
+                    || node.m_value.equals("key")
+                    || node.m_value.equals("language")
+                    || node.m_value.equals("last")
+                    || node.m_value.equals("lax")
+                    || node.m_value.equals("levels")
+                    || node.m_value.equals("lowercase")
+                    || node.m_value.equals("minus-sign")
+                    || node.m_value.equals("modify")
+                    || node.m_value.equals("next")
+                    || node.m_value.equals("no")
+                    || node.m_value.equals("no-inherit")
+                    || node.m_value.equals("no-preserve")
+                    || node.m_value.equals("nodes")
+                    || node.m_value.equals("only")
+                    || node.m_value.equals("order")
+                    || node.m_value.equals("ordered")
+                    || node.m_value.equals("ordering")
+                    || node.m_value.equals("paragraph")
+                    || node.m_value.equals("paragraphs")
+                    || node.m_value.equals("pattern-separator")
+                    || node.m_value.equals("per-mille")
+                    || node.m_value.equals("percent")
+                    || node.m_value.equals("phrase")
+                    || node.m_value.equals("preserve")
+                    || node.m_value.equals("previous")
+                    || node.m_value.equals("relationship")
+                    || node.m_value.equals("rename")
+                    || node.m_value.equals("replace")
+                    || node.m_value.equals("returning")
+                    || node.m_value.equals("revalidation")
+                    || node.m_value.equals("same")
+                    || node.m_value.equals("schema")
+                    || node.m_value.equals("score")
+                    || node.m_value.equals("sensitive")
+                    || node.m_value.equals("sentence")
+                    || node.m_value.equals("sentences")
+                    || node.m_value.equals("skip")
+                    || node.m_value.equals("sliding")
+                    || node.m_value.equals("stable")
+                    || node.m_value.equals("start")
+                    || node.m_value.equals("stemming")
+                    || node.m_value.equals("stop")
+                    || node.m_value.equals("strict")
+                    || node.m_value.equals("strip")
+                    || node.m_value.equals("thesaurus")
+                    || node.m_value.equals("times")
+                    || node.m_value.equals("try")
+                    || node.m_value.equals("tumbling")
+                    || node.m_value.equals("type")
+                    || node.m_value.equals("unordered")
+                    || node.m_value.equals("updating")
+                    || node.m_value.equals("uppercase")
+                    || node.m_value.equals("using")
+                    || node.m_value.equals("validate")
+                    || node.m_value.equals("value")
+                    || node.m_value.equals("variable")
+                    || node.m_value.equals("version")
+                    || node.m_value.equals("weight")
+                    || node.m_value.equals("when")
+                    || node.m_value.equals("where")
+                    || node.m_value.equals("wildcards")
+                    || node.m_value.equals("window")
+                    || node.m_value.equals("with")
+                    || node.m_value.equals("without")
+                    || node.m_value.equals("word")
+                    || node.m_value.equals("words")
+                    || node.m_value.equals("xquery")
+                    || node.m_value.equals("zero-digit"))
                     return new NodeList(false, (List) data);
                 else
                     return new NodeList(true, (List) data);
@@ -543,16 +548,16 @@ public class XPathVisitor implements XParserVisitor {
         case JJTTYPEDECLARATION: {
             // TypeDeclaration is only valid inside a Param in XPath
             if (node.getParent().id != JJTPARAM) {
-                NodeList nl = visitChildren(node, (List) data);
+                NodeList nl = visitChildren(node, (List<SimpleNode>) data);
                 return new NodeList(false, nl.getList());                
             }
             else
-                return nonTransparentVisit(node, (List) data);
-        }            
+                return nonTransparentVisit(node, (List<SimpleNode>) data);
+        }
                 
         default:
             assert(false);
-            return new NodeList(false, (List) data);
+            return new NodeList(false, (List<SimpleNode>) data);
         }
     }        
 }

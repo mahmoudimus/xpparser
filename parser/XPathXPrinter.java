@@ -16,6 +16,8 @@
  */
 package org.w3c.xqparser;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
 /**
@@ -52,7 +54,7 @@ public class XPathXPrinter extends XQueryXConverter {
 
     public void transformChildren(SimpleNode node, int start, int end) {
         // int n = node.jjtGetNumChildren();
-        for (int i = start; i &lt;= end; i++)
+        for (int i = start; i <= end; i++)
         {
             SimpleNode child = node.getChild(i);
             this.transform(child);
