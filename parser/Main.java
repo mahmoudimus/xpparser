@@ -5,13 +5,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
-import org.xml.sax.InputSource;
 import javax.xml.xpath.*;
 import javax.xml.parsers.*;
 import javax.xml.namespace.*;
 import javax.xml.XMLConstants;
 import org.w3c.dom.*;
-import org.w3c.dom.traversal.*;
 
 /**
  * Command-line processing.
@@ -85,76 +83,66 @@ public class Main {
             
             // if `--xml' or `--xslt' was used
             if (xml) {
-                Iterator<String> filename = filenames.iterator();
+                final Iterator<String> filename = filenames.iterator();
 
                 // boilerplate
-                DocumentBuilderFactory dbf =
-                    DocumentBuilderFactory.newInstance();
-                dbf.setNamespaceAware(true);
-                dbf.setXIncludeAware(true);
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                XPath xp = XPathFactory.newInstance().newXPath();
-                // there's no default implementation for
-                // NamespaceContext... seems kind of silly, no?
-                xp.setNamespaceContext(new NamespaceContext() {
-                        public String getNamespaceURI(String prefix) {
-                            if (prefix == null)
-                                throw new NullPointerException("No prefix");
-                            else if (prefix.equals("xml"))
-                                return XMLConstants.XML_NS_URI;
-                            else if (prefix.equals("xsl"))
-                                return "http://www.w3.org/1999/XSL/Transform";
-                            return "http://example.org/"+prefix;
-                        }
+                final PositionalXMLReader read = new PositionalXMLReader();
+                // final XPath xp = XPathFactory.newInstance().newXPath();
+                // // there's no default implementation for
+                // // NamespaceContext... seems kind of silly, no?
+                // xp.setNamespaceContext(new NamespaceContext() {
+                //         public String getNamespaceURI(String prefix) {
+                //             return read.getNamespaceURI(prefix);
+                //         }
 
-                        // This method isn't necessary for XPath processing.
-                        public String getPrefix(String uri) {
-                            throw new UnsupportedOperationException();
-                        }
+                //         // This method isn't necessary for XPath processing.
+                //         public String getPrefix(String uri) {
+                //             throw new UnsupportedOperationException();
+                //         }
                         
-                        // This method isn't necessary for XPath processing.
-                        public Iterator getPrefixes(String uri) {
-                            throw new UnsupportedOperationException();
-                        }
-                    });
-                XPathExpression e = xp.compile(filter);
-                XPathExpression ns = xp.compile("namespace::*");
+                //         // This method isn't necessary for XPath processing.
+                //         public Iterator getPrefixes(String uri) {
+                //             throw new UnsupportedOperationException();
+                //         }
+                //     });
+                // final XPathExpression e = xp.compile(filter);
+                // final XPathExpression ns = xp.compile("namespace::*");
 
 
                 
                 for (BufferedReader stream : streams) {
                     String file = filename.next();
                     // parse the input XML
-                    Document d = db.parse(new InputSource(stream));
+                    Document d = read.parse(stream);
 
                     // recover namespace information from the document
-
+                    System.out.println(file+": ");
+                    System.out.print(read.ns.toString()+"\n");
                     
                     // apply filter
-                    NodeList nl =
-                        (NodeList) e.evaluate(d, XPathConstants.NODESET);
-                    for (int j = 0; j <nl.getLength(); j++) {
-                        // our element
-                        org.w3c.dom.Node n = nl.item(j);
+                    // NodeList nl =
+                    //     (NodeList) e.evaluate(d, XPathConstants.NODESET);
+                    // for (int j = 0; j < nl.getLength(); j++) {
+                    //     // our element
+                    //     org.w3c.dom.Node n = nl.item(j);
 
-                        // its XPath contents
-                        String s;
-                        switch (n.getNodeType()) {
-                        case org.w3c.dom.Node.ATTRIBUTE_NODE:
-                        case org.w3c.dom.Node.TEXT_NODE:
-                            s = n.getNodeValue();
-                            break;
+                    //     // its XPath contents
+                    //     String s;
+                    //     switch (n.getNodeType()) {
+                    //     case org.w3c.dom.Node.ATTRIBUTE_NODE:
+                    //     case org.w3c.dom.Node.TEXT_NODE:
+                    //         s = n.getNodeValue();
+                    //         break;
                             
-                        case org.w3c.dom.Node.ELEMENT_NODE:
-                            s = n.getTextContent();
-                            break;
+                    //     case org.w3c.dom.Node.ELEMENT_NODE:
+                    //         s = n.getTextContent();
+                    //         break;
 
-                        default:
-                            throw new XPathExpressionException("Couldn't process node "+n.getTextContent()+" in "+ file);
-                        }
-                        
-                        System.out.println(s);
-                    }
+                    //     default:
+                    //         throw new XPathExpressionException("Couldn't process node "+n.getTextContent()+" in "+ file);
+                    //     }       
+                    //   System.out.println(s);                 
+                    // }
                 }
             }
             // if `--xquery' or no option was used

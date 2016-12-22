@@ -1183,6 +1183,9 @@ Example:  build jars test
     <copy file="XQueryApplet.java"                 tofile="${java-gen}/org/w3c/xqparser/XPathApplet.java"/>
     <copy file="XMLWriter.java"                     todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="XMLValidator.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XPathVisitor.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="PositionalXMLReader.java"        todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="Main.java"                  todir="${java-gen}/org/w3c/xqparser"/>
   </target>
 
   <target name="prep-unless-xqx" unless="include-XQueryXConverter">
@@ -1359,7 +1362,7 @@ Example:  build jars test
 
   <!-- Factor out the options that we'll always want to pass to the javac task. -->
   <presetdef name="java_compile">
-    <javac source="1.4" target="1.4" debug="true" debuglevel="lines,vars,source" />
+    <javac source="1.7" target="1.7" debug="true" debuglevel="lines,vars,source" />
   </presetdef>
 
   <target name="jar-nogen" depends="compile-nogen"
