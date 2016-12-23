@@ -1,4 +1,4 @@
-package org.w3c.xqparser;
+package fr.lsv.xpparser;
 
 import java.util.*;
 import java.io.*;
