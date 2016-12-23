@@ -196,36 +196,4 @@ public class Main {
         e.printStackTrace(System.err);
         System.exit(0);
     }
-        
-
-
-// import javax.xml.transform.*;
-// import javax.xml.transform.dom.DOMSource; 
-// import javax.xml.transform.stream.StreamResult;
-    // /**
-    //  * Pretty-print a DOM Node.
-    //  * @param doc The document to print.
-    //  * @param os The chosen output.
-    //  */
-    // private static void print(org.w3c.dom.Node node, OutputStream os)
-    //     throws IOException, TransformerConfigurationException,
-    //            TransformerException {
-        
-    //     TransformerFactory tf = TransformerFactory.newInstance();
-    //     Transformer transformer = tf.newTransformer();
-    //     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    //     transformer.setOutputProperty
-    //         ("{http://xml.apache.org/xslt}indent-amount", "2");
-    //     transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-    //     transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-    //     transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-    //     DOMSource source = new DOMSource(node);
-    //     StreamResult result = new StreamResult(os);
-    //     transformer.transform(source, result);
-    // }
-    // private static void print(org.w3c.dom.Node node)
-    //     throws IOException, TransformerConfigurationException,
-    //            TransformerException  {
-    //     print(node, System.out);
-    // }
 }

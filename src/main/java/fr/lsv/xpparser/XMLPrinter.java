@@ -27,6 +27,14 @@ public class XMLPrinter {
             ("{http://xml.apache.org/xslt}indent-amount", "2");
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
     }        
+    /**
+     * An XMLPrinter that just prints.
+     */
+    public XMLPrinter ()
+        throws TransformerConfigurationException, TransformerException  {
+
+        this(TransformerFactory.newInstance().newTransformer());
+    }
 
     /**
      * An XMLPrinter that applies an XSLT stylesheet.
