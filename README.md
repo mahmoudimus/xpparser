@@ -1,35 +1,29 @@
-These are the XML sources for the XPath/XQuery family of grammars, the
-XSLT files for a transformation to a test parser for JavaCC/JJTree
-(https://javacc.dev.java.net/) parser generation, and the generated
-jars.
-
+XPath Parser extracts XPath expressions from within XQuery or XML (in
+particular XSLT) files, and returns an XML abstract syntax tree (in
+XQueryX) for them.
 
 # Building
 
-You need Ant and a JDK version >= 1.4 to build this software.  You
-also need to download some libraries in order to compile this code, to
-be put in `lib`; grab for this
-https://www.w3.org/2013/01/qt-applets/xgrammar_libs.zip .
+Build with Maven:
 
-Go to `parser` and run e.g. `ant xpath30.jar` or `ant xquery30.jar`.
-The resulting files are in `parser/applet/`.
+  mvn compile
 
 
 # Running
 
-The generated jars can validate either an expression on the
-command-line, as in e.g.
-
-  java -jar applet.jar -xqueryx -expr 'for $a in foo return $a[@bar]'
-
-or an expression from a file, as in e.g.
-
-  java -jar applet.jar -xqueryx -file foo.xql
+Use the provided `xpparser` script.  The command-line is currently
+undocumented, so ask me, or read `Main.java`.
 
 
 # Licensing
 
-All files except for `parser/XQueryXConvertBase-xpath30.java' are
+Some files are Copyright (c) 2016 ENS Cachan and licensed under GPL
+version 3.0 or later.
+
+Most files are the XML sources for the XPath/XQuery family of
+grammars, the XSLT files for a transformation to a test parser for
+JavaCC/JJTree (https://javacc.dev.java.net/) parser generation.  They
+are licensed as:
 
 Copyright (c) 2005 W3C(r) (http://www.w3.org/) (MIT
 (http://www.lcs.mit.edu/), INRIA (http://www.inria.fr/), Keio

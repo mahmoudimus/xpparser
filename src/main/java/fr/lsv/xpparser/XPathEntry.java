@@ -42,7 +42,7 @@ public abstract class XPathEntry {
             else
                 os.print("\n    "+ XMLConstants.XMLNS_ATTRIBUTE
                            +":"+ pair.getKey() +"=\""+ pair.getValue() +"\"");
-        os.println("    >");
+        os.println(">");
         try {
             os.println("    <query>"+ getEntryText() +"</query>");
         } catch (UnsupportedOperationException e) {}
