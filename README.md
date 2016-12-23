@@ -4,9 +4,7 @@ XQueryX) for them.
 
 # Building
 
-Build with Maven:
-
-  mvn compile
+Build with Maven with `mvn compile` or with Ant with `ant compile`.
 
 
 # Running

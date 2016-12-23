@@ -14,6 +14,15 @@ This buildfile is used to ...
     description="">
   </target>
 
+  <presetdef name="java_compile">
+    <javac debug="true" debuglevel="lines,vars,source"
+           includeantruntime="false"/>
+  </presetdef>
+  <target name="compile" description="Compile xpparser">
+    <mkdir dir="target/classes/"/>
+    <java_compile srcdir="src/main/java/" destdir="target/classes/"/>
+  </target>
+
   <!-- ============= Spec targets =============== -->
 
   <target name="validate" description="Validate xpath-grammar.xml">
