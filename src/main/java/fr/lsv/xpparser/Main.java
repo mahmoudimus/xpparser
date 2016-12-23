@@ -2,9 +2,9 @@ package fr.lsv.xpparser;
 
 import java.util.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+import org.xml.sax.SAXParseException;
 
 /**
  * Command-line processing.
@@ -12,6 +12,8 @@ import java.nio.file.Files;
  * @author Sylvain Schmitz <schmitz@lsv.fr>
  */
 public class Main {
+
+    private final static String progname = "xpparser";
     
     public static void main(String[] args) {
         boolean legit = true;
@@ -80,9 +82,15 @@ public class Main {
                     /* should we use MIME/types? */
                     //System.out.println(path.toString()+":
                     //"+Files.probeContentType(path));
-                    BufferedReader br = Files.newBufferedReader(path);
-                    streams.add(new AbstractMap.SimpleEntry
-                                (path.toString(), br));
+                    try {
+                        BufferedReader br = Files.newBufferedReader
+                            (path, Charset.defaultCharset());
+                        streams.add(new AbstractMap.SimpleEntry
+                                    (path.toString(), br));
+                    } catch (NoSuchFileException e) {
+                        System.err.println
+                            (progname +": file not found: "+ e.getMessage());
+                    }
                 }
 
             // print XML
@@ -91,15 +99,37 @@ public class Main {
 
             // process sources
             for (Map.Entry<String,Reader> stream : streams)
-                for (XPathEntry entry : sf.getSource(stream))
-                    entry.print();
+                try {
+                    for (XPathEntry entry : sf.getSource(stream))
+                        try {
+                            entry.print();
+                        } catch (Exception e) {
+                            System.err.println
+                                (progname +": error processing file "
+                                 +stream.getKey()+":");
+                            System.err.println(e.getMessage());
+                        }
+                    
+                } catch (ParseException e) {
+                    System.err.println
+                        (progname +": could not parse XQuery file "
+                         + stream.getKey() +":");
+                    System.err.println(e.getMessage());
+                } catch (SAXParseException e) {
+                    System.err.println
+                        (progname +": could not parse XML file "
+                         + stream.getKey() +":");
+                    System.err.println(e.getMessage());
+                }
+            
 
             // finish printing XML
             System.out.println("</benchmark>");
             System.out.flush();
         }
         catch (Exception e) {
-            System.err.println("xpparser: " + e.toString());
+            System.err.println(progname +": fatal error!");
+            System.err.println(e.toString());
             e.printStackTrace(System.err);
             System.exit(0);
         }
