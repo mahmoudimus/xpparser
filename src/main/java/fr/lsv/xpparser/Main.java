@@ -53,9 +53,22 @@ public class Main {
         
         //----------------------------------- display command-line syntax
         if (!legit || help) {
-            System.out.println("Yada yada");
+            System.out.println
+                ("Usage: "+ progname +"[OPTION] [FILE]...");
+            System.out.println
+                ("Extract and parse XPath expressions, then print them in XQueryX format\non standard output.\n");
+            System.out.println
+                ("      --xml PATTERN  parse input files as XML documents, and extract\n                     contents using the provided XPath 1.0 PATTERN");
+            System.out.println
+                ("      --xquery       parse input files as XQuery documents");
+            System.out.println
+                ("      --xslt         parse input files as XSLT documents; equivalent\n                     to --xml '//@match | //@select | //@test'");
+            System.out.println
+                ("  -h, --help         display this help and exit\n");
+            System.out.println
+                ("With no OPTION, behaves as if --xquery was provided.  With no FILE, read\nfrom standard input.");
 
-            System.exit(0);
+            System.exit(legit? 1: 0);
         }
         //------------------------------------------------- process input
         try {

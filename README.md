@@ -4,13 +4,12 @@ XQueryX) for them.
 
 # Building
 
-Build with Maven with `mvn compile` or with Ant with `ant compile`.
+Build with Ant with `ant compile` or with Maven with `mvn compile`.
 
 
 # Running
 
-Use the provided `xpparser` script.  The command-line is currently
-undocumented, so ask me, or read `Main.java`.
+Use the provided `xpparser` script; see `./xpparser -h` for command-line usage.
 
 
 # Licensing
