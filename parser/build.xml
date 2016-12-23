@@ -1186,6 +1186,12 @@ Example:  build jars test
     <copy file="XPathVisitor.java"                  todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="XPathXPrinter.java"                  todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="PositionalXMLReader.java"        todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XMLXPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XQueryXPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XMLSource.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="XQuerySource.java"                  todir="${java-gen}/org/w3c/xqparser"/>
+    <copy file="SourceFactory.java"                  todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="Main.java"                  todir="${java-gen}/org/w3c/xqparser"/>
   </target>
 
