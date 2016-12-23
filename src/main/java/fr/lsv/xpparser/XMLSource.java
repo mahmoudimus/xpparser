@@ -79,7 +79,14 @@ public class XMLSource implements Iterable<XPathEntry> {
                 try {
                     ret = new XMLXPathEntry(filename, sf, n, q);
                 } catch (ParseException e) {
-                    throw new NoSuchElementException(e.toString());
+                    throw new NoSuchElementException
+                        (": "+ filename +" line "
+                         + (String)n.getUserData
+                           (PositionalXMLReader.LINE_NUMBER_KEY_NAME) +": "
+                         + "Could not parse XPath expression `"
+                         + q +"`: "
+                         + System.getProperty("line.separator", "\n")
+                         + e.getMessage());
                 }
                 return ret;
             }

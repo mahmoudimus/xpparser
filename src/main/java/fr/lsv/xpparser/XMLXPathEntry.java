@@ -38,7 +38,7 @@ public class XMLXPathEntry extends XPathEntry {
         // parse `entry' to get an AST
         Reader r = new StringReader(entry);
         XParser parser = new XParser(r);
-        this.astnode = parser.START();
+        this.astnode = parser.START();        
 
         // recover the namespace information from the DOM
         String s = (String)domnode.getUserData

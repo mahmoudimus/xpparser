@@ -33,14 +33,15 @@ public abstract class XPathEntry {
     }
     
     public void print(PrintStream os) throws Exception {
+        String eol = System.getProperty("line.separator", "\n");
         os.println("  <xpath file=\""+ getFilename() +"\"");
         os.print("    line=\""+ getLine()
                    +"\" column=\""+ getColumn() +"\"");
         for (Map.Entry<String,String> pair : getNamespaces().entrySet())
             if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
-                os.print("\n    defaultns=\""+ pair.getValue() +"\"");
+                os.print(eol+"    defaultns=\""+ pair.getValue() +"\"");
             else
-                os.print("\n    "+ XMLConstants.XMLNS_ATTRIBUTE
+                os.print(eol+"    "+ XMLConstants.XMLNS_ATTRIBUTE
                            +":"+ pair.getKey() +"=\""+ pair.getValue() +"\"");
         os.println(">");
         try {
