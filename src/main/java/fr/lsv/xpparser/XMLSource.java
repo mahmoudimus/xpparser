@@ -79,6 +79,7 @@ public class XMLSource implements Iterable<XPathEntry> {
                 try {
                     ret = new XMLXPathEntry(filename, sf, n, q);
                 } catch (ParseException e) {
+                    // we have to treat this error here
                     throw new NoSuchElementException
                         (": "+ filename +" line "
                          + (String)n.getUserData
