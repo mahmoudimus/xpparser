@@ -31,7 +31,7 @@ public class XMLPrinter {
      * An XMLPrinter that just prints.
      */
     public XMLPrinter ()
-        throws TransformerConfigurationException, TransformerException  {
+        throws TransformerConfigurationException {
 
         this(TransformerFactory.newInstance().newTransformer());
     }
@@ -40,8 +40,8 @@ public class XMLPrinter {
      * An XMLPrinter that applies an XSLT stylesheet.
      * @param stylestream An XSLT stylesheet.
      */
-    public XMLPrinter (Reader stylestream)
-        throws TransformerConfigurationException, TransformerException  {
+    public XMLPrinter (Reader stylestream) 
+        throws TransformerConfigurationException {
 
         this(TransformerFactory.newInstance()
              .newTransformer(new StreamSource(stylestream)));

@@ -2,8 +2,10 @@ package fr.lsv.xpparser;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
+import java.util.AbstractMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
@@ -16,33 +18,47 @@ import org.xml.sax.SAXException;
  */
 public class XMLValidator {
 
-    private List<Validator> schemas;
+    public static final String VALID = "valid";
 
-    public XMLValidator(Iterable<Reader> schemas) 
+    private List<Map.Entry<String,Validator>> schemas;
+
+    public XMLValidator(List<Map.Entry<String,Reader>> schemas) 
         throws SAXException {
         
-        this.schemas = new LinkedList<Validator>();
+        this.schemas = new LinkedList<Map.Entry<String,Validator>>();
         SchemaFactory sf = 
             SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        for (Reader file : schemas)
+        for (Map.Entry<String,Reader> file : schemas)
             this.schemas.add
-                (sf.newSchema(new StreamSource(file)).newValidator());
+                (new AbstractMap.SimpleEntry
+                 (file.getKey(),
+                  sf.newSchema(new StreamSource(file.getValue()))
+                  .newValidator()));
     }
 
-    public Iterable<Boolean> validate (org.w3c.dom.Node node)
-        throws IOException {
+    /**
+     * Run a bunch of validation checks.  Each diagnostic holds the
+     * name of the schema (to be obtained via Map.Entry#getKey()) and
+     * either VALID or the error message.
+     */
+    public Iterable<Map.Entry<String,String>> 
+        validate (org.w3c.dom.Node node) throws IOException {
     
         DOMSource source = new DOMSource(node);
-        LinkedList<Boolean> ret = new LinkedList<Boolean>();
-        for (Validator v : schemas)
+        LinkedList<Map.Entry<String,String>> ret = 
+            new LinkedList<Map.Entry<String,String>>();
+
+        for (Map.Entry<String,Validator> v : schemas) {
             try {
-                v.validate(source);
-                v.reset();
-                ret.add(new Boolean(true));
+                v.getValue().validate(source);
+                ret.add(new AbstractMap.SimpleEntry
+                        (v.getKey(), VALID));
             } catch (SAXException e) {
-                v.reset();
-                ret.add(new Boolean(false));
+                ret.add(new AbstractMap.SimpleEntry
+                        (v.getKey(), e.getMessage()));
             }
+            v.getValue().reset();
+        }
         return ret;
     }
 }
