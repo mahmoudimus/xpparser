@@ -1135,7 +1135,9 @@ import fr.lsv.xpparser.SimpleNode;
                 |  (
     "following-sibling"{jjtThis.processValue("following-sibling");} "::")
                 |  (
-    "following"{jjtThis.processValue("following");} "::"))
+    "following"{jjtThis.processValue("following");} "::")
+                |  (
+    "namespace"{jjtThis.processValue("namespace");} "::"))
         }
 
     void AbbrevForwardStep()  :

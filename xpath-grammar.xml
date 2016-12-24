@@ -1547,7 +1547,7 @@ ErrorVal ::= "$" VarName
         <g:string process-value="yes">following</g:string>
         <g:string>::</g:string>
       </g:sequence>
-      <g:sequence if="xcore xpath1 xpath20 xpath30 xslt2-patterns">
+      <g:sequence if="xcore xpath1 xpath20 xpath30 xquery30 xslt2-patterns">
         <g:string process-value="yes">namespace</g:string>
         <g:string>::</g:string>
       </g:sequence>

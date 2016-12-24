@@ -4613,7 +4613,9 @@ import fr.lsv.xpparser.SimpleNode;
                 |  (
     "following-sibling"{jjtn000.processValue("following-sibling");} "::")
                 |  (
-    "following"{jjtn000.processValue("following");} "::"))/*@bgen(jjtree)*/
+    "following"{jjtn000.processValue("following");} "::")
+                |  (
+    "namespace"{jjtn000.processValue("namespace");} "::"))/*@bgen(jjtree)*/
             } finally {
               if (jjtc000) {
                 jjtree.closeNodeScope(jjtn000, true);
