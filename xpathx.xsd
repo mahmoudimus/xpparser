@@ -900,6 +900,7 @@
       <xsd:enumeration value="ancestor-or-self"/>
       <xsd:enumeration value="preceding"/>
       <xsd:enumeration value="preceding-sibling"/>
+      <xsd:enumeration value="namespace"/>
     </xsd:restriction>
   </xsd:simpleType>
 
