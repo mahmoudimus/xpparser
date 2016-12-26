@@ -119,6 +119,7 @@ public class Main {
             for (int j = end + 1; j < args.length; j++)
                 addInput(args[j], schemas);
             XMLValidator validator = new XMLValidator(schemas);
+            sf.setValidator(validator);
 
             // print XML
             System.out.println("<?xml version=\"1.0\"?>");
@@ -127,12 +128,9 @@ public class Main {
             // process sources
             for (Map.Entry<String,Reader> source : sources)
                 try {
-                    for (XPathEntry entry : sf.getSource(source)) {
+                    for (XPathEntry entry : sf.getSource(source))
                         entry.print();
-                        for (Map.Entry<String,String> result 
-                                 : validator.validate(entry.getDOMNode()))
-                            System.out.println("  validation against "+ result.getKey() +": "+result.getValue());
-                    }
+                   
                     
                 //------------------------------------- error handling
                 } catch (ParseException e) {

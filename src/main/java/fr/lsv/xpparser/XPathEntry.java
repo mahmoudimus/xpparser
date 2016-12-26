@@ -1,10 +1,13 @@
 package fr.lsv.xpparser;
 
+import java.nio.file.Paths;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 import javax.xml.XMLConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 public abstract class XPathEntry {
 
@@ -42,40 +45,66 @@ public abstract class XPathEntry {
         return filename;
     }
     
-    public org.w3c.dom.Node getDOMNode() {
+    public org.w3c.dom.Node getDOMNode() throws IOException {
         if (domnode == null) {
-            Element e = doc.createElementNS(XMLConstants.NULL_NS_URI, "ast");
-            doc.appendChild(e);
+            // benchmark information setup
+            Element ast   = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "ast");
+            Element xpath = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "xpath");
+            
+            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                                 "filename", getFilename());
+            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                                 "line", getLine());
+            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                                 "column", getColumn());
+            for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
+                if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
+                    xpath.setAttributeNS
+                        (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                         "defaultns",
+                         pair.getValue());
+                else
+                    xpath.setAttributeNS
+                        (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                         XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
+                         pair.getValue());      
+            }
+            try {
+                Text    text  = doc.createTextNode(getEntryText());
+                Element query = doc.createElementNS
+                    (XMLConstants.DEFAULT_NS_PREFIX, "query");
+                query.appendChild(text);
+                xpath.appendChild(query);
+            } catch (UnsupportedOperationException e) {}
+            xpath.appendChild(ast);
+            doc.appendChild(xpath);
+
+            // obtain XQueryX DOM tree
             XPathXConverter xxc = new XPathXConverter();
-            xxc.transform(getASTNode(), e);
-            domnode = e.getFirstChild();
+            xxc.transform(getASTNode(), ast);
+            domnode = ast.getFirstChild();
+
+            // validate
+            for (Map.Entry<String,String> result : sf.validate(domnode)) {
+                Element val = doc.createElementNS
+                    (XMLConstants.DEFAULT_NS_PREFIX, "validation");
+                val.setAttributeNS
+                    (XMLConstants.DEFAULT_NS_PREFIX,
+                     "schema",
+                     Paths.get(result.getKey()).getFileName().toString());
+                val.appendChild(doc.createTextNode(result.getValue()));
+                xpath.appendChild(val);
+            }
         }
         return domnode;
     }
 
     public void print(PrintStream os) throws Exception {
         XMLPrinter printer = new XMLPrinter();
-        printer.transform(getDOMNode(), os);
-        // String eol = System.getProperty("line.separator", "\n");
-        // os.println("  <xpath file=\""+ getFilename() +"\"");
-        // os.print("    line=\""+ getLine()
-        //            +"\" column=\""+ getColumn() +"\"");
-        // for (Map.Entry<String,String> pair : getNamespaces().entrySet())
-        //     if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
-        //         os.print(eol+"    defaultns=\""+ pair.getValue() +"\"");
-        //     else
-        //         os.print(eol+"    "+ XMLConstants.XMLNS_ATTRIBUTE
-        //                    +":"+ pair.getKey() +"=\""+ pair.getValue() +"\"");
-        // os.println(">");
-        // try {
-        //     os.println("    <query>"+ getEntryText() +"</query>");
-        // } catch (UnsupportedOperationException e) {}
-
-        // os.println("    <ast>");
-        // XPathXPrinter xpp = sf.getXPathPrinter();
-        // xpp.transform(getASTNode(), os);
-        // os.println("    </ast>");
-        // os.println("  </xpath>");
+        getDOMNode();
+        printer.transform(doc, os);
     }
 
     public void print() throws Exception {

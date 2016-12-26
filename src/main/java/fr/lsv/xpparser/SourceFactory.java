@@ -1,5 +1,6 @@
 package fr.lsv.xpparser;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -27,6 +28,9 @@ public class SourceFactory {
     private PositionalXMLReader xmlreader;
     private XPath xpinterpreter;
 
+    // XML validation
+    private XMLValidator validator;
+
     public SourceFactory() throws ParserConfigurationException {
         this.st = SourceType.XQUERY;
         
@@ -49,6 +53,14 @@ public class SourceFactory {
     }
 
     // Basic accessors
+    public void setValidator(XMLValidator v) {
+        this.validator = v;
+    }
+    
+    protected Iterable<Map.Entry<String,String>> validate(org.w3c.dom.Node n)
+        throws IOException {
+        return validator.validate(n);
+    }
 
     protected PositionalXMLReader getXMLReader() throws SAXException {
         // We use a special XML parser that handles line/col numbers
