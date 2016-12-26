@@ -92,7 +92,7 @@ Example:  build jars test
     differently from the command-line.
   -->
 
-  <property name="grammar-file"              value="../xpath-grammar.xml"/>
+  <property name="grammar-file"              value="../../xpath-grammar.xml"/>
   <property name="fulltext-spec-file"        value="../../xpath-full-text-10/src/xpath-full-text.xml"/>
   <property name="fulltext-uc-file"          value="../../../use-cases/xpath-full-text-10/src/xpath-full-text-use-cases.xml"/>
   <property name="scripting-uc-file"         value="../../../use-cases/xquery-sx-10/src/xquery-sx-use-cases.xml"/>
@@ -1183,16 +1183,6 @@ Example:  build jars test
     <copy file="XQueryApplet.java"                 tofile="${java-gen}/org/w3c/xqparser/XPathApplet.java"/>
     <copy file="XMLWriter.java"                     todir="${java-gen}/org/w3c/xqparser"/>
     <copy file="XMLValidator.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XPathVisitor.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XPathXPrinter.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="PositionalXMLReader.java"        todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XMLXPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XQueryXPathEntry.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XMLSource.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="XQuerySource.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="SourceFactory.java"                  todir="${java-gen}/org/w3c/xqparser"/>
-    <copy file="Main.java"                  todir="${java-gen}/org/w3c/xqparser"/>
   </target>
 
   <target name="prep-unless-xqx" unless="include-XQueryXConverter">
