@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.SAXException;
 
 /**
  * Command-line processing.
@@ -113,12 +114,20 @@ public class Main {
             else
                 for (int j = i; j < end; j++)
                     addInput(args[j], sources);                    
-            // prepare validation schemas
+            // process validation schemas
             List<Map.Entry<String,Reader>> schemas
                 = new LinkedList<Map.Entry<String,Reader>>();
             for (int j = end + 1; j < args.length; j++)
                 addInput(args[j], schemas);
-            XMLValidator validator = new XMLValidator(schemas);
+            XMLValidator validator = new XMLValidator();
+            for (Map.Entry<String,Reader> schema : schemas)
+                try {
+                    validator.addSchema(schema.getKey(), schema.getValue());
+                } catch (SAXParseException e) {
+                    System.err.println(progname +": "+ schema.getKey() 
+                                       +":could not parse XML Schema:");
+                    System.err.println(e.getMessage());
+                }
             sf.setValidator(validator);
 
             // print XML

@@ -2,6 +2,7 @@ package fr.lsv.xpparser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -59,7 +60,10 @@ public class SourceFactory {
     
     protected Iterable<Map.Entry<String,String>> validate(org.w3c.dom.Node n)
         throws IOException {
-        return validator.validate(n);
+        if (validator != null)
+            return validator.validate(n);
+        else
+            return new LinkedList<Map.Entry<String,String>>();
     }
 
     protected PositionalXMLReader getXMLReader() throws SAXException {

@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 import javax.xml.validation.SchemaFactory;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 
 /**
@@ -22,18 +23,25 @@ public class XMLValidator {
 
     private List<Map.Entry<String,Validator>> schemas;
 
-    public XMLValidator(List<Map.Entry<String,Reader>> schemas) 
+    private SchemaFactory sf;
+
+    public XMLValidator() {
+        this.schemas = new LinkedList<Map.Entry<String,Validator>>();
+        this.sf = 
+            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    }
+
+    /**
+     * Add an XML Schema to validate against.
+     * @param filename The path to the XML Schema.
+     * @param schema   The input stream for this Schema.
+     */
+    public void addSchema (String filename, Reader schema)
         throws SAXException {
         
-        this.schemas = new LinkedList<Map.Entry<String,Validator>>();
-        SchemaFactory sf = 
-            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        for (Map.Entry<String,Reader> file : schemas)
-            this.schemas.add
-                (new AbstractMap.SimpleEntry
-                 (file.getKey(),
-                  sf.newSchema(new StreamSource(file.getValue()))
-                  .newValidator()));
+        schemas.add(new AbstractMap.SimpleEntry
+                    (filename, 
+                     sf.newSchema(new StreamSource(schema)).newValidator()));
     }
 
     /**
