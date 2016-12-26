@@ -12,8 +12,8 @@ Build with Ant with `ant compile` or with Maven with `mvn compile`.
 Use the provided `xpparser` script.  Typical examples: 
 
   ```shell
-  ./xpparser --xslt parser/applet.xsl parser/jjtree.xsl --validate xsd/*.xsd
-  ./xpparser --xml '//@value' tests/pathx1-tests.xml
+  ./xpparser --xslt sink/parser/*.xsl --validate xsd/*.xsd
+  ./xpparser --xml '//@value' sink/tests/pathx1-tests.xml
   echo '//foo/bar' | ./xpparser --xquery xqueryx2xquery.xsl
   ```
 
@@ -22,13 +22,14 @@ See `./xpparser -h` for command-line usage.
 
 # Licensing
 
-Some files are Copyright (c) 2016 ENS Cachan and licensed under GPL
-version 3.0 or later.
+Some files (in `src/main/java/fr/lsv/xpparser/`) are Copyright (c)
+2016 ENS Cachan and licensed under GPL version 3.0 or later.
 
-Most files are the XML sources for the XPath/XQuery family of
-grammars, the XSLT files for a transformation to a test parser for
-JavaCC/JJTree (https://javacc.dev.java.net/) parser generation.  They
-are licensed as:
+Most files (in `src/main/java/org/w3c/xqparser/` and `sink/`) are the
+XML sources for the XPath/XQuery family of grammars, the XSLT files
+for a transformation to a test parser for JavaCC/JJTree
+(https://javacc.dev.java.net/) parser generation.  They are licensed
+as:
 
 Copyright (c) 2005 W3C(r) (http://www.w3.org/) (MIT
 (http://www.lcs.mit.edu/), INRIA (http://www.inria.fr/), Keio
