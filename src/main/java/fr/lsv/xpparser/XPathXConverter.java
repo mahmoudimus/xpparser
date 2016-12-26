@@ -19,6 +19,7 @@ package fr.lsv.xpparser;
 import java.util.Stack;
 import javax.xml.XMLConstants;
 import org.w3c.dom.*;
+import org.w3c.xqparser.*;
 
 /**
  * Transforms an XPath AST into an XQueryX DOM tree.  In spite of its

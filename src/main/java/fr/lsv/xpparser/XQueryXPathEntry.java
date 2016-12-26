@@ -3,6 +3,8 @@ package fr.lsv.xpparser;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.XMLConstants;
+import org.w3c.xqparser.SimpleNode;
+import org.w3c.xqparser.XParserTreeConstants;
 
 public class XQueryXPathEntry extends XPathEntry {
     /**

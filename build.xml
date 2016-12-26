@@ -10,14 +10,15 @@ This buildfile is used to ...
   <property name="grammar-file" value="xpath-grammar.xml"/>
 
   <!--============= Build everything important ===============-->
-  <target name="all" depends="validate"
+  <target name="all" depends="compile"
     description="">
   </target>
 
   <presetdef name="java_compile">
     <javac debug="true" debuglevel="lines,vars,source"
            includeantruntime="false"/>
-  </presetdef>
+  </presetdef>    
+
   <target name="compile" description="Compile xpparser">
     <mkdir dir="target/classes/"/>
     <java_compile srcdir="src/main/java/" destdir="target/classes/"/>

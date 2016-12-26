@@ -4,6 +4,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.HashMap;
+import org.w3c.dom.Node;
+import org.w3c.xqparser.ParseException;
+import org.w3c.xqparser.XParser;
+import org.w3c.xqparser.SimpleNode;
 
 
 public class XMLXPathEntry extends XPathEntry {
@@ -29,7 +33,7 @@ public class XMLXPathEntry extends XPathEntry {
 
     public XMLXPathEntry(String filename,
                          SourceFactory sf,
-                         org.w3c.dom.Node domnode,
+                         Node domnode,
                          String entry) throws ParseException {
         super(filename, sf);
         this.domnode = domnode;

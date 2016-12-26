@@ -2,6 +2,7 @@ package fr.lsv.xpparser;
 
 import java.util.List;
 import java.util.LinkedList;
+import org.w3c.xqparser.*;
 
 /**
  * Finds XPath fragments inside an XQuery Parse tree.

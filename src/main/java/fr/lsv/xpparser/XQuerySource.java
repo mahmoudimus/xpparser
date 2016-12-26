@@ -3,6 +3,8 @@ package fr.lsv.xpparser;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.w3c.xqparser.SimpleNode;
+import org.w3c.xqparser.XParser;
 
 public class XQuerySource implements Iterable<XPathEntry> {
 

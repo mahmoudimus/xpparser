@@ -8,7 +8,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.xqparser.ParseException;
 import org.xml.sax.SAXException;
 
 public class XMLSource implements Iterable<XPathEntry> {
@@ -50,21 +52,21 @@ public class XMLSource implements Iterable<XPathEntry> {
                     throw new NoSuchElementException("");
                 
                 // the DOM node we are working on
-                org.w3c.dom.Node n = nodeList.item(counter++);
+                Node n = nodeList.item(counter++);
                 
                 // attempt to extract its XPath contents
                 String q;
                 switch (n.getNodeType()) {
-                case org.w3c.dom.Node.ATTRIBUTE_NODE:
+                case Node.ATTRIBUTE_NODE:
                     q = n.getNodeValue().trim();
                     n = ((Attr)n).getOwnerElement();
                     break;
-                case org.w3c.dom.Node.TEXT_NODE:
+                case Node.TEXT_NODE:
                     q = n.getNodeValue().trim();
                     n = n.getParentNode();
                     break;
                     
-                case org.w3c.dom.Node.ELEMENT_NODE:
+                case Node.ELEMENT_NODE:
                     q = n.getTextContent().trim();
                     break;
                     

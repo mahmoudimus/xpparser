@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 import javax.xml.validation.SchemaFactory;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 
@@ -50,7 +51,7 @@ public class XMLValidator {
      * either VALID or the error message.
      */
     public Iterable<Map.Entry<String,String>> 
-        validate (org.w3c.dom.Node node) throws IOException {
+        validate (Node node) throws IOException {
     
         DOMSource source = new DOMSource(node);
         LinkedList<Map.Entry<String,String>> ret = 

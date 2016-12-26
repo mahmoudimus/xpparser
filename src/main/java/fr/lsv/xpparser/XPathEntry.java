@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
 
@@ -18,7 +20,7 @@ public abstract class XPathEntry {
     
     private Document doc;
 
-    private org.w3c.dom.Node domnode;
+    private Node domnode;
 
     SourceFactory sf;
     

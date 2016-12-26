@@ -11,6 +11,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class SourceFactory {
@@ -23,7 +24,6 @@ public class SourceFactory {
 
     // stuff that is needed by all the sources
     private DocumentBuilder db;
-    private XPathXPrinter xpprinter;
 
     // stuff required by XML sources
     private String filter;
@@ -45,10 +45,6 @@ public class SourceFactory {
         dbf.setNamespaceAware(true);
         dbf.setXIncludeAware(true);
         db = dbf.newDocumentBuilder();
-
-        // Get an XPathX printer
-        XMLWriter xw = new XMLWriter();
-        xpprinter = new XPathXPrinter(xw);
     }
 
     public SourceFactory(String filter) throws ParserConfigurationException {
@@ -65,7 +61,7 @@ public class SourceFactory {
         this.xslt = x;
     }
     
-    protected Iterable<Map.Entry<String,String>> validate(org.w3c.dom.Node n) {
+    protected Iterable<Map.Entry<String,String>> validate(Node n) {
         if (validator != null)
             try {
                 return validator.validate(n);
@@ -75,7 +71,7 @@ public class SourceFactory {
         return new LinkedList<Map.Entry<String,String>>();
     }
 
-    protected String transform(org.w3c.dom.Node node) {
+    protected String transform(Node node) {
         if (xslt != null)
             try {
                 return xslt.transform(node);
@@ -97,11 +93,7 @@ public class SourceFactory {
     protected Document newDocument() {
         return db.newDocument();
     }
-    
-    protected XPathXPrinter getXPathPrinter() {
-        return xpprinter;
-    }
-    
+        
     protected XPath getXPathInterpreter() throws SAXException {
         if (xpinterpreter == null)  {
             xpinterpreter = XPathFactory.newInstance().newXPath();

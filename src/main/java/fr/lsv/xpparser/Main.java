@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+import org.w3c.xqparser.ParseException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 

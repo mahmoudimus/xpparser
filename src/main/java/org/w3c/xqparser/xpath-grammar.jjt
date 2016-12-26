@@ -7,7 +7,7 @@ options {
         NODE_SCOPE_HOOK=false;
         NODE_USES_PARSER=true;
         FORCE_LA_CHECK=true;
-        NODE_PACKAGE="fr.lsv.xpparser";
+        NODE_PACKAGE="org.w3c.qxparser";
         NODE_PREFIX="";
     
         }
@@ -15,10 +15,10 @@ options {
         
         PARSER_BEGIN(XParser)
 
-        package fr.lsv.xpparser;
+        package org.w3c.qxparser;
 
-import fr.lsv.xpparser.Node;
-import fr.lsv.xpparser.SimpleNode;
+import org.w3c.qxparser.Node;
+import org.w3c.qxparser.SimpleNode;
 
         import java.util.Stack;
 

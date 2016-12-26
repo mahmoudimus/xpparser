@@ -13,7 +13,7 @@ and software licensing rules
 (http://www.w3.org/Consortium/Legal/copyright-software-19980720)
 apply.
 */
-package fr.lsv.xpparser;
+package org.w3c.xqparser;
 
 // ONLY EDIT THIS FILE IN THE GRAMMAR ROOT DIRECTORY!
 // THE ONE IN THE ${spec}-src DIRECTORY IS A COPY!!!
@@ -22,7 +22,7 @@ public class SimpleNode implements Node {
 
     protected Node[] children;
 
-    protected int id;
+    public int id;
 
     protected XParser parser;
     
@@ -162,7 +162,7 @@ public class SimpleNode implements Node {
 	return (SimpleNode)parent;
     }
 
-    protected String m_value;
+    public String m_value;
 
     public void processToken(Token t) {
         m_value = t.image;

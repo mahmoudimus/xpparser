@@ -13,6 +13,7 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.Result;
+import org.w3c.dom.Node;
 
 /**
  * Utility class for applying XSLT transformations and printing DOM nodes.
@@ -48,7 +49,7 @@ public class XMLPrinter {
              .newTransformer(new StreamSource(stylestream)));
     }
 
-    protected void transform(org.w3c.dom.Node node, Result result)
+    protected void transform(Node node, Result result)
         throws TransformerException {
 
         DOMSource source = new DOMSource(node);
@@ -60,7 +61,7 @@ public class XMLPrinter {
      * @param node The node to print.
      * @return The string output
      */
-    public String transform(org.w3c.dom.Node node)
+    public String transform(Node node)
         throws TransformerException {
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
@@ -73,7 +74,7 @@ public class XMLPrinter {
      * @param node The node to print.
      * @param os The output stream where the result should be printed.
      */
-    public void transform(org.w3c.dom.Node node, OutputStream os)
+    public void transform(Node node, OutputStream os)
         throws TransformerException {
 
         StreamResult result = new StreamResult(os);
