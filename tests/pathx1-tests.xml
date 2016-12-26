@@ -49,6 +49,7 @@
 		<test value="(preceding-sibling::foo)[1]/@att1"/>
 		<test value="(preceding::foo)[1]/@att1"/>
 		<test value="(section//@title)[7]"/>
+		<test value="//namespace::*"/>
 		<test value="(xalan:nodeset($rtf)/default:docelem/test:elem3)"/>
 		<test value="* +3"/>
 		<test value="*//la | //Bflat | re"/>

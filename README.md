@@ -9,7 +9,15 @@ Build with Ant with `ant compile` or with Maven with `mvn compile`.
 
 # Running
 
-Use the provided `xpparser` script; see `./xpparser -h` for command-line usage.
+Use the provided `xpparser` script.  Typical examples: 
+
+  ```shell
+  ./xpparser --xslt parser/applet.xsl parser/jjtree.xsl --validate xsd/*.xsd
+  ./xpparser --xml '//@value' tests/pathx1-tests.xml
+  echo '//foo/bar' | ./xpparser
+  ```
+
+See `./xpparser -h` for command-line usage. 
 
 
 # Licensing

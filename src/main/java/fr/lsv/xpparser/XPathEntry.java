@@ -94,7 +94,16 @@ public abstract class XPathEntry {
                     (XMLConstants.DEFAULT_NS_PREFIX,
                      "schema",
                      Paths.get(result.getKey()).getFileName().toString());
-                val.appendChild(doc.createTextNode(result.getValue()));
+                if (result.getValue().equals(XMLValidator.VALID))
+                    val.setAttributeNS
+                        (XMLConstants.DEFAULT_NS_PREFIX,
+                         "valid", "yes");
+                else {
+                    val.setAttributeNS
+                        (XMLConstants.DEFAULT_NS_PREFIX,
+                         "valid", "no");
+                    val.appendChild(doc.createTextNode(result.getValue()));
+                }
                 xpath.appendChild(val);
             }
         }
