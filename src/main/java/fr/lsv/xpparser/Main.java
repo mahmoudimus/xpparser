@@ -29,7 +29,7 @@ public class Main {
         String filter = null;
         
         //--------------------------------------------- process options
-        int i = 0;
+        int i = 0; int end = args.length;
         if (i < args.length) {
             if (args[0].equals("-h") || args[0].equals("--help")) {
                 help = true;
@@ -55,38 +55,46 @@ public class Main {
                 else
                     legit = false;
             }
+            end = i;
+            while (end < args.length && !args[end].equals("--validate"))
+                end++;
         }
         
         //--------------------------------- display command-line syntax
         if (!legit || help) {
             System.out.println
-                ("Usage: "+ progname +"[OPTION] [FILE]...");
+                ("Usage: "+ progname +" [OPTION] [FILE]... [--validate SCHEMA...]");
             System.out.println
                 ("Extract and parse XPath expressions, then print them in XQueryX format");
             System.out.println("on standard output.\n");
             System.out.println
-                ("      --xml PATTERN  parse input files as XML documents, and extract");
+                ("      --xml PATTERN         parse input files as XML documents, and extract");
             System.out.println
-                ("                     contents using the provided XPath 1.0 PATTERN");
+                ("                            contents using the provided XPath 1.0 PATTERN");
             System.out.println
-                ("      --xquery       parse input files as XQuery documents");
+                ("      --xquery              parse input files as XQuery documents");
             System.out.println
-                ("      --xslt         parse input files as XSLT documents; equivalent");
+                ("      --xslt                parse input files as XSLT documents; equivalent");
             System.out.println
-                ("                     to --xml '//@match | //@select | //@test'");
+                ("                            to --xml '//@match | //@select | //@test'");
             System.out.println
-                ("  -h, --help         display this help and exit");
+                ("  -h, --help                display this help and exit");
             System.out.println("");
             System.out.println
                 ("With no OPTION, behaves as if --xquery was provided.  With no FILE, read");
             System.out.println("from standard input.");
+            System.out.println("");
+            System.out.println
+                ("      --validate SCHEMA...  validate output XQueryX against all the");
+            System.out.println
+                ("                            provided XML Schemas");
 
             System.exit(legit? 1: 0);
         }
         //----------------------------------------------- process input
         try {
             // the list of input streams
-            List<Map.Entry<String,Reader>> streams
+            List<Map.Entry<String,Reader>> sources
                 = new LinkedList<Map.Entry<String,Reader>>();
             // the SourceFactory            
             final SourceFactory sf;
@@ -94,67 +102,49 @@ public class Main {
                 sf = new SourceFactory(filter);
             else //if (xquery)
                 sf = new SourceFactory();
-            
-            if (i == args.length) {
-                // we are processing the standard input
-                streams.add(new AbstractMap.SimpleEntry
+
+            // prepare input sources
+            if (i == end) {
+                sources.add(new AbstractMap.SimpleEntry
                             ("stdin",
                              new BufferedReader
                              (new InputStreamReader(System.in))));
             }
             else
-                for (int j = i; j < args.length; j++) {
-                    Path path = Paths.get(args[j]);
-                    /* should we use MIME/types? */
-                    //System.out.println(path.toString()+":
-                    //"+Files.probeContentType(path));
-                    try {
-                        if (Files.isDirectory(path))
-                            throw new NotDirectoryException
-                                (path.toString());
-
-                        /* what to do with other charsets???? */
-                        BufferedReader br = Files.newBufferedReader
-                            (path, Charset.defaultCharset());
-                        streams.add(new AbstractMap.SimpleEntry
-                                    (path.toString(), br));
-                    } catch (NoSuchFileException e) {
-                        System.err.println
-                            (progname +": "+ e.getMessage()
-                             +": No such file");
-                    } catch (AccessDeniedException e) {
-                        System.err.println
-                            (progname +": "+ e.getMessage() 
-                             +": Permission denied");
-                    } catch (NotDirectoryException e) {
-                        System.err.println
-                            (progname +": "+ e.getMessage() 
-                             +": Is a directory");
-                    }
-                    
-                }
+                for (int j = i; j < end; j++)
+                    addInput(args[j], sources);                    
+            // prepare validation schemas
+            List<Map.Entry<String,Reader>> schemas
+                = new LinkedList<Map.Entry<String,Reader>>();
+            for (int j = end + 1; j < args.length; j++)
+                addInput(args[j], schemas);
+            XMLValidator validator = new XMLValidator(schemas);
 
             // print XML
             System.out.println("<?xml version=\"1.0\"?>");
             System.out.println("<benchmark>");
 
             // process sources
-            for (Map.Entry<String,Reader> stream : streams)
+            for (Map.Entry<String,Reader> source : sources)
                 try {
-                    for (XPathEntry entry : sf.getSource(stream))
-                            entry.print();
+                    for (XPathEntry entry : sf.getSource(source)) {
+                        entry.print();
+                        for (Map.Entry<String,String> result 
+                                 : validator.validate(entry.getDOMNode()))
+                            System.out.println("  validation against "+ result.getKey() +": "+result.getValue());
+                    }
                     
                 //------------------------------------- error handling
                 } catch (ParseException e) {
                     // error parsing an XQuery file
                     System.err.println
-                        (progname +": "+ stream.getKey()
+                        (progname +": "+ source.getKey()
                          +": could not parse as XQuery:");
                     System.err.println(e.getMessage());
                 } catch (SAXParseException e) {
                     // error parsing an XML file
                     System.err.println
-                        (progname +": "+ stream.getKey() 
+                        (progname +": "+ source.getKey() 
                          +":could not parse as XML:");
                     System.err.println(e.getMessage());
                 } catch (NoSuchElementException e) {
@@ -187,7 +177,45 @@ public class Main {
     }
 
     /**
-     * Print stack trace and abort.
+     * Add a pair comprising a file name and a reader to the provided
+     * list.
+     * @param filename The path to the file to open.
+     * @param list     The list where to add the result.
+     */
+    private static void addInput(String filename,
+                                 List<Map.Entry<String,Reader>> list)
+        throws IOException {
+
+        Path path = Paths.get(filename);
+        /* should we use MIME/types? */
+        //System.out.println(path.toString()+":
+        //"+Files.probeContentType(path));
+        try {
+            if (Files.isDirectory(path))
+                throw new NotDirectoryException(path.toString());
+
+            /* what to do with other charsets???? */
+            BufferedReader br = Files.newBufferedReader
+                (path, Charset.defaultCharset());
+            list.add(new AbstractMap.SimpleEntry
+                        (path.toString(), br));
+        } catch (NoSuchFileException e) {
+            System.err.println
+                (progname +": "+ e.getMessage()
+                 +": No such file");
+        } catch (AccessDeniedException e) {
+            System.err.println
+                (progname +": "+ e.getMessage() 
+                 +": Permission denied");
+        } catch (NotDirectoryException e) {
+            System.err.println
+                (progname +": "+ e.getMessage() 
+                 +": Is a directory");
+        }
+    }
+
+
+    /** * Print stack trace and abort.
      * @param e The fatal error.
      */
     private static void abort(Exception e) {

@@ -5,7 +5,7 @@
             elementFormDefault="qualified" attributeFormDefault="qualified">
 
 
-<!-- A few helper declarations                                             -->
+  <!-- A few helper declarations                                             -->
   <xsd:complexType name="emptyContent"/>
 
   <xsd:element name="NCName" type="xsd:NCName"/>
@@ -27,21 +27,21 @@
     </xsd:simpleContent>
   </xsd:complexType>
 
-<!-- The base expression class                                             -->
+  <!-- The base expression class                                             -->
   <xsd:complexType name="expr"/>
 
   <xsd:element name="expr" type="expr" abstract="true"/>
 
 
-<!-- A list of expressions                                                 -->
+  <!-- A list of expressions                                                 -->
   <xsd:complexType name="exprList">
     <xsd:sequence>
       <xsd:element ref="expr" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 
-<!-- A list of expressions or placeholders                                 -->
-<!-- 2010-06-23 - Added support for partial function application           -->
+  <!-- A list of expressions or placeholders                                 -->
+  <!-- 2010-06-23 - Added support for partial function application           -->
   <xsd:complexType name="exprOrPlaceholderList">
     <xsd:sequence>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
@@ -51,30 +51,30 @@
     </xsd:sequence>
   </xsd:complexType>
 
-<!-- A type to be used by elements that comprise an optional expr          -->
+  <!-- A type to be used by elements that comprise an optional expr          -->
   <xsd:complexType name="exprWrapperOptional">
     <xsd:sequence>
       <xsd:element ref="expr" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
 
-<!-- Simple wrapper class                                                  -->
+  <!-- Simple wrapper class                                                  -->
   <xsd:complexType name="exprWrapper">
     <xsd:sequence>
       <xsd:element ref="expr"/>
     </xsd:sequence>
   </xsd:complexType>
 
-<!-- A list of literals                                                    -->
-<!-- 2013-03-17 = Added new support for a list of literals, e.g.,          -->
-<!-- in annotations                                                        -->
+  <!-- A list of literals                                                    -->
+  <!-- 2013-03-17 = Added new support for a list of literals, e.g.,          -->
+  <!-- in annotations                                                        -->
   <xsd:complexType name="literalList">
     <xsd:sequence>
       <xsd:element ref="constantExpr" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 
-<!-- constant expressions. We have 4 different subclasses for this         -->
+  <!-- constant expressions. We have 4 different subclasses for this         -->
   <xsd:complexType name="constantExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -145,7 +145,7 @@
                substitutionGroup="constantExpr"/>
 
 
-<!-- Variables                                                             -->
+  <!-- Variables                                                             -->
   <xsd:complexType name="varRef">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -159,8 +159,8 @@
   <xsd:element name="varRef" type="varRef" substitutionGroup="expr"/>
 
 
-<!-- root and context-item expressions                                     -->
-<!-- rootExpr deleted per Bugzilla Bug #2523                               -->
+  <!-- root and context-item expressions                                     -->
+  <!-- rootExpr deleted per Bugzilla Bug #2523                               -->
   <xsd:complexType name="contextItemExpr">
     <xsd:complexContent>
       <xsd:extension base="expr"/>
@@ -171,9 +171,11 @@
                substitutionGroup="expr"/>
 
 
-<!-- Simple map expressions                                                -->
-<!-- 2012-06-15 - Changed precedence and precise grammar for simple map operator        -->
-<!-- 2013-09-27 - Changed definition of simpleMapExpr to allow multiple path expressions-->
+  <!-- Simple map expressions                                                -->
+  <!-- 2012-06-15 - Changed precedence and precise grammar for simple map    -->
+  <!--              operator                                                 -->
+  <!-- 2013-09-27 - Changed definition of simpleMapExpr to allow multiple    -->
+  <!--              path expressions                                         -->
   <xsd:complexType name="simpleMapExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -188,14 +190,15 @@
                substitutionGroup="expr"/>
 
 
-<!-- Function call expressions                                                          -->
-<!-- 2010-06-23 - Added support for partial function application                        -->
+  <!-- Function call expressions                                             -->
+  <!-- 2010-06-23 - Added support for partial function application           -->
   <xsd:complexType name="functionCallExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
           <xsd:element name="functionName" type="EQName"/>
-          <xsd:element name="arguments" type="exprOrPlaceholderList" minOccurs="0"/>
+          <xsd:element name="arguments" type="exprOrPlaceholderList"
+                       minOccurs="0"/>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -205,7 +208,7 @@
                substitutionGroup="expr"/>
 
 
-<!-- Sequence expressions                                                               -->
+  <!-- Sequence expressions                                                  -->
   <xsd:complexType name="sequenceExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -234,7 +237,7 @@
                substitutionGroup="expr"/>
 
 
-<!-- Builtin operator expressions                                                       -->
+  <!-- Builtin operator expressions                                          -->
   <xsd:complexType name="operatorExpr">
     <xsd:complexContent>
       <xsd:extension base="expr"/>
@@ -265,11 +268,11 @@
   </xsd:complexType>
 
 
-<!-- General operator expressions -->
+  <!-- General operator expressions -->
   <xsd:element name="operatorExpr" type="operatorExpr"
                abstract="true" substitutionGroup="expr"/>
 
-<!-- Arithmetic operator expressions -->
+  <!-- Arithmetic operator expressions -->
   <xsd:element name="arithmeticOp" type="operatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
@@ -297,18 +300,18 @@
   <xsd:element name="unaryPlusOp" type="unaryOperatorExpr"
                substitutionGroup="arithmeticOp"/>
 
-<!-- String operator expressions -->
+  <!-- String operator expressions -->
   <xsd:element name="stringOp" type="operatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
   <xsd:element name="stringConcatenateOp" type="binaryOperatorExpr"
                substitutionGroup="stringOp"/>
 
-<!-- Comparison operator expressions -->
+  <!-- Comparison operator expressions -->
   <xsd:element name="comparisonOp" type="binaryOperatorExpr" abstract="true"
                substitutionGroup="operatorExpr"/>
 
-<!-- Value comparison operator expressions -->
+  <!-- Value comparison operator expressions -->
   <xsd:element name="valueComparisonOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
@@ -330,9 +333,9 @@
   <xsd:element name="leOp" type="binaryOperatorExpr"
                substitutionGroup="valueComparisonOp"/>
 
-<!-- General comparison operator expressions -->
-  <xsd:element name="generalComparisonOp" type="binaryOperatorExpr" abstract="true"
-               substitutionGroup="operatorExpr"/>
+  <!-- General comparison operator expressions -->
+  <xsd:element name="generalComparisonOp" type="binaryOperatorExpr"
+               abstract="true" substitutionGroup="operatorExpr"/>
 
   <xsd:element name="equalOp" type="binaryOperatorExpr"
                substitutionGroup="generalComparisonOp"/>
@@ -352,14 +355,14 @@
   <xsd:element name="greaterThanOrEqualOp" type="binaryOperatorExpr"
                substitutionGroup="generalComparisonOp"/>
 
-<!-- Node comparison operator expressions -->
+  <!-- Node comparison operator expressions -->
   <xsd:element name="nodeComparisonOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
   <xsd:element name="isOp" type="binaryOperatorExpr"
                substitutionGroup="nodeComparisonOp"/>
 
-<!-- Order comparison operator expressions -->
+  <!-- Order comparison operator expressions -->
   <xsd:element name="orderComparisonOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
@@ -369,7 +372,7 @@
   <xsd:element name="nodeAfterOp" type="binaryOperatorExpr"
                substitutionGroup="orderComparisonOp"/>
 
-<!-- Logical operator expressions -->
+  <!-- Logical operator expressions -->
   <xsd:element name="logicalOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
 
@@ -392,13 +395,14 @@
                substitutionGroup="setOp"/>
 
 
-<!-- Basic typenames                                                                    -->
-<!-- By changing the type attribute from QName to EQName, this is now atomicOrUnionType -->
-<!--   However, for backwards compatibility w/XQueryX 1.0, the name had to stay the same-->
+  <!-- Basic typenames                                                       -->
+  <!-- By changing the type attribute from QName to EQName, this is now      -->
+  <!-- atomicOrUnionType.  However, for backwards compatibility w/XQueryX    -->
+  <!-- 1.0, the name had to stay the same                                    -->
   <xsd:element name="atomicType" type="EQName" substitutionGroup="itemType"/>
 
 
-<!-- Used in castable expression and cast expression                                    -->
+  <!-- Used in castable expression and cast expression                       -->
   <xsd:complexType name="singleType">
     <xsd:sequence>
       <xsd:element ref="atomicType"/>
@@ -409,7 +413,7 @@
   <xsd:element name="singleType" type="singleType"/>
 
 
-<!-- Item type schema types and elements                                                -->
+  <!-- Item type schema types and elements                                   -->
   <xsd:element name="itemType" abstract="true"/>
 
   <xsd:complexType name="emptyItemTypeContent"/>
@@ -427,7 +431,7 @@
   </xsd:simpleType>
 
 
-<!-- Sequence type                                                                      -->
+  <!-- Sequence type                                                         -->
   <xsd:complexType name="sequenceType">
     <xsd:choice>
       <xsd:element name="voidSequenceType" type="emptyContent"/>
@@ -444,7 +448,7 @@
   <xsd:element name="typeDeclaration" type="sequenceType"/>
 
 
-<!-- Represents a "typed" variable (for clause, let clause etc)                         -->
+  <!-- Represents a "typed" variable (for clause, let clause etc)            -->
   <xsd:complexType name="typedVariableBinding">
     <xsd:sequence>
       <xsd:element name="varName" type="EQName"/>
@@ -455,13 +459,13 @@
   <xsd:element name="typedVariableBinding" type="typedVariableBinding"/>
 
 
-<!-- Represents all variable bindings in a for or let clause except typed and           -->
-<!--   positional variable bindings                                                     -->
+  <!-- Represents all variable bindings in a for or let clause except typed  -->
+  <!-- and positional variable bindings                                      -->
   <xsd:element name="forLetClauseItemExtensions" abstract="true"/>
 
 
-<!-- Major syntax productions: FLWOR clause components                                  -->
-<!-- for clause                                                                         -->
+  <!-- Major syntax productions: FLWOR clause components                     -->
+  <!-- for clause                                                            -->
   <xsd:complexType name="forClauseItem">
     <xsd:sequence>
       <xsd:element ref="typedVariableBinding"/>
@@ -481,7 +485,7 @@
   <xsd:element name="forClause" type="forClause"/>
 
 
-<!-- let clause                                                                         -->
+  <!-- let clause                                                            -->
   <xsd:complexType name="letClauseItem">
     <xsd:sequence>
       <xsd:element ref="typedVariableBinding"/>
@@ -501,16 +505,16 @@
   <xsd:element name="letClause" type="letClause"/>
 
 
-<!-- return clause                                                                      -->
+  <!-- return clause                                                         -->
   <xsd:element name="returnClause" type="exprWrapper"/>
 
 
-<!-- This is the XQuery 3.0 flwor expression                                            -->
-<!-- Corresponds to the following XQuery syntax:                                        -->
-<!-- 1.1 FLWORExpr ::= (ForClause | LetClause | WindowClause)                           -->
-<!--                   (ForClause | LetClause | WindowClause | CountClause |            -->
-<!--                    WhereClause | GroupByClause | OrderByClause)*                   -->
-<!--                   ReturnClause                                                     -->
+  <!-- This is the XQuery 3.0 flwor expression                               -->
+  <!-- Corresponds to the following XQuery syntax:                           -->
+  <!-- 1.1 FLWORExpr ::= (ForClause | LetClause | WindowClause)              -->
+  <!--                   (ForClause | LetClause | WindowClause | CountClause -->
+  <!--                   | WhereClause | GroupByClause | OrderByClause)*     -->
+  <!--                   ReturnClause                                        -->
   <xsd:complexType name="flworExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -532,7 +536,7 @@
   <xsd:element name="flworExpr" type="flworExpr" substitutionGroup="expr"/>
 
 
-<!-- conditional expressions                                                            -->
+  <!-- conditional expressions                                               -->
   <xsd:complexType name="ifThenElseExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -549,7 +553,7 @@
                substitutionGroup="expr"/>
 
 
-<!-- The following clauses describe quantified expressions                              -->
+  <!-- The following clauses describe quantified expressions                 -->
   <xsd:simpleType name="quantifier">
     <xsd:restriction base="xsd:NMTOKEN">
       <xsd:enumeration value="some"/>
@@ -583,7 +587,7 @@
   <xsd:element name="quantifiedExpr" type="quantifiedExpr"
                substitutionGroup="expr"/>
 
-<!-- instance-of expressions                                                            -->
+  <!-- instance-of expressions                                                -->
   <xsd:complexType name="instanceOfExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -599,7 +603,7 @@
                substitutionGroup="expr"/>
 
 
-<!-- treat-as expressions                                                               -->
+  <!-- treat-as expressions                                                               -->
   <xsd:complexType name="treatExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -615,7 +619,7 @@
                substitutionGroup="expr"/>
 
 
-<!-- castable and cast expressions                                                      -->
+  <!-- castable and cast expressions                                                      -->
   <xsd:complexType name="castableExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -645,10 +649,10 @@
   <xsd:element name="castExpr" type="castExpr"
                substitutionGroup="expr"/>
 
-<!-- function item expressions                                                          -->
-<!-- literal function item expression                                                   -->
-<!-- 2010-04-06: Jim changed child element QName to be functionName for consistency     -->
-<!-- 2011-11-21: Jim changed "literalFunctionItemExpr" to "namedFunctionRef"            -->
+  <!-- function item expressions                                                          -->
+  <!-- literal function item expression                                                   -->
+  <!-- 2010-04-06: Jim changed child element QName to be functionName for consistency     -->
+  <!-- 2011-11-21: Jim changed "literalFunctionItemExpr" to "namedFunctionRef"            -->
   <xsd:complexType name="namedFunctionRef">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -663,15 +667,13 @@
   <xsd:element name="namedFunctionRef" type="namedFunctionRef" substitutionGroup="expr"/>
 
 
-<!-- inline function item expression                                                    -->
-<!-- 2011-09-09/JM - Added annotations to inline functions                              -->
-<!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"           -->
+  <!-- inline function item expression                                                    -->
+  <!-- 2011-09-09/JM - Added annotations to inline functions                              -->
+  <!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"           -->
   <xsd:complexType name="inlineFunctionExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
-          <xsd:element name="annotation" type="annotation"
-                       minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="paramList"/>
           <xsd:element ref="typeDeclaration" minOccurs="0"/>
           <xsd:element name="functionBody" type="exprWrapper"/>
@@ -683,8 +685,8 @@
   <xsd:element name="inlineFunctionExpr" type="inlineFunctionExpr" substitutionGroup="expr"/>
 
 
-<!-- dynamic function invocations                                                       -->
-<!-- 2010-06-23 - Added support for partial function application                        -->
+  <!-- dynamic function invocations                                                       -->
+  <!-- 2010-06-23 - Added support for partial function application                        -->
   <xsd:complexType name="dynamicFunctionInvocationExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
@@ -706,7 +708,7 @@
   <xsd:element name="dynamicFunctionInvocationExpr" type="dynamicFunctionInvocationExpr" substitutionGroup="expr"/>
 
 
-<!-- wildcards                                                                          -->
+  <!-- wildcards                                                                          -->
   <xsd:complexType name="simpleWildcard">
     <xsd:choice>
       <xsd:element name="QName" type="EQName"/>
@@ -714,12 +716,12 @@
     </xsd:choice>
   </xsd:complexType>
 
-<!-- 2011-06-10: Redesigned to allow "URliteral:*"                                                  -->
-<!-- Corresponds to the following XQuery syntax:                                                    -->
-<!--   [44] Wildcard ::= "*"                                                                        -->
-<!--                  | (NCName ":" "*")                                                            -->
-<!--                  | ("*" ":" NCName)                                                            -->
-<!--                  | (URILiteral ":" "*")                                                        -->
+  <!-- 2011-06-10: Redesigned to allow "URliteral:*"                                                  -->
+  <!-- Corresponds to the following XQuery syntax:                                                    -->
+  <!--   [44] Wildcard ::= "*"                                                                        -->
+  <!--                  | (NCName ":" "*")                                                            -->
+  <!--                  | ("*" ":" NCName)                                                            -->
+  <!--                  | (URILiteral ":" "*")                                                        -->
 
   <xsd:complexType name="Wildcard">
     <xsd:choice minOccurs="0">
@@ -741,7 +743,7 @@
   <xsd:element name="Wildcard" type="Wildcard"/>
 
 
-<!-- tests (name and/or type)                                                           -->
+  <!-- tests (name and/or type)                                                           -->
   <xsd:element name="schemaAttributeTest" type="EQName"
                substitutionGroup="kindTest"/>
 
@@ -832,27 +834,13 @@
 
 
 <!-- functionTest variations -->
-<!-- 2012-09-07: Jim added annotation support -->
-  <xsd:complexType name="anyFunctionTest">
-    <xsd:complexContent>
-      <xsd:extension base="emptyItemTypeContent">
-        <xsd:sequence>
-          <xsd:element name="annotation" type="annotation"
-                       minOccurs="0" maxOccurs="unbounded"/>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <xsd:element name="anyFunctionTest" type="anyFunctionTest" substitutionGroup="itemType"/>
+  <xsd:element name="anyFunctionTest" type="emptyItemTypeContent" substitutionGroup="itemType"/>
 
 <!-- 2012-09-07: Jim added annotation support -->
   <xsd:complexType name="typedFunctionTest">
     <xsd:complexContent>
       <xsd:extension base="emptyItemTypeContent">
         <xsd:sequence>
-          <xsd:element name="annotation" type="annotation"
-                       minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element ref="paramTypeList" minOccurs="0"/>
           <xsd:element ref="sequenceType"/>
         </xsd:sequence>
@@ -882,10 +870,11 @@
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:element name="parenthesizedItemType" type="parenthesizedItemType" substitutionGroup="itemType"/>
+  <xsd:element name="parenthesizedItemType" type="parenthesizedItemType"
+               substitutionGroup="itemType"/>
 
 
-<!-- XPath axes                                                                         -->
+<!-- XPath axes                                                              -->
   <xsd:simpleType name="xpathAxis">
     <xsd:restriction base="xsd:NMTOKEN">
       <xsd:enumeration value="child"/>
@@ -907,11 +896,11 @@
   <xsd:element name="xpathAxis" type="xpathAxis"/>
 
 
-<!-- filter expressions                                                                 -->
-<!-- added literalFunctionItemExpr, inlineFunctionItemExpr, and                         -->
-<!--   dynamicFunctionInvocation for higher-order functions                             -->
-<!-- 2011-11-21: Jim changed "literalFunctionItemExpr" to "namedFunctionRef"            -->
-<!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"           -->
+<!-- filter expressions                                                      -->
+<!-- added literalFunctionItemExpr, inlineFunctionItemExpr, and              -->
+<!--   dynamicFunctionInvocation for higher-order functions                  -->
+<!-- 2011-11-21: Jim changed "literalFunctionItemExpr" to "namedFunctionRef" -->
+<!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"-->
   <xsd:group name="filterExpr">
     <xsd:choice>
       <xsd:element ref="constantExpr"/>
@@ -981,7 +970,7 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:element name="module" type="module">
+  <xsd:element name="module" type="module"/>
 
   <xsd:complexType name="mainModule">
     <xsd:sequence>
@@ -992,7 +981,8 @@
   <xsd:element name="mainModule" type="mainModule"/>
   <xsd:element name="queryBody" type="exprWrapper"/>
 
-<!-- there is a phrase with diff of chg after sequence and endphrase before typedeclaration -->
+<!-- there is a phrase with diff of chg after sequence and endphrase        -->
+<!--  before typedeclaration                                                -->
   <xsd:complexType name="param">
     <xsd:sequence>
       <xsd:element name="varName" type="EQName"/>
@@ -1010,6 +1000,5 @@
   </xsd:complexType>
 
   <xsd:element name="paramList" type="paramList"/>
-
 
 </xsd:schema>
