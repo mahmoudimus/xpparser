@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class SourceFactory {
@@ -55,6 +56,10 @@ public class SourceFactory {
         if (xmlreader == null)
             xmlreader = new PositionalXMLReader(db);
         return xmlreader;
+    }
+
+    protected Document newDocument() {
+        return db.newDocument();
     }
     
     protected XPathXPrinter getXPathPrinter() {

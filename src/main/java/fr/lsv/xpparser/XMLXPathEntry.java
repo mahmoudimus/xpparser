@@ -45,7 +45,7 @@ public class XMLXPathEntry extends XPathEntry {
             (PositionalXMLReader.NAMESPACES_KEY_NAME);
         this.namespaces = new HashMap<String,String>();
         String[] split = s.substring(1,s.length() - 1).split("=|, ");
-        for (int i = 0; i < split.length; i += 2)
+        for (int i = 0; i < split.length - 1; i += 2)
             this.namespaces.put(split[i], split[i+1]);
     }
 
