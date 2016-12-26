@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.*;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -28,6 +29,7 @@ public class Main {
         boolean xml = false;
         boolean help = false;
         String filter = null;
+        String fileXSLT = null;
         
         //--------------------------------------------- process options
         int i = 0; int end = args.length;
@@ -38,6 +40,12 @@ public class Main {
             }
             else if (args[0].equals("--xquery")) {
                 i++;
+                if (i < args.length) {
+                    fileXSLT = args[i];
+                    i++;
+                }
+                else
+                    legit = false;
             }
             else if (args[0].equals("--xslt")) {
                 xml = true;
@@ -73,7 +81,9 @@ public class Main {
             System.out.println
                 ("                            contents using the provided XPath 1.0 PATTERN");
             System.out.println
-                ("      --xquery              parse input files as XQuery documents");
+                ("      --xquery STYLESHEET   parse input files as XQuery documents and");
+            System.out.println
+                ("                            and apply STYLESHEET.");
             System.out.println
                 ("      --xslt                parse input files as XSLT documents; equivalent");
             System.out.println
@@ -82,8 +92,7 @@ public class Main {
                 ("  -h, --help                display this help and exit");
             System.out.println("");
             System.out.println
-                ("With no OPTION, behaves as if --xquery was provided.  With no FILE, read");
-            System.out.println("from standard input.");
+                ("With no OPTION, expects XQuery input.  With no FILE, read from standard input.");
             System.out.println("");
             System.out.println
                 ("      --validate SCHEMA...  validate output XQueryX against all the");
@@ -113,7 +122,8 @@ public class Main {
             }
             else
                 for (int j = i; j < end; j++)
-                    addInput(args[j], sources);                    
+                    addInput(args[j], sources);
+
             // process validation schemas
             List<Map.Entry<String,Reader>> schemas
                 = new LinkedList<Map.Entry<String,Reader>>();
@@ -129,6 +139,21 @@ public class Main {
                     System.err.println(e.getMessage());
                 }
             sf.setValidator(validator);
+
+            // process XSLT stylesheet
+            if (fileXSLT != null) {
+                Reader xslt = getInput(fileXSLT);
+                try {
+                    XMLPrinter transformer = new XMLPrinter(xslt);
+                    sf.setTransformer(transformer);
+                } catch (TransformerConfigurationException e) {
+                    // error parsing an XSLT file
+                    System.err.println
+                        (progname +": "+ fileXSLT
+                         +": could not parse XSLT stylesheet:");
+                    System.err.println(e.getMessage());
+                }
+            }
 
             // print XML
             System.out.println("<?xml version=\"1.0\"?>");
@@ -189,11 +214,11 @@ public class Main {
      * @param filename The path to the file to open.
      * @param list     The list where to add the result.
      */
-    private static void addInput(String filename,
-                                 List<Map.Entry<String,Reader>> list)
+    private static BufferedReader getInput(String filename)
         throws IOException {
-
+        
         Path path = Paths.get(filename);
+        BufferedReader br = null;
         /* should we use MIME/types? */
         //System.out.println(path.toString()+":
         //"+Files.probeContentType(path));
@@ -202,10 +227,8 @@ public class Main {
                 throw new NotDirectoryException(path.toString());
 
             /* what to do with other charsets???? */
-            BufferedReader br = Files.newBufferedReader
+            br = Files.newBufferedReader
                 (path, Charset.defaultCharset());
-            list.add(new AbstractMap.SimpleEntry
-                        (path.toString(), br));
         } catch (NoSuchFileException e) {
             System.err.println
                 (progname +": "+ e.getMessage()
@@ -219,6 +242,24 @@ public class Main {
                 (progname +": "+ e.getMessage() 
                  +": Is a directory");
         }
+        return br;
+    }
+        
+
+    /**
+     * Add a pair comprising a file name and a reader to the provided
+     * list.
+     * @param filename The path to the file to open.
+     * @param list     The list where to add the result.
+     */
+    private static void addInput(String filename,
+                                 List<Map.Entry<String,Reader>> list)
+        throws IOException {
+
+        BufferedReader br = getInput(filename);
+        if (br != null)
+            list.add(new AbstractMap.SimpleEntry
+                        (filename, br));
     }
 
 

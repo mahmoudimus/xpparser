@@ -14,7 +14,7 @@ Use the provided `xpparser` script.  Typical examples:
   ```shell
   ./xpparser --xslt parser/applet.xsl parser/jjtree.xsl --validate xsd/*.xsd
   ./xpparser --xml '//@value' tests/pathx1-tests.xml
-  echo '//foo/bar' | ./xpparser
+  echo '//foo/bar' | ./xpparser --xquery xqueryx2xquery.xsl
   ```
 
 See `./xpparser -h` for command-line usage. 

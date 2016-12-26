@@ -3,6 +3,7 @@ package fr.lsv.xpparser;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
 import javax.xml.transform.*;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -57,14 +58,14 @@ public class XMLPrinter {
     /**
      * Output the result in a DOM node.
      * @param node The node to print.
-     * @param resultnode The node where the result should be printed.
+     * @return The string output
      */
-    public void transform(org.w3c.dom.Node node,
-                          org.w3c.dom.Node resultnode)
+    public String transform(org.w3c.dom.Node node)
         throws TransformerException {
-
-        DOMResult result = new DOMResult(resultnode);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
         this.transform(node, result);
+        return writer.toString();
     }
 
     /**

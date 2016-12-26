@@ -20,7 +20,7 @@ public abstract class XPathEntry {
 
     private org.w3c.dom.Node domnode;
 
-    private SourceFactory sf;
+    SourceFactory sf;
     
 
     protected XPathEntry(String filename, SourceFactory sf) {
@@ -34,8 +34,7 @@ public abstract class XPathEntry {
 
     public abstract Map<String,String> getNamespaces();
 
-    public abstract String getEntryText()
-        throws UnsupportedOperationException;
+    public abstract String getEntryText();
     
     public abstract String getLine();
 
@@ -45,74 +44,74 @@ public abstract class XPathEntry {
         return filename;
     }
     
-    public org.w3c.dom.Node getDOMNode() throws IOException {
+    public org.w3c.dom.Node getDOMNode() {
         if (domnode == null) {
-            // benchmark information setup
-            Element ast   = doc.createElementNS
+            Element ast = doc.createElementNS
                 (XMLConstants.DEFAULT_NS_PREFIX, "ast");
-            Element xpath = doc.createElementNS
-                (XMLConstants.DEFAULT_NS_PREFIX, "xpath");
-            
-            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
-                                 "filename", getFilename());
-            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
-                                 "line", getLine());
-            xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
-                                 "column", getColumn());
-            for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
-                if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
-                    xpath.setAttributeNS
-                        (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
-                         "defaultns",
-                         pair.getValue());
-                else
-                    xpath.setAttributeNS
-                        (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
-                         XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
-                         pair.getValue());      
-            }
-            try {
-                Text    text  = doc.createTextNode(getEntryText());
-                Element query = doc.createElementNS
-                    (XMLConstants.DEFAULT_NS_PREFIX, "query");
-                query.appendChild(text);
-                xpath.appendChild(query);
-            } catch (UnsupportedOperationException e) {}
-            xpath.appendChild(ast);
-            doc.appendChild(xpath);
-
             // obtain XQueryX DOM tree
             XPathXConverter xxc = new XPathXConverter();
             xxc.transform(getASTNode(), ast);
             domnode = ast.getFirstChild();
-
-            // validate
-            for (Map.Entry<String,String> result : sf.validate(domnode)) {
-                Element val = doc.createElementNS
-                    (XMLConstants.DEFAULT_NS_PREFIX, "validation");
-                val.setAttributeNS
-                    (XMLConstants.DEFAULT_NS_PREFIX,
-                     "schema",
-                     Paths.get(result.getKey()).getFileName().toString());
-                if (result.getValue().equals(XMLValidator.VALID))
-                    val.setAttributeNS
-                        (XMLConstants.DEFAULT_NS_PREFIX,
-                         "valid", "yes");
-                else {
-                    val.setAttributeNS
-                        (XMLConstants.DEFAULT_NS_PREFIX,
-                         "valid", "no");
-                    val.appendChild(doc.createTextNode(result.getValue()));
-                }
-                xpath.appendChild(val);
-            }
         }
         return domnode;
     }
 
     public void print(PrintStream os) throws Exception {
         XMLPrinter printer = new XMLPrinter();
-        getDOMNode();
+        org.w3c.dom.Node ast = getDOMNode().getParentNode();
+        Element xpath = doc.createElementNS
+            (XMLConstants.DEFAULT_NS_PREFIX, "xpath");
+        doc.appendChild(xpath);
+            
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "filename", getFilename());
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "line", getLine());
+        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+                             "column", getColumn());
+        for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
+            if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
+                xpath.setAttributeNS
+                    (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                     "defaultns",
+                     pair.getValue());
+            else
+                xpath.setAttributeNS
+                    (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                     XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
+                     pair.getValue());      
+        }
+        if (!getEntryText().isEmpty()) {
+            Text    text  = doc.createTextNode(getEntryText());
+            Element query = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "query");
+            query.appendChild(text);
+            xpath.appendChild(query);
+        }
+        xpath.appendChild(ast);
+
+        // validate
+        for (Map.Entry<String,String> result : sf.validate(domnode)) {
+            Element val = doc.createElementNS
+                (XMLConstants.DEFAULT_NS_PREFIX, "validation");
+            val.setAttributeNS
+                (XMLConstants.DEFAULT_NS_PREFIX,
+                 "schema",
+                 Paths.get(result.getKey()).getFileName().toString());
+            if (result.getValue().equals(XMLValidator.VALID))
+                val.setAttributeNS
+                    (XMLConstants.DEFAULT_NS_PREFIX,
+                     "valid", "yes");
+            else {
+                val.setAttributeNS
+                    (XMLConstants.DEFAULT_NS_PREFIX,
+                     "valid", "no");
+                val.appendChild(doc.createTextNode(result.getValue()));
+            }
+            xpath.appendChild(val);
+        }
+        
+        // print
         printer.transform(doc, os);
     }
 

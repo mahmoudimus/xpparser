@@ -11,6 +11,12 @@ public class XQueryXPathEntry extends XPathEntry {
     private SimpleNode astnode;
 
     /**
+     * Normalised query text obtained through an XSLT translation on
+     * the DOM node.
+     */
+    private String query;
+
+    /**
      * Mapping from prefixes to URIs.
      */
     private Map<String,String> namespaces;
@@ -21,6 +27,7 @@ public class XQueryXPathEntry extends XPathEntry {
                             SimpleNode node) {
         super(filename, sf);
         this.astnode = node;
+        this.query = null;
 
         // recover the namespace information from the Prolog
         SimpleNode n = this.astnode;
@@ -63,9 +70,11 @@ public class XQueryXPathEntry extends XPathEntry {
         return namespaces;
     }
 
-    public String getEntryText() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException
-            ("XPath fragments in XQuery source cannot be recovered.\n");
+    public String getEntryText() {
+        if (query == null) {
+            query = sf.transform(getDOMNode());
+        }
+        return query;
     }
     
     public String getLine() {

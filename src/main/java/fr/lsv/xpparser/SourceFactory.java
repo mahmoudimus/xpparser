@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
@@ -31,6 +32,9 @@ public class SourceFactory {
 
     // XML validation
     private XMLValidator validator;
+
+    // XSLT translation
+    private XMLPrinter xslt;
 
     public SourceFactory() throws ParserConfigurationException {
         this.st = SourceType.XQUERY;
@@ -57,14 +61,30 @@ public class SourceFactory {
     public void setValidator(XMLValidator v) {
         this.validator = v;
     }
-    
-    protected Iterable<Map.Entry<String,String>> validate(org.w3c.dom.Node n)
-        throws IOException {
-        if (validator != null)
-            return validator.validate(n);
-        else
-            return new LinkedList<Map.Entry<String,String>>();
+    public void setTransformer(XMLPrinter x) {
+        this.xslt = x;
     }
+    
+    protected Iterable<Map.Entry<String,String>> validate(org.w3c.dom.Node n) {
+        if (validator != null)
+            try {
+                return validator.validate(n);
+            } catch (IOException e) {
+                return new LinkedList<Map.Entry<String,String>>();
+            }
+        return new LinkedList<Map.Entry<String,String>>();
+    }
+
+    protected String transform(org.w3c.dom.Node node) {
+        if (xslt != null)
+            try {
+                return xslt.transform(node);
+            } catch (Exception e) {
+                return "";
+            }
+        return "";
+    }
+
 
     protected PositionalXMLReader getXMLReader() throws SAXException {
         // We use a special XML parser that handles line/col numbers
