@@ -14,7 +14,7 @@ Use the provided `xpparser` script.  Typical examples:
   ```shell
   ./xpparser --xslt sink/parser/*.xsl --validate xsd/*.xsd
   ./xpparser --xml '//@value' sink/tests/pathx1-tests.xml
-  echo '//foo/bar' | ./xpparser --xquery xqueryx2xquery.xsl
+  echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
   ```
 
 See `./xpparser -h` for command-line usage. 
