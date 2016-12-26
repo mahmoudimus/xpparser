@@ -83,7 +83,7 @@ public class Main {
             System.out.println
                 ("      --xquery STYLESHEET   parse input files as XQuery documents and");
             System.out.println
-                ("                            and apply STYLESHEET.");
+                ("                            apply the XSLT provided stylesheet.");
             System.out.println
                 ("      --xslt                parse input files as XSLT documents; equivalent");
             System.out.println
