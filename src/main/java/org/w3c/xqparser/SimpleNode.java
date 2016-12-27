@@ -1,17 +1,7 @@
 /*
-Copyright (c) 2005 W3C(r) (http://www.w3.org/) (MIT (http://www.lcs.mit.edu/),
-INRIA (http://www.inria.fr/), Keio (http://www.keio.ac.jp/)),
-All Rights Reserved.
-See http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Copyright.
-W3C liability
-(http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Legal_Disclaimer),
-trademark
-(http://www.w3.org/Consortium/Legal/ipr-notice-20000612#W3C_Trademarks),
-document use
-(http://www.w3.org/Consortium/Legal/copyright-documents-19990405),
-and software licensing rules
-(http://www.w3.org/Consortium/Legal/copyright-software-19980720)
-apply.
+This software or document includes material copied from or derived 
+from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/).
+Copyright © 2013 W3C® (MIT, ERCIM, Keio, Beihang).
 */
 package org.w3c.xqparser;
 

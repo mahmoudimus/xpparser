@@ -2,6 +2,7 @@ XPath Parser extracts XPath expressions from within XQuery or XML (in
 particular XSLT) files, and returns an XML abstract syntax tree (in
 XQueryX) for them.
 
+
 # Building
 
 Build with Ant with `ant compile` or with Maven with `mvn compile`.
@@ -22,26 +23,21 @@ See `./xpparser -h` for command-line usage.
 
 # Licensing
 
-Some files (in `src/main/java/fr/lsv/xpparser/`) are Copyright (c)
-2016 ENS Cachan and licensed under GPL version 3.0 or later.
+Copyright (C) 2016 Sylvain Schmitz (ENS Cachan).
 
-Most files (in `src/main/java/org/w3c/xqparser/` and `sink/`) are the
-XML sources for the XPath/XQuery family of grammars, the XSLT files
-for a transformation to a test parser for JavaCC/JJTree
-(https://javacc.dev.java.net/) parser generation.  They are licensed
-as:
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
 
-Copyright (c) 2005 W3C(r) (http://www.w3.org/) (MIT
-(http://www.lcs.mit.edu/), INRIA (http://www.inria.fr/), Keio
-(http://www.keio.ac.jp/)).  All Rights Reserved.  See
-http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Copyright.
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License in `LICENCE-GPL` for more details.
 
-W3C liability
-(http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Legal_Disclaimer),
-trademark
-(http://www.w3.org/Consortium/Legal/ipr-notice-20000612#W3C_Trademarks),
-document use
-(http://www.w3.org/Consortium/Legal/copyright-documents-19990405), and
-software licensing rules
-(http://www.w3.org/Consortium/Legal/copyright-software-19980720)
-apply.
+This software or document includes material copied from or derived
+from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/)
+and the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).  Copyright
+©2013-2014 W3C® (MIT, ERCIM, Keio, Beihang).  See `LICENSE-W3C` for
+more details.

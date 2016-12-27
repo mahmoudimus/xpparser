@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--========================================================================
+<!--
+This software or document includes material copied from or derived 
+from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/).
+Copyright © 2013 W3C® (MIT, ERCIM, Keio, Beihang).
+========================================================================
     DTD (Document Type Definition) for grammar definition originally created
-    by James Clark.  The idea is to define an abstract grammar in XML than
+    by James Clark.  The idea is to define an abstract grammar in XML that
     may then be used by documentation, directly by parser generators,
     or via an XSLT stylesheet or other transformation, may generate
     a parser compiler specification such as for YACC or JavaCC.
 
 Norm and Scott moved this file, and added an explicit prefix, as part of the
-transition toward a unified build process for last call and beyond. This involved
-moving the location of the CVS repository, For earlier history information,
-see /WWW/XML/Group/xpath-query-src/grammar.dtd
+transition toward a unified build process for last call and beyond. This
+involved moving the location of the CVS repository, For earlier history
+information, see /WWW/XML/Group/xpath-query-src/grammar.dtd
 
 =========================================================================-->
 <!-- The root element of the definition -->
