@@ -223,10 +223,10 @@ public class Main {
     }
 
     /**
-     * Add a pair comprising a file name and a reader to the provided
-     * list.
+     * Open a file while performing various checks and error
+     * reporting.
      * @param filename The path to the file to open.
-     * @param list     The list where to add the result.
+     * @return A handle on the file.
      */
     private static BufferedReader getInput(String filename)
         throws IOException {

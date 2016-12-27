@@ -26,7 +26,8 @@ specifications, and parser tests.
   <property name="jjt" value="${java-gen}/org/w3c/xqparser/xpath-grammar.jjt"/>
   <property name="jj" value="${java-gen}/org/w3c/xqparser/xpath-grammar.jj"/>
 
-  <target name="all" depends="javacc" description="compile everything">
+  <target name="all" depends="javacc"
+          description="Generate XQuery parser source">
   </target>
   
   <target name="validate">
