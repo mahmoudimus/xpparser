@@ -9,7 +9,7 @@ your option) any later version.
 This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License in `LICENCE-GPL` for more details.
+General Public License in `LICENSE` for more details.
  */
 package fr.lsv.xpparser;
 
