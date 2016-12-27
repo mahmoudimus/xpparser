@@ -22,7 +22,7 @@ echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
 See `./xpparser -h` for command-line usage. 
 
 
-# License
+# Licence
 
 Copyright (C) 2016 Sylvain Schmitz (ENS Cachan).
 
