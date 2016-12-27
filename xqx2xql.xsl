@@ -66,6 +66,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 <!--    2012-09-07 - Added %-annotation support for function tests                      -->
 <!--    2012-09-25 - If encoding is specified in versionDecl, the generated XQ uses it  -->
 <!--    2013-09-27 - Modified schema definition of simpleMapExpr for multiple arguments -->
+<!--    2016-12-27 - Remove check forcing the root to be a xqx:module                   -->
 <!--  ================================================================================  -->
 <xsl:stylesheet version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
