@@ -18,14 +18,14 @@ Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`
 `mvn compile`.
 
 There are no dependencies, unless you wish to modify the XQuery 3.0
-grammar in the xgrammar directory, in which case running `ant javacc`
-will download the necessary libraries and regenerate the parser
-sources.
+grammar in the [xgrammar](xgrammar/) directory, in which case running
+`ant javacc` will download the necessary libraries and regenerate the
+parser sources.
 
 
 ## Running
 
-Use the provided `xpparser` script.  Typical examples: 
+Use the provided [xpparser](xpparser) script.  Typical examples: 
 
 ```shell
 ./xpparser --xslt xgrammar/*.xsl --validate xsd/*.xsd
@@ -47,13 +47,14 @@ your option) any later version.
 This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License in LICENSE or http://www.gnu.org/licenses/ for
-more details.
+General Public License in [LICENSE](LICENSE) or http://www.gnu.org/licenses/
+for more details.
 
 This software or document includes material copied from or derived
 from the [XPath/XQuery Applets](https://www.w3.org/2013/01/qt-applets/)
 and the [XQueryX 3.0 W3C Recommendation of 08 April
 2014](https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).  Copyright
-(C) 2013-2014 W3C(R) (MIT, ERCIM, Keio, Beihang).  See xgrammar/LICENSE
-or http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+(C) 2013-2014 W3C(R) (MIT, ERCIM, Keio, Beihang).  See
+[xgrammar/LICENSE](xgrammar/LICENSE) or
+http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 for more details.
