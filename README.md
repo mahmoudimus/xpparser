@@ -10,8 +10,8 @@ This work was funded in part by the
 
 # Building
 
-Build with [Apache Ant](http://ant.apache.org/) with `ant compile` or with
-[Apache Maven](http://maven.apache.org/) with `mvn compile`.
+Build with [Apache Ant](http://ant.apache.org/) by running `ant compile` or with
+[Apache Maven](http://maven.apache.org/) by running `mvn compile`.
 
 
 # Running
@@ -24,7 +24,7 @@ Use the provided `xpparser` script.  Typical examples:
 echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
 ```
 
-See `./xpparser -h` for command-line usage. 
+Run `./xpparser -h` for command-line usage. 
 
 
 # License
