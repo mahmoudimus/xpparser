@@ -1,3 +1,9 @@
+<!--
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
 <!--  ================================================================================  -->
 <!--  Changes from Recommendation (edition 1):                                          -->
 <!--  * In XSLT stylesheet, deleted template for xqx:parenthesizedExpr (bug #4963)      -->
