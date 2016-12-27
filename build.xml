@@ -7,7 +7,7 @@
 This buildfile is used to compile the Java sources for the XPath Parser.
   </description>
 
-  <target name="all" depends="compile" description="compile everything">
+  <target name="all" depends="compile">
   </target>
 
   <presetdef name="java_compile">
@@ -18,6 +18,12 @@ This buildfile is used to compile the Java sources for the XPath Parser.
   <target name="compile" description="Compile xpparser">
     <mkdir dir="target/classes/"/>
     <java_compile srcdir="src/main/java/" destdir="target/classes/"/>
+  </target>
+
+  <target name="javacc" description="Generate xqparser sources">
+    <subant target="javacc">
+      <fileset dir="xgrammar" includes="build.xml"/>
+    </subant>
   </target>
 
 </project>

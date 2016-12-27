@@ -14,8 +14,7 @@ This software development was funded in part by the
 Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`
 or with [Apache Maven](http://maven.apache.org/) by running
 `mvn compile`.  Should you modify the XQuery 3.0 grammar in the
-xgrammar directory, run `cd xgrammar; ant javacc` to regenerate the
-parser sources.
+xgrammar directory, run `ant javacc` to regenerate the parser sources.
 
 
 # Running
