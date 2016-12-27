@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding='utf-8'?>
 
-<!-- Build file for use with Ant (http://jakarta.apache.org/ant). -->
 <project name="XPath Parser" default="all" basedir=".">
 
   <description>

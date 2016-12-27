@@ -4,7 +4,6 @@ This software or document includes material copied from or derived
 from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/).
 Copyright © 2013 W3C® (MIT, ERCIM, Keio, Beihang).
 -->
-<!-- Build file for use with Ant (http://jakarta.apache.org/ant). -->
 <project name="grammar-parser-javacc" default="all" basedir=".">
 
   <description>
@@ -18,7 +17,6 @@ specifications, and parser tests.
   <!-- This is passed to javacc's -JAVA_UNICODE_ESCAPE arg. -->
   <property name="unicodeinput" value="true"/>
 
-  <!-- This is the directory where the by-products of the build go. -->
   <property name="grammar-file" value="xpath-grammar.xml"/>
   <property name="lib-dir" value="lib"/>
   <property name="gen-dir" value="../src/main/"/>
@@ -65,7 +63,6 @@ specifications, and parser tests.
   <target name="jjtree" depends="gen-grammar">
     <java fork="yes" classname="jjtree">
        <classpath>
-         <pathelement path="${java.class.path}/" />
          <pathelement path="${lib-dir}/javacc.jar"/>
          <pathelement path="${lib-dir}/optional.jar"/>
          <pathelement path="${lib-dir}/xalan.jar"/>
@@ -78,7 +75,6 @@ specifications, and parser tests.
   <target name="javacc" depends="jjtree">
     <java fork="yes" classname="javacc">
       <classpath>
-        <pathelement path="${java.class.path}/" />
         <pathelement path="${lib-dir}/javacc.jar"/>
         <pathelement path="${lib-dir}/optional.jar"/>
         <pathelement path="${lib-dir}/xalan.jar"/>
