@@ -7,8 +7,7 @@
 This buildfile is used to compile the Java sources for the XPath Parser.
   </description>
 
-  <target name="all" depends="compile"
-    description="">
+  <target name="all" depends="compile" description="compile everything">
   </target>
 
   <presetdef name="java_compile">

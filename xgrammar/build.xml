@@ -20,11 +20,6 @@ specifications, and parser tests.
 
   <!-- This is the directory where the by-products of the build go. -->
   <property name="grammar-file" value="xpath-grammar.xml"/>
-
-  <!-- Select the union of XPath 3.0 and XQuery 3.0 syntax. -->
-  <property name="spec" value="xpath30"/>
-  <property name="spec1" value="xquery30"/>
-
   <property name="lib-dir" value="lib"/>
   <property name="gen-dir" value="../src/main/"/>
   <property name="java-gen" value="${gen-dir}/java"/>
@@ -33,6 +28,9 @@ specifications, and parser tests.
   <property name="jjt" value="${java-gen}/org/w3c/xqparser/xpath-grammar.jjt"/>
   <property name="jj" value="${java-gen}/org/w3c/xqparser/xpath-grammar.jj"/>
 
+  <target name="all" depends="javacc" description="compile everything">
+  </target>
+  
   <target name="validate">
     <xmlvalidate file="${grammar-file}" failonerror="yes" lenient="no"
                  warn="yes"/>
@@ -48,8 +46,8 @@ specifications, and parser tests.
     <xslt style="strip.xsl" in="${grammar-file}"
           out="${extracted-grammar}" force="yes" extension=".jjt"
           destdir="${java-gen}">
-      <param name="spec1" expression="${spec}"/>
-      <param name="spec2" expression="${spec2}"/>
+      <param name="spec1" expression="xquery30"/>
+      <param name="spec2" expression="dummy"/>
       <param name="spec3" expression="dummy"/>
     </xslt>
   </target>

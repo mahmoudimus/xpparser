@@ -4,6 +4,7 @@ This software or document includes material copied from or derived
 from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/).
 Copyright © 2013 W3C® (MIT, ERCIM, Keio, Beihang).
 -->
+<!-- Modified in order for XQuery 3.0 to include the 'namespace' axis. -->
 <!DOCTYPE g:grammar SYSTEM "grammar.dtd">
 
 <g:grammar xmlns:g="http://www.w3.org/2001/03/XPath/grammar">
