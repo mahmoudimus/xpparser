@@ -1,6 +1,6 @@
-XPath Parser extracts XPath expressions from within XQuery or XML (in
+__XPath Parser__ extracts XPath expressions from within XQuery or XML (in
 particular XSLT) files, and returns an XML abstract syntax tree (in
-XQueryX; see https://www.w3.org/TR/xqueryx-30/) for them.
+__XQueryX__; see https://www.w3.org/TR/xqueryx-30/) for them.
 
 
 # Building
