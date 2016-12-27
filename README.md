@@ -1,12 +1,15 @@
-__XPath Parser__ extracts XPath expressions from within XQuery or XML (in
-particular XSLT) files, and returns an XML abstract syntax tree (in
-__XQueryX__; see https://www.w3.org/TR/xqueryx-30/) for them.
+__XPath Parser__ extracts [XPath expressions](https://www.w3.org/TR/xpath-30/)
+from within [XQuery](https://www.w3.org/TR/xquery-30/) files or XML files, in
+particular [XSLT](https://www.w3.org/TR/xslt-30/) files, and returns an XML
+abstract syntax tree in [XQueryX](https://www.w3.org/TR/xqueryx-30/) for them.  
+The program also provides facilities for checking this XQueryX output against
+multiple [XML Schemas](https://www.w3.org/standards/techs/xmlschema).
 
 
 # Building
 
-Build with __Apache Ant__ (http://ant.apache.org/) with `ant compile` or with
-__Apache Maven__ (http://maven.apache.org/) with `mvn compile`.
+Build with [Apache Ant](http://ant.apache.org/) with `ant compile` or with
+[Apache Maven](http://maven.apache.org/) with `mvn compile`.
 
 
 # Running
@@ -38,8 +41,8 @@ General Public License in LICENSE or http://www.gnu.org/licenses/ for more
 details.
 
 This software or document includes material copied from or derived
-from the __XPath/XQuery Applets__ (https://www.w3.org/2013/01/qt-applets/)
-and the __XQueryX 3.0 W3C Recommendation__ of 08 April 2014
-(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).  Copyright
-(C)2013-2014 W3C(R) (MIT, ERCIM, Keio, Beihang).  See LICENCE-W3C for more
+from the [XPath/XQuery Applets](https://www.w3.org/2013/01/qt-applets/)
+and the [XQueryX 3.0 W3C Recommendation of 08 April
+2014](https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).  Copyright
+(C)2013-2014 W3C(R) (MIT, ERCIM, Keio, Beihang).  See LICENSE-W3C for more
 details.
