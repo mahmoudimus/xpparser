@@ -1,3 +1,5 @@
+# XPath Parser
+
 __XPath Parser__ extracts [XPath expressions](https://www.w3.org/TR/xpath-30/)
 from within [XQuery](https://www.w3.org/TR/xquery-30/) files or XML files, in
 particular [XSLT](https://www.w3.org/TR/xslt-30/) files, and returns an XML
@@ -9,10 +11,10 @@ This software development was funded in part by the
 [ANR PRODAQ](http://projects.lsv.ens-cachan.fr/prodaq/) project.
 
 
-# Building
+## Building
 
 Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`
-or with [Apache Maven](http://maven.apache.org/) by running
+(recommended) or with [Apache Maven](http://maven.apache.org/) by running
 `mvn compile`.
 
 There are no dependencies, unless you wish to modify the XQuery 3.0
@@ -21,7 +23,7 @@ will download the necessary libraries and regenerate the parser
 sources.
 
 
-# Running
+## Running
 
 Use the provided `xpparser` script.  Typical examples: 
 
@@ -33,7 +35,7 @@ echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
 Run `./xpparser -h` for command-line usage. 
 
 
-# License
+## License
 
 Copyright (C) 2016 Sylvain Schmitz (ENS Cachan).
 
