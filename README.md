@@ -33,11 +33,10 @@ your option) any later version.
 This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License in [LICENCE-GPL](LICENCE-GPL) for more details.
+General Public License in LICENSE-W3C for more details.
 
 This software or document includes material copied from or derived
 from the XPath/XQuery Applets (https://www.w3.org/2013/01/qt-applets/)
 and the XQueryX 3.0 W3C Recommendation of 08 April 2014
 (https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).  Copyright
-©2013-2014 W3C® (MIT, ERCIM, Keio, Beihang).  See [LICENCE-W3C](LICENCE-W3C)
-for more details.
+©2013-2014 W3C® (MIT, ERCIM, Keio, Beihang).  See LICENCE-W3C for more details.
