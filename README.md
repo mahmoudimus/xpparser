@@ -5,7 +5,7 @@ abstract syntax tree in [XQueryX](https://www.w3.org/TR/xqueryx-30/) for them.
 The program also provides facilities for checking this XQueryX output against
 multiple [XML Schemas](https://www.w3.org/standards/techs/xmlschema).
 
-This work was funded in part by the
+This software development was funded in part by the
 [ANR PRODAQ](http://projects.lsv.ens-cachan.fr/prodaq/) project.
 
 # Building
