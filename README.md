@@ -5,7 +5,8 @@ XQueryX; see https://www.w3.org/TR/xqueryx-30/) for them.
 
 # Building
 
-Build with Ant with `ant compile` or with Maven with `mvn compile`.
+Build with Apache Ant (http://ant.apache.org/) with `ant compile` or with
+Apache Maven (http://maven.apache.org/) with `mvn compile`.
 
 
 # Running
