@@ -18,7 +18,8 @@ grammar.
 ## Building
 
 Generate the Java source code for the XQuery 3.0 parser with [Apache
-Ant](http://ant.apache.org) by running `ant javacc`.
+Ant](http://ant.apache.org) by running `ant javacc`.  Note that this
+will download an 11MiB archive of various third-party dependencies.
 
 
 ## License
