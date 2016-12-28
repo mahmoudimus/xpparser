@@ -15,6 +15,7 @@ package fr.lsv.xpparser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import javax.xml.xpath.XPathConstants;
@@ -40,6 +41,9 @@ public class XMLSource implements Iterable<XPathEntry> {
         
         this.filename = filename;
         this.sf = sf;
+
+        // change user.dir
+        System.setProperty("user.dir", Paths.get(filename).getParent().toString());
         
         // parse the input XML
         Document d = sf.getXMLReader().parse(stream);
