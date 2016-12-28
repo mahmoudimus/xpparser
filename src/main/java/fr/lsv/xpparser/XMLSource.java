@@ -24,6 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.xqparser.ParseException;
+import org.w3c.xqparser.TokenMgrError;
 import org.xml.sax.SAXException;
 
 public class XMLSource implements Iterable<XPathEntry> {
@@ -93,7 +94,7 @@ public class XMLSource implements Iterable<XPathEntry> {
                 XPathEntry ret;
                 try {
                     ret = new XMLXPathEntry(filename, sf, n, q);
-                } catch (ParseException e) {
+                } catch (ParseException|TokenMgrError e) {
                     // we have to treat this error here
                     throw new NoSuchElementException
                         (": "+ filename +" line "

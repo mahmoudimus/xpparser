@@ -20,6 +20,7 @@ import java.nio.file.*;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.w3c.xqparser.ParseException;
+import org.w3c.xqparser.TokenMgrError;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 
@@ -181,17 +182,17 @@ public class Main {
                    
                     
                 //------------------------------------- error handling
-                } catch (ParseException e) {
+                } catch (ParseException|TokenMgrError e) {
                     // error parsing an XQuery file
                     System.err.println
                         (progname +": "+ source.getKey()
                          +": could not parse as XQuery:");
                     System.err.println(e.getMessage());
-                } catch (SAXParseException e) {
+                } catch (SAXParseException|FileNotFoundException e) {
                     // error parsing an XML file
                     System.err.println
                         (progname +": "+ source.getKey() 
-                         +":could not parse as XML:");
+                         +": could not parse as XML:");
                     System.err.println(e.getMessage());
                 } catch (NoSuchElementException e) {
                     // error parsing the XPath inside an XML file

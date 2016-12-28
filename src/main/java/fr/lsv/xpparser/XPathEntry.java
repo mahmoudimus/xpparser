@@ -75,19 +75,19 @@ public abstract class XPathEntry {
         XMLPrinter printer = new XMLPrinter();
         org.w3c.dom.Node ast = getDOMNode().getParentNode();
         Element xpath = doc.createElementNS
-            (XMLConstants.DEFAULT_NS_PREFIX, "xpath");
+            (XMLConstants.NULL_NS_URI, "xpath");
         doc.appendChild(xpath);
             
-        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+        xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
                              "filename", getFilename());
-        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+        xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
                              "line", getLine());
-        xpath.setAttributeNS(XMLConstants.DEFAULT_NS_PREFIX,
+        xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
                              "column", getColumn());
         for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
             if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
                 xpath.setAttributeNS
-                    (XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+                    (XMLConstants.NULL_NS_URI,
                      "defaultns",
                      pair.getValue());
             else
@@ -99,7 +99,7 @@ public abstract class XPathEntry {
         if (!getEntryText().isEmpty()) {
             Text    text  = doc.createTextNode(getEntryText());
             Element query = doc.createElementNS
-                (XMLConstants.DEFAULT_NS_PREFIX, "query");
+                (XMLConstants.NULL_NS_URI, "query");
             query.appendChild(text);
             xpath.appendChild(query);
         }
@@ -108,9 +108,9 @@ public abstract class XPathEntry {
         // validate
         for (Map.Entry<String,String> result : sf.validate(domnode)) {
             Element val = doc.createElementNS
-                (XMLConstants.DEFAULT_NS_PREFIX, "validation");
+                (XMLConstants.NULL_NS_URI, "validation");
             val.setAttributeNS
-                (XMLConstants.DEFAULT_NS_PREFIX,
+                (XMLConstants.NULL_NS_URI,
                  "schema",
                  Paths.get(result.getKey()).getFileName().toString());
             if (result.getValue().equals(XMLValidator.VALID))

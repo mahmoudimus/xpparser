@@ -370,6 +370,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTPREDICATE:
         case JJTPARENTHESIZEDEXPR:
         case JJTARGUMENT:
+        case JJTARGUMENTLIST:
         case JJTFUNCTIONITEMEXPR:
         case JJTATOMICORUNIONTYPE:
         case JJTTYPEDFUNCTIONTEST:
@@ -403,7 +404,6 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTPATHEXPR:
         case JJTNAMETEST:
         case JJTPOSTFIXEXPR:
-        case JJTARGUMENTLIST:
         case JJTSEQUENCETYPE:
         case JJTFUNCTIONCALL:
         case JJTINLINEFUNCTIONEXPR:
@@ -455,7 +455,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                     || node.m_value.equals("catch")
                     || node.m_value.equals("collation")
                     || node.m_value.equals("construction")
-                    || node.m_value.equals("contains")
+                    //|| node.m_value.equals("contains")
                     || node.m_value.equals("content")
                     || node.m_value.equals("context")
                     || node.m_value.equals("copy")
@@ -466,7 +466,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                     || node.m_value.equals("diacritics")
                     || node.m_value.equals("different")
                     || node.m_value.equals("distance")
-                    || node.m_value.equals("div")
+                    //|| node.m_value.equals("div")
                     || node.m_value.equals("document")
                     || node.m_value.equals("empty")
                     || node.m_value.equals("encoding")
@@ -491,7 +491,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                     || node.m_value.equals("into")
                     || node.m_value.equals("key")
                     || node.m_value.equals("language")
-                    || node.m_value.equals("last")
+                    //|| node.m_value.equals("last")
                     || node.m_value.equals("lax")
                     || node.m_value.equals("levels")
                     || node.m_value.equals("lowercase")
