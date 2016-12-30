@@ -100,4 +100,29 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       includes="HTMLBook-master/htmlbook-xsl/*.xsl" arg="--xslt"
       license="HTMLBook-master/LICENSE"/>
   </target>
+
+  
+  
+  <target name="marklogic">
+    <benchmark name="marklogic"
+               src="https://github.com/marklogic/commons/archive/master.zip"
+               includes="commons-master/*/*.xqy" 
+               arg="--xquery ../xqx2xql.xsl"/>
+  </target>
+
+  <target name="xqjson">
+    <benchmark name="xqjson"
+               src="https://github.com/joewiz/xqjson/archive/master.zip"
+               includes="xqjson-master/src/content/*.xql"
+               arg="--xquery ../xqx2xql.xsl" license="xqjson-master/LICENSE.txt"/>
+  </target>
+
+  <target name="histei">
+    <benchmark name="histei"
+               src="https://github.com/odaata/HisTEI/archive/master.zip"
+               includes="HisTEI-master/frameworks/HisTEI/resources/*.xq*"
+               arg="--xquery ../xqx2xql.xsl"
+               license="HisTEI-master/LICENSE"/>
+  </target>
+               
 </project>
