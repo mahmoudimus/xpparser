@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="xpath-benchmark" default="all" basedir=".">
+<project name="xpath-benchmark" default="all" basedir="." xmlns:unless="ant:unless">
 
   <description>
 This buildfile is used to retrieve and parse XPath expressions from various sources.
@@ -7,13 +7,50 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <target name="all" depends="tests,sources.xslt,sources.xquery"/>
 
   <!-- path to schemas -->  
-  <fileset id="fs_schemas" dir="../xsd" includes="*.xsd"/>
-  <pathconvert property="schemas" refid="fs_schemas" pathsep=" "/>
+  <fileset id="fs.schemas" dir="../xsd" includes="*.xsd"/>
+  <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
 
   <!-- path to classes -->
   <path id="classpath">
     <pathelement path="../target/classes"/>
   </path>
+    
+  <!-- macro for processing benchmark files -->
+  <macrodef name="process">
+    <attribute name="name"/>
+    <attribute name="includes"/>
+    <attribute name="arg"/>
+    <attribute name="license" default=""/>
+    <sequential>
+      <fileset id="fs.tests" dir="@{name}" includes="@{includes}"/>
+      <pathconvert property="tests" refid="fs.tests" pathsep=" "/>
+      <resourcecount property="count.tests" refid="fs.tests"/>
+      <echo message="Parsing ${count.tests} files..."/>
+      <java fork="yes" classname="fr.lsv.xpparser.Main"
+            classpathref="classpath"
+            output="@{name}.xml" error="@{name}.log">
+        <arg line="@{arg} ${tests} --validate ${schemas}"/>
+      </java>
+      <copy unless:blank="@{license}"
+            file="@{name}/@{license}" tofile="@{name}.LICENSE"/>
+    </sequential>
+  </macrodef>
+
+  <!-- main macro for benchmarks -->
+  <macrodef name="benchmark">
+    <attribute name="name"/>
+    <attribute name="src"/>
+    <attribute name="includes"/>
+    <attribute name="arg"/>
+    <attribute name="license" default=""/>
+    <sequential>
+      <mkdir dir="@{name}"/>
+      <get src="@{src}" dest="@{name}/source.zip" usetimestamp="true"/>
+      <unzip src="@{name}/source.zip" dest="@{name}" overwrite="no"/>
+      <process name="@{name}" includes="@{includes}" arg="@{arg}"
+               license="@{license}"/>
+    </sequential>
+  </macrodef>
 
   <!-- ===============================================================
        Tests are not representative of actual XPath content `out there'
@@ -24,39 +61,16 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
 
   <!-- W3C test-suite -->
   <target name="w3c">
-    <mkdir dir="w3c"/>
-    <get src="https://dev.w3.org/2011/QT3-test-suite/releases/QT3_1_0.zip"
-         dest="w3c/" usetimestamp="true"/>
-    <unzip src="w3c/QT3_1_0.zip" dest="w3c" overwrite="no">
-      <patternset>
-        <include name="QT3_1_0/prod/*.xml"/>
-      </patternset>
-    </unzip>
-    <fileset id="fs_tests" dir="w3c/QT3_1_0" includes="prod/*.xml"/>
-    <pathconvert property="tests" refid="fs_tests" pathsep=" "/>
-    <java fork="yes" classname="fr.lsv.xpparser.Main" classpathref="classpath"
-          output="w3c.xpb" error="w3c.log">
-      <arg line="--xml '/test-set/test-case/test' ${tests} --validate ${schemas}"/>
-    </java>
+    <benchmark name="w3c"
+       src="https://dev.w3.org/2011/QT3-test-suite/releases/QT3_1_0.zip"
+       includes="QT3_1_0/prod/*.xml" arg="--xml '/test-set/test-case/test'"/>
   </target>
 
   <!-- XPathMark -->
   <target name="xpathmark">
-    <mkdir dir="xpathmark"/>
-    <get src="https://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
-         dest="xpathmark/" usetimestamp="true"/>
-    <unzip src="xpathmark/queries.zip" dest="xpathmark" overwrite="no">
-      <patternset>
-        <include name="xpath-pt/xpath/*.xpl"/>
-      </patternset>
-    </unzip>
-    <fileset id="fs_tests" dir="xpathmark/xpath-pt/" includes="xpath/*.xpl"/>
-    <pathconvert property="tests" refid="fs_tests" pathsep=" "/>
-    <echo message="Parsing XPathMark files..."/>
-    <java fork="yes" classname="fr.lsv.xpparser.Main" classpathref="classpath"
-          output="xpathmark.xpb" error="xpathmark.log">
-      <arg line="--xquery ../xqx2xql.xsl ${tests} --validate ${schemas}"/>
-    </java>
+    <benchmark name="xpathmark"
+      src="https://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
+      includes="xpath-pt/xpath/*.xpl" arg="--xquery ../xqx2xql.xsl"/>
   </target>
 
   <!-- ===============================================================
@@ -73,35 +87,17 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <get src="https://freefr.dl.sourceforge.net/project/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
          dest="docbook/" usetimestamp="true"/>
     <bunzip2 src="docbook/docbook-xsl-1.79.1.tar.bz2"/>
-    <untar src="docbook/docbook-xsl-1.79.1.tar" dest="docbook" overwrite="no"/>
-    <fileset id="fs_tests" dir="docbook/docbook-xsl-1.79.1/" includes="*/*.xsl"/>
-    <pathconvert property="tests" refid="fs_tests" pathsep=" "/>
-    <echo message="Parsing DocBook XSL files..."/>
-    <java fork="yes" classname="fr.lsv.xpparser.Main" classpathref="classpath"
-          output="docbook.xpb" error="docbook.log">
-      <arg line="--xslt ${tests} --validate ${schemas}"/>
-    </java>
-    <copy file="docbook/docbook-xsl-1.79.1/COPYING" tofile="docbook.LICENSE"/>
+    <untar src="docbook/docbook-xsl-1.79.1.tar" dest="docbook"
+           overwrite="no"/>
+    <process name="docbook" includes="docbook-xsl-1.79.1/*/*.xsl"
+             arg="--xslt" license="docbook-xsl-1.79.1/COPYING"/>
   </target>
   
   <!-- HTMLBook -->
   <target name="htmlbook">
-    <mkdir dir="htmlbook"/>
-    <get src="https://github.com/oreillymedia/HTMLBook/archive/master.zip"
-         dest="htmlbook/" usetimestamp="true"/>
-    <unzip src="htmlbook/master.zip" dest="htmlbook" overwrite="no">
-      <patternset>
-        <include name="HTMLBook-master/htmlbook-xsl/*.xsl"/>
-        <include name="HTMLBook-master/LICENSE"/>
-      </patternset>
-    </unzip>
-    <fileset id="fs_tests" dir="htmlbook/HTMLBook-master/" includes="htmlbook-xsl/*.xsl"/>
-    <pathconvert property="tests" refid="fs_tests" pathsep=" "/>
-    <echo message="Parsing HTMLBook files..."/>
-    <java fork="yes" classname="fr.lsv.xpparser.Main" classpathref="classpath"
-          output="htmlbook.xpb" error="htmlbook.log">
-      <arg line="--xslt ${tests} --validate ${schemas}"/>
-    </java>
-    <copy file="htmlbook/HTMLBook-master/LICENSE" tofile="htmlbook.LICENSE"/>
+    <benchmark name="htmlbook"
+      src="https://github.com/oreillymedia/HTMLBook/archive/master.zip"
+      includes="HTMLBook-master/htmlbook-xsl/*.xsl" arg="--xslt"
+      license="HTMLBook-master/LICENSE"/>
   </target>
 </project>
