@@ -169,6 +169,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
             // (not in XPath but might contain some XPath inside)
         case JJTSTART:
         case JJTQUERYLIST:
+        case JJTLIBRARYMODULE:
         case JJTMODULE:
         case JJTMAINMODULE:
         case JJTQUERYBODY:
@@ -220,6 +221,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTCONTENTEXPR:            
         case JJTCOMPATTRCONSTRUCTOR:            
         case JJTCOMPNAMESPACECONSTRUCTOR:
+        case JJTINTERMEDIATECLAUSE:
         case JJTPREFIX:
         case JJTPREFIXEXPR:            
         case JJTURIEXPR:            
@@ -279,13 +281,11 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTELEMENTDECLARATION:
         case JJTANYFUNCTIONTEST:
         case JJTURILITERAL:
-        case JJTINTERMEDIATECLAUSE:
             return new NodeList(true, (List<SimpleNode>) data);
 
             // ignore children and return false:
             // (does not contain any XPath)
         case JJTVERSIONDECL:
-        case JJTLIBRARYMODULE:
         case JJTMODULEDECL:
         case JJTNAMESPACEDECL:
         case JJTANNOTATION:
@@ -440,7 +440,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTFUNCTIONQNAME: {
             // some built-in function names are not available in XPath
             if (node.m_value != null) {
-                if (node.m_value.equals("NaN")
+                /*if (node.m_value.equals("NaN")
                     || node.m_value.equals("after")
                     || node.m_value.equals("all")
                     || node.m_value.equals("allowing")
@@ -468,7 +468,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                     || node.m_value.equals("distance")
                     //|| node.m_value.equals("div")
                     || node.m_value.equals("document")
-                    || node.m_value.equals("empty")
+                    //|| node.m_value.equals("empty")
                     || node.m_value.equals("encoding")
                     || node.m_value.equals("end")
                     || node.m_value.equals("entire")
@@ -558,7 +558,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                     || node.m_value.equals("xquery")
                     || node.m_value.equals("zero-digit"))
                     return new NodeList(false, (List) data);
-                else
+                    else*/
                     return new NodeList(true, (List) data);
             }
             else
@@ -572,7 +572,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                 return new NodeList(false, nl.getList());                
             }
             else
-                return nonTransparentVisit(node, (List<SimpleNode>) data);
+                return visitChildren(node, (List<SimpleNode>) data);
         }
                 
         default:

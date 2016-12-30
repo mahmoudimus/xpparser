@@ -118,10 +118,13 @@ public abstract class XPathEntry {
                     (XMLConstants.DEFAULT_NS_PREFIX,
                      "valid", "yes");
             else {
+                String msg = result.getValue();
+                int i = msg.indexOf(':');
+                msg = msg.substring(i+1);
                 val.setAttributeNS
                     (XMLConstants.DEFAULT_NS_PREFIX,
                      "valid", "no");
-                val.appendChild(doc.createTextNode(result.getValue()));
+                val.appendChild(doc.createTextNode(msg));
             }
             xpath.appendChild(val);
         }
