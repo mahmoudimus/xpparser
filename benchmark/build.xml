@@ -29,6 +29,9 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       <java fork="yes" classname="fr.lsv.xpparser.Main"
             classpathref="classpath"
             output="@{name}.xml" error="@{name}.log">
+        <assertions><!-- this is ignored!!! -->
+          <enable/>
+        </assertions>
         <arg line="@{arg} ${tests} --validate ${schemas}"/>
       </java>
       <copy unless:blank="@{license}"
@@ -100,7 +103,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       includes="HTMLBook-master/htmlbook-xsl/*.xsl" arg="--xslt"
       license="HTMLBook-master/LICENSE"/>
   </target>
-
   
   
   <target name="marklogic">

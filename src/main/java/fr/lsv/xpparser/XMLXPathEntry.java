@@ -55,7 +55,10 @@ public class XMLXPathEntry extends XPathEntry {
         // parse `entry' to get an AST
         Reader r = new StringReader(entry);
         XParser parser = new XParser(r);
-        this.astnode = parser.START();        
+        this.astnode = parser.START();
+
+        // check that it's correctly identified as an XPath node
+        assert (XPathVisitor.visit(astnode).size() == 1);
 
         // recover the namespace information from the DOM
         String s = (String)domnode.getUserData
