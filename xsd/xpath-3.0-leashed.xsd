@@ -167,14 +167,14 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <!-- root and context-item expressions                                     -->
   <!-- rootExpr deleted per Bugzilla Bug #2523                               -->
-  <xsd:complexType name="contextItemExpr">
+  <!--xsd:complexType name="contextItemExpr">
     <xsd:complexContent>
       <xsd:extension base="expr"/>
     </xsd:complexContent>
   </xsd:complexType>
 
   <xsd:element name="contextItemExpr" type="contextItemExpr"
-               substitutionGroup="expr"/>
+               substitutionGroup="expr"/-->
 
 
   <!-- Simple map expressions                                                -->
@@ -182,7 +182,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <!--              operator                                                 -->
   <!-- 2013-09-27 - Changed definition of simpleMapExpr to allow multiple    -->
   <!--              path expressions                                         -->
-  <xsd:complexType name="simpleMapExpr">
+  <!--xsd:complexType name="simpleMapExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence minOccurs="2" maxOccurs="unbounded">
@@ -193,7 +193,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   </xsd:complexType>
 
   <xsd:element name="simpleMapExpr" type="simpleMapExpr"
-               substitutionGroup="expr"/>
+               substitutionGroup="expr"/-->
 
 
   <!-- Function call expressions                                             -->
@@ -215,7 +215,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
 
   <!-- Sequence expressions                                                  -->
-  <xsd:complexType name="sequenceExpr">
+  <!--xsd:complexType name="sequenceExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -225,7 +225,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:element name="sequenceExpr" type="sequenceExpr" substitutionGroup="expr"/>
+  <xsd:element name="sequenceExpr" type="sequenceExpr" substitutionGroup="expr"/-->
 
 
   <xsd:complexType name="rangeSequenceExpr">
@@ -405,18 +405,18 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <!-- By changing the type attribute from QName to EQName, this is now      -->
   <!-- atomicOrUnionType.  However, for backwards compatibility w/XQueryX    -->
   <!-- 1.0, the name had to stay the same                                    -->
-  <xsd:element name="atomicType" type="EQName" substitutionGroup="itemType"/>
+  <!--xsd:element name="atomicType" type="EQName" substitutionGroup="itemType"/-->
 
 
   <!-- Used in castable expression and cast expression                       -->
-  <xsd:complexType name="singleType">
+  <!--xsd:complexType name="singleType">
     <xsd:sequence>
       <xsd:element ref="atomicType"/>
       <xsd:element name="optional" type="emptyContent" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:element name="singleType" type="singleType"/>
+  <xsd:element name="singleType" type="singleType"/-->
 
 
   <!-- Item type schema types and elements                                   -->
@@ -438,7 +438,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
 
   <!-- Sequence type                                                         -->
-  <xsd:complexType name="sequenceType">
+  <!--xsd:complexType name="sequenceType">
     <xsd:choice>
       <xsd:element name="voidSequenceType" type="emptyContent"/>
       <xsd:sequence>
@@ -451,14 +451,14 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <xsd:element name="sequenceType" type="sequenceType"/>
 
-  <xsd:element name="typeDeclaration" type="sequenceType"/>
+  <xsd:element name="typeDeclaration" type="sequenceType"/-->
 
 
   <!-- Represents a "typed" variable (for clause, let clause etc)            -->
   <xsd:complexType name="typedVariableBinding">
     <xsd:sequence>
       <xsd:element name="varName" type="EQName"/>
-      <xsd:element ref="typeDeclaration" minOccurs="0"/>
+      <!--xsd:element ref="typeDeclaration" minOccurs="0"/-->
     </xsd:sequence>
   </xsd:complexType>
 
@@ -594,7 +594,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
                substitutionGroup="expr"/>
 
   <!-- instance-of expressions                                                -->
-  <xsd:complexType name="instanceOfExpr">
+  <!--xsd:complexType name="instanceOfExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -606,11 +606,11 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   </xsd:complexType>
 
   <xsd:element name="instanceOfExpr" type="instanceOfExpr"
-               substitutionGroup="expr"/>
+               substitutionGroup="expr"/-->
 
 
   <!-- treat-as expressions                                                               -->
-  <xsd:complexType name="treatExpr">
+  <!--xsd:complexType name="treatExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -622,11 +622,11 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   </xsd:complexType>
 
   <xsd:element name="treatExpr" type="treatExpr"
-               substitutionGroup="expr"/>
+               substitutionGroup="expr"/-->
 
 
   <!-- castable and cast expressions                                                      -->
-  <xsd:complexType name="castableExpr">
+  <!--xsd:complexType name="castableExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -653,7 +653,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   </xsd:complexType>
 
   <xsd:element name="castExpr" type="castExpr"
-               substitutionGroup="expr"/>
+               substitutionGroup="expr"/-->
 
   <!-- function item expressions                                                          -->
   <!-- literal function item expression                                                   -->
@@ -676,7 +676,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <!-- inline function item expression                                                    -->
   <!-- 2011-09-09/JM - Added annotations to inline functions                              -->
   <!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"           -->
-  <xsd:complexType name="inlineFunctionExpr">
+  <!--xsd:complexType name="inlineFunctionExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -688,12 +688,12 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:element name="inlineFunctionExpr" type="inlineFunctionExpr" substitutionGroup="expr"/>
+  <xsd:element name="inlineFunctionExpr" type="inlineFunctionExpr" substitutionGroup="expr"/-->
 
 
   <!-- dynamic function invocations                                                       -->
   <!-- 2010-06-23 - Added support for partial function application                        -->
-  <xsd:complexType name="dynamicFunctionInvocationExpr">
+  <!--xsd:complexType name="dynamicFunctionInvocationExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -711,7 +711,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:element name="dynamicFunctionInvocationExpr" type="dynamicFunctionInvocationExpr" substitutionGroup="expr"/>
+  <xsd:element name="dynamicFunctionInvocationExpr" type="dynamicFunctionInvocationExpr" substitutionGroup="expr"/-->
 
 
   <!-- wildcards                                                                          -->
@@ -913,10 +913,10 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
       <xsd:element ref="varRef"/>
       <xsd:element ref="contextItemExpr"/>
       <xsd:element ref="functionCallExpr"/>
-      <xsd:element ref="sequenceExpr"/>
+      <!--<xsd:element ref="sequenceExpr"/>-->
       <xsd:element ref="namedFunctionRef"/>
-      <xsd:element ref="inlineFunctionExpr"/>
-      <xsd:element ref="dynamicFunctionInvocationExpr"/>
+      <!--<xsd:element ref="inlineFunctionExpr"/>-->
+      <!--<xsd:element ref="dynamicFunctionInvocationExpr"/>-->
     </xsd:choice>
   </xsd:group>
 
@@ -968,12 +968,31 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <xsd:element name="pathExpr" type="pathExpr" substitutionGroup="expr"/>
 
+
+<!-- The following constructs deal with the query prolog -->
+  <!--xsd:complexType name="module">
+    <xsd:sequence>
+      <xsd:element ref="mainModule"/> 
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="module" type="module"/>
+
+  <xsd:complexType name="mainModule">
+    <xsd:sequence>
+      <xsd:element name="queryBody" type="exprWrapper"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="mainModule" type="mainModule"/>
+  <xsd:element name="queryBody" type="exprWrapper"/-->
+
 <!-- there is a phrase with diff of chg after sequence and endphrase        -->
 <!--  before typedeclaration                                                -->
   <xsd:complexType name="param">
     <xsd:sequence>
       <xsd:element name="varName" type="EQName"/>
-      <xsd:element ref="typeDeclaration" minOccurs="0"/>
+      <!--xsd:element ref="typeDeclaration" minOccurs="0"/-->
     </xsd:sequence>
   </xsd:complexType>
 

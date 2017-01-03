@@ -66,13 +66,13 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <target name="w3c">
     <benchmark name="w3c"
        src="https://dev.w3.org/2011/QT3-test-suite/releases/QT3_1_0.zip"
-       includes="QT3_1_0/prod/*.xml" arg="--xml '/test-set/test-case/test'"/>
+       includes="QT3_1_0/*/*.xml,QT3_1_0/*/*/*.xml" arg="--xml &quot;//*[local-name() = 'test' and preceding-sibling::*[local-name() = 'dependency' and @type='spec' and starts-with(@value,'XP')]]&quot;"/>
   </target>
 
   <!-- XPathMark -->
   <target name="xpathmark">
     <benchmark name="xpathmark"
-      src="https://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
+      src="http://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
       includes="xpath-pt/xpath/*.xpl" arg="--xquery ../xqx2xql.xsl"/>
   </target>
 
