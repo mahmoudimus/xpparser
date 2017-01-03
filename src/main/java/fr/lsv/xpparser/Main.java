@@ -16,6 +16,7 @@ package fr.lsv.xpparser;
 import java.util.*;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.MalformedInputException;
 import java.nio.file.*;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -188,7 +189,7 @@ public class Main {
                         (progname +": "+ source.getKey()
                          +": could not parse as XQuery:");
                     System.err.println(e.getMessage());
-                } catch (SAXParseException|FileNotFoundException e) {
+                } catch (SAXParseException|FileNotFoundException|MalformedInputException e) {
                     // error parsing an XML file
                     System.err.println
                         (progname +": "+ source.getKey() 

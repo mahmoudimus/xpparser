@@ -167,14 +167,14 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <!-- root and context-item expressions                                     -->
   <!-- rootExpr deleted per Bugzilla Bug #2523                               -->
-  <!--xsd:complexType name="contextItemExpr">
+  <xsd:complexType name="contextItemExpr">
     <xsd:complexContent>
       <xsd:extension base="expr"/>
     </xsd:complexContent>
   </xsd:complexType>
 
   <xsd:element name="contextItemExpr" type="contextItemExpr"
-               substitutionGroup="expr"/-->
+               substitutionGroup="expr"/>
 
 
   <!-- Simple map expressions                                                -->
@@ -215,7 +215,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
 
   <!-- Sequence expressions                                                  -->
-  <!--xsd:complexType name="sequenceExpr">
+  <xsd:complexType name="sequenceExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
@@ -225,7 +225,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:element name="sequenceExpr" type="sequenceExpr" substitutionGroup="expr"/-->
+  <xsd:element name="sequenceExpr" type="sequenceExpr" substitutionGroup="expr"/>
 
 
   <xsd:complexType name="rangeSequenceExpr">
@@ -438,7 +438,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
 
   <!-- Sequence type                                                         -->
-  <!--xsd:complexType name="sequenceType">
+  <xsd:complexType name="sequenceType">
     <xsd:choice>
       <xsd:element name="voidSequenceType" type="emptyContent"/>
       <xsd:sequence>
@@ -451,7 +451,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <xsd:element name="sequenceType" type="sequenceType"/>
 
-  <xsd:element name="typeDeclaration" type="sequenceType"/-->
+  <!--xsd:element name="typeDeclaration" type="sequenceType"/-->
 
 
   <!-- Represents a "typed" variable (for clause, let clause etc)            -->
@@ -913,7 +913,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
       <xsd:element ref="varRef"/>
       <xsd:element ref="contextItemExpr"/>
       <xsd:element ref="functionCallExpr"/>
-      <!--<xsd:element ref="sequenceExpr"/>-->
+      <xsd:element ref="sequenceExpr"/>
       <xsd:element ref="namedFunctionRef"/>
       <!--<xsd:element ref="inlineFunctionExpr"/>-->
       <!--<xsd:element ref="dynamicFunctionInvocationExpr"/>-->

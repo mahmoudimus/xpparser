@@ -15,6 +15,9 @@ package fr.lsv.xpparser;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import org.w3c.dom.Node;
@@ -58,7 +61,20 @@ public class XMLXPathEntry extends XPathEntry {
         this.astnode = parser.START();
 
         // check that it's correctly identified as an XPath node
-        assert (XPathVisitor.visit(astnode).size() == 1);
+        boolean assertsEnabled = false;
+        assert assertsEnabled = true;
+        if (assertsEnabled) {
+            List<SimpleNode> check = XPathVisitor.visit(astnode);
+            if (check.size() != 1)
+                {
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    PrintStream ps = new PrintStream(os);
+                    astnode.dump("  ", ps);
+                    throw new ParseException("Multiple XPath expressions found: "
+                                             +check.toString()
+                                             +"; AST:"+os.toString());
+                }
+        }
 
         // recover the namespace information from the DOM
         String s = (String)domnode.getUserData
