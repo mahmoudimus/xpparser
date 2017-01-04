@@ -92,7 +92,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   [99] ElementName 	  ::=  EQName
   -->
   <xsd:element name="schemaElementTest" type="EQName"
-               substitutionGroup="anyElementTest"/>
+               substitutionGroup="kindTest"/>
 
   <!--
   [83] KindTest             ::=  SchemaAttributeTest

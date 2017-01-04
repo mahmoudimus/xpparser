@@ -12,7 +12,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             attributeFormDefault="qualified">
   
   <!-- for sequence types -->
-  <xsd:include shcemaLocation="../misc/types.xsd"/>
+  <xsd:include schemaLocation="misc/types.xsd"/>
   
   <!-- instance-of expressions                                                -->
   <xsd:complexType name="instanceOfExpr">

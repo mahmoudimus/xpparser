@@ -11,8 +11,49 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
 
+  <!-- Function names -->
+  <xsd:include schemaLocation="./fn/any.xsd"/>
+  
+  <!-- Arithmetic operator expressions -->
+  <xsd:include schemaLocation="op/arith.xsd"/>
+  
+  <!-- String operator expressions -->
+  <xsd:include schemaLocation="op/string.xsd"/>
 
-  <!-- A few helper declarations -->
+  <!-- Equality comparison expressions -->
+  <xsd:include schemaLocation="op/eq.xsd"/>
+  
+  <!-- Order comparison expressions -->
+  <xsd:include schemaLocation="op/order.xsd"/>
+
+  <!-- Node comparison operator expressions -->
+  <xsd:include schemaLocation="op/hy.xsd"/>
+
+  <!-- Step expressions -->
+  <xsd:include schemaLocation="misc/tests.xsd"/>
+  <xsd:include schemaLocation="ax/all.xsd"/>
+
+  <!-- Filter expressions -->
+  <xsd:include schemaLocation="misc/constants.xsd"/>
+  <xsd:include schemaLocation="fn/dyn.xsd"/>
+  <xsd:include schemaLocation="fn/item.xsd"/>
+
+  <!-- `for' and `let' expressions:
+  [7] ExprSingle  ::=  ForExpr | LetExpr -->
+  <xsd:include schemaLocation="expr/flwor.xsd"/>
+  
+  <!-- quantified expressions:
+  [7] ExprSingle  ::=  QuantifiedExpr -->
+  <xsd:include schemaLocation="expr/quant.xsd"/>
+
+  <!-- `treat as' and `instance of' expressions -->
+  <xsd:include schemaLocation="expr/instance.xsd"/>
+  
+  <!-- `castable as' and `cast as' expressions -->
+  <xsd:include schemaLocation="expr/cast.xsd"/>
+
+  <!--============================================================
+       A few helper declarations -->
   <xsd:complexType name="emptyContent"/>
   
   <xsd:element name="NCName" type="xsd:NCName"/>
@@ -86,9 +127,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
                substitutionGroup="expr"/>
 
   <!--================================================================
-       Function call expressions                                             -->
-  <xsd:include schemaLocation="fn/any.xsd"/>
-  
+       Function call expressions                                             -->  
   <!-- 2010-06-23 - Added support for partial function application           -->
   <xsd:complexType name="functionCallExpr">
     <xsd:complexContent>
@@ -159,22 +198,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <!-- General comparison operator expressions -->
   <xsd:element name="generalComparisonOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
-  
-  <!-- Arithmetic operator expressions -->
-  <xsd:include schemaLocation="op/arith.xsd"/>
-  
-  <!-- String operator expressions -->
-  <xsd:include schemaLocation="op/string.xsd"/>
-
-  <!-- Equality comparison expressions -->
-  <xsd:include schemaLocation="op/eq.xsd"/>
-  
-  <!-- Order comparison expressions -->
-  <xsd:include schemaLocation="op/order.xsd"/>
-
-  <!-- Node comparison operator expressions -->
-  <xsd:include schemaLocation="op/hy.xsd"/>
-  
+    
   <!-- Logical operator expressions -->
   <xsd:element name="logicalOp" type="binaryOperatorExpr"
                abstract="true" substitutionGroup="operatorExpr"/>
@@ -239,9 +263,6 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <!--   dynamicFunctionInvocation for higher-order functions                  -->
   <!-- 2011-11-21: Jim changed "literalFunctionItemExpr" to "namedFunctionRef" -->
   <!-- 2011-11-21: Jim changed "inlineFunctionItemExpr" to "inlineFunctionExpr"-->
-  <xsd:include schemaLocation="misc/constants.xsd"/>
-  <xsd:include schemaLocation="fn/dyn.xsd"/>
-  <xsd:include schemaLocation="fn/item.xsd"/>
   <xsd:group name="filterExpr">
     <xsd:choice>
       <xsd:element ref="constantExpr"/>    <!-- in misc/constants.xsd -->
@@ -257,10 +278,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
 
   <!-- =================================================================
-       step expression                                                         -->
-  <xsd:include schemaLocation="misc/tests.xsd"/>
-  <xsd:include schemaLocation="ax/all.xsd"/>
-  
+       step expression                                                         -->  
   <xsd:complexType name="stepExpr">
     <xsd:sequence>
       <xsd:choice>
@@ -332,21 +350,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   </xsd:complexType>
 
   <xsd:element name="rangeSequenceExpr" type="rangeSequenceExpr"
-               substitutionGroup="expr"/>
-
-  <!-- `for' and `let' expressions:
-  [7] ExprSingle  ::=  ForExpr | LetExpr -->
-  <xsd:include schemaLocation="expr/flwor.xsd"/>
-  
-  <!-- quantified expressions:
-  [7] ExprSingle  ::=  QuantifiedExpr -->
-  <xsd:include schemaLocation="expr/quant.xsd"/>
-
-  <!-- `treat as' and `instance of' expressions -->
-  <xsd:include schemaLocation="expr/instance.xsd"/>
-  
-  <!-- `castable as' and `cast as' expressions -->
-  <xsd:include schemaLocation="expr/cast.xsd"/>  
+               substitutionGroup="expr"/>  
   
   <!-- Simple map expressions                                                -->
   <!-- 2012-06-15 - Changed precedence and precise grammar for simple map    -->

@@ -15,7 +15,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             attributeFormDefault="qualified">
   
   <!-- for typed variable bindings -->
-  <xsd:include schemaLocation="../misc/var.xsd"/>
+  <xsd:include schemaLocation="misc/var.xsd"/>
   
   <!-- This is the XQueryX syntax for `for' and `let' expressions
        [8]  ForExpr  ::=  SimpleForClause "return" ExprSingle

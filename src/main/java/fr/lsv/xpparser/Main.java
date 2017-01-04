@@ -151,7 +151,7 @@ public class Main {
                     validator.addSchema(schema.getKey(), schema.getValue());
                 } catch (SAXParseException e) {
                     System.err.println(progname +": "+ schema.getKey() 
-                                       +":could not parse XML Schema:");
+                                       +": could not parse XML Schema:");
                     System.err.println(e.getMessage());
                 }
             sf.setValidator(validator);
@@ -230,10 +230,21 @@ public class Main {
      * @param filename The path to the file to open.
      * @return A handle on the file.
      */
-    private static BufferedReader getInput(String filename)
+    public static BufferedReader getInput(String filename)
         throws IOException {
         
-        Path path = Paths.get(filename);
+        return getInput(Paths.get(filename));
+    }
+    
+    /**
+     * Open a file while performing various checks and error
+     * reporting.
+     * @param filename The path to the file to open.
+     * @return A handle on the file.
+     */
+    public static BufferedReader getInput(Path path)
+        throws IOException {
+        
         BufferedReader br = null;
         /* should we use MIME/types? */
         //System.out.println(path.toString()+":

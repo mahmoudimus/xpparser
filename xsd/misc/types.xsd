@@ -16,8 +16,14 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             targetNamespace="http://www.w3.org/2005/XQueryX"
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
+  
+  <!-- [81]  ItemType ::=  KindTest -->
+  <xsd:include schemaLocation="misc/tests.xsd"/>
 
   <xsd:complexType name="emptyItemTypeContent"/>
+
+  <xsd:element name="anyItemType" type="emptyItemTypeContent"
+               substitutionGroup="itemType"/>
   
   <!-- [78] TypeDeclaration  ::=  "as" SequenceType -->
   <xsd:element name="typeDeclaration" type="sequenceType"/>
@@ -44,11 +50,6 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
       <xsd:enumeration value="+"/>
     </xsd:restriction>
   </xsd:simpleType>
-
-  
-  <!-- [81]  ItemType ::=  KindTest -->
-  <xsd:include schemaLocation="tests.xsd"/>
-
   
   <!-- [81]  ItemType         ::=  FunctionTest
        [102] FunctionTest     ::=  AnyFunctionTest

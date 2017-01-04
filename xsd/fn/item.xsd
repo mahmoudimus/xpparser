@@ -13,7 +13,8 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   
   <!-- there is a phrase with diff of chg after sequence and endphrase        -->
   <!--  before typedeclaration                                                -->
-  <xsd:include schemaLocation="../misc/types.xsd"/>
+  <xsd:include schemaLocation="misc/types.xsd"/>
+  
   <xsd:complexType name="param">
     <xsd:sequence>
       <xsd:element name="varName" type="EQName"/>

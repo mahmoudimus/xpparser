@@ -15,6 +15,8 @@ package fr.lsv.xpparser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +27,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 import javax.xml.validation.SchemaFactory;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 
@@ -52,7 +56,27 @@ public class XMLValidator {
      */
     public void addSchema (String filename, Reader schema)
         throws SAXException {
-        
+
+        final Path path = Paths.get(filename);
+        this.sf.setResourceResolver(new LSResourceResolver () {
+                @Override
+                public LSInput resolveResource(String type,
+                                               String namespaceURI,
+                                               String publicId,
+                                               String systemId,
+                                               String baseURI) {
+        // The base resource that includes this current resource
+                    Path resourcePath =
+                        path.resolveSibling(systemId).normalize();
+                    try {
+                        return new LSInputImpl(publicId, systemId,
+                                               Main.getInput(resourcePath));
+                    } catch (IOException e) {
+                        System.err.println(e.toString());
+                        return null;
+                    }
+                }
+            });
         schemas.add(new AbstractMap.SimpleEntry
                     (filename, 
                      sf.newSchema(new StreamSource(schema)).newValidator()));
