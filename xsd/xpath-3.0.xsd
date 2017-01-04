@@ -12,7 +12,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             attributeFormDefault="qualified">
 
   <!-- Function names -->
-  <xsd:include schemaLocation="./fn/any.xsd"/>
+  <xsd:include schemaLocation="fn/any.xsd"/>
   
   <!-- Arithmetic operator expressions -->
   <xsd:include schemaLocation="op/arith.xsd"/>
