@@ -41,7 +41,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
-          <xsd:element ref="functionName"/>
+          <xsd:element name="functionName" type="EQName"/>
           <xsd:element name="integerConstantExpr" type="integerConstantExpr"/>
         </xsd:sequence>
       </xsd:extension>

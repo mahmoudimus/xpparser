@@ -13,5 +13,10 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
   
-  <xsd:element name="functionName" type="EQName"/>
+  <xsd:complexType name="anyFunction">
+    <xsd:complexContent>
+      <xsd:extension base="EQName"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
 </xsd:schema>

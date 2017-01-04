@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <!--
+Function names for XPath.
+
 This software or document includes material copied from or derived 
 from the XQueryX 3.0 W3C Recommendation of 08 April 2014
 (https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
@@ -11,15 +13,13 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
 
-  <xsd:element name="eqOp" type="comparisonOp"
-               substitutionGroup="valueComparisonOp"/>
-
-  <xsd:element name="neOp" type="comparisonOp"
-               substitutionGroup="valueComparisonOp"/>
-
-  <xsd:element name="equalOp" type="comparisonOp"
-               substitutionGroup="generalComparisonOp"/>
-
-  <xsd:element name="notEqualOp" type="comparisonOp"
-               substitutionGroup="generalComparisonOp"/>
+  <xsd:simpleType name="boolFunction">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="true"/>
+      <xsd:enumeration value="false"/>
+      <xsd:enumeration value="boolean"/>
+      <xsd:enumeration value="not"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
 </xsd:schema>

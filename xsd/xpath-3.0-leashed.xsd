@@ -118,33 +118,20 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
   <xsd:element name="ifThenElseExpr" type="ifThenElseExpr" 
                substitutionGroup="expr"/>
 
-  <!--================================================================
-       Function call expressions                                             -->  
-  <!-- 2010-06-23 - Added support for partial function application           -->
-  <xsd:complexType name="functionCallExpr">
+  
+  <!-- ====================================================================
+       Sequence expressions                                                  -->
+  <xsd:complexType name="sequenceExpr">
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
-          <xsd:element ref="functionName"/> <!-- in fn/*.xsd -->
-          <xsd:element name="arguments" type="exprOrPlaceholderList"
-                       minOccurs="0"/>
+          <xsd:element ref="expr" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <xsd:element name="functionCallExpr" type="functionCallExpr"
-               substitutionGroup="expr"/>
-  
-  <!-- A list of expressions or placeholders                                 -->
-  <!-- 2010-06-23 - Added support for partial function application           -->
-  <xsd:complexType name="exprOrPlaceholderList">
-    <xsd:sequence>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="expr"/>
-        <xsd:element name="argumentPlaceholder" type="emptyContent"/>
-      </xsd:choice>
-    </xsd:sequence>
-  </xsd:complexType>
+
+  <xsd:element name="sequenceExpr" type="sequenceExpr" substitutionGroup="expr"/>
 
   <!-- =======================================================================
        Builtin operator expressions -->
@@ -180,15 +167,20 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
                abstract="true" substitutionGroup="expr"/>
   
   <!-- Comparison operator expressions -->
-  <xsd:element name="comparisonOp" type="binaryOperatorExpr" abstract="true"
+  <xsd:complexType name="comparisonOp">
+    <xsd:complexContent>
+      <xsd:extension base="binaryOperatorExpr"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="comparisonOp" type="comparisonOp" abstract="true"
                substitutionGroup="operatorExpr"/>
   
   <!-- Value comparison operator expressions -->
-  <xsd:element name="valueComparisonOp" type="binaryOperatorExpr"
+  <xsd:element name="valueComparisonOp" type="comparisonOp"
                abstract="true" substitutionGroup="operatorExpr"/>
   
   <!-- General comparison operator expressions -->
-  <xsd:element name="generalComparisonOp" type="binaryOperatorExpr"
+  <xsd:element name="generalComparisonOp" type="comparisonOp"
                abstract="true" substitutionGroup="operatorExpr"/>
     
   <!-- Logical operator expressions -->
@@ -248,6 +240,34 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
 
   <xsd:element name="Wildcard" type="Wildcard"/>
 
+  
+  <!--================================================================
+       Function call expressions                                           -->  
+  <!-- 2010-06-23 - Added support for partial function application         -->
+  <xsd:complexType name="functionCallExpr">
+    <xsd:complexContent>
+      <xsd:extension base="expr">
+        <xsd:sequence>
+          <xsd:element name="functionName" type="anyFunction"/>
+          <xsd:element name="arguments" type="exprOrPlaceholderList"
+                       minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="functionCallExpr" type="functionCallExpr"
+               substitutionGroup="expr"/>
+  
+  <!-- A list of expressions or placeholders                               -->
+  <!-- 2010-06-23 - Added support for partial function application         -->
+  <xsd:complexType name="exprOrPlaceholderList">
+    <xsd:sequence>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="expr"/>
+        <xsd:element name="argumentPlaceholder" type="emptyContent"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
 
   <!-- =====================================================================
        filter expressions  -->
@@ -257,12 +277,12 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
       <xsd:element ref="varRef"/>          <!-- in misc/constants.xsd -->
       <xsd:element ref="contextItemExpr"/> <!-- in misc/constants.xsd -->
       <xsd:element ref="functionCallExpr"/>
+      <xsd:element ref="sequenceExpr"/>
     </xsd:choice>
   </xsd:group>
 
-
   <!-- =================================================================
-       step expression                                                         -->  
+       step expression                                                     -->  
   <xsd:complexType name="stepExpr">
     <xsd:sequence>
       <xsd:choice>

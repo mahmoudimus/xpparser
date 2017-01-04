@@ -11,27 +11,27 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             elementFormDefault="qualified"
             attributeFormDefault="qualified">
 
-  <xsd:element name="gtOp" type="binaryOperatorExpr"
+  <xsd:element name="gtOp" type="comparisonOp"
                substitutionGroup="valueComparisonOp"/>
 
-  <xsd:element name="geOp" type="binaryOperatorExpr"
+  <xsd:element name="geOp" type="comparisonOp"
                substitutionGroup="valueComparisonOp"/>
 
-  <xsd:element name="ltOp" type="binaryOperatorExpr"
+  <xsd:element name="ltOp" type="comparisonOp"
                substitutionGroup="valueComparisonOp"/>
 
-  <xsd:element name="leOp" type="binaryOperatorExpr"
+  <xsd:element name="leOp" type="comparisonOp"
                substitutionGroup="valueComparisonOp"/>
 
-  <xsd:element name="lessThanOp" type="binaryOperatorExpr"
+  <xsd:element name="lessThanOp" type="comparisonOp"
                substitutionGroup="generalComparisonOp"/>
 
-  <xsd:element name="lessThanOrEqualOp" type="binaryOperatorExpr"
+  <xsd:element name="lessThanOrEqualOp" type="comparisonOp"
                substitutionGroup="generalComparisonOp"/>
 
-  <xsd:element name="greaterThanOp" type="binaryOperatorExpr"
+  <xsd:element name="greaterThanOp" type="comparisonOp"
                substitutionGroup="generalComparisonOp"/>
 
-  <xsd:element name="greaterThanOrEqualOp" type="binaryOperatorExpr"
+  <xsd:element name="greaterThanOrEqualOp" type="comparisonOp"
                substitutionGroup="generalComparisonOp"/>
 </xsd:schema>
