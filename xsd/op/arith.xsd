@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <!-- Arithmetic operator expressions -->
+  <xsd:element name="arithmeticOp" type="operatorExpr"
+               abstract="true" substitutionGroup="operatorExpr"/>
+
+  <xsd:element name="addOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="subtractOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="multiplyOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="divOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="idivOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="modOp" type="binaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="unaryMinusOp" type="unaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+
+  <xsd:element name="unaryPlusOp" type="unaryOperatorExpr"
+               substitutionGroup="arithmeticOp"/>
+</xsd:schema>

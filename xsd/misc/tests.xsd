@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!--
+XQueryX fragment corresponding to XPath tests.
+
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+  
+  <!-- for convenience -->
+  <xsd:complexType name="emptyTestContent"/>
+  
+  <!-- Used by:
+  [46] 	NodeTest         ::=  KindTest | NameTest
+  -->
+  <xsd:element name="nameTest" type="EQName"/>
+
+  <!-- Used by:
+  [46] 	NodeTest         ::=  KindTest | NameTest 
+  [81] 	ItemType         ::=  KindTest
+  -->
+  <xsd:element name="kindTest" substitutionGroup="itemType"/>
+  
+  <!--
+  [83] KindTest           ::= 	DocumentTest
+  [85] DocumentTest       ::=  "document-node" "(" (ElementTest | SchemaElementTest)? ")"
+  -->
+  <xsd:element name="documentTest" type="documentTest"
+               substitutionGroup="kindTest"/>
+  <xsd:complexType name="documentTest">
+    <xsd:complexContent>
+      <xsd:extension base="emptyTestContent">
+        <xsd:choice minOccurs="0">
+          <xsd:element ref="elementTest"/>
+          <xsd:element ref="schemaElementTest"/>
+        </xsd:choice>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!--
+  [83] KindTest              ::=  ElementTest
+  [94] ElementTest           ::=  "element" "(" (ElementNameOrWildcard ("," TypeName "?"?)?)? ")" 	
+  [95] ElementNameOrWildcard ::=  ElementName | "*"
+  [99] ElementName 	     ::=  EQName
+  [101]	TypeName 	     ::=  EQName 
+  -->  
+  <xsd:element name="elementTest" type="elementTest"
+               substitutionGroup="kindTest"/>
+  <xsd:complexType name="elementTest">
+    <xsd:complexContent>
+      <xsd:extension base="emptyTestContent">
+        <xsd:sequence minOccurs="0">
+          <xsd:element name="elementName" type="simpleWildcard"/>
+          <xsd:sequence minOccurs="0">
+            <xsd:element name="typeName" type="EQName"/>
+            <xsd:element name="nillable" type="emptyContent" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!--
+  [83] KindTest             ::=  AttributeTest
+  [90] AttributeTest        ::=  "attribute" "(" (AttribNameOrWildcard ("," TypeName)?)? ")" 	
+  [91] AttribNameOrWildcard ::=	 AttributeName | "*"
+  -->
+  <xsd:element name="attributeTest" type="attributeTest"
+               substitutionGroup="kindTest"/>
+  <xsd:complexType name="attributeTest">
+    <xsd:complexContent>
+      <xsd:extension base="emptyTestContent">
+        <xsd:sequence minOccurs="0">
+          <xsd:element name="attributeName" type="simpleWildcard"/>
+          <xsd:element name="typeName" type="EQName" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!--  
+  [83] KindTest           ::=  SchemaElementTest
+  [96] SchemaElementTest  ::=  "schema-element" "(" ElementDeclaration ")"		
+  [97] ElementDeclaration ::=  ElementName  
+  [99] ElementName 	  ::=  EQName
+  -->
+  <xsd:element name="schemaElementTest" type="EQName"
+               substitutionGroup="anyElementTest"/>
+
+  <!--
+  [83] KindTest             ::=  SchemaAttributeTest
+  [92] SchemaAttributeTest  ::=  "schema-attribute" "(" AttributeDeclaration ")"
+  [93] AttributeDeclaration ::=  AttributeName 
+  [98] AttributeName 	    ::=  EQName
+  -->
+  <xsd:element name="schemaAttributeTest" type="EQName"
+               substitutionGroup="kindTest"/>
+  
+  <!--
+  [83] KindTest           ::= 	PITest
+  [89] PITest             ::=  "processing-instruction" "(" (NCName | StringLiteral)? ")"
+  -->
+  <xsd:element name="piTest" type="piTest"
+               substitutionGroup="kindTest"/>
+  <xsd:complexType name="piTest">
+    <xsd:complexContent>
+      <xsd:extension base="emptyTestContent">
+        <xsd:sequence>
+          <xsd:element name="piTarget" type="xsd:NCName" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!--
+  [83] KindTest           ::= 	CommentTest
+  [87] CommentTest        ::=  "comment" "(" ")"
+  -->
+  <xsd:element name="commentTest" type="emptyTestContent"
+               substitutionGroup="kindTest"/>
+
+  <!-- 
+  [83] KindTest           ::= 	TextTest         
+  [86] TextTest           ::=  "text" "(" ")"
+  -->
+  <xsd:element name="textTest" type="emptyTestContent"
+               substitutionGroup="kindTest"/>
+  
+  <!--
+  [83] KindTest           ::= 	NamespaceNodeTest
+  [88] NamespaceNodeTest  ::=  "namespace-node" "(" ")"
+  -->
+  <xsd:element name="namespaceTest" type="emptyTestContent"
+               substitutionGroup="kindTest"/>
+
+  <!-- 
+  [83] KindTest           ::=  AnyKindTest
+  [84] AnyKindTest        ::=  "node" "(" ")"
+  -->
+  <xsd:element name="anyKindTest" type="emptyTestContent"
+               substitutionGroup="kindTest"/>
+</xsd:schema>

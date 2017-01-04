@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+XPath types.  We need those in a few places:
+[3]  Param 	      ::=  "$" EQName TypeDeclaration?
+[25] InstanceofExpr   ::=  TreatExpr ( "instance" "of" SequenceType )? 	
+[26] TreatExpr 	      ::=  CastableExpr ( "treat" "as" SequenceType )? 
+[78] TypeDeclaration  ::=  "as" SequenceType 	
+
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <xsd:complexType name="emptyItemTypeContent"/>
+  
+  <!-- [78] TypeDeclaration  ::=  "as" SequenceType -->
+  <xsd:element name="typeDeclaration" type="sequenceType"/>
+  
+  <!-- [79] SequenceType  ::=  ("empty-sequence" "(" ")")
+                             | (ItemType OccurrenceIndicator?) -->
+  <xsd:complexType name="sequenceType">
+    <xsd:choice>
+      <xsd:element name="voidSequenceType" type="emptyContent"/>
+      <xsd:sequence>
+        <xsd:element ref="itemType"/>
+        <xsd:element name="occurrenceIndicator" type="occurrenceIndicator"
+                     minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:element name="sequenceType" type="sequenceType"/>
+
+  <!-- [80] OccurrenceIndicator  ::=  "?" | "*" | "+" -->
+  <xsd:simpleType name="occurrenceIndicator">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="?"/>
+      <xsd:enumeration value="*"/>
+      <xsd:enumeration value="+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  
+  <!-- [81]  ItemType ::=  KindTest -->
+  <xsd:include schemaLocation="tests.xsd"/>
+
+  
+  <!-- [81]  ItemType         ::=  FunctionTest
+       [102] FunctionTest     ::=  AnyFunctionTest
+       [103] AnyFunctionTest  ::=  "function" "(" "*" ")" -->
+  <xsd:element name="anyFunctionTest" type="emptyItemTypeContent"
+               substitutionGroup="itemType"/>
+
+  <!-- 2012-09-07: Jim added annotation support -->
+  <!-- [81]  ItemType           ::=  FunctionTest
+       [102] FunctionTest       ::=  TypedFunctionTest
+       [104] TypedFunctionTest 	::=  "function" "("
+                                     (SequenceType ("," SequenceType)*)?
+                                     ")" "as" SequenceType 	 -->
+  <xsd:complexType name="typedFunctionTest">
+    <xsd:complexContent>
+      <xsd:extension base="emptyItemTypeContent">
+        <xsd:sequence>
+          <xsd:element ref="paramTypeList" minOccurs="0"/>
+          <xsd:element ref="sequenceType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>  
+  <xsd:element name="typedFunctionTest" type="typedFunctionTest"
+               substitutionGroup="itemType"/>
+  
+  <xsd:complexType name="paramTypeList">
+    <xsd:sequence>
+      <xsd:element ref="sequenceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="paramTypeList" type="paramTypeList"/>
+
+  <!-- [81]  ItemType 	            ::=  ParenthesizedItemType	
+       [111] ParenthesizedItemType  ::=  "(" ItemType ")" -->
+  <xsd:complexType name="parenthesizedItemType">
+    <xsd:complexContent>
+      <xsd:extension base="emptyItemTypeContent">
+        <xsd:sequence>
+          <xsd:element ref="itemType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="parenthesizedItemType" type="parenthesizedItemType"
+               substitutionGroup="itemType"/>
+</xsd:schema>

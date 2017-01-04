@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--
+XPath axes.
+
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <!--
+  [41]    	ForwardAxis 	   ::=    	("child" "::")
+                                              | ("descendant" "::")
+                                              | ("attribute" "::")
+                                              | ("self" "::")
+                                              | ("descendant-or-self" "::")
+                                              | ("following-sibling" "::")
+                                              | ("following" "::")
+                                              | ("namespace" "::") 	
+  [44]    	ReverseAxis 	   ::=    	("parent" "::")
+                                              | ("ancestor" "::")
+                                              | ("preceding-sibling" "::")
+                                              | ("preceding" "::")
+                                              | ("ancestor-or-self" "::")
+  -->
+  <xsd:simpleType name="xpathAxis">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="child"/>
+      <xsd:enumeration value="attribute"/>
+      <xsd:enumeration value="self"/>
+      <xsd:enumeration value="parent"/>
+      <xsd:enumeration value="descendant-or-self"/>
+      <xsd:enumeration value="descendant"/>
+      <xsd:enumeration value="following"/>
+      <xsd:enumeration value="following-sibling"/>
+      <xsd:enumeration value="ancestor"/>
+      <xsd:enumeration value="ancestor-or-self"/>
+      <xsd:enumeration value="preceding"/>
+      <xsd:enumeration value="preceding-sibling"/>
+      <xsd:enumeration value="namespace"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:element name="xpathAxis" type="xpathAxis"/>
+
+</xsd:schema>

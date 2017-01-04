@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <!-- String operator expressions -->
+  <xsd:element name="stringOp" type="operatorExpr"
+               abstract="true" substitutionGroup="operatorExpr"/>
+
+  <xsd:element name="stringConcatenateOp" type="binaryOperatorExpr"
+               substitutionGroup="stringOp"/>
+</xsd:schema>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+
+  <!-- dynamic function invocations                                         -->
+  <!-- 2010-06-23 - Added support for partial function application          -->
+  <xsd:complexType name="dynamicFunctionInvocationExpr">
+    <xsd:complexContent>
+      <xsd:extension base="expr">
+        <xsd:sequence>
+          <xsd:element name="functionItem">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:group ref="filterExpr"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="predicates" type="exprList" minOccurs="0"/>
+          <xsd:element name="arguments" type="exprOrPlaceholderList"
+                       minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:element name="dynamicFunctionInvocationExpr"
+               type="dynamicFunctionInvocationExpr"
+               substitutionGroup="expr"/>
+</xsd:schema>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+XPath quantified expressions:
+[7]  ExprSingle     ::=	QuantifiedExpr
+[14] QuantifiedExpr ::=	("some" | "every") "$" VarName "in" ExprSingle
+                        ("," "$" VarName "in" ExprSingle)*
+                        "satisfies" ExprSingle 
+
+This software or document includes material copied from or derived 
+from the XQueryX 3.0 W3C Recommendation of 08 April 2014
+(https://www.w3.org/TR/2014/REC-xqueryx-30-20140408/).
+Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.w3.org/2005/XQueryX"
+            targetNamespace="http://www.w3.org/2005/XQueryX"
+            elementFormDefault="qualified"
+            attributeFormDefault="qualified">
+  
+  <!-- for typed variable bindings -->
+  <xsd:include schemaLocation="../misc/var.xsd"/>
+
+  <!-- ("some" | "every") -->
+  <xsd:simpleType name="quantifier">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="some"/>
+      <xsd:enumeration value="every"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <!-- "$" VarName "in" ExprSingle -->
+  <xsd:complexType name="quantifiedExprInClause">
+    <xsd:sequence>
+      <xsd:element ref="typedVariableBinding"/>  <!-- in misc/var.xsd -->
+      <xsd:element name="sourceExpr" type="exprWrapper"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="quantifiedExprInClause" type="quantifiedExprInClause"/>
+
+
+  <xsd:complexType name="quantifiedExpr">
+    <xsd:complexContent>
+      <xsd:extension base="expr">
+        <xsd:sequence>
+          <xsd:element name="quantifier" type="quantifier"/>
+          <xsd:element ref="quantifiedExprInClause" maxOccurs="unbounded"/>
+          <xsd:element name="predicateExpr" type="exprWrapper"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="quantifiedExpr" type="quantifiedExpr"
+               substitutionGroup="expr"/>
+  
+</xsd:schema>
