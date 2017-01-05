@@ -12,7 +12,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
             attributeFormDefault="qualified">
 
   <!-- Function names -->
-  <xsd:include schemaLocation="fn/any.xsd"/>
+  <xsd:include schemaLocation="fn/standard.xsd"/>
   
   <!-- Arithmetic operator expressions -->
   <xsd:include schemaLocation="op/arith.xsd"/>
@@ -248,7 +248,7 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
     <xsd:complexContent>
       <xsd:extension base="expr">
         <xsd:sequence>
-          <xsd:element name="functionName" type="anyFunction"/>
+          <xsd:element name="functionName" type="standardFunction"/>
           <xsd:element name="arguments" type="exprOrPlaceholderList"
                        minOccurs="0"/>
         </xsd:sequence>
