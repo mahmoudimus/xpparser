@@ -19,6 +19,9 @@ Copyright © 2014 W3C® (MIT, ERCIM, Keio, Beihang).
       <xsd:enumeration value="false"/>
       <xsd:enumeration value="boolean"/>
       <xsd:enumeration value="not"/>
+      <xsd:enumeration value="boolean-equal"/>
+      <xsd:enumeration value="boolean-less-than"/>
+      <xsd:enumeration value="boolean-greater-than"/>
     </xsd:restriction>
   </xsd:simpleType>
   
