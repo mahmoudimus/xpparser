@@ -40,4 +40,11 @@ inlfun = element inlineFunctionExpr {
   element functionBody { expr+ }
 }
   
-  
+# [2] ParamList  ::=  Param ( "," Param )?
+# [3] Param      ::=  "$" EQName TypeDeclaration?
+paramlist = element paramList {
+  element param {
+    element varName { external "../misc/eqname.rnc" },
+    element typeDeclaration { external "../misc/types.rnc" }?
+  }+
+}

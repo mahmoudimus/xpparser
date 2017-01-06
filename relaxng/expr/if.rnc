@@ -23,7 +23,7 @@ expr  = notAllowed
 
 # [15] IfExpr ::=  "if" "(" Expr ")" "then" ExprSingle "else" ExprSingle
 start = element ifThenElseExpr {
-  element ifClause { expr+ }
-  element thenClause { expr }
+  element ifClause { expr+ },
+  element thenClause { expr },
   element elseClause { expr }
 }

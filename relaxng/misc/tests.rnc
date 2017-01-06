@@ -35,7 +35,8 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 # [72] AnyKindTest        ::=  "node" "(" ")"
 start = document.test | element.test | attribute.test | schemae.test
       | schemaa.test | pi.test
-      | element ( commentTest | textTest | namespaceTest | anyKindTest ) {}
+      | element ( commentTest | textTest | namespaceTest | anyKindTest )
+          { empty }
 
 # [73] DocumentTest   ::=  "document-node" "("
 #                          (ElementTest | SchemaElementTest)? ")"
@@ -51,10 +52,10 @@ document.test = element documentTest {
 element.test = element elementTest {
   element elementName {
     element QName { external "eqname.rnc" }
-    | element star {}
+    | element star { empty }
   },
   ( element typeName { external "eqname.rnc" },
-    element nillable {}? )?
+    element nillable { empty }? )?
 }
 
 # [78] AttributeTest        ::=  "attribute" "(" (AttribNameOrWildcard
@@ -64,7 +65,7 @@ element.test = element elementTest {
 attribute.test = element attributeTest {
   element attributeName {
     element QName { external "eqname.rnc" }
-    | element star {}
+    | element star { empty }
   },
   element typeName { external "eqname.rnc" }?
 }

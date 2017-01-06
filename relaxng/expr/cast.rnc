@@ -33,7 +33,7 @@ start = element (castableExpr | castExpr) {
 # [89] TypeName        ::=  EQName
 type.single = element singleType {
   element atomicType { external "../misc/eqname.rnc" },
-  element optional {}?
+  element optional { empty }?
 }
 
 

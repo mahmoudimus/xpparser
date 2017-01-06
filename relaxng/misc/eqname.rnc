@@ -19,8 +19,6 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 # [94] EQName  ::=  QName | URIQualifiedName
-start = attr prefix { xsd:NCName }?,
-        attr URI    { xsd:string }?,
+start = attribute prefix { xsd:NCName }?,
+        attribute URI    { xsd:string }?,
         xsd:NCName
-
-

@@ -19,15 +19,15 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
+start = sequence.type
+
 # [66] TypeDeclaration  ::=  "as" SequenceType
 # [67] SequenceType     ::=  ("empty-sequence" "(" ")" )
 #                           | (ItemType OccurrenceIndicator?)
 # [68] OccurrenceIndicator ::= "?" | "*" | "+"
-start = sequence.type
-
-sequence.type = element voidSequenceType {}
-  | item.type,
-    element occurrenceIndicator { string "?" | string "*" | string "+" }?
+sequence.type = element voidSequenceType { empty }
+  | (item.type,
+     element occurrenceIndicator { string "?" | string "*" | string "+" }?)
 
 # [69] ItemType ::=   KindTest | ("item" "(" ")") | FunctionTest
 #                   | AtomicOrUnionType | ParenthesizedItemType
@@ -43,7 +43,7 @@ item.type = external "tests.rnc"
 # [92] TypedFunctionTest ::=  "function" "("
 #                             (Sequencetype ("," SequenceType)*)? ")"
 #                             "as" SequenceType
-fun.type = element anyFunctionTest {}
+fun.type = element anyFunctionTest { empty }
   | element typedFunctionTest {
       element paramTypeList {
         element sequenceType { sequence.type }+

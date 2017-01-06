@@ -41,7 +41,7 @@ expr |= element rangeSequenceExpr {
 
 # [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
 # [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
-start = element (instanceOfExpr | treatExpr ) {
+expr |= element (instanceOfExpr | treatExpr ) {
   element argExpr { expr },
   element sequenceType { external "misc/types.rnc" }
 }
@@ -100,7 +100,7 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 #                      | ContextItemExpr | FunctionCall | FunctionItemExpr
 # [58] ContextItemExpr ::= "."
 primary |= external "misc/literal.rnc"
-        |  element contextItemExpr {}
+        |  element contextItemExpr { empty }
         |  fun
         |  external "expr/funitem.rnc"
 
@@ -111,7 +111,7 @@ primary |= external "misc/literal.rnc"
 fun = element FunctionCallExpr {
   element functionName { external "misc/eqname.rnc" },
   element arguments {
-    ( expr | element argumentPlaceholder {} )*
+    ( expr | element argumentPlaceholder { empty } )*
   }?
 }
 
@@ -124,7 +124,7 @@ fun = element FunctionCallExpr {
 #                     | RelativePathExpr
 # [36]  RelativePathExpr  ::=  StepExpr  (("/" | "//") StepExpr)*
 path = element pathExpr {
-  ( element rootExpr {}, step* ) | step+
+  ( element rootExpr { empty }, step* ) | step+
 }
 
 # [37]  StepExpr  ::=  PostfixExpr | AxisStep
@@ -179,6 +179,6 @@ axis = element xpathAxis {
 nodetest = element nameTest { external "misc/eqname.rnc" }
   | external "misc/tests.rnc"
   | element Wildcard {
-      ( element star {} & element NCName { xsd:NCName } )?
-    | ( element uri  { xsd:string }, element star {} )?
+      ( element star { empty } & element NCName { xsd:NCName } )?
+    | ( element uri  { xsd:string }, element star { empty } )?
   }
