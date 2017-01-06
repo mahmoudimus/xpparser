@@ -1,0 +1,45 @@
+# XPath fragment of XQueryX in Relax NG compact syntax
+# Xpath literals
+#
+# XPath Parser
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+# [56] PrimaryExpr     ::=  Literal
+# [57] Literal 	       ::=  NumericLiteral | StringLiteral 	
+# [58] NumericLiteral  ::=  IntegerLiteral | DecimalLiteral | DoubleLiteral
+start = literal | varref
+
+literal = element integerConstantExpr {
+  element value { xsd:int }
+}
+literal |= element decimalConstantExpr {
+  element value { xsd:decimal }
+}
+literal |= element doubleConstantExpr {
+  element value { xsd:double }
+}
+literal |= element stringConstantExpr {
+  element value { xsd:string }
+}
+
+# [56] PrimaryExpr ::=  VarRef
+# [59] VarRef 	   ::=  "$" VarName
+# [60] VarName     ::=  EQName
+varref = element varRef {
+  element name { external "eqname.rnc" }
+}

@@ -1,0 +1,57 @@
+# XPath fragment of XQueryX in Relax NG compact syntax:
+# XPath `for' and `let' expressions.
+#
+# XPath Parser
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+expr  = notAllowed
+
+# [8]  ForExpr  ::=  SimpleForClause "return" ExprSingle
+# [11] LetExpr  ::=  SimpleLetClause "return" ExprSingle
+start = element flworExpr {
+  (for+ | let+ ),
+  element returnClause { expr }
+}
+
+# [9] SimpleForClause  ::=  "for" SimpleForBinding ("," SimpleForBinding)*
+# [10] SimpleForBinding  ::=  "$" VarName "in" ExprSingle
+# [56] VarName  ::=  EQName
+for = element forClause {
+  element forClauseItem {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element forExpr { expr }
+  }+
+}
+
+# [12] SimpleLetClause  ::=  "let" SimpleLetBinding ("," SimpleLetBinding)*
+# [13] SimpleLetBinding  ::=  "$" VarName ":=" ExprSingle
+# [56] VarName  ::=  EQName
+let = element letClause {
+  element letClauseItem {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element letExpr { expr }
+  }+
+}
+
+
+
+

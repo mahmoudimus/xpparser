@@ -1,0 +1,52 @@
+# XPath fragment of XQueryX in Relax NG compact syntax
+# Sequence types.
+#
+# XPath Parser
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+# [66] TypeDeclaration  ::=  "as" SequenceType
+# [67] SequenceType     ::=  ("empty-sequence" "(" ")" )
+#                           | (ItemType OccurrenceIndicator?)
+# [68] OccurrenceIndicator ::= "?" | "*" | "+"
+start = sequence.type
+
+sequence.type = element voidSequenceType {}
+  | item.type,
+    element occurrenceIndicator { string "?" | string "*" | string "+" }?
+
+# [69] ItemType ::=   KindTest | ("item" "(" ")") | FunctionTest
+#                   | AtomicOrUnionType | ParenthesizedItemType
+# [70] AtomicOrUnionType     ::=  EQName
+# [93] ParenthesizedItemType ::=  "(" ItemType ")"
+item.type = external "tests.rnc"
+  | fun.type
+  | element atomicType { external "eqname.rnc" }
+  | element parenthesizedItemType { item.type }
+
+# [90] FunctionTest      ::=  AnyFunctionTest | TypedFunctionTest
+# [91] AnyFunctionTest   ::=  "function" "(" "*" ")"
+# [92] TypedFunctionTest ::=  "function" "("
+#                             (Sequencetype ("," SequenceType)*)? ")"
+#                             "as" SequenceType
+fun.type = element anyFunctionTest {}
+  | element typedFunctionTest {
+      element paramTypeList {
+        element sequenceType { sequence.type }+
+      }?,
+      element sequenceType { sequence.type }
+}
