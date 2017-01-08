@@ -36,18 +36,16 @@ expr = notAllowed
 #                        | ("preceding" "::")
 #                        | ("ancestor-or-self" "::")
 # [44]  AbbrevReverseStep ::= ".."
-axis = element xpathAxis {
-  ( string "child"
-  | string "attribute"
-  | string "self"
-  | string "parent"
-  | string "descendant-or-self"
-  | string "descendant"
-  | string "following"
-  | string "following-sibling"
-  | string "ancestor"
-  | string "ancestor-or-self"
-  | string "preceding"
-  | string "preceding-sibling"
-  | string "namespace" )
-}
+start = string "child"
+      | string "attribute"
+      | string "self"
+      | string "parent"
+      | string "descendant-or-self"
+      | string "descendant"
+      | string "following"
+      | string "following-sibling"
+      | string "ancestor"
+      | string "ancestor-or-self"
+      | string "preceding"
+      | string "preceding-sibling"
+      | string "namespace"
