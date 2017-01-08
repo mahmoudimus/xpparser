@@ -155,7 +155,6 @@ step = element stepExpr {
 # [44]  AbbrevReverseStep ::= ".."
 axis = element xpathAxis {
   ( string "child"
-  | string "descendant" 
   | string "attribute"
   | string "self"
   | string "parent"
