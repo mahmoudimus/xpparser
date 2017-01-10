@@ -14,97 +14,27 @@ General Public License in `LICENSE` for more details.
 package fr.lsv.xpparser;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.AbstractMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import javax.xml.XMLConstants;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Validator;
-import javax.xml.validation.SchemaFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.ls.LSInput;
-import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.SAXParseException;
+import javax.xml.transform.Source;
 import org.xml.sax.SAXException;
 
 /**
- * Utility class for validating against multiple XML Schemas.
+ * Wraps a XML Schema validator inside a Validator.
  */
-public class XMLValidator {
+public class XSDValidator implements Validator {
 
-    public static final String VALID = "valid";
-
-    private List<Map.Entry<String,Validator>> schemas;
-
-    private SchemaFactory sf;
-
-    public XMLValidator() {
-        this.schemas = new LinkedList<Map.Entry<String,Validator>>();
-        this.sf = 
-            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    }
-
-    /**
-     * Add an XML Schema to validate against.
-     * @param filename The path to the XML Schema.
-     * @param schema   The input stream for this Schema.
-     */
-    public void addSchema (String filename, Reader schema)
-        throws SAXException {
-
-        final Path path = Paths.get(filename);
-        this.sf.setResourceResolver(new LSResourceResolver () {
-                @Override
-                public LSInput resolveResource(String type,
-                                               String namespaceURI,
-                                               String publicId,
-                                               String systemId,
-                                               String baseURI) {
-        // The base resource that includes this current resource
-                    Path resourcePath =
-                        path.resolveSibling(systemId).normalize();
-                    try {
-                        return new LSInputImpl(publicId, systemId,
-                                               Main.getInput(resourcePath));
-                    } catch (IOException e) {
-                        System.err.println(e.toString());
-                        return null;
-                    }
-                }
-            });
-        schemas.add(new AbstractMap.SimpleEntry
-                    (filename, 
-                     sf.newSchema(new StreamSource(schema)).newValidator()));
-    }
-
-    /**
-     * Run a bunch of validation checks.  Each diagnostic holds the
-     * name of the schema (to be obtained via Map.Entry#getKey()) and
-     * either VALID or the error message.
-     */
-    public Iterable<Map.Entry<String,String>> 
-        validate (Node node) throws IOException {
+    private javax.xml.validation.Validator v;
     
-        DOMSource source = new DOMSource(node);
-        LinkedList<Map.Entry<String,String>> ret = 
-            new LinkedList<Map.Entry<String,String>>();
+    public XSDValidator(javax.xml.validation.Validator v)
+        throws SAXException {        
 
-        for (Map.Entry<String,Validator> v : schemas) {
-            try {
-                v.getValue().validate(source);
-                ret.add(new AbstractMap.SimpleEntry
-                        (v.getKey(), VALID));
-            } catch (SAXException e) {
-                ret.add(new AbstractMap.SimpleEntry
-                        (v.getKey(), e.getMessage()));
-            }
-            v.getValue().reset();
-        }
-        return ret;
+        this.v = v;
+    }
+
+    public void validate(Source source) throws IOException, SAXException {
+        v.validate(source);
+    }
+
+    public void reset() {
+        v.reset();
     }
 }

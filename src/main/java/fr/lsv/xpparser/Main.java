@@ -49,6 +49,7 @@ public class Main {
         
         //--------------------------------------------- process options
         int i = 0; int end = args.length;
+        int files, filee; // begin and start of input file names
         if (i < args.length) {
             if (args[0].equals("-h") || args[0].equals("--help")) {
                 help = true;
@@ -81,14 +82,14 @@ public class Main {
                     legit = false;
             }
             end = i;
-            while (end < args.length && !args[end].equals("--validate"))
+            while (end < args.length && !args[end].equals("--xsd")
+                                     && !args[end].equals("--rnc"))
                 end++;
         }
-        
         //--------------------------------- display command-line syntax
         if (!legit || help) {
             System.out.println
-                ("Usage: "+ progname +" [OPTION] [FILE]... [--validate SCHEMA...]");
+                ("Usage: "+ progname +" [OPTION] [FILE]... [--xsd SCHEMA...] [--rnc SCHEMA...]");
             System.out.println
                 ("Extract and parse XPath expressions, then print them in XQueryX format");
             System.out.println("on standard output.\n");
@@ -111,9 +112,13 @@ public class Main {
                 ("With no OPTION, expects XQuery input.  With no FILE, read from standard input.");
             System.out.println("");
             System.out.println
-                ("      --validate SCHEMA...  validate output XQueryX against all the");
+                ("      --xsd SCHEMA...       validate output XQueryX against all the");
             System.out.println
                 ("                            provided XML Schemas");
+            System.out.println
+                ("      --rnc SCHEMA...       validate output XQueryX against all the");
+            System.out.println
+                ("                            provided RelaxNG Compact Schemas");
 
             System.exit(legit? 1: 0);
         }
@@ -141,20 +146,10 @@ public class Main {
                     addInput(args[j], sources);
 
             // process validation schemas
-            List<Map.Entry<String,Reader>> schemas
-                = new LinkedList<Map.Entry<String,Reader>>();
-            for (int j = end + 1; j < args.length; j++)
-                addInput(args[j], schemas);
-            XMLValidator validator = new XMLValidator();
-            for (Map.Entry<String,Reader> schema : schemas)
-                try {
-                    validator.addSchema(schema.getKey(), schema.getValue());
-                } catch (SAXParseException e) {
-                    System.err.println(progname +": "+ schema.getKey() 
-                                       +": could not parse XML Schema:");
-                    System.err.println(e.getMessage());
-                }
-            sf.setValidator(validator);
+            ValidationFarm farm = new ValidationFarm();
+            while (end < args.length)
+                end = processSchemas(end, args, farm);
+            sf.setValidator(farm);
 
             // process XSLT stylesheet
             if (fileXSLT != null) {
@@ -209,7 +204,7 @@ public class Main {
                     }
                     else 
                         abort(e);
-                }                    
+                }                   
             
 
             // finish printing XML
@@ -289,6 +284,45 @@ public class Main {
                         (filename, br));
     }
 
+    /**
+     * Process schemas passed on the command line and add them to the farm.
+     * @param index The starting index on the command line.
+     * @param args The command line.
+     * @param farm The validation farm
+     * @return The new index inside the command line.
+     */
+    private static int processSchemas(int index,
+                                      String[] args,
+                                      ValidationFarm farm)
+        throws IOException {
+        
+        String type = args[index];
+        int end = index + 1;
+        while (end < args.length && !args[end].equals("--xsd")
+                                 && !args[end].equals("--rnc"))
+            end++;
+
+        List<Map.Entry<String,Reader>> schemas
+            = new LinkedList<Map.Entry<String,Reader>>();
+        for (int j = index + 1; j < end; j++)
+            addInput(args[j], schemas);
+        for (Map.Entry<String,Reader> schema : schemas)
+            try {
+                if (type.equals("--xsd"))
+                    farm.addXMLSchema(schema.getKey(), schema.getValue());
+                if (type.equals("--rnc"))
+                    farm.addRNCSchema(schema.getKey(), schema.getValue());
+            } catch (SAXException e) {
+                System.err.println(progname +": "+ schema.getKey() 
+                                   +(type.equals("--xsd")?
+                                     ": could not parse XML Schema:":
+                                     ": could not parse RelaxNG Compact Schema:"));
+                System.err.println(e.getMessage());
+            }
+
+        return end;
+    }
+    
 
     /** * Print stack trace and abort.
      * @param e The fatal error.

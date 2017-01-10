@@ -9,9 +9,25 @@ This buildfile is used to compile the Java sources for the XPath Parser.
   <target name="all" depends="compile">
   </target>
 
+  <property name="lib-dir" value="lib"/>
+  
+  <target name="jing">
+    <mkdir dir="${lib-dir}"/>
+    <get src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jing-trang/jing-20091111.zip"
+         dest="${lib-dir}" usetimestamp="true"/>
+    <unzip src="${lib-dir}/jing-20091111.zip" dest="${lib-dir}"
+           overwrite="no"/>
+    <copy file="${lib-dir}/jing-20091111/bin/jing.jar"
+          tofile="${lib-dir}/jing.jar"/>
+  </target>
+
   <presetdef name="java_compile">
     <javac debug="true" debuglevel="lines,vars,source"
-           includeantruntime="false"/>
+           includeantruntime="false">
+      <classpath>
+        <pathelement path="${lib-dir}/jing.jar"/>
+      </classpath>
+    </javac>
   </presetdef>    
 
   <target name="compile" description="Compile xpparser">
