@@ -13,6 +13,7 @@ General Public License in `LICENSE` for more details.
  */
 package fr.lsv.xpparser;
 
+import com.thaiopensource.xml.sax.ErrorHandlerImpl;
 import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.ValidateProperty;
@@ -58,9 +59,8 @@ public class ValidationFarm {
             SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         // we are using Relax NG compact format
         this.rncFactory = CompactSchemaReader.getInstance();
-        //ErrorHandler seh = new ErrorHandlerImpl();  
         this.pb = new PropertyMapBuilder();
-        //pb.put(ValidateProperty.ERROR_HANDLER, seh);
+        pb.put(ValidateProperty.ERROR_HANDLER, new ErrorHandlerImpl());
     }
 
     /**
@@ -108,23 +108,20 @@ public class ValidationFarm {
         final Path path = Paths.get(filename);
         this.pb.put
             (ValidateProperty.ENTITY_RESOLVER,
-             new EntityResolver () {
-                 private Path resourcePath = path;
-                        
+             new EntityResolver () {                        
                  @Override
                  public InputSource resolveEntity(String publicId,
-                                                  String systemId) {
-                     System.err.println("resolved: "+publicId+", "+systemId);
-                    // The base resource that includes this current resource
-                     resourcePath =
-                        resourcePath.resolveSibling(systemId).normalize();
-                    try {
-                        return new InputSource(Main.getInput(resourcePath));
-                    } catch (IOException e) {
-                        System.err.println(e.toString());
-                        return null;
-                    }
-                }
+                                                  String systemId)
+                     throws SAXException, IOException {
+                     
+                     // The base resource that includes this current resource
+                     Path resourcePath =
+                         path.resolveSibling(systemId).normalize();
+                     InputSource source =
+                         new InputSource(Main.getInput(resourcePath));
+                     source.setSystemId(resourcePath.toString());
+                     return source;
+                 }
             });
 
         schemas.add(new AbstractMap.SimpleEntry
