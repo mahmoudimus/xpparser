@@ -134,10 +134,8 @@ path = element pathExpr {
 # [39]  ForwardStep  ::=  (ForwardAxis NodeTest) | AbbrevForwardStep
 # [42]  ReverseStep  ::= (ReverseAxis NodeTest) | AbbrevReverseStep
 step = element stepExpr {
-  ( axis,
-    nodetest,
-    element filterExpr { primary }
-  ) | (element predicates { expr* })?
+  ((axis, nodetest) | element filterExpr { primary } ),
+  element predicates { expr* }?
 }
 
 # [40]  ForwardAxis  ::=   ("child" "::")
