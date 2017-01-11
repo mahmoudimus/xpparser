@@ -5,7 +5,8 @@ from within [XQuery](https://www.w3.org/TR/xquery-30/) files or XML files, in
 particular [XSLT](https://www.w3.org/TR/xslt-30/) files, and returns an XML
 abstract syntax tree in [XQueryX](https://www.w3.org/TR/xqueryx-30/) for them.  
 The program also provides facilities for checking this XQueryX output against
-multiple [XML Schemas](https://www.w3.org/standards/techs/xmlschema).
+multiple [XML Schemas](https://www.w3.org/standards/techs/xmlschema) and
+[RelaxNG Compact Schemas](http://relaxng.org/compact.html).
 
 This software development was funded in part by the
 [ANR PRODAQ](http://projects.lsv.ens-cachan.fr/prodaq/) project.
@@ -13,14 +14,12 @@ This software development was funded in part by the
 
 ## Building
 
-Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`
-(recommended) or with [Apache Maven](http://maven.apache.org/) by running
-`mvn compile`.
+Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`.
+This will download [Jing](http://www.thaiopensource.com/relaxng/jing.html).
 
-There are no dependencies, unless you wish to modify the XQuery 3.0
-grammar in the [xgrammar](xgrammar/) directory, in which case running
-`ant javacc` will download the necessary libraries and regenerate the
-parser sources.
+If you wish to modify the XQuery 3.0 grammar in the [xgrammar](xgrammar/)
+directory, running `ant javacc` will download the necessary libraries and
+regenerate the parser sources.
 
 
 ## Running
@@ -28,7 +27,7 @@ parser sources.
 Use the provided [xpparser](xpparser) script.  Typical examples: 
 
 ```shell
-./xpparser --xslt xgrammar/*.xsl --validate xsd/*.xsd
+./xpparser --xslt xgrammar/*.xsl --rnc relaxng/xpath*.rnc
 echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
 ```
 
