@@ -17,9 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-start = attribute prefix { string "fn" }?,
-        attribute URI    { string "http://www.w3.org/2005/xpath-functions" }?,
+start = attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
       ( string "true"
       | string "false"
       | string "boolean"

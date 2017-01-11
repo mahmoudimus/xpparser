@@ -1,2 +1,2 @@
 #!/bin/sh
-java -cp target/classes/ fr.lsv.xpparser.Main $@
+java -cp target/classes/:lib/jing.jar fr.lsv.xpparser.Main $@

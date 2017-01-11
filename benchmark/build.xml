@@ -7,9 +7,9 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <target name="all" depends="tests,sources.xslt,sources.xquery"/>
 
   <!-- path to schemas -->  
-  <fileset id="fs.schemas" dir="../xsd" includes="*.xsd"/>
+  <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
   <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
-  <fileset id="fs.relaxng" dir="../relaxng" includes="*.rnc"/>
+  <fileset id="fs.relaxng" dir="../relaxng" includes="xpath*.rnc"/>
   <pathconvert property="relaxng" refid="fs.relaxng" pathsep=" "/>
 
   <!-- path to classes -->

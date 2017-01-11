@@ -18,8 +18,6 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-# expr  = notAllowed
-
 # [14] QuantifiedExpr ::=  ("some" | "every") "$" VarName "in" ExprSingle
 #                          ("," "$" VarName "in" ExprSingle)*
 #                          "satisfies" ExprSingle

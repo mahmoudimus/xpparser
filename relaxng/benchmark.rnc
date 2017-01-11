@@ -16,21 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-default namespace = ""
-namespace xqx = "http://www.w3.org/2005/XQueryX"
+namespace bmk = ""
 
-element benchmark {
-  element xpath {
-    attribute column { xsd:int },
-    attribute defaultns { text },
-    attribute filename { text },
-    attribute line { xsd:int },
+element bmk:benchmark {
+  element bmk:xpath {
+    attribute bmk:column { xsd:int },
+    attribute bmk:defaultns { text }?,
+    attribute bmk:filename { text },
+    attribute bmk:line { xsd:int },
     
-    element query { text },
-    element ast { external "xpath-3.0.rnc" },
-    element validation {
-      attribute schema { text },
-      attribute valid { text },
+    element bmk:query { text }?,
+    element bmk:ast { external "xpath-3.0.rnc" },
+    element bmk:validation {
+      attribute bmk:schema { text },
+      attribute bmk:valid { text },
       text
     }*
   }*
