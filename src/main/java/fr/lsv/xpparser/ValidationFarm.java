@@ -79,13 +79,23 @@ public class ValidationFarm {
                                                String publicId,
                                                String systemId,
                                                String baseURI) {
-        // The base resource that includes this current resource
-                    Path resourcePath =
-                        path.resolveSibling(systemId).normalize();
+                    // The base resource that includes this current resource
+                    Path resourcePath;
                     try {
-                        return new LSInputImpl(publicId, systemId,
+                        if (baseURI != null)
+                            resourcePath = Paths
+                                .get(new java.net.URI(baseURI))
+                                .resolveSibling(systemId).normalize();
+                        else
+                            resourcePath =
+                                path.resolveSibling(systemId).normalize();
+                        
+                        return new LSInputImpl(publicId, systemId, baseURI,
                                                Main.getInput(resourcePath));
                     } catch (IOException e) {
+                        System.err.println(e.toString());
+                        return null;
+                    } catch (java.net.URISyntaxException e) {
                         System.err.println(e.toString());
                         return null;
                     }

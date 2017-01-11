@@ -22,6 +22,9 @@ public class LSInputImpl implements LSInput {
     private String publicId;
     
     private String systemId;
+
+    private String baseURI;
+    
     
     public String getPublicId() {
         return publicId;
@@ -32,7 +35,7 @@ public class LSInputImpl implements LSInput {
     }
     
     public String getBaseURI() {
-        return null;
+        return baseURI;
     }
     
     public InputStream getByteStream() {
@@ -56,6 +59,7 @@ public class LSInputImpl implements LSInput {
     }
     
     public void setBaseURI(String baseURI) {
+        this.baseURI = baseURI;
     }
     
     public void setByteStream(InputStream byteStream) {
@@ -91,9 +95,11 @@ public class LSInputImpl implements LSInput {
     
     private Reader reader;
     
-    public LSInputImpl(String publicId, String sysId, Reader reader) {
+    public LSInputImpl(String publicId, String systemId,
+                       String baseURI, Reader reader) {
         this.publicId = publicId;
-        this.systemId = sysId;
+        this.systemId = systemId;
+        this.baseURI = baseURI;
         this.reader = reader;
     }
 }
