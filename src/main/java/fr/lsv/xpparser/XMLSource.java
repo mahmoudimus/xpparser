@@ -27,6 +27,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.xqparser.ParseException;
 import org.w3c.xqparser.TokenMgrError;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class XMLSource implements Iterable<XPathEntry> {
 
@@ -43,11 +44,13 @@ public class XMLSource implements Iterable<XPathEntry> {
         this.sf = sf;
 
         // change user.dir
-        System.setProperty("user.dir", Paths.get(filename).getParent().toString());
+        if (!filename.equals("stdin"))
+            System.setProperty("user.dir",
+                               Paths.get(filename).getParent().toString());
         
         // parse the input XML
         Document d = sf.getXMLReader().parse(stream);
-
+        
         // apply filter
         this.nodeList = (NodeList)
             sf.getXPathInterpreter().evaluate(sf.getFilter(), d,

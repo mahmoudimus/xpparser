@@ -16,6 +16,7 @@ package fr.lsv.xpparser;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import javax.xml.transform.*;
 import javax.xml.transform.TransformerException;
@@ -33,6 +34,56 @@ import org.w3c.dom.Node;
  */
 public class XMLPrinter {
 
+    private static final String defaultTransform =
+ "<xsl:stylesheet version=\"2.0\""
++"  xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\""
++"  xmlns:xqx=\"http://www.w3.org/2005/XQueryX\">"
++"<xsl:output method=\"xml\" omit-xml-declaration=\"yes\" indent=\"yes\"/>"
++"<xsl:strip-space elements=\"*\"/>"
++"<xsl:template match=\"@*|node()\">"
++"    <xsl:copy>"
++"      <xsl:apply-templates select=\"@*|node()\"/>"
++"    </xsl:copy>"
++"  </xsl:template>"
++"  <xsl:template match=\"xqx:stringConcatenateOp"
++"                       |xqx:addOp"
++"                       |xqx:subtractOp"
++"                       |xqx:multiplyOp"
++"                       |xqx:divOp"
++"                       |xqx:idivOp"
++"                       |xqx:modOp"
++"                       |xqx:unionOp"
++"                       |xqx:intersectOp"
++"                       |xqx:exceptOp"
++"                       |andOp"
++"                       |xqx:orOp"
++"                       |xqx:eqOp"
++"                       |xqx:neOp"
++"                       |xqx:ltOp"
++"                       |xqx:leOp"
++"                       |xqx:gtOp"
++"                       |xqx:geOp"
++"                       |xqx:equalOp"
++"                       |xqx:notEqualOp"
++"                       |xqx:lessThanOp"
++"                       |xqx:lessThanOrEqualOp"
++"                       |xqx:lessThanOrEqualOp"
++"                       |xqx:greaterThanOp"
++"                       |xqx:greaterThanOrEqualOp"
++"                       |xqx:isOp"
++"                       |xqx:nodeBeforeOp"
++"                       |xqx:nodeAfterOp\">"
++"    <xsl:element name=\"{name(.)}\">"
++"      <xqx:firstOperand>"
++"        <xsl:apply-templates select=\"*[1]\"/>"
++"      </xqx:firstOperand>"
++"      <xqx:secondOperand>"
++"        <xsl:apply-templates select=\"*[2]\"/>"
++"      </xqx:secondOperand>"
++"    </xsl:element>"
++"  </xsl:template>"
++"</xsl:stylesheet>";
+
     private Transformer transformer;
 
     private XMLPrinter (Transformer t) {
@@ -48,7 +99,10 @@ public class XMLPrinter {
     public XMLPrinter ()
         throws TransformerConfigurationException {
 
-        this(TransformerFactory.newInstance().newTransformer());
+        this(TransformerFactory.newInstance()
+             .newTransformer(// new StreamSource
+                             // (new StringReader(defaultTransform))
+                             ));
     }
 
     /**

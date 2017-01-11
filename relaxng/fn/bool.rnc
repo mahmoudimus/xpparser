@@ -1,5 +1,5 @@
 # XPath fragment of XQueryX in Relax NG compact syntax:
-# XPath boolean functions.
+# XPath standard boolean functions.
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -18,10 +18,9 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-start = string "true"
+start = attribute prefix { string "fn" }?,
+        attribute URI    { string "http://www.w3.org/2005/xpath-functions" }?,
+      ( string "true"
       | string "false"
       | string "boolean"
-      | string "not"
-      | string "boolean-equal"
-      | string "boolean-less-than"
-      | string "boolean-greater-than"
+      | string "not")

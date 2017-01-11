@@ -286,26 +286,28 @@ function process(document) {
   display("fn",arr);
   display("op",arr);
 
+  log("Extracting pure declarations in fn: and math:...");
+
   for (var i=0; i<arr.length; i++) {
     var node = arr[i];
     var header = node.innerText.replace("\n"," ").split(" ")[1].split(":");
-    if (header[0]=="fn") {
-      process_fn(header[1],node);
+    if (header[0]=="fn" || header[0]=="math") {
+      process_decl(header[0]+":"+header[1],node);
     }
   }
 
-  log("Inconditionally pure functions: "+pure.join(", "));
-  log("Zero-ary pure functions: "+arity_pure[0].join(", "));
-  log("One-ary pure functions: "+arity_pure[1].join(", "));
-  log("Two-ary pure functions: "+arity_pure[2].join(", "));
-  log("Three-ary pure functions: "+arity_pure[3].join(", "));
+  log("Inconditionally pure: "+pure.join(", "));
+  log("Zero-ary pure: "+arity_pure[0].join(", "));
+  log("One-ary pure: "+arity_pure[1].join(", "));
+  log("Two-ary pure: "+arity_pure[2].join(", "));
+  log("Three-ary pure: "+arity_pure[3].join(", "));
 
 }
 
 var pure = [];
 var arity_pure = [ [], [], [], [] ];
 
-function process_fn(name,node) {
+function process_decl(name,node) {
   var dts = node.parentElement.getElementsByTagName("dl")[0].getElementsByTagName("dt");
   function toInt(s) {
     s = s.split("The ")[1];

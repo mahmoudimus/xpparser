@@ -13,6 +13,10 @@ General Public License in `LICENSE` for more details.
  */
 package fr.lsv.xpparser;
 
+import com.thaiopensource.util.PropertyMapBuilder;
+import com.thaiopensource.validate.SchemaReader;
+import com.thaiopensource.validate.ValidateProperty;
+import com.thaiopensource.validate.rng.CompactSchemaReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
@@ -24,29 +28,41 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Validator;
 import javax.xml.validation.SchemaFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
 
 /**
  * Utility class for validating against multiple XML Schemas.
  */
-public class XMLValidator {
+public class ValidationFarm {
 
     public static final String VALID = "valid";
 
     private List<Map.Entry<String,Validator>> schemas;
 
-    private SchemaFactory sf;
+    private SchemaFactory xsdFactory;
 
-    public XMLValidator() {
+    private SchemaReader rncFactory;
+
+    private PropertyMapBuilder pb;
+
+    public ValidationFarm () {
         this.schemas = new LinkedList<Map.Entry<String,Validator>>();
-        this.sf = 
+        this.xsdFactory = 
             SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        // we are using Relax NG compact format
+        this.rncFactory = CompactSchemaReader.getInstance();
+        this.pb = new PropertyMapBuilder();
+        pb.put
+            (ValidateProperty.ERROR_HANDLER,
+             new ErrorHandlerImpl());
     }
 
     /**
@@ -54,24 +70,34 @@ public class XMLValidator {
      * @param filename The path to the XML Schema.
      * @param schema   The input stream for this Schema.
      */
-    public void addSchema (String filename, Reader schema)
+    public void addXMLSchema (String filename, Reader schema)
         throws SAXException {
 
         final Path path = Paths.get(filename);
-        this.sf.setResourceResolver(new LSResourceResolver () {
+        this.xsdFactory.setResourceResolver(new LSResourceResolver () {
                 @Override
                 public LSInput resolveResource(String type,
                                                String namespaceURI,
                                                String publicId,
                                                String systemId,
                                                String baseURI) {
-        // The base resource that includes this current resource
-                    Path resourcePath =
-                        path.resolveSibling(systemId).normalize();
+                    // The base resource that includes this current resource
+                    Path resourcePath;
                     try {
-                        return new LSInputImpl(publicId, systemId,
+                        if (baseURI != null)
+                            resourcePath = Paths
+                                .get(new java.net.URI(baseURI))
+                                .resolveSibling(systemId).normalize();
+                        else
+                            resourcePath =
+                                path.resolveSibling(systemId).normalize();
+                        
+                        return new LSInputImpl(publicId, systemId, baseURI,
                                                Main.getInput(resourcePath));
                     } catch (IOException e) {
+                        System.err.println(e.toString());
+                        return null;
+                    } catch (java.net.URISyntaxException e) {
                         System.err.println(e.toString());
                         return null;
                     }
@@ -79,7 +105,41 @@ public class XMLValidator {
             });
         schemas.add(new AbstractMap.SimpleEntry
                     (filename, 
-                     sf.newSchema(new StreamSource(schema)).newValidator()));
+                     new XSDValidator
+                     (xsdFactory.newSchema
+                      (new StreamSource(schema)).newValidator())));
+    }
+    
+    /**
+     * Add a RelaxNG Schema to validate against.
+     * @param filename The path to the RelaxNG schema.
+     * @param schema   The input stream for this schema.
+     */
+    public void addRNCSchema (String filename, Reader schema)
+        throws SAXException {
+        final Path path = Paths.get(filename).normalize();
+        this.pb.put
+            (ValidateProperty.ENTITY_RESOLVER,
+             new EntityResolver () {                        
+                 @Override
+                 public InputSource resolveEntity(String publicId,
+                                                  String systemId)
+                     throws SAXException, IOException {
+                     // The base resource that includes this current resource
+                     Path resourcePath =
+                         path.resolveSibling(systemId).normalize();
+                     InputSource source =
+                         new InputSource(Main.getInput(resourcePath));
+                     source.setSystemId(systemId);
+                     
+                     return source;
+                 }
+            });
+
+        schemas.add(new AbstractMap.SimpleEntry
+                    (filename,
+                     new RNCValidator
+                     (schema, rncFactory, pb.toPropertyMap())));
     }
 
     /**

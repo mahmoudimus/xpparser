@@ -9,10 +9,13 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <!-- path to schemas -->  
   <fileset id="fs.schemas" dir="../xsd" includes="*.xsd"/>
   <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
+  <fileset id="fs.relaxng" dir="../relaxng" includes="*.rnc"/>
+  <pathconvert property="relaxng" refid="fs.relaxng" pathsep=" "/>
 
   <!-- path to classes -->
   <path id="classpath">
     <pathelement path="../target/classes"/>
+    <pathelement path="../lib/jing.jar"/>
   </path>
     
   <!-- macro for processing benchmark files -->
@@ -32,7 +35,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
         <assertions><!-- this is ignored!!! -->
           <enable/>
         </assertions>
-        <arg line="@{arg} ${tests} --validate ${schemas}"/>
+        <arg line="@{arg} ${tests} --xsd ${schemas} --rnc ${relaxng}"/>
       </java>
       <copy unless:blank="@{license}"
             file="@{name}/@{license}" tofile="@{name}.LICENSE"/>

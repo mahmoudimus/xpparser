@@ -985,17 +985,17 @@ public class XPathXConverter implements XParserTreeConstants {
             Element ic = doc.createElementNS
                 (XQX_NS_URI, "xqx:ifClause");
             ite.appendChild(ic);
-            transformChildren(node, ic, 0, 0);
+            transformChildren(node, ic, 0, n-3);
 
             Element tc = doc.createElementNS
                 (XQX_NS_URI, "xqx:thenClause");
             ite.appendChild(tc);
-            transformChildren(node, tc, 1, 1);
+            transformChildren(node, tc, n-2, n-2);
 
             Element ec = doc.createElementNS
                 (XQX_NS_URI, "xqx:elseClause");
             ite.appendChild(ec);
-            transformChildren(node, ec, 2, 2);
+            transformChildren(node, ec, n-1, n-1);
             break;
         }
 

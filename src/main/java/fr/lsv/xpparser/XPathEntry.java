@@ -113,14 +113,18 @@ public abstract class XPathEntry {
                 (XMLConstants.NULL_NS_URI,
                  "schema",
                  Paths.get(result.getKey()).getFileName().toString());
-            if (result.getValue().equals(XMLValidator.VALID))
+            if (result.getValue().equals(ValidationFarm.VALID))
                 val.setAttributeNS
                     (XMLConstants.DEFAULT_NS_PREFIX,
                      "valid", "yes");
             else {
                 String msg = result.getValue();
                 int i = msg.indexOf(':');
-                msg = msg.substring(i+1);
+                int j = msg.indexOf(';');
+                if (j >= 0 && i < j)
+                    msg = msg.substring(i+1);
+                else if (i >= 0 && j < i)
+                    msg = msg.substring(j+2);
                 val.setAttributeNS
                     (XMLConstants.DEFAULT_NS_PREFIX,
                      "valid", "no");

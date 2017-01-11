@@ -44,7 +44,7 @@ public class SourceFactory {
     private XPath xpinterpreter;
 
     // XML validation
-    private XMLValidator validator;
+    private ValidationFarm farm;
 
     // XSLT translation
     private XMLPrinter xslt;
@@ -67,17 +67,17 @@ public class SourceFactory {
     }
 
     // Basic accessors
-    public void setValidator(XMLValidator v) {
-        this.validator = v;
+    public void setValidator(ValidationFarm v) {
+        this.farm = v;
     }
     public void setTransformer(XMLPrinter x) {
         this.xslt = x;
     }
     
     protected Iterable<Map.Entry<String,String>> validate(Node n) {
-        if (validator != null)
+        if (farm != null)
             try {
-                return validator.validate(n);
+                return farm.validate(n);
             } catch (IOException e) {
                 return new LinkedList<Map.Entry<String,String>>();
             }
