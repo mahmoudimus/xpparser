@@ -18,10 +18,10 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-expr  = notAllowed
+#expr  = notAllowed
 
 # [62] FunctionItemExpr ::= NamedFunctionRef | InlineFunctionExpr
-start = namedfunref | inlfun
+expr |= namedfunref | inlfun
 
 # [63] NamedFunctionRef  ::=  EQName "#" IntegerLiteral
 namedfunref = element namedFunctionRef {

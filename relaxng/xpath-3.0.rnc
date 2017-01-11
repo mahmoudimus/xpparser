@@ -15,7 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-default namespace = "http://www.w3.org/2005/XQueryX"
+
+# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
+#                          | IfExpr
+include "expr/flwor.rnc"
+include "expr/quant.rnc"
+include "expr/if.rnc"
+include "expr/cast.rnc"
+include "expr/funitem.rnc"
+
+#default namespace = "http://www.w3.org/2005/XQueryX"
 
 start = expr
 
@@ -25,12 +34,8 @@ start = expr
 # [6]  Expr             ::=  ExprSingle ("," ExprSingle ")"
 expr |= element sequenceExpr { expr* }  
 
-# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
-#                          | IfExpr | OrExpr
-expr |= external "expr/flwor.rnc"
-     |  external "expr/quant.rnc"
-     |  external "expr/if.rnc"
-     |  op
+#  [7]  ExprSingle       ::= ... | OrExpr
+expr |= op
 
 # [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
 expr |= element rangeSequenceExpr {
@@ -40,11 +45,10 @@ expr |= element rangeSequenceExpr {
 
 # [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
 # [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
-expr |= element (instanceOfExpr | treatExpr ) {
+expr |= element ( instanceOfExpr | treatExpr ) {
   element argExpr { expr },
   element sequenceType { external "misc/types.rnc" }
 }
-expr |=  external "expr/cast.rnc"
 
 # [30] ValueExpr        ::= SimpleMapExpr
 # [34] SimpleMapExpr    ::= PathExpr ("!" PathExpr)*
@@ -101,7 +105,6 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 primary |= external "misc/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
-        |  external "expr/funitem.rnc"
 
 # [59] FunctionCall  ::=  EQName ArgumentList
 # [49] ArgumentList  ::=  "(" (Argument ("," Argument)* )? ")"

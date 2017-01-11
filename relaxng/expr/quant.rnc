@@ -18,13 +18,13 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-expr  = notAllowed
+# expr  = notAllowed
 
 # [14] QuantifiedExpr ::=  ("some" | "every") "$" VarName "in" ExprSingle
 #                          ("," "$" VarName "in" ExprSingle)*
 #                          "satisfies" ExprSingle
 # [56] VarName  ::=  EQName
-start = element quantifiedExpr {
+expr |= element quantifiedExpr {
   element quantifier { string "some" | string "every" },
   element quantifiedExprInClause {
     element typedVariableBinding {
