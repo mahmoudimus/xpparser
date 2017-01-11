@@ -13,7 +13,6 @@ General Public License in `LICENSE` for more details.
  */
 package fr.lsv.xpparser;
 
-import com.thaiopensource.xml.sax.ErrorHandlerImpl;
 import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.ValidateProperty;
@@ -34,6 +33,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.SAXException;
@@ -60,7 +60,9 @@ public class ValidationFarm {
         // we are using Relax NG compact format
         this.rncFactory = CompactSchemaReader.getInstance();
         this.pb = new PropertyMapBuilder();
-        pb.put(ValidateProperty.ERROR_HANDLER, new ErrorHandlerImpl());
+        pb.put
+            (ValidateProperty.ERROR_HANDLER,
+             new ErrorHandlerImpl());
     }
 
     /**
@@ -115,7 +117,7 @@ public class ValidationFarm {
      */
     public void addRNCSchema (String filename, Reader schema)
         throws SAXException {
-        final Path path = Paths.get(filename);
+        final Path path = Paths.get(filename).normalize();
         this.pb.put
             (ValidateProperty.ENTITY_RESOLVER,
              new EntityResolver () {                        
@@ -123,13 +125,13 @@ public class ValidationFarm {
                  public InputSource resolveEntity(String publicId,
                                                   String systemId)
                      throws SAXException, IOException {
-                     
                      // The base resource that includes this current resource
                      Path resourcePath =
                          path.resolveSibling(systemId).normalize();
                      InputSource source =
                          new InputSource(Main.getInput(resourcePath));
-                     source.setSystemId(resourcePath.toString());
+                     source.setSystemId(systemId);
+                     
                      return source;
                  }
             });

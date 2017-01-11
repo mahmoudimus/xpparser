@@ -17,6 +17,7 @@ import com.thaiopensource.util.PropertyMap;
 import com.thaiopensource.validate.IncorrectSchemaException;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.ValidationDriver;
+import com.thaiopensource.validate.ValidateProperty;
 import java.io.IOException;
 import java.io.Reader;
 import javax.xml.transform.Source;
@@ -32,6 +33,8 @@ import org.xml.sax.SAXException;
 public class RNCValidator implements Validator {
 
     private com.thaiopensource.validate.Validator v;
+    
+    private ErrorHandlerImpl eh;
 
     private TransformerFactory f;
     
@@ -44,6 +47,8 @@ public class RNCValidator implements Validator {
             this.v = factory.createSchema
                 (new InputSource(reader), pm)
                 .createValidator(pm);
+            eh = (ErrorHandlerImpl) pm.get
+                (ValidateProperty.ERROR_HANDLER);
         }
         catch (IncorrectSchemaException|IOException e) {
             throw new SAXException(e);
@@ -53,11 +58,14 @@ public class RNCValidator implements Validator {
     }
 
     public void validate(Source source) throws IOException, SAXException {
+        eh.reset();
         try {
             f.newTransformer().transform
                 (source, new SAXResult(v.getContentHandler()));
+            if (eh.hasFailed())
+                throw new SAXException(eh.getDiagnostic());
         } catch (TransformerException e) {
-            throw new SAXException(e);
+            throw new SAXException(e.getMessage());
         }
     }
 
