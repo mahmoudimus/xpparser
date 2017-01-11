@@ -28,9 +28,6 @@ include "expr/if.rnc"
 # ----------------------------------------------------------------
 # Expressions
 
-# [6]  Expr             ::=  ExprSingle ("," ExprSingle ")"
-expr |= element sequenceExpr { expr* }  
-
 #  [7]  ExprSingle       ::= ... | OrExpr
 expr |= op
 
@@ -103,14 +100,17 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 # [58] ContextItemExpr ::= "."
 primary |= external "misc/literal.rnc"
         |  element contextItemExpr { empty }
-        |  fun
+        |  fun          
 include "expr/funitem.rnc"
+        
+# [6]  Expr             ::=  ExprSingle ("," ExprSingle ")"
+primary |= element sequenceExpr { expr* } 
 
 # [59] FunctionCall  ::=  EQName ArgumentList
 # [49] ArgumentList  ::=  "(" (Argument ("," Argument)* )? ")"
 # [60] Argument      ::=  ExprSingle | ArgumentPlaceholder
 # [61] ArgumentPlaceholder ::= "?"
-fun = element FunctionCallExpr {
+fun = element functionCallExpr {
   element functionName { external "misc/eqname.rnc" },
   element arguments {
     ( expr | element argumentPlaceholder { empty } )*

@@ -33,6 +33,7 @@ sequence.type = element voidSequenceType { empty }
 # [70] AtomicOrUnionType     ::=  EQName
 # [93] ParenthesizedItemType ::=  "(" ItemType ")"
 item.type = external "tests.rnc"
+  | element anyItemType { empty }
   | fun.type
   | element atomicType { external "eqname.rnc" }
   | element parenthesizedItemType { item.type }
@@ -45,7 +46,7 @@ item.type = external "tests.rnc"
 fun.type = element anyFunctionTest { empty }
   | element typedFunctionTest {
       element paramTypeList {
-        element sequenceType { sequence.type }+
+        element sequenceType { sequence.type }*
       }?,
       element sequenceType { sequence.type }
 }

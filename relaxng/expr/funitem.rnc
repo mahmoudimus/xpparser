@@ -19,7 +19,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 # [62] FunctionItemExpr ::= NamedFunctionRef | InlineFunctionExpr
-primary |= namedfunref | inlfun
+primary |= namedfunref | inlfun | dynfun
 
 # [63] NamedFunctionRef  ::=  EQName "#" IntegerLiteral
 namedfunref = element namedFunctionRef {
@@ -43,5 +43,11 @@ paramlist = element paramList {
   element param {
     element varName { external "../misc/eqname.rnc" },
     element typeDeclaration { external "../misc/types.rnc" }?
-  }+
+  }*
+}
+
+dynfun = element dynamicFunctionInvocationExpr {
+  element functionItem { primary },
+  element predicates { expr* }?,
+  element arguments  { ( expr | element argumentPlaceholder { empty } )* }?
 }
