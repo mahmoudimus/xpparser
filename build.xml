@@ -30,7 +30,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
     </javac>
   </presetdef>    
 
-  <target name="compile" description="Compile xpparser">
+  <target name="compile" description="Compile xpparser" depends="jing">
     <mkdir dir="target/classes/"/>
     <java_compile srcdir="src/main/java/" destdir="target/classes/"/>
   </target>

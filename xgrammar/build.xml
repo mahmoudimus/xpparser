@@ -18,7 +18,7 @@ specifications, and parser tests.
   <property name="unicodeinput" value="true"/>
 
   <property name="grammar-file" value="xpath-grammar.xml"/>
-  <property name="lib-dir" value="lib"/>
+  <property name="lib-dir" value="../lib"/>
   <property name="gen-dir" value="../src/main/"/>
   <property name="java-gen" value="${gen-dir}/java"/>
 
