@@ -18,11 +18,11 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-expr  = notAllowed
+# expr  = notAllowed
 
 # [8]  ForExpr  ::=  SimpleForClause "return" ExprSingle
 # [11] LetExpr  ::=  SimpleLetClause "return" ExprSingle
-start = element flworExpr {
+expr |= element flworExpr {
   (for+ | let+ ),
   element returnClause { expr }
 }

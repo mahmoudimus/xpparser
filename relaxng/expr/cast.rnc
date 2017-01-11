@@ -18,11 +18,11 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-expr  = notAllowed
+# expr  = notAllowed
 
 # [27] CastableExpr  ::=  CastExpr  ("castable" "as" SingleType)?
 # [26] CastExpr      ::=  UnionExpr ("cast" "as" SingleType)?
-start = element (castableExpr | castExpr) {
+expr |= element (castableExpr | castExpr) {
   element argExpr { expr },
   type.single
 }
