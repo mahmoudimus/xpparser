@@ -18,6 +18,7 @@ import com.thaiopensource.validate.IncorrectSchemaException;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.ValidationDriver;
 import com.thaiopensource.validate.ValidateProperty;
+import com.thaiopensource.validate.prop.rng.RngProperty;
 import java.io.IOException;
 import java.io.Reader;
 import javax.xml.transform.Source;

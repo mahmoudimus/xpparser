@@ -16,6 +16,7 @@ package fr.lsv.xpparser;
 import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.SchemaReader;
 import com.thaiopensource.validate.ValidateProperty;
+import com.thaiopensource.validate.prop.rng.RngProperty;
 import com.thaiopensource.validate.rng.CompactSchemaReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -63,6 +64,8 @@ public class ValidationFarm {
         pb.put
             (ValidateProperty.ERROR_HANDLER,
              new ErrorHandlerImpl());
+        RngProperty.CHECK_ID_IDREF.add(pb);
+        //RngProperty.SIMPLIFIED_SCHEMA.add(pb);
     }
 
     /**
@@ -134,7 +137,7 @@ public class ValidationFarm {
                      
                      return source;
                  }
-            });
+             });
 
         schemas.add(new AbstractMap.SimpleEntry
                     (filename,

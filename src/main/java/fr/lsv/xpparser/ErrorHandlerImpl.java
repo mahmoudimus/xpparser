@@ -51,8 +51,12 @@ public class ErrorHandlerImpl implements ErrorHandler {
         
     public void error(SAXParseException exception)
         throws SAXException {
-        fail = true;
-        eh.error(exception);
+        // parse error message to get rid of bug with namespace decls
+        String msg = exception.getMessage();
+        if (msg.indexOf("found attribute \"xmlns:") < 0) {
+            fail = true;
+            eh.error(exception);
+        }
     }
 
     public void fatalError(SAXParseException exception)
