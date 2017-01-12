@@ -27,7 +27,7 @@ regenerate the parser sources.
 Use the provided [xpparser](xpparser) script.  Typical examples: 
 
 ```shell
-./xpparser --xslt xgrammar/*.xsl --rnc relaxng/xpath*.rnc
+./xpparser --xslt xgrammar/*.xsl --xsd xgrammar/xquery-3.0.xsd --rnc relaxng/xpath*.rnc
 echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
 ```
 
