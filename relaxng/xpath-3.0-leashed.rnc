@@ -37,15 +37,6 @@ expr |= element rangeSequenceExpr {
   element endExpr   { expr }
 }
 
-# [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
-expr |= element ( instanceOfExpr | treatExpr ) {
-  element argExpr { expr },
-  element sequenceType { external "misc/types.rnc" }
-}
-
-# [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
-include "expr/cast.rnc"
-
 # [30] ValueExpr        ::= SimpleMapExpr
 # [34] SimpleMapExpr    ::= PathExpr ("!" PathExpr)*
 expr |= element simpleMapExpr { path, path+ }
@@ -107,7 +98,7 @@ primary |= external "misc/literal.rnc"
 # [60] Argument      ::=  ExprSingle | ArgumentPlaceholder
 # [61] ArgumentPlaceholder ::= "?"
 fun = element functionCallExpr {
-  element functionName { external "misc/eqname.rnc" },
+  element functionName { external "fn/standard.rnc" },
   element arguments {
     ( expr | element argumentPlaceholder { empty } )*
   }?
