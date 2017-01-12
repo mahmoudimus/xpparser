@@ -92,6 +92,9 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 primary |= external "misc/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
+        
+# [6]  Expr             ::=  ExprSingle ("," ExprSingle ")"
+primary |= element sequenceExpr { expr* }
 
 # [59] FunctionCall  ::=  EQName ArgumentList
 # [49] ArgumentList  ::=  "(" (Argument ("," Argument)* )? ")"
