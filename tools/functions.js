@@ -272,13 +272,19 @@ function process(document) {
   // Display all items, by category
   function display(cat,arr) {
     var s = "<ul>";
-    for (var i=0; i<arr.length; i++) {
-      var node = arr[i];
-      var header = node.innerText.replace("\n"," ").split(" ")[1].split(":");
-      if (header[0]==cat) {
-        s += "<li>"+cat+":"+header[1]+"</li>";
-      }
-    }
+    arr.
+      map(function (node) {
+        var header = node.innerText.replace("\n"," ").split(" ")[1].split(":");
+        if (header[0]==cat)
+          return header[1];
+        else
+          return ""
+      }).
+      sort().
+      map(function (name) {
+        if (name!="")
+          s += "<li>"+cat+":"+name+"</li>";
+      });
     log("Category "+cat+":");
     logHTML(s+"</ul>");
   }
@@ -296,11 +302,11 @@ function process(document) {
     }
   }
 
-  log("Inconditionally pure: "+pure.join(", "));
-  log("Zero-ary pure: "+arity_pure[0].join(", "));
-  log("One-ary pure: "+arity_pure[1].join(", "));
-  log("Two-ary pure: "+arity_pure[2].join(", "));
-  log("Three-ary pure: "+arity_pure[3].join(", "));
+  log("Inconditionally pure: "+pure.sort().join(", "));
+  log("Zero-ary pure: "+arity_pure[0].sort().join(", "));
+  log("One-ary pure: "+arity_pure[1].sort().join(", "));
+  log("Two-ary pure: "+arity_pure[2].sort().join(", "));
+  log("Three-ary pure: "+arity_pure[3].sort().join(", "));
 
 }
 
