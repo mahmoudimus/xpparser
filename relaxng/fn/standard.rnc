@@ -14,13 +14,15 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses.
+# along with this program.  If not, see <http://www.gnu.org/licenses>.
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-start = attribute xqx:prefix { string "fn" }?,
-        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+start = fn | math
+
+fn =  attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
       ( string "abs"
       | string "adjust-dateTime-to-timezone"
       | string "adjust-date-to-timezone"
@@ -226,3 +228,20 @@ start = attribute xqx:prefix { string "fn" }?,
       | string "yearMonthDuration-less-than"
       | string "years-from-duration"
       | string "zero-or-one")
+
+math = attribute xqx:prefix { string "math" }?,
+       attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions/math" }?,
+       ( string "acos"
+       | string "asin"
+       | string "atan"
+       | string "atan2"
+       | string "cos"
+       | string "exp"
+       | string "exp10"
+       | string "log"
+       | string "log10"
+       | string "pi"
+       | string "pow"
+       | string "sin"
+       | string "sqrt"
+       | string "tan")
