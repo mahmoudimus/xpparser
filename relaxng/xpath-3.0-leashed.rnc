@@ -101,7 +101,9 @@ primary |= element sequenceExpr { expr* }
 # [60] Argument      ::=  ExprSingle | ArgumentPlaceholder
 # [61] ArgumentPlaceholder ::= "?"
 fun = element functionCallExpr {
-  element functionName { external "fn/standard.rnc" },
+  element functionName {
+    external "fn/standard.rnc" | external "math/math.rnc"
+  },
   element arguments {
     ( expr | element argumentPlaceholder { empty } )*
   }?
