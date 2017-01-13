@@ -1,0 +1,93 @@
+# XPath 1.0 fragment of XQueryX in Relax NG compact syntax
+#
+# Copyright (C) 2017  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+start = expr
+
+# ----------------------------------------------------------------
+# Expressions
+
+expr = op | path | primary
+
+# ----------------------------------------------------------------
+# Operations
+
+op |= element ( andOp | orOp                        # Boolean
+              | unionOp                             # path union
+              | equalOp | notEqualOp                # equality
+              | lessThanOp    | lessThanOrEqualOp   # order
+              | greaterThanOp | greaterThanOrEqualOp
+              | addOp | subtractOp | multiplyOp     # arithmetic
+              | divOp | modOp
+              ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
+}
+op |= element unaryMinusOp {
+  element operand { expr }
+}
+
+# ----------------------------------------------------------------
+# Primary expressions and function calls
+
+primary |= external "misc/literal.rnc"
+        |  element contextItemExpr { empty }
+        |  fun
+        |  element sequenceExpr { expr }
+        
+fun = element functionCallExpr {
+  element functionName { external "misc/eqname.rnc" },
+  element arguments { expr* }?
+}
+
+
+# ----------------------------------------------------------------
+# Paths
+
+path = element pathExpr {
+  ( element rootExpr { empty }, step* ) | step+
+}
+
+step = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } ),
+  element predicates { expr* }?
+}
+
+axis = element xpathAxis {
+  ( string "ancestor"
+  | string "ancestor-or-self"
+  | string "attribute"
+  | string "child"
+  | string "descendant"
+  | string "descendant-or-self"
+  | string "following"
+  | string "following-sibling"
+  | string "namespace" 
+  | string "parent"
+  | string "descendant-or-self"
+  | string "descendant"
+  | string "preceding"
+  | string "preceding-sibling"
+  | string "self" )
+}
+
+nodetest =
+    element nameTest { external "misc/eqname.rnc" }
+  | element Wildcard { element NCName { xsd:NCName }?, element star { empty }? }
+  | element ( commentTest | textTest | anyKindTest ) { empty }
+  | element piTest { element piTarget { text }? }
