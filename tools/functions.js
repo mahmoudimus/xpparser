@@ -272,6 +272,7 @@ function process(document) {
   // Display all items, by category
   function display(cat,arr) {
     var s = "<ul>";
+    var n = 0;
     arr.
       map(function (node) {
         var header = node.innerText.replace("\n"," ").split(" ")[1].split(":");
@@ -282,10 +283,12 @@ function process(document) {
       }).
       sort().
       map(function (name) {
-        if (name!="")
+        if (name!="") {
+          n++ ;
           s += "<li>"+cat+":"+name+"</li>";
+        }
       });
-    log("Category "+cat+":");
+    log("Category "+cat+" ("+n+"):");
     logHTML(s+"</ul>");
   }
   display("math",arr);
