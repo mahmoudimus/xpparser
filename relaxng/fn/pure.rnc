@@ -1,0 +1,137 @@
+# XPath fragment of XQueryX in Relax NG compact syntax:
+# XPath standard functions.
+#
+# Copyright (C) 2016  David Baelde (ENS Paris-Saclay)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+pure = attribute xqx:prefix { string "fn" }?,
+       attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+     ( string "QName"
+     | string "abs"
+     | string "avg"
+     | string "ceiling"
+     | string "codepoint-equal"
+     | string "codepoints-to-string"
+     | string "concat"
+     | string "count"
+     | string "dateTime"
+     | string "day-from-date"
+     | string "day-from-dateTime"
+     | string "days-from-duration"
+     | string "empty"
+     | string  "encode-for-uri"
+     | string "escape-html-uri"
+     | string "exactly-one"
+     | string "exists"
+     | string "false"
+     | string "filter"
+     | string "floor"
+     | string "fold-left"
+     | string "fold-right"
+     | string "for-each"
+     | string "for-each-pair"
+     | string "function-arity"
+     | string "function-name"
+     | string "head"
+     | string "hours-from-dateTime"
+     | string "hours-from-duration"
+     | string "hours-from-time"
+     | string "in-scope-prefixes"
+     | string "innermost"
+     | string "insert-before"
+     | string "iri-to-uri"
+     | string "local-name-from-QName"
+     | string "lower-case"
+     | string "matches"
+     | string "minutes-from-dateTime"
+     | string "minutes-from-duration"
+     | string "minutes-from-time"
+     | string "month-from-date"
+     | string "month-from-dateTime"
+     | string "months-from-duration"
+     | string "namespace-uri-for-prefix"
+     | string "namespace-uri-from-QName"
+     | string "normalize-unicode"
+     | string "not"
+     | string "one-or-more"
+     | string "outermost"
+     | string "prefix-from-QName"
+     | string "remove"
+     | string "replace"
+     | string "resolve-QName"
+     | string "reverse"
+     | string "round"
+     | string "round-half-to-even"
+     | string "seconds-from-dateTime"
+     | string "seconds-from-duration"
+     | string "seconds-from-time"
+     | string "serialize"
+     | string "string-join"
+     | string "string-to-codepoints"
+     | string "subsequence"
+     | string "substring"
+     | string "sum"
+     | string "tail"
+     | string "timezone-from-date"
+     | string "timezone-from-dateTime"
+     | string "timezone-from-time"
+     | string "tokenize"
+     | string "trace"
+     | string "translate"
+     | string "true"
+     | string "unordered"
+     | string "upper-case"
+     | string "year-from-date"
+     | string "year-from-dateTime"
+     | string "years-from-duration"
+     | string "zero-or-one")
+
+pure1 = attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+      ( string "base-uri"
+      | string "data"
+      | string "document-uri"
+      | string "generate-id"
+      | string "has-children"
+      | string "local-name"
+      | string "name"
+      | string "namespace-uri"
+      | string "nilled"
+      | string "node-name"
+      | string "normalize-space"
+      | string "number"
+      | string "root"
+      | string "string"
+      | string "string-length")
+
+pure2 = attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+      ( string "adjust-date-to-timezone"
+      | string "adjust-dateTime-to-timezone"
+      | string "adjust-time-to-timezone"
+      | string "element-with-id"
+      | string "format-number"
+      | string "id"
+      | string "idref"
+      | string "lang"
+      | string "path"
+      | string "resolve-uri")
+
+pure3 = attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+      ( string "format-integer")
