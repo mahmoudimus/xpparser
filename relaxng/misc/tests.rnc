@@ -30,7 +30,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 #                     | AnyKindTest 
 # [75] CommentTest ::=  "comment" "(" ")"   
 # [74] TextTest    ::=  "text" "(" ")"
-# [76]  NamespaceNodeTest  ::=  "namespace-node" "(" ")"
+# [76] NamespaceNodeTest  ::=  "namespace-node" "(" ")"
 # [72] AnyKindTest        ::=  "node" "(" ")"
 start = document.test | element.test | attribute.test | schemae.test
       | schemaa.test | pi.test
@@ -84,5 +84,5 @@ schemaa.test = element schemaAttributeTest {
 
 # [77] PITest ::= "processing-instruction" "(" (NCName | StringLiteral)? ")"
 pi.test = element piTest {
-  element piTarget { xsd:NCName }?
+  element piTarget { text }?
 }
