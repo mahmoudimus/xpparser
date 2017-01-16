@@ -18,19 +18,20 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 start = expr
-include "expr/if.rnc"
+
+include "expr/pure.rnc"
 
 # ----------------------------------------------------------------
 # Expressions
 
 expr |= op | path | primary
 
+include "expr/if.rnc"
+
 # ----------------------------------------------------------------
 # Operations
 
-op |= element ( andOp | orOp                        # Boolean
-              | unionOp                             # path union
-              ) {
+op =  element ( andOp | orOp | unionOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
@@ -40,16 +41,17 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
               | lessThanOp  | lessThanOrEqualOp
               | greaterThanOp | greaterThanOrEqualOp
               ) {
-    ( element firstOperand  { external "expr/pure.rnc" },
+    ( element firstOperand  { cstexpr },
       element secondOperand { expr } )
-  | ( element firstOperand { expr }
-      element secondOperand  { external "expr/pure.rnc" }),
+  | ( element firstOperand  { expr },
+      element secondOperand { cstexpr })
 }
 
 # ----------------------------------------------------------------
 # Function calls
 
-primary |= external "expr/pure.rnc"
+primary =  external "expr/literal.rnc"
+        |  cstfun
         |  element contextItemExpr { empty }
         |  fun
         |  element sequenceExpr { expr* }

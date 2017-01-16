@@ -24,39 +24,37 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "../fn/pure.rnc"
 
-start = cstexpr
+cstexpr = external "literal.rnc" | cstfun | cstop
 
-cstexpr = external "literal.rnc" | fun | op
-
-fun = element functionCallExpr {
+cstfun = element functionCallExpr {
   element functionName { pure | external "../fn/math.rnc" },
   element arguments {
     ( cstexpr )*
   }?
 }
 
-fun |= element functionCallExpr {
+cstfun |= element functionCallExpr {
   element functionName { pure1 },
   element arguments {
     cstexpr
   }?
 }
 
-fun |= element functionCallExpr {
+cstfun |= element functionCallExpr {
   element functionName { pure2 },
   element arguments {
     cstexpr, cstexpr
   }?
 }
 
-fun |= element functionCallExpr {
+cstfun |= element functionCallExpr {
   element functionName { pure3 },
   element arguments {
     cstexpr, cstexpr, cstexpr
   }?
 }
 
-op =  element ( andOp | orOp                        # Boolean
+cstop =  element ( andOp | orOp                     # Boolean
               | eqOp | neOp | equalOp | notEqualOp  # equality
               | ltOp | leOp | gtOp | geOp           # order
               | lessThanOp  | lessThanOrEqualOp
@@ -69,6 +67,6 @@ op =  element ( andOp | orOp                        # Boolean
   element secondOperand { cstexpr }
 }
 
-op |= element ( unaryPlusOp | unaryMinusOp ) {
+cstop |= element ( unaryPlusOp | unaryMinusOp ) {
   element operand { cstexpr }
 }
