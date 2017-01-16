@@ -19,8 +19,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 
 start = expr
 
-# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
-#                          | IfExpr
+# [7]  ExprSingle       ::= ... | IfExpr
 include "expr/if.rnc"
 
 # ----------------------------------------------------------------
@@ -29,15 +28,8 @@ include "expr/if.rnc"
 #  [7]  ExprSingle       ::= ... | OrExpr
 expr |= op
 
-# [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
-expr |= element rangeSequenceExpr {
-  element startExpr { expr },
-  element endExpr   { expr }
-}
-
 # [30] ValueExpr        ::= SimpleMapExpr
 # [34] SimpleMapExpr    ::= PathExpr ("!" PathExpr)*
-expr |= element simpleMapExpr { path, path+ }
 expr |= path
 expr |= primary
 
@@ -49,36 +41,34 @@ expr |= primary
 # [18] ComparisonExpr   ::= StringConcatExpr ( (Valuecomp
 #                                            |GeneralComp
 #                                            |NodeComp) StringConcatExpr)?
-# [19] StringConcatExpr ::=  RangeExpr ("||" RangeExpr)*
 # [21] AdditiveExpr ::= MultiplicativeExpr( ("+"|"-") MultiplicativeExpr)*
-# [22] MultiplicativeExpr ::= UnionExpr ( ("*" | "div" | "idiv" | "mod")
-#                                         UnionExpr)*
 # [23] UnionExpr        ::= IntersectExceptExpr ( ("union" | "|")
-#                                                 IntersectExceptExpr)*
-# [24] IntersectExceptExpr ::= InstanceofExpr ( ("intersect" | "except" )
-#                                               InstanceofExpr)*
 # [31] GeneralComp      ::=  "=" | "!=" | "<" | "<=" | ">" | ">="
 # [32] ValueComp        ::=  "eq" | "ne" | "lt" | "le" | "gt" | "ge"
 # [33] NodeComp         ::=  "is" | "<<" | ">>"
 op |= element ( andOp | orOp                        # Boolean
               | unionOp                             # path union
-              | eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-#             | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-#             | addOp | subtractOp | multiplyOp     # arithmetic
-#             | divOp | idivOp | modOp
-#             | intersectOp | exceptOp              # path intersection
-#             | stringConcatenateOp                 # string
               ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
 
-# [29] UnaryExpr        ::=  ("-" | "+")* ValueExpr
-op |= element ( unaryPlusOp | unaryMinusOp ) {
-  element operand { expr }
+op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+  element firstOperand  { external "expr/pure.rnc" },
+  element secondOperand { expr }
+}
+
+op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+  element firstOperand { expr }
+  element secondOperand  { external "expr/pure.rnc" },
 }
 
 # ----------------------------------------------------------------
