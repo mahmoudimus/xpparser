@@ -23,6 +23,8 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-data.rnc" {
+  path = element pathExpr { step+ }
+
   axis = element xpathAxis {
     ( string "child"
     | string "attribute"
