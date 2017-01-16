@@ -53,7 +53,7 @@ cst.fun |= element functionCallExpr {
   }?
 }
 
-cst.op =  element ( andOp | orOp                     # Boolean
+cst.op =  element ( andOp | orOp                    # Boolean
               | eqOp | neOp | equalOp | notEqualOp  # equality
               | ltOp | leOp | gtOp | geOp           # order
               | lessThanOp  | lessThanOrEqualOp

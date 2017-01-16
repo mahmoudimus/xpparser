@@ -41,10 +41,10 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
               | lessThanOp  | lessThanOrEqualOp
               | greaterThanOp | greaterThanOrEqualOp
               ) {
-    ( element firstOperand  { cst.expr },
-      element secondOperand { expr } )
-  | ( element firstOperand  { expr },
+    ( element firstOperand  { expr },
       element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { expr } )
 }
 
 op |= cst.op
@@ -55,15 +55,14 @@ op |= cst.op
 primary =  external "expr/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
-        |  cst.fun
         |  element sequenceExpr { expr* }
 
-fun = element FunctionCallExpr {
-element functionName { external "fn/bool.rnc" },
-  element arguments {
-    ( expr | element argumentPlaceholder { empty } )*
-  }?
+fun = element functionCallExpr {
+  element functionName { external "fn/bool.rnc" },
+  element arguments { expr* }?
 }
+
+fun |= cst.fun
 
 
 # ----------------------------------------------------------------
