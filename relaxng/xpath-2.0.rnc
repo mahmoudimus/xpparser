@@ -1,0 +1,120 @@
+# XPath 2.0 fragment of XQueryX in Relax NG compact syntax
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+start = expr
+
+# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
+#                          | IfExpr
+include "expr/for.rnc"
+include "expr/quant.rnc"
+include "expr/if.rnc"
+
+# ----------------------------------------------------------------
+# Expressions
+
+#  [7]  ExprSingle       ::= ... | OrExpr
+expr |= op
+
+# [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
+expr |= element rangeSequenceExpr {
+  element startExpr { expr },
+  element endExpr   { expr }
+}
+
+# [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
+expr |= element ( instanceOfExpr | treatExpr ) {
+  element argExpr { expr },
+  element sequenceType { external "misc/types.rnc" }
+}
+
+# [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
+include "expr/cast.rnc"
+
+expr |= path
+expr |= primary
+
+# ----------------------------------------------------------------
+# Operations
+
+op |= element ( andOp | orOp                        # Boolean
+              | unionOp                             # path union
+              | eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+              | addOp | subtractOp | multiplyOp     # arithmetic
+              | divOp | idivOp | modOp
+              | intersectOp | exceptOp              # path intersection
+              ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
+}
+
+# [29] UnaryExpr        ::=  ("-" | "+")* ValueExpr
+op |= element ( unaryPlusOp | unaryMinusOp ) {
+  element operand { expr }
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+primary |= external "expr/literal.rnc"
+        |  element contextItemExpr { empty }
+        |  fun
+        |  element sequenceExpr { expr* }
+
+fun = element functionCallExpr {
+  element functionName { external "misc/eqname.rnc" },
+  element arguments { expr * }?
+}
+
+
+# ----------------------------------------------------------------
+# Paths
+
+path = element pathExpr {
+  ( element rootExpr { empty }, step* ) | step+
+}
+step = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } ),
+  element predicates { expr* }?
+}
+
+axis = element xpathAxis {
+  ( string "child"
+  | string "attribute"
+  | string "self"
+  | string "parent"
+  | string "descendant-or-self"
+  | string "descendant"
+  | string "following"
+  | string "following-sibling"
+  | string "ancestor"
+  | string "ancestor-or-self"
+  | string "preceding"
+  | string "preceding-sibling"
+  | string "namespace" )
+}
+
+nodetest = element nameTest { external "misc/eqname.rnc" }
+  | external "misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
