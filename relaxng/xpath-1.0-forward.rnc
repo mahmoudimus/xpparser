@@ -1,0 +1,40 @@
+# Forward DataXPath fragment of XQueryX in Relax NG compact syntax
+#
+# Based on Diego Figueira, _Forward-XPath and extended register
+# automata on data-trees_, in the Proceedings of the 13th
+# International Conference on Database Theory (ICDT'10), pages
+# 230--240, ACM Press, 2010.  doi:10.1145/1804669.1804699
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-1.0-data.rnc" {
+  start = element pathExpr { element rootExpr { empty }, step* }
+        | expr
+
+  path = element pathExpr { step+ }
+  
+  axis = element xpathAxis {
+    ( string "child"
+    | string "attribute"
+    | string "self"
+    | string "descendant-or-self"
+    | string "descendant"
+    | string "following"
+    | string "following-sibling" )
+  }
+}

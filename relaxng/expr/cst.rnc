@@ -17,41 +17,55 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 default namespace = "http://www.w3.org/2005/XQueryX"
-namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 # TODO create a variant based on 1.0 rather than 3.0 functions
 # TODO check about argumentPlaceholder that I removed ?
 
 include "../fn/pure.rnc"
 
-start = cstexpr
+cst.expr = external "literal.rnc" | cst.fun | cst.op
 
-cstexpr = external "literal.rnc" | fun
-
-fun = element functionCallExpr {
+cst.fun = element functionCallExpr {
   element functionName { pure | external "../fn/math.rnc" },
   element arguments {
-    ( cstexpr )*
+    ( cst.expr )*
   }?
 }
 
-fun |= element functionCallExpr {
+cst.fun |= element functionCallExpr {
   element functionName { pure1 },
   element arguments {
-    cstexpr
+    cst.expr
   }?
 }
 
-fun |= element functionCallExpr {
+cst.fun |= element functionCallExpr {
   element functionName { pure2 },
   element arguments {
-    cstexpr, cstexpr
+    cst.expr, cst.expr
   }?
 }
 
-fun |= element functionCallExpr {
+cst.fun |= element functionCallExpr {
   element functionName { pure3 },
   element arguments {
-    cstexpr, cstexpr, cstexpr
+    cst.expr, cst.expr, cst.expr
   }?
+}
+
+cst.op =  element ( andOp | orOp                    # Boolean
+              | eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              | addOp | subtractOp | multiplyOp     # arithmetic
+              | divOp | idivOp | modOp
+              | stringConcatenateOp                 # string
+              ) {
+  element firstOperand  { cst.expr },
+  element secondOperand { cst.expr }
+}
+
+cst.op |= element ( unaryPlusOp | unaryMinusOp ) {
+  element operand { cst.expr }
 }
