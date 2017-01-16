@@ -31,7 +31,7 @@ include "expr/if.rnc"
 # ----------------------------------------------------------------
 # Operations
 
-op =  element ( andOp | orOp | unionOp ) {
+op = element ( andOp | orOp | unionOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
@@ -46,6 +46,8 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
   | ( element firstOperand  { expr },
       element secondOperand { cstexpr })
 }
+
+op |= cstop
 
 # ----------------------------------------------------------------
 # Function calls
