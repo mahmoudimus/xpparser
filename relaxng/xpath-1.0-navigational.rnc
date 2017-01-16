@@ -19,7 +19,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 
 start = expr
 
-include "expr/pure.rnc"
+include "expr/cst.rnc"
 
 # ----------------------------------------------------------------
 # Expressions
