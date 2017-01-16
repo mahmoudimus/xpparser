@@ -89,7 +89,7 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 # [52] PrimaryExpr  ::=  Literal | VarRef | ParenthesizedExpr
 #                      | ContextItemExpr | FunctionCall | FunctionItemExpr
 # [58] ContextItemExpr ::= "."
-primary |= external "misc/literal.rnc"
+primary |= external "expr/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
         
@@ -102,7 +102,7 @@ primary |= element sequenceExpr { expr* }
 # [61] ArgumentPlaceholder ::= "?"
 fun = element functionCallExpr {
   element functionName {
-    external "fn/standard.rnc" | external "math/math.rnc"
+    external "fn/standard.rnc" | external "fn/math.rnc"
   },
   element arguments {
     ( expr | element argumentPlaceholder { empty } )*

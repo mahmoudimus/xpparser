@@ -40,5 +40,5 @@ literal |= element stringConstantExpr {
 # [59] VarRef 	   ::=  "$" VarName
 # [60] VarName     ::=  EQName
 varref = element varRef {
-  element name { external "eqname.rnc" }
+  element name { external "../misc/eqname.rnc" }
 }

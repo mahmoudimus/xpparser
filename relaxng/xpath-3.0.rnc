@@ -98,7 +98,7 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 # [52] PrimaryExpr  ::=  Literal | VarRef | ParenthesizedExpr
 #                      | ContextItemExpr | FunctionCall | FunctionItemExpr
 # [58] ContextItemExpr ::= "."
-primary |= external "misc/literal.rnc"
+primary |= external "expr/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
 include "expr/funitem.rnc"

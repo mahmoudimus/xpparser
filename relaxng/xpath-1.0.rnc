@@ -45,7 +45,7 @@ op |= element unaryMinusOp {
 # ----------------------------------------------------------------
 # Primary expressions and function calls
 
-primary |= external "misc/literal.rnc"
+primary |= external "expr/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
         |  element sequenceExpr { expr }

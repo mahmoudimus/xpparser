@@ -29,7 +29,7 @@ start = cstexpr
 cstexpr = external "literal.rnc" | fun
 
 fun = element functionCallExpr {
-  element functionName { pure | external "../math/math.rnc" },
+  element functionName { pure | external "../fn/math.rnc" },
   element arguments {
     ( cstexpr )*
   }?
