@@ -32,6 +32,7 @@ include "xpath-1.0-data.rnc" {
     | string "descendant"
     | string "ancestor"
     | string "ancestor-or-self"
-    | string "namespace" # obtainable using the ancestor axis )
+    | string "namespace" # obtainable using the ancestor axis
+    )
   }
 }
