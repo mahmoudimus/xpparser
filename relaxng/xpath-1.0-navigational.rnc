@@ -24,7 +24,7 @@ include "expr/pure.rnc"
 # ----------------------------------------------------------------
 # Expressions
 
-expr |= op | path | primary
+expr = op | path | primary
 
 include "expr/if.rnc"
 
@@ -41,21 +41,21 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
               | lessThanOp  | lessThanOrEqualOp
               | greaterThanOp | greaterThanOrEqualOp
               ) {
-    ( element firstOperand  { cstexpr },
+    ( element firstOperand  { cst.expr },
       element secondOperand { expr } )
   | ( element firstOperand  { expr },
-      element secondOperand { cstexpr })
+      element secondOperand { cst.expr })
 }
 
-op |= cstop
+op |= cst.op
 
 # ----------------------------------------------------------------
 # Function calls
 
 primary =  external "expr/literal.rnc"
-        |  cstfun
         |  element contextItemExpr { empty }
         |  fun
+        |  cst.fun
         |  element sequenceExpr { expr* }
 
 fun = element FunctionCallExpr {
