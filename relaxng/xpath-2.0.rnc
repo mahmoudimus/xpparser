@@ -19,35 +19,27 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 
 start = expr
 
-# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
-#                          | IfExpr
-include "expr/for.rnc"
-include "expr/quant.rnc"
-include "expr/if.rnc"
 
 # ----------------------------------------------------------------
 # Expressions
 
-#  [7]  ExprSingle       ::= ... | OrExpr
-expr |= op
+include "expr/for.rnc"
+include "expr/quant.rnc"
+include "expr/if.rnc"
 
-# [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
 expr |= element rangeSequenceExpr {
   element startExpr { expr },
   element endExpr   { expr }
 }
 
-# [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
 expr |= element ( instanceOfExpr | treatExpr ) {
   element argExpr { expr },
   element sequenceType { external "misc/types.rnc" }
 }
 
-# [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
 include "expr/cast.rnc"
 
-expr |= path
-expr |= primary
+expr |= path | op | primary
 
 # ----------------------------------------------------------------
 # Operations
@@ -67,7 +59,6 @@ op |= element ( andOp | orOp                        # Boolean
   element secondOperand { expr }
 }
 
-# [29] UnaryExpr        ::=  ("-" | "+")* ValueExpr
 op |= element ( unaryPlusOp | unaryMinusOp ) {
   element operand { expr }
 }

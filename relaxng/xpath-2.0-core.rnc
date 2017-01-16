@@ -1,4 +1,8 @@
-# XPath fragment of XQueryX in Relax NG compact syntax
+# XPath 2.0 Core fragment of XQueryX in Relax NG compact syntax.
+#
+# Based on Balder ten Cate and Carsten Lutz, _The complexity of query
+# containment in expressive fragments of XPath 2.0_, Journal of the
+# ACM, vol. 56(6), article 31, 2009.  doi:10.1145/1568318.1568321
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -24,16 +28,20 @@ include "expr/cst.rnc"
 # ----------------------------------------------------------------
 # Expressions
 
-expr = op | path | primary
-
-# these can be expressed
-include "expr/if.rnc"
+include "expr/for.rnc"
 include "expr/quant.rnc"
+include "expr/if.rnc"
+
+expr |= path | op | primary
 
 # ----------------------------------------------------------------
 # Operations
 
-op = element ( andOp | orOp | unionOp ) {
+op |= element ( andOp | orOp                        # Boolean
+              | unionOp                             # path union
+              | intersectOp | exceptOp              # path intersection
+              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+              ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
@@ -51,21 +59,21 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
 
 op |= cst.op
 
+
 # ----------------------------------------------------------------
 # Function calls
 
-primary =  external "expr/literal.rnc"
+primary |= external "expr/literal.rnc"
         |  element contextItemExpr { empty }
         |  fun
         |  element sequenceExpr { expr* }
 
 fun = element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
-  element arguments { expr* }?
+  element arguments { expr * }?
 }
 
 fun |= cst.fun
-
 
 # ----------------------------------------------------------------
 # Paths
@@ -73,7 +81,6 @@ fun |= cst.fun
 path = element pathExpr {
   ( element rootExpr { empty }, step* ) | step+
 }
-
 step = element stepExpr {
   ((axis, nodetest) | element filterExpr { primary } ),
   element predicates { expr* }?
