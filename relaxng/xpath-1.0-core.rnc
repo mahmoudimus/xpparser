@@ -59,12 +59,49 @@ primary =  external "expr/literal.rnc"
         |  fun
         |  element sequenceExpr { expr* }
 
+# Boolean functions
+
 fun = element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
   element arguments { expr* }?
 }
 
-fun |= cst.fun
+fun |= cst.fun | fun.root | fun.name
+
+# functions that can be implemented via other means
+
+# when both the ancestor and parent axes are available
+fun.root = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "root")
+  },
+  element arguments { expr* }?
+}
+
+# when the child axis is available
+fun.child =  element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "has-children" )
+  },
+  element arguments { expr* }?
+}
+
+fun.name = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "name"
+    | string "local-name"
+    | string "namespace-uri"
+    | string "node-name"
+    )
+  },
+  element arguments { expr* }?
+}
 
 
 # ----------------------------------------------------------------
