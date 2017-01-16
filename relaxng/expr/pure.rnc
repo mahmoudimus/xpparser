@@ -26,7 +26,7 @@ include "../fn/pure.rnc"
 
 start = cstexpr
 
-cstexpr = external "literal.rnc" | fun
+cstexpr = external "literal.rnc" | fun | op
 
 fun = element functionCallExpr {
   element functionName { pure | external "../fn/math.rnc" },
@@ -54,4 +54,21 @@ fun |= element functionCallExpr {
   element arguments {
     cstexpr, cstexpr, cstexpr
   }?
+}
+
+op =  element ( andOp | orOp                        # Boolean
+              | eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              | addOp | subtractOp | multiplyOp     # arithmetic
+              | divOp | idivOp | modOp
+              | stringConcatenateOp                 # string
+              ) {
+  element firstOperand  { cstexpr },
+  element secondOperand { cstexpr }
+}
+
+op |= element ( unaryPlusOp | unaryMinusOp ) {
+  element operand { cstexpr }
 }
