@@ -92,7 +92,8 @@ axis = element xpathAxis {
   | string "ancestor-or-self"
   | string "preceding"
   | string "preceding-sibling"
-  | string "namespace" )
+  | string "namespace" # obtainable using the ancestor axis
+  )
 }
 
 nodetest = element nameTest { external "misc/eqname.rnc" }
