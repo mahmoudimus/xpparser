@@ -23,6 +23,9 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-data.rnc" {
+  start = element pathExpr { element rootExpr { empty }, step* }
+        | expr
+        
   path = element pathExpr { step+ }
 
   axis = element xpathAxis {
