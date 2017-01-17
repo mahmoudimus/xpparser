@@ -37,6 +37,5 @@ include "xpath-1.0-data.rnc" {
     )
   }
  
-  fun.id   = notAllowed
   fun.root = notAllowed
 }

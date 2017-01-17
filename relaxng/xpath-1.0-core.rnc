@@ -71,7 +71,8 @@ fun |= cst.fun | fun.root | fun.name
 
 # functions that can be implemented via other means
 
-# when both the ancestor and parent axes are available
+# when both the ancestor and parent axes are available using
+# `ancestor-or-self::*[not(parent::*)]'
 fun.root = element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
