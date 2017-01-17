@@ -5,16 +5,24 @@ function log (s) {
   d3.select("#log").append("li").text(s);
 }
 
-var benchmarks = ["w3c","xpathmark"];
+/*
+ *
+ * Dictionary of schemas of interest, associating paths to short names.
+ * The order of schemas is fixed by the columns array.
+ * The stacked bar visualization assumes that each schema
+ * is included in the next one.
+ *
+ */
 var schemas = {
   "xpath-1.0-navigational.rnc" : "x10n",
   "xpath-1.0.rnc" : "x10",
   "xpath-3.0-leashed.rnc" : "x30l",
   "xpath-3.0.rnc" : "x30"
 };
-
+var columns = ["name","x10n","x10","x30l","x30"];
 
 /*
+ *
  * Statistics will be collected in the data array,
  * with one entry per benchmark.
  * Each entry will have the following fields:
@@ -25,10 +33,7 @@ var schemas = {
  *
  */
 var data = [];
-data.columns = ["name","x10n","x10","x30l","x30"];
-var index = {};
-for (var i=0; i<schemas.length; i++)
-  index[schemas[i]]=i;
+data.columns = columns;
 
 /*
  *
@@ -52,7 +57,6 @@ function loadFromXml(bench,xml) {
     entry[data.columns[i]] -= entry[data.columns[i-1]];
   }
 }
-
 function loadBench(bench,k) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -69,7 +73,8 @@ function loadBench(bench,k) {
 
 /*
  *
- * Data visualization
+ * Data visualization as stacked bars
+ * Adapted from http://bl.ocks.org/mbostock/3886208
  *
  */
 function visualize() {
