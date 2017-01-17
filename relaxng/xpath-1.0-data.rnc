@@ -37,19 +37,3 @@ include "xpath-1.0-core.rnc" {
      }
      | cst.op
 }
-
-fun |= fun.id
-
-# id/idref can be handled through equalOp when both the ancestor and
-# descendant axes are available
-fun.id = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "id" 
-    | string "idref"
-    | string "element-with-id"
-    )
-  },
-  element arguments { expr* }?
-}

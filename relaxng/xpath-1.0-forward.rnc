@@ -38,6 +38,5 @@ include "xpath-1.0-data.rnc" {
     | string "following-sibling" )
   }
 
-  fun.id   = notAllowed
   fun.root = notAllowed
 }
