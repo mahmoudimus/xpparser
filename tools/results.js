@@ -14,12 +14,12 @@ function log (s) {
  *
  */
 var schemas = {
-  "xpath-1.0-navigational.rnc" : "x10n",
+  "xpath-1.0-core.rnc" : "x10c",
   "xpath-1.0.rnc" : "x10",
   "xpath-3.0-leashed.rnc" : "x30l",
   "xpath-3.0.rnc" : "x30"
 };
-var columns = ["name","x10n","x10","x30l","x30"];
+var columns = ["name","x10c","x10","x30l","x30"];
 
 /*
  *
