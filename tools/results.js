@@ -1,5 +1,5 @@
-function info (s) {
-  d3.select("#info").text(s);
+function status (s) {
+  d3.select("#status").text(s);
 }
 function log (s) {
   d3.select("#log").append("li").text(s);
@@ -7,8 +7,8 @@ function log (s) {
 
 /*
  *
- * Dictionary of schemas of interest, associating paths to short names.
- * The order of schemas is fixed by the columns array.
+ * Schemas of interest, as a dictionary associating paths to short names.
+ * The order of schemas is then fixed by the columns array.
  * The stacked bar visualization assumes that each schema
  * is included in the next one.
  *
@@ -25,11 +25,17 @@ var columns = ["name","x10n","x10","x30l","x30"];
  *
  * Statistics will be collected in the data array,
  * with one entry per benchmark.
+ *
  * Each entry will have the following fields:
  *   name  : string -- the name of the benchmark
  *   total : int    -- the number of tests in it
  * and, for each schema S, a field S indicating how
  * many tests satisfy that schema.
+ *
+ * Currently, the number of entries for schema S
+ * does not include the number of entries for
+ * schemas S' included in S, i.e. there is no
+ * double counting.
  *
  */
 var data = [];
@@ -61,9 +67,9 @@ function loadBench(bench,k) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      info("Processing "+bench+"...");
+      status("Processing "+bench+"...");
       loadFromXml(bench,this.responseXML);
-      info("Done with "+bench+".");
+      status("Done with "+bench+".");
       k();
     }
   };
@@ -103,6 +109,7 @@ function visualize() {
   y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
   z.domain(keys);
 
+  // Create stack data matrix and draw it
   g.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(data))
@@ -113,7 +120,8 @@ function visualize() {
     .enter().append("rect")
       .attr("x", function(d) { return x(d.data.name); })
       .attr("y", function(d) { return y(d[1]); })
-      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("height", function (d) { return y(d[0]) - y(d[1]); })
+      .attr("onclick", "alert(this.__data__)")
       .attr("width", x.bandwidth());
 
   g.append("g")
@@ -162,7 +170,7 @@ function visualize() {
  *
  */
 function run() {
-  info("Loading...");
+  status("Loading...");
   // Load some test XML, copied from ../benchmark for now.
   // Warning: can't load except from a subdirectory i.e. .. is not allowed!
   function load(i,k) {
@@ -173,7 +181,7 @@ function run() {
   }
   load(0,
     function () {
-      info("Creating summary...");
+      status("Creating summary...");
       d3.select("#summary").
         selectAll("li").data(data).enter()
         .append("li").text(function (d) { return (d.name+" ("+d.total+")") })
@@ -185,8 +193,8 @@ function run() {
           })
         .enter()
         .append("li").text(function (d,i) { return data.columns[i+1]+": +"+d });
-      info("Creating bar chart...");
+      status("Creating bar chart...");
       visualize();
-      info("Visualization done.");
+      status("Visualization done.");
     });
 }
