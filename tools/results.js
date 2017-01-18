@@ -14,12 +14,18 @@ function log (s) {
  *
  */
 var schemas = {
-  "xpath-1.0-navigational.rnc" : "x10n",
+  "xpath-1.0-forward.rnc" : "x10f",
+  "xpath-1.0-vertical.rnc" : "x10v",
+  "xpath-1.0-downward.rnc" : "x10do",
+  "xpath-1.0-core.rnc" : "x10c",
+  "xpath-1.0-data.rnc" : "x10da",
   "xpath-1.0.rnc" : "x10",
+  "xpath-2.0-core.rnc" : "x20c",
+  "xpath-2.0.rnc" : "x20",
   "xpath-3.0-leashed.rnc" : "x30l",
   "xpath-3.0.rnc" : "x30"
 };
-var columns = ["name","x10n","x10","x30l","x30"];
+var columns = ["name","x10f","x10v","x10do","x10c","x10da","x10","x20c","x20","x30l","x30"];
 
 /*
  *
@@ -100,7 +106,7 @@ function visualize() {
     .rangeRound([height, 0]);
 
   var z = d3.scaleOrdinal()
-    .range(["#7b6888", "#6b486b", "#a05d56", "#d0743c"]);
+    .range(["#ff7200", "#ffff0a", "#c9ff0a", "#18ba00", "#0093e2", "#1600e2", "#7c13c6", "#9d13c6", "#c6136d", "#c61313"]);
 
   var keys = data.columns.slice(1);
 
