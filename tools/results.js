@@ -14,18 +14,18 @@ function log (s) {
  *
  */
 var schemas = {
-  "xpath-1.0-forward.rnc" : "x10f",
-  "xpath-1.0-vertical.rnc" : "x10v",
-  "xpath-1.0-downward.rnc" : "x10do",
-  "xpath-1.0-core.rnc" : "x10c",
-  "xpath-1.0-data.rnc" : "x10da",
-  "xpath-1.0.rnc" : "x10",
-  "xpath-2.0-core.rnc" : "x20c",
-  "xpath-2.0.rnc" : "x20",
-  "xpath-3.0-leashed.rnc" : "x30l",
-  "xpath-3.0.rnc" : "x30"
+  "xpath-1.0-downward.rnc" : "downward",
+  "xpath-1.0-forward.rnc" : "forward",
+  "xpath-1.0-vertical.rnc" : "vertical",
+  "xpath-1.0-core.rnc" : "core",
+  "xpath-1.0-data.rnc" : "data",
+  "xpath-1.0.rnc" : "1.0",
+  "xpath-2.0-core.rnc" : "2.0-core",
+  "xpath-2.0.rnc" : "2.0",
+  "xpath-3.0-leashed.rnc" : "leashed",
+  "xpath-3.0.rnc" : "3.0"
 };
-var columns = ["name","x10f","x10v","x10do","x10c","x10da","x10","x20c","x20","x30l","x30"];
+var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-core","2.0","leashed", "3.0"];
 
 /*
  *
