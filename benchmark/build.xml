@@ -78,7 +78,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <target name="xpathmark">
     <benchmark name="xpathmark"
       src="http://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
-      includes="xpath-pt/xpath/*.xpl" arg="--xquery ../xqx2xql.xsl"/>
+      includes="xpath-pt/xslt/*.xsl" arg="--xml '//@select'"/>
   </target>
 
   <!-- ===============================================================
