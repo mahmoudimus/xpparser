@@ -1,3 +1,6 @@
+// TODO
+// Check that fragments that should be included are really included.
+
 function info (s) {
   d3.select("#info").text(s);
 }
@@ -41,6 +44,24 @@ var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-c
 var data = [];
 data.columns = columns;
 
+// Iterate f over all subsequences of l.
+function iterSublists(l,f) {
+  var acc = [];
+  function aux(l) {
+    if (l.length==0) 
+      f(acc);
+    else {
+      var hd = l.shift();
+      acc.push(hd);
+      aux(l);
+      acc.pop();
+      aux(l);
+      l.unshift(hd);
+    }
+  }
+  return aux(l);
+}
+
 /*
  *
  * Extraction of data from benchmarks
@@ -56,19 +77,51 @@ function loadFromXml(bench,xml) {
     if (vals[i].getAttribute("valid")=="yes")
       entry[schemas[schema]]++;
   }
-  log("Raw entry "+entry.name+" ("+entry.total+"): "
+  log("Entry "+entry.name+" ("+entry.total+"): "
     +data.columns.slice(1).map(function (k) { return entry[k] }));
-  // TODO check that fragments are really included
-  for (var i=data.columns.length-1; i>1; i--) {
-    entry[data.columns[i]] -= entry[data.columns[i-1]];
-  }
 }
+
+// Intersection counts, in venn.js format
+var intersections = [];
+function intersectionFromXml(bench,xml) {
+  var entry = { name : bench, sets : {} };
+  var queries = xml.getElementsByTagName("xpath");
+  for (var i=0; i<queries.length; i++) {
+    var l = [];
+    var sets =
+      Array.prototype.slice.call(queries[i].getElementsByTagName("validation"))
+      .map(function (v) {
+        if (v.getAttribute("valid")=="yes")
+          return schemas[v.getAttribute("schema")];
+        else
+          return "";
+      })
+      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed" || x=="1.0" || x=="2.0" || x=="3.0"); })
+      .filter(function (x) { return (x!=""); })
+      .sort();
+    iterSublists(sets,function (l) {
+      if (l.length==0) return;
+      if (entry.sets[l]==undefined)
+        entry.sets[l]=1;
+      else
+        entry.sets[l]++;
+    });
+  }
+  // Transform set to a list as venn.js expects
+  var l = [];
+  for (var k in entry.sets)
+    l.push({ sets : k.split(","), size : entry.sets[k] });
+  entry.sets = l;
+  intersections.push(entry);
+}
+
 function loadBench(bench,k) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       info("Processing "+bench+"...");
       loadFromXml(bench,this.responseXML);
+      intersectionFromXml(bench,this.responseXML);
       info("Done with "+bench+".");
       k();
     }
@@ -194,5 +247,7 @@ function run() {
       info("Creating bar chart...");
       visualize();
       info("Visualization done.");
+      var chart = venn.VennDiagram();
+      d3.select("#venn").datum(intersections[0].sets).call(chart);
     });
 }
