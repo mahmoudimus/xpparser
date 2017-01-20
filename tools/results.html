@@ -2,6 +2,10 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style>
+#frame {
+  width: 1024px;
+  margin: 0 auto;
+}
 </style>
   </head>
   <body onload="run()">
@@ -10,11 +14,14 @@
     <script src="benchmarks.js"></script>
     <script src="results.js"></script>
 
+    <!-- ----------------------------------------- -->
+    <div id="frame">
+
     <h1>xpparser: benchmark results</h1>
 
     <p id="status">Javascript required!</p>
 
-    <svg width="960" height="640"></svg>
+    <svg id="bars" width=960 height=640></svg>
 
     <div id="venn"></div>
 
@@ -29,6 +36,9 @@
         <ul></ul>
       </div>
     </div>
+
+    </div>
+    <!-- ----------------------------------------- -->
 
   </body>
 </html>
