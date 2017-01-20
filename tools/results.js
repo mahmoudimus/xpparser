@@ -2,7 +2,7 @@ function status (s) {
   d3.select("#status").text(s);
 }
 function log (s) {
-  d3.select("#log").append("li").text(s);
+  d3.select("#log ul").append("li").text(s);
 }
 function assert(b,s) {
   if (!b) alert("PANIC: "+s);
@@ -105,20 +105,6 @@ function loadFromXml(bench,xml) {
   var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
   for (var s in schemas) entry[schemas[s]]=0;
   data.push(entry);
-  var vals = xml.getElementsByTagName("validation");
-  for (var i=0; i<vals.length; i++) {
-    var schema = vals[i].getAttribute("schema");
-    if (vals[i].getAttribute("valid")=="yes")
-      entry[schemas[schema]]++;
-  }
-  log("Entry "+entry.name+" ("+entry.total+"): "
-    +data.columns.slice(1).map(function (k) { return entry[k] }));
-}
-
-function loadFromXml(bench,xml) {
-  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
-  for (var s in schemas) entry[schemas[s]]=0;
-  data.push(entry);
   var queries = xml.getElementsByTagName("xpath");
   for (var i=0; i<queries.length; i++) {
     var s = {};
@@ -130,8 +116,10 @@ function loadFromXml(bench,xml) {
     var schema = meaningfulFragment(s);
     if (schema) entry[schema]++;
   }
+  /*
   log("Entry "+entry.name+" ("+entry.total+"): "
     +data.columns.slice(1).map(function (k) { return entry[k] }));
+  */
 }
 
 // Iterate f over all subsequences of l.
@@ -209,12 +197,13 @@ function loadBench(bench,k) {
  */
 function visualize() {
 
-  // TODO enhance this quick and dirty normalization
+  // TODO enhance this quick and dirty normalization,
+  //   to avoid modifying data in place
   for (var i=0; i<data.length; i++) {
     for (var k in data[i])
       if (k!="name" && k!="total")
-        data[i][k] = (1000*data[i][k])/data[i].total;
-    data[i].total = 1000;
+        data[i][k] = (100.*data[i][k])/data[i].total;
+    data[i].total = 100;
   }
 
   var svg = d3.select("svg"),
@@ -271,7 +260,7 @@ function visualize() {
       .attr("fill", "#000")
       .attr("font-weight", "bold")
       .attr("text-anchor", "start")
-    .text("Number");
+    .text("%");
 
   var legend = g.append("g")
       .attr("font-family", "sans-serif")
@@ -314,7 +303,7 @@ function run() {
   load(0,
     function () {
       status("Creating summary...");
-      d3.select("#summary").
+      d3.select("#summary ul").
         selectAll("li").data(data).enter()
         .append("li").text(function (d) { return (d.name+" ("+d.total+")") })
         .append("ul")
@@ -329,6 +318,11 @@ function run() {
       visualize();
       status("Visualization done.");
       var chart = venn.VennDiagram();
-      d3.select("#venn").datum(intersections[0].sets).call(chart);
+      d3.select("#venn")
+        .append("h2").text("Venn diagram for "+intersections[0].name);
+      d3.select("#venn")
+        .append("p").text("Only a few schemas are shown; it's ugly enough like this.");
+      d3.select("#venn")
+        .datum(intersections[0].sets).call(chart);
     });
 }
