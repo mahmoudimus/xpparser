@@ -1,6 +1,9 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+#log { display : none }
+</style>
   </head>
   <body onload="run()">
     <script src="http://d3js.org/d3.v4.min.js"></script>
@@ -10,17 +13,23 @@
 
     <h1>xpparser: benchmark results</h1>
 
-    <p id="info">Javascript required!</p>
+    <p id="status">Javascript required!</p>
 
     <svg width="960" height="640"></svg>
 
     <div id="venn"></div>
 
-    <h2>Debug info</h2>
-    <h3>Summary</h3>
-    <ul id="summary"></ul>
-    <h3>Log</h3>
-    <ul id="log"></ul>
+    <div id="debug">
+      <h2>Debug info</h2>
+      <div id="summary">
+        <h3>Summary</h3>
+        <ul></ul>
+      </div>
+      <div id="log">
+        <h3>Log</h3>
+        <ul></ul>
+      </div>
+    </div>
 
   </body>
 </html>

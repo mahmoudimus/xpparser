@@ -1,48 +1,126 @@
-// TODO
-// Check that fragments that should be included are really included.
-
-function info (s) {
-  d3.select("#info").text(s);
+function status (s) {
+  d3.select("#status").text(s);
 }
 function log (s) {
-  d3.select("#log").append("li").text(s);
+  d3.select("#log ul").append("li").text(s);
+}
+function assert(b,s) {
+  if (!b) alert("PANIC: "+s);
 }
 
 /*
  *
- * Dictionary of schemas of interest, associating paths to short names.
- * The order of schemas is fixed by the columns array.
- * The stacked bar visualization assumes that each schema
- * is included in the next one.
+ * Schemas of interest, given as filenames with a short name.
+ * The order is used for displaying stacked bars.
+ *
+ * The function checkSchemaRelations may then be used to check
+ * properties such as inclusion or disjointness.
+ *
+ * The function meaningfulFragment should be used to indicate,
+ * for a given query, in which fragment it should be counted.
+ * This is used for the stacked bar visualization.
  *
  */
-var schemas = {
-  "xpath-1.0-downward.rnc" : "downward",
-  "xpath-1.0-forward.rnc" : "forward",
-  "xpath-1.0-vertical.rnc" : "vertical",
-  "xpath-1.0-core.rnc" : "core",
-  "xpath-1.0-data.rnc" : "data",
-  "xpath-1.0.rnc" : "1.0",
-  "xpath-2.0-core.rnc" : "2.0-core",
-  "xpath-2.0.rnc" : "2.0",
-  "xpath-3.0-leashed.rnc" : "leashed",
-  "xpath-3.0.rnc" : "3.0"
-};
-var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-core","2.0","leashed", "3.0"];
+var _schemas = [
+  { long : "xpath-1.0-core.rnc", short : "core" },
+  { long : "xpath-2.0-core.rnc", short : "2.0-core" },
+  { long : "xpath-1.0-downward.rnc", short : "downward" },
+  { long : "xpath-1.0-forward.rnc", short : "forward" },
+  { long : "xpath-1.0-vertical.rnc", short : "vertical" },
+  { long : "xpath-1.0-data.rnc", short : "data" },
+  { long : "xpath-3.0-leashed.rnc", short : "leashed" },
+  { long : "xpath-1.0.rnc", short : "1.0" },
+  { long : "xpath-2.0.rnc", short : "2.0" },
+  { long : "xpath-3.0.rnc", short : "3.0" }
+];
+
+function checkSchemaRelations(query,s) {
+  function _assert(b,s) {
+    assert (b,s+" "+query.getAttribute("filename")+":"+query.getAttribute("line")+","+query.getAttribute("column"));
+  }
+  _assert(s["downward"] <= s["vertical"],"downward <= vertical");
+  _assert(s["downward"] <= s["forward"],"downward <= forward");
+  _assert(s["vertical"] <= s["data"],"vertical <= data");
+  _assert(s["forward"] <= s["data"],"forward <= data");
+  _assert(s["data"] <= s["leashed"],"data <= leashed");
+  _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
+  // _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
+  // _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
+  _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
+  _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
+  _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
+}
+
+// TODO signaler les trucs rares, genre 1.0 mais pas core,
+//      data mais indécidable
+// TODO mieux détecter les trucs rares, sans hardcoder
+
+function meaningfulFragment(s) {
+  var preference =
+    [ "core", "2.0-core",
+      "downward", "forward", "vertical",
+      "data", "leashed",
+      "1.0", "2.0", "3.0" ];
+  for (var i=0; i<preference.length; i++)
+    if (s[preference[i]]) return preference[i];
+  return undefined;
+}
+
+/*
+ *
+ * Computation of derived representations of _schemas
+ *
+ */
+var schemas = {};
+for (var i=0; i<_schemas.length; i++)
+  schemas[_schemas[i].long] = _schemas[i].short;
+var columns = ["name"].concat(_schemas.map(function (x) { return x.short }));
 
 /*
  *
  * Statistics will be collected in the data array,
  * with one entry per benchmark.
+ *
  * Each entry will have the following fields:
  *   name  : string -- the name of the benchmark
  *   total : int    -- the number of tests in it
  * and, for each schema S, a field S indicating how
  * many tests satisfy that schema.
  *
+ * Currently, the number of entries for schema S
+ * does not include the number of entries for
+ * schemas S' included in S, i.e. there is no
+ * double counting.
+ *
  */
 var data = [];
 data.columns = columns;
+
+/*
+ *
+ * Extraction of data from benchmarks
+ *
+ */
+function loadFromXml(bench,xml) {
+  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
+  for (var s in schemas) entry[schemas[s]]=0;
+  data.push(entry);
+  var queries = xml.getElementsByTagName("xpath");
+  for (var i=0; i<queries.length; i++) {
+    var s = {};
+    var results = queries[i].getElementsByTagName("validation");
+    // assert(results.length==schemas.length,"loadFromXml");
+    for (var j=0; j<results.length; j++)
+      s[schemas[results[j].getAttribute("schema")]] = (results[j].getAttribute("valid")=="yes");
+    checkSchemaRelations(queries[i],s);
+    var schema = meaningfulFragment(s);
+    if (schema) entry[schema]++;
+  }
+  /*
+  log("Entry "+entry.name+" ("+entry.total+"): "
+    +data.columns.slice(1).map(function (k) { return entry[k] }));
+  */
+}
 
 // Iterate f over all subsequences of l.
 function iterSublists(l,f) {
@@ -62,25 +140,6 @@ function iterSublists(l,f) {
   return aux(l);
 }
 
-/*
- *
- * Extraction of data from benchmarks
- *
- */
-function loadFromXml(bench,xml) {
-  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
-  for (var s in schemas) entry[schemas[s]]=0;
-  data.push(entry);
-  var vals = xml.getElementsByTagName("validation");
-  for (var i=0; i<vals.length; i++) {
-    var schema = vals[i].getAttribute("schema");
-    if (vals[i].getAttribute("valid")=="yes")
-      entry[schemas[schema]]++;
-  }
-  log("Entry "+entry.name+" ("+entry.total+"): "
-    +data.columns.slice(1).map(function (k) { return entry[k] }));
-}
-
 // Intersection counts, in venn.js format
 var intersections = [];
 function intersectionFromXml(bench,xml) {
@@ -96,7 +155,7 @@ function intersectionFromXml(bench,xml) {
         else
           return "";
       })
-      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed" || x=="1.0" || x=="2.0" || x=="3.0"); })
+      .filter(function (x) { return (x=="forward" || x=="vertical" || x=="data" || x=="core" || x=="2.0-core"); })
       .filter(function (x) { return (x!=""); })
       .sort();
     iterSublists(sets,function (l) {
@@ -119,10 +178,10 @@ function loadBench(bench,k) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      info("Processing "+bench+"...");
+      status("Processing "+bench+"...");
       loadFromXml(bench,this.responseXML);
       intersectionFromXml(bench,this.responseXML);
-      info("Done with "+bench+".");
+      status("Done with "+bench+".");
       k();
     }
   };
@@ -137,6 +196,15 @@ function loadBench(bench,k) {
  *
  */
 function visualize() {
+
+  // TODO enhance this quick and dirty normalization,
+  //   to avoid modifying data in place
+  for (var i=0; i<data.length; i++) {
+    for (var k in data[i])
+      if (k!="name" && k!="total")
+        data[i][k] = (100.*data[i][k])/data[i].total;
+    data[i].total = 100;
+  }
 
   var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -162,6 +230,7 @@ function visualize() {
   y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
   z.domain(keys);
 
+  // Create stack data matrix and draw it
   g.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(data))
@@ -172,7 +241,8 @@ function visualize() {
     .enter().append("rect")
       .attr("x", function(d) { return x(d.data.name); })
       .attr("y", function(d) { return y(d[1]); })
-      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("height", function (d) { return y(d[0]) - y(d[1]); })
+      .attr("onclick", "alert(this.__data__)")
       .attr("width", x.bandwidth());
 
   g.append("g")
@@ -190,7 +260,7 @@ function visualize() {
       .attr("fill", "#000")
       .attr("font-weight", "bold")
       .attr("text-anchor", "start")
-    .text("Number");
+    .text("%");
 
   var legend = g.append("g")
       .attr("font-family", "sans-serif")
@@ -221,7 +291,7 @@ function visualize() {
  *
  */
 function run() {
-  info("Loading...");
+  status("Loading...");
   // Load some test XML, copied from ../benchmark for now.
   // Warning: can't load except from a subdirectory i.e. .. is not allowed!
   function load(i,k) {
@@ -232,8 +302,8 @@ function run() {
   }
   load(0,
     function () {
-      info("Creating summary...");
-      d3.select("#summary").
+      status("Creating summary...");
+      d3.select("#summary ul").
         selectAll("li").data(data).enter()
         .append("li").text(function (d) { return (d.name+" ("+d.total+")") })
         .append("ul")
@@ -244,10 +314,18 @@ function run() {
           })
         .enter()
         .append("li").text(function (d,i) { return data.columns[i+1]+": +"+d });
-      info("Creating bar chart...");
+      status("Creating bar chart...");
       visualize();
-      info("Visualization done.");
+      status("Visualization done.");
+      var i=0;
+      for (; i<intersections.length; i++)
+        if (intersections[i].name=="xpathmark") break;
       var chart = venn.VennDiagram();
-      d3.select("#venn").datum(intersections[0].sets).call(chart);
+      d3.select("#venn")
+        .append("h2").text("Venn diagram for "+intersections[i].name);
+      d3.select("#venn")
+        .append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
+      d3.select("#venn")
+        .datum(intersections[i].sets).call(chart);
     });
 }
