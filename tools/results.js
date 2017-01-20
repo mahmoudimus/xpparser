@@ -57,7 +57,6 @@ function checkSchemaRelations(query,s) {
   _assert(s["data"] <= s["leashed"],"data <= leashed");
   _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
   _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
-  _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
   _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
   _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
   _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
