@@ -1,11 +1,22 @@
+// TODO signaler les trucs rares, genre 1.0 mais pas core,
+//      data mais indécidable
+// TODO mieux détecter les trucs rares, sans hardcoder
+
 function status (s) {
   d3.select("#status").text(s);
 }
 function log (s) {
   d3.select("#log ul").append("li").text(s);
 }
+var assert_alert=true;
 function assert(b,s) {
-  if (!b) alert("PANIC: "+s);
+  if (!b) {
+    if (assert_alert) {
+      assert_alert=false;
+      alert("WARNING: some assertions failed; check the log.");
+    }
+    log("ASSERT FAILURE: "+s);
+  }
 }
 
 /*
@@ -36,7 +47,8 @@ var _schemas = [
 
 function checkSchemaRelations(query,s) {
   function _assert(b,s) {
-    assert (b,s+" "+query.getAttribute("filename")+":"+query.getAttribute("line")+","+query.getAttribute("column"));
+    assert (b,s+" false in "+
+      query.getAttribute("filename")+":"+query.getAttribute("line")+","+query.getAttribute("column"));
   }
   _assert(s["downward"] <= s["vertical"],"downward <= vertical");
   _assert(s["downward"] <= s["forward"],"downward <= forward");
@@ -44,16 +56,12 @@ function checkSchemaRelations(query,s) {
   _assert(s["forward"] <= s["data"],"forward <= data");
   _assert(s["data"] <= s["leashed"],"data <= leashed");
   _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
-  // _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
-  // _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
+  _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
+  _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
   _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
   _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
   _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
 }
-
-// TODO signaler les trucs rares, genre 1.0 mais pas core,
-//      data mais indécidable
-// TODO mieux détecter les trucs rares, sans hardcoder
 
 function meaningfulFragment(s) {
   var preference =
