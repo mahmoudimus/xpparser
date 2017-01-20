@@ -155,7 +155,7 @@ function intersectionFromXml(bench,xml) {
         else
           return "";
       })
-      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed"); })
+      .filter(function (x) { return (x=="forward" || x=="vertical" || x=="data" || x=="core" || x=="2.0-core"); })
       .filter(function (x) { return (x!=""); })
       .sort();
     iterSublists(sets,function (l) {
@@ -317,12 +317,15 @@ function run() {
       status("Creating bar chart...");
       visualize();
       status("Visualization done.");
+      var i=0;
+      for (; i<intersections.length; i++)
+        if (intersections[i].name=="xpathmark") break;
       var chart = venn.VennDiagram();
       d3.select("#venn")
-        .append("h2").text("Venn diagram for "+intersections[0].name);
+        .append("h2").text("Venn diagram for "+intersections[i].name);
       d3.select("#venn")
-        .append("p").text("Only a few schemas are shown; it's ugly enough like this.");
+        .append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
       d3.select("#venn")
-        .datum(intersections[0].sets).call(chart);
+        .datum(intersections[i].sets).call(chart);
     });
 }
