@@ -178,8 +178,7 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTVARDEFAULTVALUE:
         case JJTCONTEXTITEMDECL:
         case JJTANNOTATEDDECL:
-        case JJTPROLOG:
-        case JJTFUNCTIONDECL:            
+        case JJTPROLOG:          
         case JJTWINDOWCLAUSE:
         case JJTTUMBLINGWINDOWCLAUSE:
         case JJTSLIDINGWINDOWCLAUSE:            
@@ -359,6 +358,17 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
 
             // transparent:
             // if all children are XPath expressions, return them
+        case JJTPOSTFIXEXPR:
+        case JJTSINGLETYPE:
+        case JJTOCCURRENCEINDICATOR:
+        case JJTITEMTYPE:
+        case JJTDOCUMENTTEST:
+        case JJTPITEST:
+        case JJTATTRIBUTETEST:
+        case JJTFUNCTIONTEST:
+        case JJTPARENTHESIZEDITEMTYPE:
+        case JJTURIQUALIFIEDNAME:
+        case JJTSEQUENCETYPE:
         case JJTFUNCTIONBODY:
         case JJTENCLOSEDEXPR:
         case JJTEXPR:
@@ -370,13 +380,12 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTPREDICATE:
         case JJTPARENTHESIZEDEXPR:
         case JJTARGUMENT:
+        case JJTNAMETEST:
         case JJTARGUMENTLIST:
         case JJTFUNCTIONITEMEXPR:
         case JJTATOMICORUNIONTYPE:
         case JJTTYPEDFUNCTIONTEST:
         case JJTRETURNCLAUSE:
-        case JJTFORBINDING:
-        case JJTLETBINDING:
         case JJTINITIALCLAUSE:
         case JJTFORCLAUSE:
         case JJTLETCLAUSE:
@@ -384,8 +393,6 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
 
             // non-transparent: if all children are XPath expressions,
             // return the node itself
-        case JJTPARAMLIST:
-        case JJTPARAM:
         case JJTOREXPR:
         case JJTANDEXPR:
         case JJTCOMPARISONEXPR:
@@ -402,21 +409,8 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
         case JJTUNARYEXPR:
         case JJTSIMPLEMAPEXPR:
         case JJTPATHEXPR:
-        case JJTNAMETEST:
-        case JJTPOSTFIXEXPR:
-        case JJTSEQUENCETYPE:
         case JJTFUNCTIONCALL:
         case JJTINLINEFUNCTIONEXPR:
-        case JJTSINGLETYPE:
-        case JJTOCCURRENCEINDICATOR:
-        case JJTITEMTYPE:
-        case JJTDOCUMENTTEST:
-        case JJTPITEST:
-        case JJTATTRIBUTETEST:
-        case JJTFUNCTIONTEST:
-        case JJTPARENTHESIZEDITEMTYPE:
-        case JJTURIQUALIFIEDNAME:
-        case JJTNCNAME:
         case JJTIFEXPR:
         case JJTQUANTIFIEDEXPR:
         case JJTFLWOREXPR11:
@@ -565,14 +559,31 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
                 return nonTransparentVisit(node, (List) data);
         }
 
+        case JJTFORBINDING:
+        case JJTLETBINDING:
+        case JJTFUNCTIONDECL:  {
+            // throw away the ParamList but keep the FunctionBody
+            int nChildren = node.jjtGetNumChildren();
+            NodeList nl =
+                (NodeList) visit(node.getChild(nChildren - 1), data);
+            return new NodeList(false, nl.getList());
+        }
+
         case JJTTYPEDECLARATION: {
             // TypeDeclaration is only valid inside a Param in XPath
-            if (node.getParent().id != JJTPARAM) {
+            if (node.getParent().id != JJTPARAM)
+                return new NodeList(false, (List) data);                
+            else {
                 NodeList nl = visitChildren(node, (List<SimpleNode>) data);
-                return new NodeList(false, nl.getList());                
+                return new NodeList(nl.getBool(), (List) data);
             }
-            else
-                return visitChildren(node, (List<SimpleNode>) data);
+        }
+            
+        case JJTNCNAME:
+        case JJTPARAMLIST:
+        case JJTPARAM: {
+            NodeList nl = visitChildren(node, (List<SimpleNode>) data);
+            return new NodeList(nl.getBool(), (List) data);
         }
                 
         default:

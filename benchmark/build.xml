@@ -155,10 +155,9 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
 
   <target name="existdb">
     <benchmark name="existdb"
-               src="https://github.com/eXist-db/exist/archive/develop.zip"
+               src="https://codeload.github.com/eXist-db/exist/zip/develop"
                includes="exist-develop/test/src/xquery/*.xql,exist-develop/test/src/xquery/xquery3/*.xql,exist-develop/webapp/xqts/*.xql,exist-develop/webapp/*.xql,exist-develop/src/org/exist/*/*/*.xq*,exist-develop/extensions/indexes/lucene/test/src/xquery/lucene/*.xql,exist-develop/extensions/indexes/range/test/src/xquery/*.xql,exist-develop/extensions/modules/src/org/exist/xquery/modules/*/*.xq*,exist-develop/extensions/xprocxq/main/src/*/*.xq*"
                arg="--xquery ../xqx2xql.xsl"
                license="exist-develop/LICENSE"/>
   </target>
-               
 </project>
