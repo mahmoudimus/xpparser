@@ -52,7 +52,7 @@ element.test = element elementTest {
   element elementName {
     element QName { external "eqname.rnc" }
     | element star { empty }
-  },
+  }?,
   ( element typeName { external "eqname.rnc" },
     element nillable { empty }? )?
 }

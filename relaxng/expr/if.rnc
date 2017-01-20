@@ -19,7 +19,9 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 
 # [15] IfExpr ::=  "if" "(" Expr ")" "then" ExprSingle "else" ExprSingle
-expr |= element ifThenElseExpr {
+expr |= if.expr
+
+if.expr = element ifThenElseExpr {
   element ifClause { expr+ },
   element thenClause { expr },
   element elseClause { expr }

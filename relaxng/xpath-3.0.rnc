@@ -57,7 +57,7 @@ expr |= primary
 
 # [16] OrExpr           ::=  AndExpr ("or" AndExpr)*
 # [17] AndExpr          ::=  ComparisonExpr ( "and" ComparisonExpr)*
-# [18] ComparisonExpr   ::= StringConcatExpr ( (Valuecomp
+# [18] ComparisonExpr   ::=  StringConcatExpr ( (Valuecomp
 #                                            |GeneralComp
 #                                            |NodeComp) StringConcatExpr)?
 # [19] StringConcatExpr ::=  RangeExpr ("||" RangeExpr)*
