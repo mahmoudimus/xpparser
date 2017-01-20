@@ -14,18 +14,18 @@ function log (s) {
  *
  */
 var schemas = {
-  "xpath-1.0-forward.rnc" : "x10f",
-  "xpath-1.0-vertical.rnc" : "x10v",
-  "xpath-1.0-downward.rnc" : "x10do",
-  "xpath-1.0-core.rnc" : "x10c",
-  "xpath-1.0-data.rnc" : "x10da",
-  "xpath-1.0.rnc" : "x10",
-  "xpath-2.0-core.rnc" : "x20c",
-  "xpath-2.0.rnc" : "x20",
-  "xpath-3.0-leashed.rnc" : "x30l",
-  "xpath-3.0.rnc" : "x30"
+  "xpath-1.0-downward.rnc" : "downward",
+  "xpath-1.0-forward.rnc" : "forward",
+  "xpath-1.0-vertical.rnc" : "vertical",
+  "xpath-1.0-core.rnc" : "core",
+  "xpath-1.0-data.rnc" : "data",
+  "xpath-1.0.rnc" : "1.0",
+  "xpath-2.0-core.rnc" : "2.0-core",
+  "xpath-2.0.rnc" : "2.0",
+  "xpath-3.0-leashed.rnc" : "leashed",
+  "xpath-3.0.rnc" : "3.0"
 };
-var columns = ["name","x10f","x10v","x10do","x10c","x10da","x10","x20c","x20","x30l","x30"];
+var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-core","2.0","leashed", "3.0"];
 
 /*
  *
@@ -47,6 +47,24 @@ var columns = ["name","x10f","x10v","x10do","x10c","x10da","x10","x20c","x20","x
 var data = [];
 data.columns = columns;
 
+// Iterate f over all subsequences of l.
+function iterSublists(l,f) {
+  var acc = [];
+  function aux(l) {
+    if (l.length==0) 
+      f(acc);
+    else {
+      var hd = l.shift();
+      acc.push(hd);
+      aux(l);
+      acc.pop();
+      aux(l);
+      l.unshift(hd);
+    }
+  }
+  return aux(l);
+}
+
 /*
  *
  * Extraction of data from benchmarks
@@ -62,19 +80,51 @@ function loadFromXml(bench,xml) {
     if (vals[i].getAttribute("valid")=="yes")
       entry[schemas[schema]]++;
   }
-  log("Raw entry "+entry.name+" ("+entry.total+"): "
+  log("Entry "+entry.name+" ("+entry.total+"): "
     +data.columns.slice(1).map(function (k) { return entry[k] }));
-  // TODO check that fragments are really included
-  for (var i=data.columns.length-1; i>1; i--) {
-    entry[data.columns[i]] -= entry[data.columns[i-1]];
-  }
 }
+
+// Intersection counts, in venn.js format
+var intersections = [];
+function intersectionFromXml(bench,xml) {
+  var entry = { name : bench, sets : {} };
+  var queries = xml.getElementsByTagName("xpath");
+  for (var i=0; i<queries.length; i++) {
+    var l = [];
+    var sets =
+      Array.prototype.slice.call(queries[i].getElementsByTagName("validation"))
+      .map(function (v) {
+        if (v.getAttribute("valid")=="yes")
+          return schemas[v.getAttribute("schema")];
+        else
+          return "";
+      })
+      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed" || x=="1.0" || x=="2.0" || x=="3.0"); })
+      .filter(function (x) { return (x!=""); })
+      .sort();
+    iterSublists(sets,function (l) {
+      if (l.length==0) return;
+      if (entry.sets[l]==undefined)
+        entry.sets[l]=1;
+      else
+        entry.sets[l]++;
+    });
+  }
+  // Transform set to a list as venn.js expects
+  var l = [];
+  for (var k in entry.sets)
+    l.push({ sets : k.split(","), size : entry.sets[k] });
+  entry.sets = l;
+  intersections.push(entry);
+}
+
 function loadBench(bench,k) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       status("Processing "+bench+"...");
       loadFromXml(bench,this.responseXML);
+      intersectionFromXml(bench,this.responseXML);
       status("Done with "+bench+".");
       k();
     }
@@ -202,5 +252,7 @@ function run() {
       status("Creating bar chart...");
       visualize();
       status("Visualization done.");
+      var chart = venn.VennDiagram();
+      d3.select("#venn").datum(intersections[0].sets).call(chart);
     });
 }

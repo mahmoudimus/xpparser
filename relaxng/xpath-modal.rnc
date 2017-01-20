@@ -1,0 +1,68 @@
+# XPath Data fragment of XQueryX in Relax NG compact syntax
+#
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-1.0-core.rnc" {
+  op = element ( andOp | orOp | unionOp ) {
+           element firstOperand  { expr },
+           element secondOperand { expr }
+     }
+     | element ( eqOp | neOp | equalOp | notEqualOp ) {  # equality
+         ( element firstOperand  { unnested.path },
+           element secondOperand { local.path } )
+       | ( element firstOperand  { local.path },
+           element secondOperand { unnested.path } )
+     }
+     | element ( eqOp | neOp | equalOp | notEqualOp  # equality
+               | ltOp | leOp | gtOp | geOp           # order
+               | lessThanOp  | lessThanOrEqualOp
+               | greaterThanOp | greaterThanOrEqualOp
+               ) {
+          ( element firstOperand  { expr },
+            element secondOperand { cst.expr })
+        | ( element firstOperand  { cst.expr },
+            element secondOperand { expr } )
+     }
+     | cst.op
+}
+
+# an attribute step
+attr.step = element stepExpr {
+  element xpathAxis { string "attribute" },
+  element nameTest { external "misc/eqname.rnc" }
+}
+
+# a path that remains here
+local.path = element pathExpr {
+  local.step*, attr.step?
+}
+local.step = element stepExpr {
+    element filterExpr { element contextItemExpr { empty } } |
+  ( element xpathAxis { string "self" }, nodetest )
+}
+
+# predicates are only allowed at the end of the path
+unnested.path = element pathExpr {
+  ( element rootExpr { empty }, unnested.step*, step?, attr.step? )
+  | ( unnested.step*, step, attr.step? )
+}
+unnested.step = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } )
+}

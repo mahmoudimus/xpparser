@@ -25,6 +25,8 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <attribute name="arg"/>
     <attribute name="license" default=""/>
     <sequential>
+      <local name="tests"/>
+      <local name="count.tests"/>
       <fileset id="fs.tests" dir="@{name}" includes="@{includes}"/>
       <pathconvert property="tests" refid="fs.tests" pathsep=" "/>
       <resourcecount property="count.tests" refid="fs.tests"/>
@@ -76,7 +78,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <target name="xpathmark">
     <benchmark name="xpathmark"
       src="http://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
-      includes="xpath-pt/xpath/*.xpl" arg="--xquery ../xqx2xql.xsl"/>
+      includes="xpath-pt/xslt/*.xsl" arg="--xml '//@select'"/>
   </target>
 
   <!-- ===============================================================
