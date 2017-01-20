@@ -4,28 +4,77 @@ function status (s) {
 function log (s) {
   d3.select("#log").append("li").text(s);
 }
+function assert(b,s) {
+  if (!b) alert("PANIC: "+s);
+}
 
 /*
  *
- * Schemas of interest, as a dictionary associating paths to short names.
- * The order of schemas is then fixed by the columns array.
- * The stacked bar visualization assumes that each schema
- * is included in the next one.
+ * Schemas of interest, given as filenames with a short name.
+ * The order is used for displaying stacked bars.
+ *
+ * The function checkSchemaRelations may then be used to check
+ * properties such as inclusion or disjointness.
+ *
+ * The function meaningfulFragment should be used to indicate,
+ * for a given query, in which fragment it should be counted.
+ * This is used for the stacked bar visualization.
  *
  */
-var schemas = {
-  "xpath-1.0-downward.rnc" : "downward",
-  "xpath-1.0-forward.rnc" : "forward",
-  "xpath-1.0-vertical.rnc" : "vertical",
-  "xpath-1.0-core.rnc" : "core",
-  "xpath-1.0-data.rnc" : "data",
-  "xpath-1.0.rnc" : "1.0",
-  "xpath-2.0-core.rnc" : "2.0-core",
-  "xpath-2.0.rnc" : "2.0",
-  "xpath-3.0-leashed.rnc" : "leashed",
-  "xpath-3.0.rnc" : "3.0"
-};
-var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-core","2.0","leashed", "3.0"];
+var _schemas = [
+  { long : "xpath-1.0-core.rnc", short : "core" },
+  { long : "xpath-2.0-core.rnc", short : "2.0-core" },
+  { long : "xpath-1.0-downward.rnc", short : "downward" },
+  { long : "xpath-1.0-forward.rnc", short : "forward" },
+  { long : "xpath-1.0-vertical.rnc", short : "vertical" },
+  { long : "xpath-1.0-data.rnc", short : "data" },
+  { long : "xpath-3.0-leashed.rnc", short : "leashed" },
+  { long : "xpath-1.0.rnc", short : "1.0" },
+  { long : "xpath-2.0.rnc", short : "2.0" },
+  { long : "xpath-3.0.rnc", short : "3.0" }
+];
+
+function checkSchemaRelations(query,s) {
+  function _assert(b,s) {
+    assert (b,s+" "+query.getAttribute("filename")+":"+query.getAttribute("line")+","+query.getAttribute("column"));
+  }
+  _assert(s["downward"] <= s["vertical"],"downward <= vertical");
+  _assert(s["downward"] <= s["forward"],"downward <= forward");
+  _assert(s["vertical"] <= s["data"],"vertical <= data");
+  _assert(s["forward"] <= s["data"],"forward <= data");
+  _assert(s["data"] <= s["leashed"],"data <= leashed");
+  _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
+  // _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
+  // _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
+  _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
+  _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
+  _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
+}
+
+// TODO signaler les trucs rares, genre 1.0 mais pas core,
+//      data mais indécidable
+// TODO mieux détecter les trucs rares, sans hardcoder
+
+function meaningfulFragment(s) {
+  var preference =
+    [ "core", "2.0-core",
+      "downward", "forward", "vertical",
+      "data", "leashed",
+      "1.0", "2.0", "3.0" ];
+  for (var i=0; i<preference.length; i++)
+    if (s[preference[i]]) return preference[i];
+  return undefined;
+}
+
+/*
+ *
+ * Computation of derived representations of _schemas
+ *
+ */
+var schemas = {};
+for (var i=0; i<_schemas.length; i++)
+  schemas[_schemas[i].long] = _schemas[i].short;
+var columns = ["name"].concat(_schemas.map(function (x) { return x.short }));
 
 /*
  *
@@ -47,24 +96,6 @@ var columns = ["name","downward","forward","vertical","core","data","1.0","2.0-c
 var data = [];
 data.columns = columns;
 
-// Iterate f over all subsequences of l.
-function iterSublists(l,f) {
-  var acc = [];
-  function aux(l) {
-    if (l.length==0) 
-      f(acc);
-    else {
-      var hd = l.shift();
-      acc.push(hd);
-      aux(l);
-      acc.pop();
-      aux(l);
-      l.unshift(hd);
-    }
-  }
-  return aux(l);
-}
-
 /*
  *
  * Extraction of data from benchmarks
@@ -84,6 +115,43 @@ function loadFromXml(bench,xml) {
     +data.columns.slice(1).map(function (k) { return entry[k] }));
 }
 
+function loadFromXml(bench,xml) {
+  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
+  for (var s in schemas) entry[schemas[s]]=0;
+  data.push(entry);
+  var queries = xml.getElementsByTagName("xpath");
+  for (var i=0; i<queries.length; i++) {
+    var s = {};
+    var results = queries[i].getElementsByTagName("validation");
+    // assert(results.length==schemas.length,"loadFromXml");
+    for (var j=0; j<results.length; j++)
+      s[schemas[results[j].getAttribute("schema")]] = (results[j].getAttribute("valid")=="yes");
+    checkSchemaRelations(queries[i],s);
+    var schema = meaningfulFragment(s);
+    if (schema) entry[schema]++;
+  }
+  log("Entry "+entry.name+" ("+entry.total+"): "
+    +data.columns.slice(1).map(function (k) { return entry[k] }));
+}
+
+// Iterate f over all subsequences of l.
+function iterSublists(l,f) {
+  var acc = [];
+  function aux(l) {
+    if (l.length==0) 
+      f(acc);
+    else {
+      var hd = l.shift();
+      acc.push(hd);
+      aux(l);
+      acc.pop();
+      aux(l);
+      l.unshift(hd);
+    }
+  }
+  return aux(l);
+}
+
 // Intersection counts, in venn.js format
 var intersections = [];
 function intersectionFromXml(bench,xml) {
@@ -99,7 +167,7 @@ function intersectionFromXml(bench,xml) {
         else
           return "";
       })
-      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed" || x=="1.0" || x=="2.0" || x=="3.0"); })
+      .filter(function (x) { return (x=="downward" || x=="forward" || x=="data" || x=="vertical" || x=="leashed"); })
       .filter(function (x) { return (x!=""); })
       .sort();
     iterSublists(sets,function (l) {
@@ -140,6 +208,14 @@ function loadBench(bench,k) {
  *
  */
 function visualize() {
+
+  // TODO enhance this quick and dirty normalization
+  for (var i=0; i<data.length; i++) {
+    for (var k in data[i])
+      if (k!="name" && k!="total")
+        data[i][k] = (1000*data[i][k])/data[i].total;
+    data[i].total = 1000;
+  }
 
   var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 40},
