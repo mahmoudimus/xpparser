@@ -22,13 +22,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core.rnc" {
-  nodetest = element nameTest { external "misc/eqname.rnc" }
-    | external "misc/tests.rnc"
-    | element Wildcard {
-        ( element star { empty } & element NCName { xsd:NCName } )?
-    }
-}
+include "xpath-1.0-core.rnc"
 
 include "expr/for.rnc"
 include "expr/quant.rnc"
