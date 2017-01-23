@@ -38,4 +38,6 @@ include "xpath-1.0-data.rnc" {
   }
  
   fun.root = notAllowed
+  last.op = notAllowed
+  last.step = notAllowed
 }

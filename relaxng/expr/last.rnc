@@ -1,0 +1,67 @@
+# XPath fragment of XQueryX in Relax NG compact syntax
+# Simple Xpath expressions involving the function last().
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+# To catch equality/order comparison between position() and last()
+last.op = element ( 
+                eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+  element firstOperand  { last.fun },
+  element secondOperand { last.fun }
+}
+
+# Could be last() or position()
+last.fun = element functionCallExpr {
+  element functionName { 
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "last" | string "position" )
+  },
+  element arguments { empty }?
+}
+
+# to catch [last()], equivalent to [position() = last()]
+last.step = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } ),
+  element predicates {
+    element functionCallExpr {
+      element functionName { 
+        attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+        string "last"
+      },
+      element arguments { empty }?
+    }
+  }
+}
+
+# Should add these lines at the end of the proper fragments files : 
+# #Allowing some use of last()
+# include "expr/last.rnc"
+# op |= last.op 
+# step |= last.step
+
+# Should use these lines if the previous lines were 
+# imported from another file but you don't want them : 
+# last.op = notAllowed
+# last.step = notAllowed

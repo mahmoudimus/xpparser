@@ -145,3 +145,8 @@ nodetest = element nameTest { external "misc/eqname.rnc" }
   | element Wildcard {
       ( element star { empty } & element NCName { xsd:NCName } )?
   }
+
+#Allowing some use of last()
+include "expr/last.rnc"
+op |= last.op 
+step |= last.step 

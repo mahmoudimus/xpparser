@@ -36,4 +36,6 @@ include "xpath-1.0-data.rnc" {
     | string "namespace" # obtainable using the ancestor axis
     )
   }
+  last.op = notAllowed
+  last.step = notAllowed
 }
