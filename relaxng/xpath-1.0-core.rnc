@@ -55,7 +55,10 @@ op |= cst.op
 # ----------------------------------------------------------------
 # Function calls
 
-primary =  external "expr/literal.rnc"
+include "expr/literal.rnc"
+
+primary =  literal
+        |  varref
         |  element contextItemExpr { empty }
         |  fun
         |  element sequenceExpr { expr* }
@@ -115,7 +118,7 @@ path = element pathExpr {
 
 step = element stepExpr {
   ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr* }?
+  element predicates { predicates* }?
 }
 
 axis = element xpathAxis {
@@ -140,6 +143,9 @@ nodetest = element nameTest { external "misc/eqname.rnc" }
   | element Wildcard {
       ( element star { empty } & element NCName { xsd:NCName } )?
   }
+
+# which predicates can we handle?
+predicates = expr
 
 #Allowing some use of last()
 include "expr/last.rnc"

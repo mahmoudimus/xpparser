@@ -22,8 +22,9 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 # TODO check about argumentPlaceholder that I removed ?
 
 include "../fn/pure.rnc"
+include "literal.rnc"
 
-cst.expr = external "literal.rnc" | cst.fun | cst.op
+cst.expr = literal | varref | cst.fun | cst.op
 
 cst.fun = element functionCallExpr {
   element functionName { pure | external "../fn/math.rnc" },

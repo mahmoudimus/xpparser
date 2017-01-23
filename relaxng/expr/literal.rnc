@@ -21,24 +21,28 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 # [56] PrimaryExpr     ::=  Literal
 # [57] Literal 	       ::=  NumericLiteral | StringLiteral 	
 # [58] NumericLiteral  ::=  IntegerLiteral | DecimalLiteral | DoubleLiteral
-start = literal | varref
 
-literal = element integerConstantExpr {
+literal = num | str
+
+num = int | dec | dbl
+
+int = element integerConstantExpr {
   element value { xsd:int }
 }
-literal |= element decimalConstantExpr {
+dec = element decimalConstantExpr {
   element value { xsd:decimal }
 }
-literal |= element doubleConstantExpr {
+dbl = element doubleConstantExpr {
   element value { xsd:double }
 }
-literal |= element stringConstantExpr {
+str = element stringConstantExpr {
   element value { xsd:string }
 }
 
 # [56] PrimaryExpr ::=  VarRef
 # [59] VarRef 	   ::=  "$" VarName
 # [60] VarName     ::=  EQName
+
 varref = element varRef {
   element name { external "../misc/eqname.rnc" }
 }

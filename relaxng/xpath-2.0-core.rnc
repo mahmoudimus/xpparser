@@ -64,7 +64,10 @@ op |= cst.op
 # ----------------------------------------------------------------
 # Function calls
 
-primary |= external "expr/literal.rnc"
+include "expr/literal.rnc"
+
+primary =  literal
+        |  varref
         |  element contextItemExpr { empty }
         |  fun
         |  element sequenceExpr { expr* }
