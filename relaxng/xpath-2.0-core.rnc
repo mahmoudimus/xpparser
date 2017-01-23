@@ -22,134 +22,21 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-start = expr
-
-include "expr/cst.rnc"
-
-# ----------------------------------------------------------------
-# Expressions
+include "xpath-1.0-core.rnc" {
+  nodetest = element nameTest { external "misc/eqname.rnc" }
+    | external "misc/tests.rnc"
+    | element Wildcard {
+        ( element star { empty } & element NCName { xsd:NCName } )?
+    }
+}
 
 include "expr/for.rnc"
 include "expr/quant.rnc"
-include "expr/if.rnc"
 
-expr |= path | op | primary
-
-# ----------------------------------------------------------------
-# Operations
-
-op |= element ( andOp | orOp                        # Boolean
-              | unionOp                             # path union
-              | intersectOp | exceptOp              # path intersection
+op |= element ( intersectOp | exceptOp              # path intersection
               | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+                                                    # is this really handled?
               ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
-
-op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { expr } )
-}
-
-op |= cst.op
-
-
-# ----------------------------------------------------------------
-# Function calls
-
-include "expr/literal.rnc"
-
-primary =  literal
-        |  varref
-        |  element contextItemExpr { empty }
-        |  fun
-        |  element sequenceExpr { expr* }
-
-fun = element functionCallExpr {
-  element functionName { external "fn/bool.rnc" },
-  element arguments { expr * }?
-}
-
-fun |= cst.fun | fun.root | fun.name
-
-# functions that can be implemented via other means
-
-# when both the ancestor and parent axes are available using
-# `ancestor-or-self::*[not(parent::*)]'
-fun.root = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "root")
-  },
-  element arguments { expr* }?
-}
-
-# when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
-  },
-  element arguments { expr* }?
-}
-
-# ----------------------------------------------------------------
-# Paths
-
-path = element pathExpr {
-  ( element rootExpr { empty }, step* ) | step+
-}
-step = element stepExpr {
-  ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr* }?
-}
-
-axis = element xpathAxis {
-  ( string "child"
-  | string "attribute"
-  | string "self"
-  | string "parent"
-  | string "descendant-or-self"
-  | string "descendant"
-  | string "following"
-  | string "following-sibling"
-  | string "ancestor"
-  | string "ancestor-or-self"
-  | string "preceding"
-  | string "preceding-sibling"
-  | string "namespace" # obtainable using the ancestor axis
-  )
-}
-
-nodetest = element nameTest { external "misc/eqname.rnc" }
-  | external "misc/tests.rnc"
-  | element Wildcard {
-      ( element star { empty } & element NCName { xsd:NCName } )?
-  }
-
-#Allowing some use of last()
-include "expr/last.rnc"
-op |= last.op 
-step |= last.step 
