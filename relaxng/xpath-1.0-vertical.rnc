@@ -38,4 +38,15 @@ include "xpath-1.0-data.rnc" {
   }
   last.op = notAllowed
   last.step = notAllowed
+  
+  # everything except numerical literals, operations, and functions
+  predicates = varref
+             | str
+             | element contextItemExpr { empty }
+             | fun # needs to be refined!
+             | element sequenceExpr { expr* }
+             | op  # needs to be refined!
+             | path
+             | if.expr
+             | quant.expr
 }
