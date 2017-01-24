@@ -1,5 +1,5 @@
 # XPath fragment of XQueryX in Relax NG compact syntax
-# Xpath literals.
+# Xpath literals and variable references.
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #

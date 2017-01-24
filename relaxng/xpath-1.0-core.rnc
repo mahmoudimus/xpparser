@@ -69,7 +69,7 @@ fun = element functionCallExpr {
   element arguments { expr* }?
 }
 
-fun |= cst.fun | fun.root
+fun |= cst.fun | fun.root | fun.child
 
 # functions that can be implemented via other means
 
