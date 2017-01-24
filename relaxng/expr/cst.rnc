@@ -25,6 +25,7 @@ include "../fn/pure.rnc"
 #include "literal.rnc"
 
 cst.expr = literal | varref | cst.fun | cst.op
+  | element sequenceExpr { cst.expr* }
 
 cst.fun = element functionCallExpr {
   element functionName { pure | external "../fn/math.rnc" },
