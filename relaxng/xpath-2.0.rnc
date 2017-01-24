@@ -76,7 +76,7 @@ primary =  literal
 
 fun = element functionCallExpr {
   element functionName { external "misc/eqname.rnc" },
-  element arguments { expr * }?
+  element arguments { expr* }?
 }
 
 
@@ -88,7 +88,7 @@ path = element pathExpr {
 }
 step = element stepExpr {
   ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr* }?
+  element predicates { expr }?
 }
 
 axis = element xpathAxis {
