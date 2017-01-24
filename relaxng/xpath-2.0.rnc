@@ -51,6 +51,7 @@ op |= element ( eqOp | neOp                         # equality
               | ltOp | leOp | gtOp | geOp           # order
               | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
               | intersectOp | exceptOp              # path intersection
+              | idivOp                              # arithmetic
               ) {
   element firstOperand  { expr },
   element secondOperand { expr }

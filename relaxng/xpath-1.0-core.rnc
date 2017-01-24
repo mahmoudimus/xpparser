@@ -69,7 +69,7 @@ fun = element functionCallExpr {
   element arguments { expr* }?
 }
 
-fun |= cst.fun | fun.root | fun.name
+fun |= cst.fun | fun.root
 
 # functions that can be implemented via other means
 
@@ -94,6 +94,7 @@ fun.child =  element functionCallExpr {
   element arguments { expr* }?
 }
 
+cst.fun |= fun.name
 fun.name = element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
@@ -144,7 +145,7 @@ nodetest = element nameTest { external "misc/eqname.rnc" }
   }
 
 # which predicates can we handle?
-predicates = element predicates { expr }
+predicates = element predicates { expr* }
 
 #Allowing some use of last()
 include "expr/last.rnc"

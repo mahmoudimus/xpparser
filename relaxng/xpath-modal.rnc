@@ -45,24 +45,35 @@ include "xpath-1.0-core.rnc" {
 
 # an attribute step
 attr.step = element stepExpr {
-  element xpathAxis { string "attribute" },
+  element xpathAxis { string "attribute" | string "child" },
   element nameTest { external "misc/eqname.rnc" }
 }
 
 # a path that remains here
-local.path = element pathExpr {
-  local.step*, attr.step?
-}
+local.path =
+    element pathExpr { local.step*, attr.step? }
+  | element unionOp {
+      element firstOperand  { local.path },
+      element secondOperand { local.path }
+  }
+    
 local.step = element stepExpr {
-    element filterExpr { element contextItemExpr { empty } } |
-  ( element xpathAxis { string "self" }, nodetest )
+    element filterExpr { element contextItemExpr { empty } }
+  | ( element xpathAxis { string "self" }, nodetest )
 }
 
 # predicates are only allowed at the end of the path
-unnested.path = element pathExpr {
-  ( element rootExpr { empty }, unnested.step*, step?, attr.step? )
-  | ( unnested.step*, step, attr.step? )
-}
+unnested.path =
+    element pathExpr {
+        ( element rootExpr { empty }, unnested.step*, step?, attr.step? )
+      | ( unnested.step*, step, attr.step? )
+    }
+  | element contextItemExpr { empty }
+  | element unionOp {
+      element firstOperand  { unnested.path },
+      element secondOperand { unnested.path }
+    }
+  
 unnested.step = element stepExpr {
   ((axis, nodetest) | element filterExpr { primary } )
 }
