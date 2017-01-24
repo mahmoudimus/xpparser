@@ -62,7 +62,6 @@ cst.op =  element ( andOp | orOp                    # Boolean
               | greaterThanOp | greaterThanOrEqualOp
               | addOp | subtractOp | multiplyOp     # arithmetic
               | divOp | idivOp | modOp
-              | stringConcatenateOp                 # string
               ) {
   element firstOperand  { cst.expr },
   element secondOperand { cst.expr }
