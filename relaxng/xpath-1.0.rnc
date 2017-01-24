@@ -68,7 +68,7 @@ path = element pathExpr {
 
 step = element stepExpr {
   ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr }?
+  element predicates { expr* }?
 }
 
 axis = element xpathAxis {
