@@ -3,9 +3,12 @@ all: $(shell ls ../benchmark/*xml | grep -v build.xml | sed -e 's/..\///') bench
 	@echo XXX Links to EXISTING benchmarks have been created.
 	@echo XXX No benchmark has been generated: do it manually in ../benchmark if needed.
 	@echo XXX
-benchmark/%.xml:
+
+benchmark/%.xml: ../benchmark/%.xml
 	@mkdir -p benchmark
-	ln -f ../$@ $@
+	cat $< | perl -ne 'if (/<ast>/) { $$p = 1; } else { if (/<\/ast>/) { $$p = 0; } else { print unless $$p; } }' | \
+	xsltproc strip_ast.xsl - > $@
+
 .PHONY: benchmarks.js
 benchmarks.js:
 	@echo Generating benchmarks.js...
