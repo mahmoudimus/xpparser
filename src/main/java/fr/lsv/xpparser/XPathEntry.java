@@ -122,7 +122,7 @@ public abstract class XPathEntry {
                 int i = msg.indexOf(':');
                 int j = msg.indexOf(';');
                 if (j >= 0 && i < j)
-                    msg = msg.substring(i+1);
+                    msg = msg.substring(i+2, j);
                 else if (i >= 0 && j < i)
                     msg = msg.substring(j+2);
                 val.setAttributeNS
