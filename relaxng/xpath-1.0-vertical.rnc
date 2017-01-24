@@ -49,6 +49,5 @@ include "xpath-1.0-data.rnc" {
     | op  # needs to be refined!
     | path
     | if.expr
-    | quant.expr
   }
 }

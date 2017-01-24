@@ -51,7 +51,7 @@ primary =  literal
         |  varref
         |  element contextItemExpr { empty }
         |  fun
-        |  element sequenceExpr { expr }
+        |  element sequenceExpr { expr* }
         
 fun = element functionCallExpr {
   element functionName { external "misc/eqname.rnc" },

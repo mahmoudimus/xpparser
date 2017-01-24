@@ -29,7 +29,6 @@ expr = op | path | primary
 
 # these can be expressed
 include "expr/if.rnc"
-include "expr/quant.rnc"
 
 # ----------------------------------------------------------------
 # Operations
