@@ -67,50 +67,59 @@ public class XMLSource implements Iterable<XPathEntry> {
 
             private String q;
 
+            private boolean issued = true;
+
             private void jump() {
-                boolean found = false;
-
-                while (!found && counter < nodeList.getLength()) {
-                    // the DOM node we are working on
-                    n = nodeList.item(counter++);
+                if (issued) {
+                    boolean found = false;
                     
-                    // attempt to extract its XPath contents
-                    switch (n.getNodeType()) {
-                    case Node.ATTRIBUTE_NODE:
-                        q = n.getNodeValue().trim();
-                        n = ((Attr)n).getOwnerElement();
-                        break;
-                    case Node.TEXT_NODE:
-                        q = n.getNodeValue().trim();
-                        n = n.getParentNode();
-                        break;
+                    if (counter == nodeList.getLength())
+                        counter++;
+                    
+                    while (!found && counter < nodeList.getLength()) {
+                        // the DOM node we are working on
+                        n = nodeList.item(counter++);
                         
-                    case Node.ELEMENT_NODE:
-                        q = n.getTextContent().trim();
-                        break;
-
-                    default:
-                        q = null;
+                        // attempt to extract its XPath contents
+                        switch (n.getNodeType()) {
+                        case Node.ATTRIBUTE_NODE:
+                            q = n.getNodeValue().trim();
+                            n = ((Attr)n).getOwnerElement();
+                            break;
+                        case Node.TEXT_NODE:
+                            q = n.getNodeValue().trim();
+                            n = n.getParentNode();
+                            break;
+                            
+                        case Node.ELEMENT_NODE:
+                            q = n.getTextContent().trim();
+                            break;
+                            
+                        default:
+                            q = null;
+                        }
+                        
+                        // check whether it's a duplicate query
+                        found = (q == null) || sf.getQueries().add(q);
                     }
-
-                    // check whether it's a duplicate query
-                    found = (q == null) || sf.getQueries().add(q);
+                    issued = false;
                 }
             }
             
             public boolean hasNext() {
                 jump();
-                return counter < nodeList.getLength();
+                return counter <= nodeList.getLength();
             }
 
             public XPathEntry next()
                 throws NoSuchElementException {
                 
-                if (counter >= nodeList.getLength())
+                if (counter > nodeList.getLength())
                     throw new NoSuchElementException("");
                 
-                // the DOM node we are working on
+                // jump to the next DOM node
                 jump();
+                issued = true;
                 if (q == null)
                     throw new NoSuchElementException
                         ("Couldn't process node "

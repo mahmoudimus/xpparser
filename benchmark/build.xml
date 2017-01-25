@@ -103,7 +103,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   -->
   
   <target name="sources.xslt" depends="docbook,htmlbook"/>
-  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,basex"/>
+  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei"/>
   
   <!-- DocBook XSL -->
   <target name="docbook">

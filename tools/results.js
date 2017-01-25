@@ -38,6 +38,7 @@ var _schemas = [
   { long : "xpath-1.0-downward.rnc", short : "downward" },
   { long : "xpath-1.0-forward.rnc", short : "forward" },
   { long : "xpath-1.0-vertical.rnc", short : "vertical" },
+  { long : "xpath-modal.rnc", short : "modal" },
   { long : "xpath-1.0-data.rnc", short : "data" },
   { long : "xpath-3.0-leashed.rnc", short : "leashed" },
   { long : "xpath-1.0.rnc", short : "1.0" },
@@ -57,15 +58,15 @@ function checkSchemaRelations(query,s) {
   _assert(s["data"] <= s["leashed"],"data <= leashed");
   _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
   _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
-  _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
+  _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
   _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
   _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
 }
 
 function meaningfulFragment(s) {
   var preference =
-    [ "core", "2.0-core",
-      "downward", "forward", "vertical",
+      [ "core", "2.0-core", 
+      "downward", "forward", "vertical", "modal",
       "data", "leashed",
       "1.0", "2.0", "3.0" ];
   for (var i=0; i<preference.length; i++)
@@ -162,7 +163,8 @@ function intersectionFromXml(bench,xml) {
         else
           return "";
       })
-      .filter(function (x) { return (x=="forward" || x=="vertical" || x=="data" || x=="core" || x=="2.0-core"); })
+      .filter(function (x) { return (x=="forward" || x=="vertical" || x=="modal" // || x=="data" // || x=="2.0-core"
+                                    ) ; })
       .filter(function (x) { return (x!=""); })
       .sort();
     iterSublists(sets,function (l) {
@@ -331,7 +333,7 @@ function run() {
       d3.select("#venn")
         .append("h2").text("Venn diagram for "+intersections[i].name);
       d3.select("#venn")
-        .append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
+        .append("p").text("Showing some decidable fragments, but not downward (the intersection of vertical and forward).");
       d3.select("#venn")
         .datum(intersections[i].sets).call(chart);
     });
