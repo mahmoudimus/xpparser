@@ -37,5 +37,16 @@ include "xpath-1.0-data.rnc" {
     | string "following-sibling" )
   }
 
+  last.axis = element xpathAxis {
+    ( string "child"                # Needs 'following-sibling' 
+    | string "self"                 # Always 
+    | string "parent"               # Always 
+  # | string "descendant-or-self"   # Needs 'descendant' and 'following' 
+  # | string "descendant"           # Needs 'descendant' and 'following' 
+  # | string "following"            # Needs 'descendant' and 'following' 
+    | string "following-sibling"    #Always (needs itself)
+    )
+  }
+
   fun.root = notAllowed
 }
