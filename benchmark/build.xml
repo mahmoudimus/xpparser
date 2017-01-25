@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
-<project name="xpath-benchmark" default="all" basedir="." xmlns:unless="ant:unless">
+<project name="xpath-benchmark" default="all" basedir="."
+         xmlns:unless="ant:unless">
 
   <description>
 This buildfile is used to retrieve and parse XPath expressions from various sources.
   </description>
   <target name="all" depends="compile,tests,sources.xslt,sources.xquery"/>
+
+  <property name="online" value="true"/>
 
   <!-- path to schemas -->  
   <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
@@ -17,16 +20,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <pathelement path="../target/classes"/>
     <pathelement path="../lib/jing.jar"/>
   </path>
-
-  <!-- apply XSLT stylesheet -->
-  <!--property name="xml" value="docbook.xml"/>
-  <target name="eval">
-    <xslt style="toto.xsl" in="${xml}" out="/dev/null">
-      <classpath>
-        <pathelement path="../lib/saxon.jar"/>
-      </classpath>
-    </xslt>
-  </target-->
   
   <!-- macro for processing benchmark files -->
   <macrodef name="process">
@@ -62,9 +55,13 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <attribute name="arg"/>
     <attribute name="license" default=""/>
     <sequential>
-      <mkdir dir="@{name}"/>
-      <get src="@{src}" dest="@{name}/source.zip" usetimestamp="true"/>
-      <unzip src="@{name}/source.zip" dest="@{name}" overwrite="no"/>
+      <local name="offline"/>
+      <available file="@{name}" property="offline"/>
+      <mkdir unless:set="offline" dir="@{name}"/>
+      <get unless:set="offline" src="@{src}"
+           dest="@{name}/source.zip" usetimestamp="true"/>
+      <unzip unless:set="offline" src="@{name}/source.zip"
+             dest="@{name}" overwrite="no"/>
       <process name="@{name}" includes="@{includes}" arg="@{arg}"
                license="@{license}"/>
     </sequential>
