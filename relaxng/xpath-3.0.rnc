@@ -40,8 +40,7 @@ expr |= element simpleMapExpr { path, path+ }
 
 # Operations
 
-op |= element ( stringConcatenateOp # string
-              ) {
+op |= element ( stringConcatenateOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }

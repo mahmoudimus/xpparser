@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding='utf-8'?>
 
-<project name="XPath Parser" default="all" basedir=".">
+<project name="XPath Parser" default="all" basedir="." xmlns:unless="ant:unless">
 
   <description>
 This buildfile is used to compile the Java sources for the XPath Parser.
@@ -12,12 +12,15 @@ This buildfile is used to compile the Java sources for the XPath Parser.
   <property name="lib-dir" value="lib"/>
   
   <target name="jing">
-    <mkdir dir="${lib-dir}"/>
-    <get src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jing-trang/jing-20091111.zip"
+    <local name="offline"/>
+    <available file="${lib-dir}/jing.jar" property="offline"/>
+    <mkdir unless:set="offline" dir="${lib-dir}"/>
+    <get unless:set="offline"
+         src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jing-trang/jing-20091111.zip"
          dest="${lib-dir}" usetimestamp="true"/>
-    <unzip src="${lib-dir}/jing-20091111.zip" dest="${lib-dir}"
+    <unzip unless:set="offline" src="${lib-dir}/jing-20091111.zip" dest="${lib-dir}"
            overwrite="no"/>
-    <copy file="${lib-dir}/jing-20091111/bin/jing.jar"
+    <copy unless:set="offline" file="${lib-dir}/jing-20091111/bin/jing.jar"
           tofile="${lib-dir}/jing.jar"/>
   </target>
 

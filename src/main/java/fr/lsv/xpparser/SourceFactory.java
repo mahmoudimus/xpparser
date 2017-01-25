@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,6 +44,7 @@ public class SourceFactory {
     private String filter;
     private PositionalXMLReader xmlreader;
     private XPath xpinterpreter;
+    private Set<String> queries;
 
     // XML validation
     private ValidationFarm farm;
@@ -58,6 +61,8 @@ public class SourceFactory {
         dbf.setNamespaceAware(true);
         dbf.setXIncludeAware(true);
         db = dbf.newDocumentBuilder();
+
+        this.queries = new HashSet<String>(1000);
     }
 
     public SourceFactory(String filter) throws ParserConfigurationException {
@@ -94,6 +99,9 @@ public class SourceFactory {
         return "";
     }
 
+    protected Set<String> getQueries() {
+        return queries;
+    }
 
     protected PositionalXMLReader getXMLReader() throws SAXException {
         // We use a special XML parser that handles line/col numbers
