@@ -4,7 +4,7 @@
   <description>
 This buildfile is used to retrieve and parse XPath expressions from various sources.
   </description>
-  <target name="all" depends="tests,sources.xslt,sources.xquery"/>
+  <target name="all" depends="compile,tests,sources.xslt,sources.xquery"/>
 
   <!-- path to schemas -->  
   <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
@@ -17,7 +17,17 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <pathelement path="../target/classes"/>
     <pathelement path="../lib/jing.jar"/>
   </path>
-    
+
+  <!-- apply XSLT stylesheet -->
+  <!--property name="xml" value="docbook.xml"/>
+  <target name="eval">
+    <xslt style="toto.xsl" in="${xml}" out="/dev/null">
+      <classpath>
+        <pathelement path="../lib/saxon.jar"/>
+      </classpath>
+    </xslt>
+  </target-->
+  
   <!-- macro for processing benchmark files -->
   <macrodef name="process">
     <attribute name="name"/>
@@ -60,6 +70,12 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     </sequential>
   </macrodef>
 
+  <target name="compile" description="Compile xpparser">
+    <subant target="compile">
+      <fileset dir=".." includes="build.xml"/>
+    </subant>
+  </target>
+
   <!-- ===============================================================
        Tests are not representative of actual XPath content `out there'
        but are useful to test our parser.
@@ -87,7 +103,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   -->
   
   <target name="sources.xslt" depends="docbook,htmlbook"/>
-  <target name="sources.xquery" depends=""/>
+  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,basex"/>
   
   <!-- DocBook XSL -->
   <target name="docbook">
