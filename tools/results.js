@@ -38,6 +38,7 @@ var _schemas = [
   { long : "xpath-1.0-downward.rnc", short : "downward" },
   { long : "xpath-1.0-forward.rnc", short : "forward" },
   { long : "xpath-1.0-vertical.rnc", short : "vertical" },
+  { long : "xpath-modal.rnc", short : "modal" },
   { long : "xpath-1.0-data.rnc", short : "data" },
   { long : "xpath-3.0-leashed.rnc", short : "leashed" },
   { long : "xpath-1.0.rnc", short : "1.0" },
@@ -57,15 +58,15 @@ function checkSchemaRelations(query,s) {
   _assert(s["data"] <= s["leashed"],"data <= leashed");
   _assert(s["leashed"] <= s["3.0"],"leashed <= 3.0");
   _assert(s["core"] <= s["2.0-core"],"core <= 2.0-core");
-  _assert(s["2.0-core"] <= s["leashed"],"2.0-core <= leashed");
+  _assert(s["2.0-core"] <= s["2.0"],"2.0-core <= 2.0");
   _assert(s["1.0"] <= s["2.0"] && s["2.0"] <= s["3.0"],"1.0 <= 2.0 <= 3.0");
   _assert((s["vertical"] && s["forward"]) <= s["downward"],"not (vertical and forward)");
 }
 
 function meaningfulFragment(s) {
   var preference =
-    [ "core", "2.0-core",
-      "downward", "forward", "vertical",
+      [ "core", "2.0-core", 
+      "downward", "forward", "vertical", "modal",
       "data", "leashed",
       "1.0", "2.0", "3.0" ];
   for (var i=0; i<preference.length; i++)
@@ -335,28 +336,4 @@ function load(k) {
 	xhttp.open("GET","benchmark/"+benchmarks[i]+".xml");
 	xhttp.send();
   }
-}
-
-/*
- *
- * Utilities
- *
- */
-
-// Iterate f over all subsequences of l.
-function iterSublists(l,f) {
-  var acc = [];
-  function aux(l) {
-    if (l.length==0) 
-      f(acc);
-    else {
-      var hd = l.shift();
-      acc.push(hd);
-      aux(l);
-      acc.pop();
-      aux(l);
-      l.unshift(hd);
-    }
-  }
-  return aux(l);
 }

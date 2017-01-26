@@ -1,9 +1,5 @@
-# Downward DataXPath fragment of XQueryX in Relax NG compact syntax
-#
-# Based on Diego Figueira _Decidability of Downward XPath_, ACM
-# Transactions on Computational Logic (TOCL), volume 13(4), article
-# 34, 2012.  doi:10.1145/2362355.2362362
-#
+# XPath fragment of XQueryX in Relax NG compact syntax:
+# XPath `let' expressions.
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -22,24 +18,25 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-vertical.rnc" {
-  start = element pathExpr { element rootExpr { empty }, step* }
-        | expr
-        
-  path = element pathExpr { step+ }
-
-  axis = element xpathAxis {
-    ( string "child"
-    | string "attribute"
-    | string "self"
-    | string "descendant-or-self"
-    | string "descendant"
-    )
-  }
- 
-  last.axis = element xpathAxis {
-    string "self"                 # Always 
-  }
-
-  fun.root = notAllowed
+# [8]  ForExpr  ::=  SimpleForClause "return" ExprSingle
+# [11] LetExpr  ::=  SimpleLetClause "return" ExprSingle
+expr |= element flworExpr {
+  let+,
+  element returnClause { expr }
 }
+
+# [12] SimpleLetClause  ::=  "let" SimpleLetBinding ("," SimpleLetBinding)*
+# [13] SimpleLetBinding  ::=  "$" VarName ":=" ExprSingle
+# [56] VarName  ::=  EQName
+let = element letClause {
+  element letClauseItem {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element letExpr { expr }
+  }+
+}
+
+
+
+

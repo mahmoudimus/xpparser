@@ -17,8 +17,13 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-start = expr
-
+include "xpath-1.0.rnc" {
+  nodetest = element nameTest { external "misc/eqname.rnc" }
+    | external "misc/tests.rnc"
+    | element Wildcard {
+        ( element star { empty } & element NCName { xsd:NCName } )?
+    }
+}
 
 # ----------------------------------------------------------------
 # Expressions
@@ -39,76 +44,19 @@ expr |= element ( instanceOfExpr | treatExpr ) {
 
 include "expr/cast.rnc"
 
-expr |= path | op | primary
-
 # ----------------------------------------------------------------
 # Operations
 
-op |= element ( andOp | orOp                        # Boolean
-              | unionOp                             # path union
-              | eqOp | neOp | equalOp | notEqualOp  # equality
+op |= element ( eqOp | neOp                         # equality
               | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
               | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-              | addOp | subtractOp | multiplyOp     # arithmetic
-              | divOp | idivOp | modOp
               | intersectOp | exceptOp              # path intersection
+              | idivOp                              # arithmetic
               ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
 
-op |= element ( unaryPlusOp | unaryMinusOp ) {
+op |= element ( unaryPlusOp ) {
   element operand { expr }
 }
-
-# ----------------------------------------------------------------
-# Function calls
-
-include "expr/literal.rnc"
-
-primary =  literal
-        |  varref
-        |  element contextItemExpr { empty }
-        |  fun
-        |  element sequenceExpr { expr* }
-
-fun = element functionCallExpr {
-  element functionName { external "misc/eqname.rnc" },
-  element arguments { expr * }?
-}
-
-
-# ----------------------------------------------------------------
-# Paths
-
-path = element pathExpr {
-  ( element rootExpr { empty }, step* ) | step+
-}
-step = element stepExpr {
-  ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr* }?
-}
-
-axis = element xpathAxis {
-  ( string "child"
-  | string "attribute"
-  | string "self"
-  | string "parent"
-  | string "descendant-or-self"
-  | string "descendant"
-  | string "following"
-  | string "following-sibling"
-  | string "ancestor"
-  | string "ancestor-or-self"
-  | string "preceding"
-  | string "preceding-sibling"
-  | string "namespace" )
-}
-
-nodetest = element nameTest { external "misc/eqname.rnc" }
-  | external "misc/tests.rnc"
-  | element Wildcard {
-      ( element star { empty } & element NCName { xsd:NCName } )?
-  }

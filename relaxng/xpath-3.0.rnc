@@ -17,170 +17,34 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-start = expr
+include "xpath-2.0.rnc" {
+  nodetest = element nameTest { external "misc/eqname.rnc" }
+    | external "misc/tests.rnc"
+    | element Wildcard {
+        ( element star { empty } & element NCName { xsd:NCName } )?
+      | ( element uri  { xsd:string }, element star { empty } )?
+    }
 
-# [7]  ExprSingle       ::=  ForExpr | LetExpr | QuantifiedExpr
-#                          | IfExpr
-include "expr/flwor.rnc"
-include "expr/quant.rnc"
-include "expr/if.rnc"
+  fun = element functionCallExpr {
+    element functionName { external "misc/eqname.rnc" },
+    element arguments {
+      ( expr | element argumentPlaceholder { empty } )*
+    }?
+  }
+}
 
-# ----------------------------------------------------------------
 # Expressions
 
-#  [7]  ExprSingle       ::= ... | OrExpr
-expr |= op
-
-# [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
-expr |= element rangeSequenceExpr {
-  element startExpr { expr },
-  element endExpr   { expr }
-}
-
-# [25] InstanceOfExpr  ::=  TreatExpr ("instance" "of" SequenceType)?
-expr |= element ( instanceOfExpr | treatExpr ) {
-  element argExpr { expr },
-  element sequenceType { external "misc/types.rnc" }
-}
-
-# [26] TreatExpr       ::=  CastableExpr ("treat" "as" SequenceType)?
-include "expr/cast.rnc"
-
-# [30] ValueExpr        ::= SimpleMapExpr
-# [34] SimpleMapExpr    ::= PathExpr ("!" PathExpr)*
+include "expr/let.rnc"
 expr |= element simpleMapExpr { path, path+ }
-expr |= path
-expr |= primary
 
-# ----------------------------------------------------------------
 # Operations
 
-# [16] OrExpr           ::=  AndExpr ("or" AndExpr)*
-# [17] AndExpr          ::=  ComparisonExpr ( "and" ComparisonExpr)*
-# [18] ComparisonExpr   ::=  StringConcatExpr ( (Valuecomp
-#                                            |GeneralComp
-#                                            |NodeComp) StringConcatExpr)?
-# [19] StringConcatExpr ::=  RangeExpr ("||" RangeExpr)*
-# [21] AdditiveExpr ::= MultiplicativeExpr( ("+"|"-") MultiplicativeExpr)*
-# [22] MultiplicativeExpr ::= UnionExpr ( ("*" | "div" | "idiv" | "mod")
-#                                         UnionExpr)*
-# [23] UnionExpr        ::= IntersectExceptExpr ( ("union" | "|")
-#                                                 IntersectExceptExpr)*
-# [24] IntersectExceptExpr ::= InstanceofExpr ( ("intersect" | "except" )
-#                                               InstanceofExpr)*
-# [31] GeneralComp      ::=  "=" | "!=" | "<" | "<=" | ">" | ">="
-# [32] ValueComp        ::=  "eq" | "ne" | "lt" | "le" | "gt" | "ge"
-# [33] NodeComp         ::=  "is" | "<<" | ">>"
-op |= element ( andOp | orOp                        # Boolean
-              | unionOp                             # path union
-              | eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-              | addOp | subtractOp | multiplyOp     # arithmetic
-              | divOp | idivOp | modOp
-              | intersectOp | exceptOp              # path intersection
-              | stringConcatenateOp                 # string
-              ) {
+op |= element ( stringConcatenateOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
 
-# [29] UnaryExpr        ::=  ("-" | "+")* ValueExpr
-op |= element ( unaryPlusOp | unaryMinusOp ) {
-  element operand { expr }
-}
+# Functions
 
-# ----------------------------------------------------------------
-# Function calls
-
-# [52] PrimaryExpr  ::=  Literal | VarRef | ParenthesizedExpr
-#                      | ContextItemExpr | FunctionCall | FunctionItemExpr
-# [58] ContextItemExpr ::= "."
-include "expr/literal.rnc"
-
-primary =  literal
-        |  varref
-        |  element contextItemExpr { empty }
-        |  fun
 include "expr/funitem.rnc"
-        
-# [6]  Expr             ::=  ExprSingle ("," ExprSingle ")"
-primary |= element sequenceExpr { expr* }
-
-# [59] FunctionCall  ::=  EQName ArgumentList
-# [49] ArgumentList  ::=  "(" (Argument ("," Argument)* )? ")"
-# [60] Argument      ::=  ExprSingle | ArgumentPlaceholder
-# [61] ArgumentPlaceholder ::= "?"
-fun = element functionCallExpr {
-  element functionName { external "misc/eqname.rnc" },
-  element arguments {
-    ( expr | element argumentPlaceholder { empty } )*
-  }?
-}
-
-
-# ----------------------------------------------------------------
-# Paths
-
-# [35]  PathExpr  ::=   ( "/" RelativePathExpr?)
-#                     | ( "//" RelativePathExpr)
-#                     | RelativePathExpr
-# [36]  RelativePathExpr  ::=  StepExpr  (("/" | "//") StepExpr)*
-path = element pathExpr {
-  ( element rootExpr { empty }, step* ) | step+
-}
-
-# [37]  StepExpr  ::=  PostfixExpr | AxisStep
-# [38]  AxisStep  ::=  (ReverseStep | ForwardStep) PredicateList
-# [39]  ForwardStep  ::=  (ForwardAxis NodeTest) | AbbrevForwardStep
-# [42]  ReverseStep  ::= (ReverseAxis NodeTest) | AbbrevReverseStep
-step = element stepExpr {
-  ((axis, nodetest) | element filterExpr { primary } ),
-  element predicates { expr* }?
-}
-
-# [40]  ForwardAxis  ::=   ("child" "::")
-#                        | ("descendant" "::")
-#                        | ("attribute" "::")
-#                        | ("self" "::")
-#                        | ("descendant-or-self" "::")
-#                        | ("following-sibling" "::")
-#                        | ("following" "::")
-#                        | ("namespace" "::")
-# [41]  AbbrevForwardStep ::= "@"? NodeTest
-# [43]  ReverseAxis  ::=   ("parent" "::")
-#                        | ("ancestor" "::")
-#                        | ("preceding-sibling" "::")
-#                        | ("preceding" "::")
-#                        | ("ancestor-or-self" "::")
-# [44]  AbbrevReverseStep ::= ".."
-axis = element xpathAxis {
-  ( string "child"
-  | string "attribute"
-  | string "self"
-  | string "parent"
-  | string "descendant-or-self"
-  | string "descendant"
-  | string "following"
-  | string "following-sibling"
-  | string "ancestor"
-  | string "ancestor-or-self"
-  | string "preceding"
-  | string "preceding-sibling"
-  | string "namespace" )
-}
-
-# [45]  NodeTest  ::=  KindTest | NameTest
-# [46]  NameTest  ::=  EQName   | Wildcard
-# [47] Wildcard   ::=   "*"
-#                     | (NCName ":" "*")
-#                     | ("*" ":" NCName)
-#                     | (BracedURILiteral "*")
-nodetest = element nameTest { external "misc/eqname.rnc" }
-  | external "misc/tests.rnc"
-  | element Wildcard {
-      ( element star { empty } & element NCName { xsd:NCName } )?
-    | ( element uri  { xsd:string }, element star { empty } )?
-  }

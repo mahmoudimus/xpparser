@@ -65,7 +65,7 @@ attribute.test = element attributeTest {
   element attributeName {
     element QName { external "eqname.rnc" }
     | element star { empty }
-  },
+  }?,
   element typeName { external "eqname.rnc" }?
 }
 
