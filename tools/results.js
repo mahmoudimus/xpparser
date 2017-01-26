@@ -2,23 +2,6 @@
 //      data mais indécidable
 // TODO mieux détecter les trucs rares, sans hardcoder
 
-function status (s) {
-  d3.select("#status").text(s);
-}
-function log (s) {
-  d3.select("#log ul").append("li").text(s);
-}
-var assert_alert=true;
-function assert(b,s) {
-  if (!b) {
-    if (assert_alert) {
-      assert_alert=false;
-      // alert("WARNING: some assertions failed; check the log.");
-    }
-    log("ASSERT FAILURE: "+s);
-  }
-}
-
 /*
  *
  * Schemas of interest, given as filenames with a short name.
@@ -65,7 +48,7 @@ function checkSchemaRelations(query,s) {
 
 function meaningfulFragment(s) {
   var preference =
-      [ "core", "2.0-core", 
+    [ "core", "2.0-core", 
       "downward", "forward", "vertical", "modal",
       "data", "leashed",
       "1.0", "2.0", "3.0" ];
@@ -73,6 +56,23 @@ function meaningfulFragment(s) {
     if (s[preference[i]]) return preference[i];
   return undefined;
 }
+
+/*
+ *
+ * List of lists of fragments for which venn diagrams should be shown.
+ *
+ */
+var venn_schemas = [
+  ["forward","vertical","data"],
+  ["core","2.0-core","leashed"],
+  ["1.0","2.0","3.0"]
+];
+
+/* ----------------------------------------------------------------------- */
+/*                                                                         */
+/*           END OF SETTINGS / BEGINNING OF PROPER CODE                    */
+/*                                                                         */
+/* ----------------------------------------------------------------------- */
 
 /*
  *
@@ -104,17 +104,23 @@ var columns = ["name"].concat(_schemas.map(function (x) { return x.short }));
 var data = benchmarks.map(function (s) { return s; });
 data.columns = columns;
 
-/* Stuff precomputed for venn, TODO clean later */
-var vschemas = ["forward","vertical","data"];
-var max = 1<<vschemas.length;
-var intToSets = [];
-for (var mask=0; mask<max; mask++) {
-  intToSets[mask]=[];
-  for (var j=0; j<vschemas.length; j++)
-    if ((mask & (1<<j)) != 0) {
-      intToSets[mask].push(vschemas[j]);
-    }
-}
+/*
+ *
+ * Precomputation of bitmasks for subsets of venn_schemas lists
+ *
+ */
+var venn_toSets = venn_schemas.map(function (l) {
+  var max = 1<<l.length;
+  var intToSets = [];
+  for (var mask=0; mask<max; mask++) {
+    intToSets[mask]=[];
+    for (var j=0; j<l.length; j++)
+      if ((mask & (1<<j)) != 0) {
+        intToSets[mask].push(l[j]);
+      }
+  }
+  return intToSets;
+});
 
 /*
  *
@@ -125,7 +131,11 @@ function loadFromXml(bench,xml) {
 
   var t0 = performance.now();
 
-  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length, sets : [] };
+  var entry = {
+    name : bench,
+    total : xml.getElementsByTagName("xpath").length,
+    sets : venn_schemas.map(function () { return []; })
+  };
   for (var s in schemas) entry[schemas[s]]=0;
   var queries = xml.getElementsByTagName("xpath");
 
@@ -134,20 +144,21 @@ function loadFromXml(bench,xml) {
     // Compute increments for each schema (used for stacked bars)
 
     var s = {};
-    var results = queries[i].getElementsByTagName("validation");
-    for (var j=0; j<results.length; j++)
-      s[schemas[results[j].getAttribute("schema")]] = (results[j].getAttribute("valid")=="yes");
+    var vals = queries[i].getElementsByTagName("validation");
+    for (var j=0; j<vals.length; j++)
+      s[schemas[vals[j].getAttribute("schema")]] =
+        (vals[j].getAttribute("valid")=="yes");
     checkSchemaRelations(queries[i],s);
     var schema = meaningfulFragment(s);
     if (schema) entry[schema]++;
 
-    if (true) {
+    // Compute cardinals and cardinals of intersections for venn diagrams
 
-      // Compute cardinals and cardinals of intersections (for venn diagrams)
-
-      var vals = queries[i].getElementsByTagName("validation");
+    for (var vi=0; vi<venn_schemas.length; vi++) {
+      var vschemas = venn_schemas[vi];
+      // Compute list of satisfied schemas as bitmask
       var mask = 0;
-      for(var j=0; j<vals.length; j++) {
+      for (var j=0; j<vals.length; j++) {
         var v = vals[j];
         if (v.getAttribute("valid")=="yes") {
           var s = schemas[v.getAttribute("schema")];
@@ -155,25 +166,27 @@ function loadFromXml(bench,xml) {
             mask += 1<<vschemas.indexOf(s);
         }
       }
+      // Update cardinals for all sublists (submasks)
       for (var k=1; k<=mask; k++) {
         if ((k & mask) == k) { // k is included in mask
-          if (entry.sets[k]==undefined)
-            entry.sets[k]=1;
+          if (entry.sets[vi][k]==undefined)
+            entry.sets[vi][k]=1;
           else
-            entry.sets[k]++;
+            entry.sets[vi][k]++;
         }
       }
-
     }
 
   }
 
-  // Transform set to a list as venn.js expects
-  var l = [];
-  for (var k=0; k<entry.sets.length; k++)
-    if (entry.sets[k]!=undefined)
-      l.push({ sets : intToSets[k], size : entry.sets[k] });
-  entry.sets = l;
+  for (var vi=0; vi<venn_schemas.length; vi++) {
+    // Transform sets[vi] to a list as venn.js expects
+    var l = [];
+    for (var k=0; k<entry.sets[vi].length; k++)
+      if (entry.sets[vi][k]!=undefined)
+      l.push({ sets : venn_toSets[vi][k], size : entry.sets[vi][k] });
+    entry.sets[vi] = l;
+  }
 
   var t1 = performance.now();
   log(Math.floor(t1-t0)+"ms for loading "+bench);
@@ -287,6 +300,7 @@ function visualize() {
   var t0 = performance.now();
 
   status("Creating summary...");
+
   d3.select("#summary ul").
 	selectAll("li").data(data).enter()
 	.append("li").text(function (d) { return (d.name+" ("+d.total+")") })
@@ -303,22 +317,32 @@ function visualize() {
   log(Math.floor(t1-t0)+"ms for summary");
 
   status("Creating bar chart...");
+
   chartbars();
 
   var t2 = performance.now();
   log(Math.floor(t2-t1)+"ms for bar chart");
 
-  status("Visualization done.");
+  status("Creating venn diagrams...");
 
-  var i=data.findIndex(function(elt) { return (elt.name=="xpathmark"); });
-  if (i==-1) i=0;
-  var chart = venn.VennDiagram();
-  d3.select("#venn")
-	.append("h2").text("Venn diagram for "+data[i].name);
-  d3.select("#venn")
-	.append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
-  d3.select("#venn")
-	.datum(data[i].sets).call(chart);
+  d3.select("#venn").selectAll("div")
+    .data(data).enter().append("div")
+    .append("h3").text(function (d) {
+      return "Venn diagrams for benchmark "+d.name
+    });
+  d3.selectAll("#venn > div")
+    .selectAll("div").data(function (d) { return d.sets }).enter().append("div");
+  /*
+    .append("h4").text(function (d,i) {
+      return "Schemas "+venn_schemas[i].join(", ")
+    });
+  */
+  d3.selectAll("#venn > div > div").each(function (d,i) {
+    var chart = venn.VennDiagram().width(330).height(300);
+    d3.select(this).call(chart);
+  });
+
+  status("Visualization done.");
 
   var t3 = performance.now();
   log(Math.floor(t3-t2)+"ms for venn");
@@ -353,5 +377,28 @@ function load(k) {
 	xhttp.onreadystatechange = process(i,benchmarks[i]);
 	xhttp.open("GET","benchmark/"+benchmarks[i]+".xml");
 	xhttp.send();
+  }
+}
+
+/*
+ *
+ * Utilities
+ *
+ */
+
+function status (s) {
+  d3.select("#status").text(s);
+}
+function log (s) {
+  d3.select("#log ul").append("li").text(s);
+}
+var assert_alert=true;
+function assert(b,s) {
+  if (!b) {
+    if (assert_alert) {
+      assert_alert=false;
+      // alert("WARNING: some assertions failed; check the log.");
+    }
+    log("ASSERT FAILURE: "+s);
   }
 }
