@@ -1,6 +1,6 @@
 all: $(shell ls ../benchmark/*xml | grep -v build.xml | sed -e 's/..\///') benchmarks.js
 	@echo XXX
-	@echo XXX Links to EXISTING benchmarks have been created.
+	@echo XXX Stripped copies of EXISTING benchmarks have been created.
 	@echo XXX No benchmark has been generated: do it manually in ../benchmark if needed.
 	@echo XXX
 
