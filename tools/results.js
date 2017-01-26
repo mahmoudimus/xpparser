@@ -122,9 +122,13 @@ for (var mask=0; mask<max; mask++) {
  *
  */
 function loadFromXml(bench,xml) {
+
+  var t0 = performance.now();
+
   var entry = { name : bench, total : xml.getElementsByTagName("xpath").length, sets : [] };
   for (var s in schemas) entry[schemas[s]]=0;
   var queries = xml.getElementsByTagName("xpath");
+
   for (var i=0; i<queries.length; i++) {
 
     // Compute increments for each schema (used for stacked bars)
@@ -170,6 +174,9 @@ function loadFromXml(bench,xml) {
     if (entry.sets[k]!=undefined)
       l.push({ sets : intToSets[k], size : entry.sets[k] });
   entry.sets = l;
+
+  var t1 = performance.now();
+  log(Math.floor(t1-t0)+"ms for loading "+bench);
 
   return entry;
 }
@@ -277,6 +284,8 @@ function chartbars() {
  */
 function visualize() {
 
+  var t0 = performance.now();
+
   status("Creating summary...");
   d3.select("#summary ul").
 	selectAll("li").data(data).enter()
@@ -290,8 +299,14 @@ function visualize() {
 	.enter()
 	.append("li").text(function (d,i) { return data.columns[i+1]+": +"+d });
 
+  var t1 = performance.now();
+  log(Math.floor(t1-t0)+"ms for summary");
+
   status("Creating bar chart...");
   chartbars();
+
+  var t2 = performance.now();
+  log(Math.floor(t2-t1)+"ms for bar chart");
 
   status("Visualization done.");
 
@@ -304,6 +319,9 @@ function visualize() {
 	.append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
   d3.select("#venn")
 	.datum(data[i].sets).call(chart);
+
+  var t3 = performance.now();
+  log(Math.floor(t3-t2)+"ms for venn");
 
 }
 
