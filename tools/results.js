@@ -13,7 +13,7 @@ function assert(b,s) {
   if (!b) {
     if (assert_alert) {
       assert_alert=false;
-      alert("WARNING: some assertions failed; check the log.");
+      // alert("WARNING: some assertions failed; check the log.");
     }
     log("ASSERT FAILURE: "+s);
   }
@@ -100,8 +100,20 @@ var columns = ["name"].concat(_schemas.map(function (x) { return x.short }));
  * double counting.
  *
  */
-var data = [];
+var data = benchmarks.map(function (s) { return s; });
 data.columns = columns;
+
+/* Stuff precomputed for venn, TODO clean later */
+var vschemas = ["forward","vertical","data"];
+var max = 1<<vschemas.length;
+var intToSets = [];
+for (var mask=0; mask<max; mask++) {
+  intToSets[mask]=[];
+  for (var j=0; j<vschemas.length; j++)
+    if ((mask & (1<<j)) != 0) {
+      intToSets[mask].push(vschemas[j]);
+    }
+}
 
 /*
  *
@@ -109,91 +121,56 @@ data.columns = columns;
  *
  */
 function loadFromXml(bench,xml) {
-  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length };
+  var entry = { name : bench, total : xml.getElementsByTagName("xpath").length, sets : [] };
   for (var s in schemas) entry[schemas[s]]=0;
-  data.push(entry);
   var queries = xml.getElementsByTagName("xpath");
   for (var i=0; i<queries.length; i++) {
+
+    // Compute increments for each schema (used for stacked bars)
+
     var s = {};
     var results = queries[i].getElementsByTagName("validation");
-    // assert(results.length==schemas.length,"loadFromXml");
     for (var j=0; j<results.length; j++)
       s[schemas[results[j].getAttribute("schema")]] = (results[j].getAttribute("valid")=="yes");
     checkSchemaRelations(queries[i],s);
     var schema = meaningfulFragment(s);
     if (schema) entry[schema]++;
-  }
-  /*
-  log("Entry "+entry.name+" ("+entry.total+"): "
-    +data.columns.slice(1).map(function (k) { return entry[k] }));
-  */
-}
 
-// Iterate f over all subsequences of l.
-function iterSublists(l,f) {
-  var acc = [];
-  function aux(l) {
-    if (l.length==0) 
-      f(acc);
-    else {
-      var hd = l.shift();
-      acc.push(hd);
-      aux(l);
-      acc.pop();
-      aux(l);
-      l.unshift(hd);
+    if (true) {
+
+      // Compute cardinals and cardinals of intersections (for venn diagrams)
+
+      var vals = queries[i].getElementsByTagName("validation");
+      var mask = 0;
+      for(var j=0; j<vals.length; j++) {
+        var v = vals[j];
+        if (v.getAttribute("valid")=="yes") {
+          var s = schemas[v.getAttribute("schema")];
+          if (vschemas.indexOf(s)!=-1)
+            mask += 1<<vschemas.indexOf(s);
+        }
+      }
+      for (var k=1; k<=mask; k++) {
+        if ((k & mask) == k) { // k is included in mask
+          if (entry.sets[k]==undefined)
+            entry.sets[k]=1;
+          else
+            entry.sets[k]++;
+        }
+      }
+
     }
-  }
-  return aux(l);
-}
 
-// Intersection counts, in venn.js format
-var intersections = [];
-function intersectionFromXml(bench,xml) {
-  var entry = { name : bench, sets : {} };
-  var queries = xml.getElementsByTagName("xpath");
-  for (var i=0; i<queries.length; i++) {
-    var l = [];
-    var sets =
-      Array.prototype.slice.call(queries[i].getElementsByTagName("validation"))
-      .map(function (v) {
-        if (v.getAttribute("valid")=="yes")
-          return schemas[v.getAttribute("schema")];
-        else
-          return "";
-      })
-      .filter(function (x) { return (x=="forward" || x=="vertical" || x=="data" || x=="core" || x=="2.0-core"); })
-      .filter(function (x) { return (x!=""); })
-      .sort();
-    iterSublists(sets,function (l) {
-      if (l.length==0) return;
-      if (entry.sets[l]==undefined)
-        entry.sets[l]=1;
-      else
-        entry.sets[l]++;
-    });
   }
+
   // Transform set to a list as venn.js expects
   var l = [];
-  for (var k in entry.sets)
-    l.push({ sets : k.split(","), size : entry.sets[k] });
+  for (var k=0; k<entry.sets.length; k++)
+    if (entry.sets[k]!=undefined)
+      l.push({ sets : intToSets[k], size : entry.sets[k] });
   entry.sets = l;
-  intersections.push(entry);
-}
 
-function loadBench(bench,k) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      status("Processing "+bench+"...");
-      loadFromXml(bench,this.responseXML);
-      intersectionFromXml(bench,this.responseXML);
-      status("Done with "+bench+".");
-      k();
-    }
-  };
-  xhttp.open("GET","benchmark/"+bench+".xml");
-  xhttp.send();
+  return entry;
 }
 
 /*
@@ -202,13 +179,13 @@ function loadBench(bench,k) {
  * Adapted from http://bl.ocks.org/mbostock/3886208
  *
  */
-function visualize() {
+function chartbars() {
 
   // TODO enhance this quick and dirty normalization,
   //   to avoid modifying data in place
   for (var i=0; i<data.length; i++) {
     for (var k in data[i])
-      if (k!="name" && k!="total")
+      if (k!="name" && k!="total" && k!="sets")
         data[i][k] = (100.*data[i][k])/data[i].total;
     data[i].total = 100;
   }
@@ -294,45 +271,92 @@ function visualize() {
 
 /*
  *
- * Main function
+ * Render page once all data has been processed
+ *
+ */
+function visualize() {
+
+  status("Creating summary...");
+  d3.select("#summary ul").
+	selectAll("li").data(data).enter()
+	.append("li").text(function (d) { return (d.name+" ("+d.total+")") })
+	.append("ul")
+	.selectAll("li").data(
+	  function (d) {
+		return (data.columns.slice(1).map(
+		  function (k) { return d[k]; }));
+	  })
+	.enter()
+	.append("li").text(function (d,i) { return data.columns[i+1]+": +"+d });
+
+  status("Creating bar chart...");
+  chartbars();
+
+  status("Visualization done.");
+
+  var i=data.findIndex(function(elt) { return (elt.name=="xpathmark"); });
+  if (i==-1) i=0;
+  var chart = venn.VennDiagram();
+  d3.select("#venn")
+	.append("h2").text("Venn diagram for "+data[i].name);
+  d3.select("#venn")
+	.append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
+  d3.select("#venn")
+	.datum(data[i].sets).call(chart);
+
+}
+
+/*
+ *
+ * Main function: load data, then visualize
  *
  */
 function run() {
+  load(visualize);
+}
+function load(k) {
   status("Loading...");
-  // Load some test XML, copied from ../benchmark for now.
-  // Warning: can't load except from a subdirectory i.e. .. is not allowed!
-  function load(i,k) {
-    if (i<benchmarks.length)
-      loadBench(benchmarks[i],function(){load(i+1,k)});
-    else
-      k();
+  var total = 0;
+  function process(i,bench) {
+	return function () {
+	  if (this.readyState == 4 && this.status == 200) {
+		log("Processing "+bench+"...");
+		data[i] = loadFromXml(bench,this.responseXML);
+		total++;
+		status("Loading ("+total+"/"+benchmarks.length+")...");
+		log("Done with "+bench+" ("+total+"/"+benchmarks.length+").");
+		if (total==benchmarks.length) k();
+	  }
+	}
   }
-  load(0,
-    function () {
-      status("Creating summary...");
-      d3.select("#summary ul").
-        selectAll("li").data(data).enter()
-        .append("li").text(function (d) { return (d.name+" ("+d.total+")") })
-        .append("ul")
-        .selectAll("li").data(
-          function (d) {
-            return (data.columns.slice(1).map(
-              function (k) { return d[k]; }));
-          })
-        .enter()
-        .append("li").text(function (d,i) { return data.columns[i+1]+": +"+d });
-      status("Creating bar chart...");
-      visualize();
-      status("Visualization done.");
-      var i=0;
-      for (; i<intersections.length; i++)
-        if (intersections[i].name=="xpathmark") break;
-      var chart = venn.VennDiagram();
-      d3.select("#venn")
-        .append("h2").text("Venn diagram for "+intersections[i].name);
-      d3.select("#venn")
-        .append("p").text("Showing only data and decidable fragments, but not downward (the intersection of vertical and forward).");
-      d3.select("#venn")
-        .datum(intersections[i].sets).call(chart);
-    });
+  for (var i=0; i<benchmarks.length; i++) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = process(i,benchmarks[i]);
+	xhttp.open("GET","benchmark/"+benchmarks[i]+".xml");
+	xhttp.send();
+  }
+}
+
+/*
+ *
+ * Utilities
+ *
+ */
+
+// Iterate f over all subsequences of l.
+function iterSublists(l,f) {
+  var acc = [];
+  function aux(l) {
+    if (l.length==0) 
+      f(acc);
+    else {
+      var hd = l.shift();
+      acc.push(hd);
+      aux(l);
+      acc.pop();
+      aux(l);
+      l.unshift(hd);
+    }
+  }
+  return aux(l);
 }
