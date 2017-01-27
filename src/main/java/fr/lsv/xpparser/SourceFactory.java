@@ -39,6 +39,7 @@ public class SourceFactory {
 
     // stuff that is needed by all the sources
     private DocumentBuilder db;
+    protected boolean unique;
 
     // stuff required by XML sources
     private String filter;
@@ -52,7 +53,9 @@ public class SourceFactory {
     // XSLT translation
     private XMLPrinter xslt;
 
-    public SourceFactory() throws ParserConfigurationException {
+    public SourceFactory(boolean unique)
+        throws ParserConfigurationException {
+        
         this.st = SourceType.XQUERY;
         
         // Get a DOM document builder
@@ -63,10 +66,13 @@ public class SourceFactory {
         db = dbf.newDocumentBuilder();
 
         this.queries = new HashSet<String>(1000);
+        this.unique = unique;
     }
 
-    public SourceFactory(String filter) throws ParserConfigurationException {
-        this();
+    public SourceFactory(String filter, boolean unique)
+        throws ParserConfigurationException {
+        
+        this(unique);
         this.st = SourceType.XML;
         this.filter = filter;
     }

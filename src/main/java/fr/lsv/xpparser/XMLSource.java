@@ -100,7 +100,9 @@ public class XMLSource implements Iterable<XPathEntry> {
                         }
                         
                         // check whether it's a duplicate query
-                        found = (q == null) || sf.getQueries().add(q);
+                        found = (q == null)
+                            || !sf.unique
+                            || sf.getQueries().add(q);
                     }
                     issued = false;
                 }

@@ -46,31 +46,37 @@ public class Main {
         boolean help = false;
         String filter = null;
         String fileXSLT = null;
+        boolean unique = false;
         
         //--------------------------------------------- process options
         int i = 0; int end = args.length;
-        int files, filee; // begin and start of input file names
-        if (i < args.length) {
-            if (args[0].equals("-h") || args[0].equals("--help")) {
+        while (i < args.length) {
+            if (args[i].equals("-h") || args[i].equals("--help")) {
                 help = true;
                 i++;
             }
-            else if (args[0].equals("--xquery")) {
+            else if (args[i].equals("--unique")) {
+                unique = true;
+                i++;
+            }
+            else if (args[i].equals("--xquery")) {
                 i++;
                 if (i < args.length) {
                     fileXSLT = args[i];
                     i++;
                 }
-                else
+                else {
                     legit = false;
+                    break;
+                }
             }
-            else if (args[0].equals("--xslt")) {
+            else if (args[i].equals("--xslt")) {
                 xml = true;
                 xquery = false;
                 filter = "//@match | //@select | //@test";
                 i++;
             }
-            else if (args[0].equals("--xml")) {
+            else if (args[i].equals("--xml")) {
                 i++;
                 if (i < args.length) {
                     xml = true;
@@ -78,25 +84,40 @@ public class Main {
                     filter = args[i];
                     i++;
                 }
-                else
+                else {
                     legit = false;
+                    break;
+                }
             }
-            end = i;
-            while (end < args.length && !args[end].equals("--xsd")
-                                     && !args[end].equals("--rnc"))
-                end++;
+            else if (args[i].equals("--xsd") || args[i].equals("--rnc")) {
+                end = i;
+                break;
+            }
+            else if (args[i].startsWith("--")) { // unknown option
+                System.err.println(progname+": unrecognized option '"+args[i]+"'");
+                legit = false;
+                break;
+            }
+            else // file names
+                break;
         }
+        while (end < args.length && !args[end].equals("--xsd")
+               && !args[end].equals("--rnc"))
+            end++;
+        
         //--------------------------------- display command-line syntax
         if (!legit || help) {
             System.out.println
-                ("Usage: "+ progname +" [OPTION] [FILE]... [--xsd SCHEMA...] [--rnc SCHEMA...]");
+                ("Usage: "+ progname +" [MODE] [OPTION...] [FILE]... [VALIDATION...]");
             System.out.println
                 ("Extract and parse XPath expressions, then print them in XQueryX format");
-            System.out.println("on standard output.\n");
+            System.out.println("on standard output.");
+            System.out.println("");
+            System.out.println("MODES:");
             System.out.println
                 ("      --xml PATTERN         parse input files as XML documents, and extract");
             System.out.println
-                ("                            contents using the provided XPath 1.0 PATTERN");
+                ("                            contents using the provided XPath 1.0 pattern");
             System.out.println
                 ("      --xquery STYLESHEET   parse input files as XQuery documents and");
             System.out.println
@@ -105,12 +126,14 @@ public class Main {
                 ("      --xslt                parse input files as XSLT documents; equivalent");
             System.out.println
                 ("                            to --xml '//@match | //@select | //@test'");
+            System.out.println("");
+            System.out.println("OPTIONS:");
             System.out.println
                 ("  -h, --help                display this help and exit");
-            System.out.println("");
             System.out.println
-                ("With no OPTION, expects XQuery input.  With no FILE, read from standard input.");
+                ("      --unique              remove redundant queries");
             System.out.println("");
+            System.out.println("VALIDATION:");
             System.out.println
                 ("      --xsd SCHEMA...       validate output XQueryX against all the");
             System.out.println
@@ -119,6 +142,9 @@ public class Main {
                 ("      --rnc SCHEMA...       validate output XQueryX against all the");
             System.out.println
                 ("                            provided RelaxNG Compact Schemas");
+            System.out.println("");
+            System.out.println
+                ("With no MODE, expects XQuery input.  With no FILE, read from standard input.");
 
             System.exit(legit? 1: 0);
         }
@@ -130,9 +156,9 @@ public class Main {
             // the SourceFactory            
             final SourceFactory sf;
             if (xml)
-                sf = new SourceFactory(filter);
+                sf = new SourceFactory(filter,unique);
             else //if (xquery)
-                sf = new SourceFactory();
+                sf = new SourceFactory(unique);
 
             // prepare input sources
             if (i == end) {
