@@ -6,7 +6,7 @@ all: $(shell ls ../benchmark/*xml | grep -v build.xml | sed -e 's/..\///') bench
 
 benchmark/%.xml: ../benchmark/%.xml
 	@mkdir -p benchmark
-	cat $< | perl -ne 'if (/<ast>/) { $$p = 1; } else { if (/<\/ast>/) { $$p = 0; } else { print unless $$p; } }' | \
+	cat $< | perl -ne 's/&#0;//g; if (/<ast>/) { $$p = 1; } else { if (/<\/ast>/) { $$p = 0; } else { print unless $$p; } }' | \
 	xsltproc strip_ast.xsl - > $@
 
 .PHONY: benchmarks.js
