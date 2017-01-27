@@ -98,8 +98,10 @@ public class Main {
                 legit = false;
                 break;
             }
-            else // file names
+            else { // file names 
+                end = i;
                 break;
+            }
         }
         while (end < args.length && !args[end].equals("--xsd")
                && !args[end].equals("--rnc"))
@@ -151,8 +153,8 @@ public class Main {
         //----------------------------------------------- process input
         try {
             // the list of input streams
-            List<Map.Entry<String,Reader>> sources
-                = new LinkedList<Map.Entry<String,Reader>>();
+            List<Map.Entry<String,BufferedReader>> sources
+                = new LinkedList<Map.Entry<String,BufferedReader>>();
             // the SourceFactory            
             final SourceFactory sf;
             if (xml)
@@ -197,7 +199,7 @@ public class Main {
             System.out.println("<benchmark>");
 
             // process sources
-            for (Map.Entry<String,Reader> source : sources)
+            for (Map.Entry<String,BufferedReader> source : sources)
                 try {
                     for (XPathEntry entry : sf.getSource(source))
                         entry.print();
@@ -301,7 +303,7 @@ public class Main {
      * @param list     The list where to add the result.
      */
     private static void addInput(String filename,
-                                 List<Map.Entry<String,Reader>> list)
+                                 List<Map.Entry<String,BufferedReader>> list)
         throws IOException {
 
         BufferedReader br = getInput(filename);
@@ -328,11 +330,11 @@ public class Main {
                                  && !args[end].equals("--rnc"))
             end++;
 
-        List<Map.Entry<String,Reader>> schemas
-            = new LinkedList<Map.Entry<String,Reader>>();
+        List<Map.Entry<String,BufferedReader>> schemas
+            = new LinkedList<Map.Entry<String,BufferedReader>>();
         for (int j = index + 1; j < end; j++)
             addInput(args[j], schemas);
-        for (Map.Entry<String,Reader> schema : schemas)
+        for (Map.Entry<String,BufferedReader> schema : schemas)
             try {
                 if (type.equals("--xsd"))
                     farm.addXMLSchema(schema.getKey(), schema.getValue());
