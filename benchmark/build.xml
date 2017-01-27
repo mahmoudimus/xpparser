@@ -137,21 +137,21 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <benchmark name="marklogic"
                src="https://github.com/marklogic/commons/archive/master.zip"
                includes="commons-master/*/*.xqy" 
-               arg="--xquery ../xqx2xql.xsl"/>
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
   </target>
 
   <target name="xqjson">
     <benchmark name="xqjson"
                src="https://github.com/joewiz/xqjson/archive/master.zip"
                includes="xqjson-master/src/content/*.xql"
-               arg="--xquery ../xqx2xql.xsl" license="xqjson-master/LICENSE.txt"/>
+               arg="--xquery ../xslt/xqx2xql.xsl" license="xqjson-master/LICENSE.txt"/>
   </target>
 
   <target name="histei">
     <benchmark name="histei"
                src="https://github.com/odaata/HisTEI/archive/master.zip"
                includes="HisTEI-master/frameworks/HisTEI/resources/*.xq*"
-               arg="--xquery ../xqx2xql.xsl"
+               arg="--xquery ../xslt/xqx2xql.xsl"
                license="HisTEI-master/LICENSE"/>
   </target>
 
@@ -160,7 +160,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <benchmark name="xprocxq"
                src="https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/xprocxq/source-archive.zip"
                includes="xprocxq/trunk/main/*/xquery/*.xq*"
-               arg="--xquery ../xqx2xql.xsl"
+               arg="--xquery ../xslt/xqx2xql.xsl"
                license="xprocxq/trunk/main/LICENSE"/>
   </target>
 
@@ -180,7 +180,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <benchmark name="existdb"
                src="https://codeload.github.com/eXist-db/exist/zip/develop"
                includes="exist-develop/test/src/xquery/*.xql,exist-develop/test/src/xquery/xquery3/*.xql,exist-develop/webapp/xqts/*.xql,exist-develop/webapp/*.xql,exist-develop/src/org/exist/*/*/*.xq*,exist-develop/extensions/indexes/lucene/test/src/xquery/lucene/*.xql,exist-develop/extensions/indexes/range/test/src/xquery/*.xql,exist-develop/extensions/modules/src/org/exist/xquery/modules/*/*.xq*,exist-develop/extensions/xprocxq/main/src/*/*.xq*"
-               arg="--xquery ../xqx2xql.xsl"
+               arg="--xquery ../xslt/xqx2xql.xsl"
                license="exist-develop/LICENSE"/>
   </target>
 </project>

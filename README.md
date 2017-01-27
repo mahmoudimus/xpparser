@@ -28,7 +28,7 @@ Use the provided [xpparser](xpparser) script.  Typical examples:
 
 ```shell
 ./xpparser --xslt xgrammar/*.xsl --xsd xgrammar/xquery-3.0.xsd --rnc relaxng/xpath*.rnc
-echo '//foo/bar' | ./xpparser --xquery xqx2xql.xsl
+echo '//foo/bar' | ./xpparser --xquery xslt/xqx2xql.xsl
 ```
 
 Run `./xpparser -h` for command-line usage. 
