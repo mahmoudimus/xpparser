@@ -64,8 +64,9 @@ function meaningfulFragment(s) {
  */
 var venn_schemas = [
   ["forward","vertical","data"],
-  ["core","2.0-core","leashed"],
-  ["1.0","2.0","3.0"]
+  ["forward","vertical","modal"],
+  ["forward","vertical","core"],
+  ["core","modal","data"]
 ];
 
 /* ----------------------------------------------------------------------- */
@@ -184,7 +185,7 @@ function loadFromXml(bench,xml) {
     var l = [];
     for (var k=0; k<entry.sets[vi].length; k++)
       if (entry.sets[vi][k]!=undefined)
-      l.push({ sets : venn_toSets[vi][k], size : entry.sets[vi][k] });
+        l.push({ sets : venn_toSets[vi][k], size : entry.sets[vi][k] });
     entry.sets[vi] = l;
   }
 
