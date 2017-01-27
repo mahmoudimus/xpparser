@@ -13,7 +13,11 @@ General Public License in `LICENSE` for more details.
  */
 package fr.lsv.xpparser;
 
-import java.io.Reader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.w3c.xqparser.SimpleNode;
@@ -25,18 +29,35 @@ public class XQuerySource implements Iterable<XPathEntry> {
 
     final private String filename;
 
+    final private BufferedReader stream;
+
+    final private Counter line;
+    final private Counter column;
+
     final private SourceFactory sf;
 
-    public XQuerySource (String filename, Reader stream, SourceFactory sf)
+    public XQuerySource (String filename, BufferedReader str, SourceFactory sf)
         throws Exception {
         
         this.filename = filename;
         this.sf = sf;
+        BufferedReader br = null;
+        try {
+            br = Files.newBufferedReader
+                (Paths.get(filename), Charset.defaultCharset());
+        } catch (Exception e) {
+            assert false;
+        }
+        this.stream = br;
+        System.err.println("file: "+filename+"; "+br);
         
         // parse the input XQuery
-        XParser parser = new XParser(stream);
+        XParser parser = new XParser(str);
         SimpleNode ast = parser.START();
         nodeList = XPathVisitor.visit(ast).iterator();
+
+        this.line = new Counter();
+        this.column = new Counter();
     }
 
     public Iterator<XPathEntry> iterator() {
@@ -47,7 +68,35 @@ public class XQuerySource implements Iterable<XPathEntry> {
             }
             
             public XPathEntry next() throws NoSuchElementException {
-                return new XQueryXPathEntry(filename, sf, nodeList.next());
+                SimpleNode node = nodeList.next();
+                String query = "";
+
+                if (stream != null)
+                    try {
+                        // recover query from the stream
+                        assert (line.get() <= node.beginLine);
+                        while (line.get() < node.beginLine) {
+                            column.reset();
+                            stream.readLine();
+                            line.increment();
+                        }
+                        stream.skip(node.beginColumn - column.get());
+                        while (line.get() < node.endLine) {
+                            column.reset();
+                            query += stream.readLine();
+                            line.increment();
+                        }
+                        int size = node.endColumn - column.get();
+                        char[] buf = new char[size];
+                        stream.read(buf, 0, size);
+                        query += new String(buf);
+                        column.set(node.endColumn);
+                        System.err.println("query: "+query);
+                    } catch (IOException e) {
+                        throw new NoSuchElementException(e.getMessage());
+                    }                   
+                    
+                return new XQueryXPathEntry(filename, sf, node, query);
             }
             
             public void remove () throws UnsupportedOperationException {
@@ -56,4 +105,28 @@ public class XQuerySource implements Iterable<XPathEntry> {
             }
         };
     }
+
+    private class Counter {
+        private int value;
+
+        public Counter () {
+            this.value = 0;
+        }
+
+        public void increment() {
+            value++;
+        }
+
+        public void reset() {
+            value = 0;
+        }
+
+        public int get() {
+            return value;
+        }
+        
+        public void set(int v) {
+            value = v;
+        }
+    };
 }

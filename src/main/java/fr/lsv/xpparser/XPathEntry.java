@@ -29,7 +29,7 @@ public abstract class XPathEntry {
     /**
      * The name of the file from which this entry was extracted.
      */
-    private String filename;
+    String filename;
     
     private Document doc;
 

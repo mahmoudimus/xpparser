@@ -39,10 +39,11 @@ public class XQueryXPathEntry extends XPathEntry {
     
     public XQueryXPathEntry(String filename,
                             SourceFactory sf,
-                            SimpleNode node) {
+                            SimpleNode node,
+                            String query) {
         super(filename, sf);
         this.astnode = node;
-        this.query = null;
+        this.query = query;
 
         // recover the namespace information from the Prolog
         SimpleNode n = this.astnode;
@@ -86,7 +87,7 @@ public class XQueryXPathEntry extends XPathEntry {
     }
 
     public String getEntryText() {
-        if (query == null) {
+        if (query == null || query == "") {
             query = sf.transform(getDOMNode());
         }
         return query;

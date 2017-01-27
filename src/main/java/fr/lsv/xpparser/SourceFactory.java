@@ -14,7 +14,7 @@ General Public License in `LICENSE` for more details.
 package fr.lsv.xpparser;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashSet;
@@ -133,7 +133,7 @@ public class SourceFactory {
         return filter;
     }
     
-    public Iterable<XPathEntry> getSource(String filename, Reader stream)
+    public Iterable<XPathEntry> getSource(String filename, BufferedReader stream)
         throws Exception {
         
         switch (st) {
@@ -145,7 +145,7 @@ public class SourceFactory {
             return null;
         }
     }
-    public Iterable<XPathEntry> getSource(Map.Entry<String, Reader> stream)
+    public Iterable<XPathEntry> getSource(Map.Entry<String, BufferedReader> stream)
         throws Exception {
 
         return this.getSource(stream.getKey(), stream.getValue());
