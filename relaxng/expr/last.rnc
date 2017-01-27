@@ -55,7 +55,7 @@ last.axis = element xpathAxis {
 
 # to catch [last()], equivalent to [position() = last()]
 last.step = element stepExpr {
-  ((last.axis, nodetest) | element filterExpr { primary } ),
+  (last.axis, nodetest),
   element predicates {
     expr*,
     element functionCallExpr {
