@@ -39,8 +39,7 @@ public class XQueryXPathEntry extends XPathEntry {
     
     public XQueryXPathEntry(String filename,
                             SourceFactory sf,
-                            SimpleNode node,
-                            String query) {
+                            SimpleNode node) {
         super(filename, sf);
         this.astnode = node;
         this.query = query;
