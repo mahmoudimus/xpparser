@@ -158,10 +158,13 @@ public class Main {
             // the SourceFactory            
             final SourceFactory sf;
             if (xml)
-                sf = new SourceFactory(filter,unique);
+                sf = new SourceFactory(filter);
             else //if (xquery)
-                sf = new SourceFactory(unique);
+                sf = new SourceFactory();
 
+            // checking for uniqueness
+            HashSet<String> queries = new HashSet<String>();
+            
             // prepare input sources
             if (i == end) {
                 sources.add(new AbstractMap.SimpleEntry
@@ -202,7 +205,8 @@ public class Main {
             for (Map.Entry<String,BufferedReader> source : sources)
                 try {
                     for (XPathEntry entry : sf.getSource(source))
-                        entry.print();
+                        if (!unique || queries.add(entry.getEntryText()))
+                            entry.print();
                    
                     
                 //------------------------------------- error handling

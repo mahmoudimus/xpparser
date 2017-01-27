@@ -87,7 +87,9 @@ public class XQueryXPathEntry extends XPathEntry {
 
     public String getEntryText() {
         if (query == null) {
-            query = sf.transform(getDOMNode());
+            try {
+                query = sf.transform(getDOMNode());
+            } catch (Exception e) { }                
         }
         return query;
     }

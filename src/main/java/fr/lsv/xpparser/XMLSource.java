@@ -15,6 +15,7 @@ package fr.lsv.xpparser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -45,9 +46,16 @@ public class XMLSource implements Iterable<XPathEntry> {
         this.sf = sf;
 
         // change user.dir
-        if (!filename.equals("stdin"))
-            System.setProperty("user.dir",
-                               Paths.get(filename).getParent().toString());
+        if (!filename.equals("stdin")) {
+            Path parent = Paths.get(filename).getParent();
+            String dir;
+            if (parent == null)
+                dir = "./";
+            else
+                dir = parent.toString();
+            
+            System.setProperty("user.dir", dir);
+        }
         
         // parse the input XML
         Document d = sf.getXMLReader().parse(stream);
@@ -62,76 +70,47 @@ public class XMLSource implements Iterable<XPathEntry> {
         return new Iterator<XPathEntry> () {
 
             private int counter = 0;
-
-            private Node n;
-
-            private String q;
-
-            private boolean issued = true;
-
-            private void jump() {
-                if (issued) {
-                    boolean found = false;
-                    
-                    if (counter == nodeList.getLength())
-                        counter++;
-                    
-                    while (!found && counter < nodeList.getLength()) {
-                        // the DOM node we are working on
-                        n = nodeList.item(counter++);
-                        
-                        // attempt to extract its XPath contents
-                        switch (n.getNodeType()) {
-                        case Node.ATTRIBUTE_NODE:
-                            q = n.getNodeValue().trim();
-                            n = ((Attr)n).getOwnerElement();
-                            break;
-                        case Node.TEXT_NODE:
-                            q = n.getNodeValue().trim();
-                            n = n.getParentNode();
-                            break;
-                            
-                        case Node.ELEMENT_NODE:
-                            q = n.getTextContent().trim();
-                            break;
-                            
-                        default:
-                            q = null;
-                        }
-                        
-                        // check whether it's a duplicate query
-                        found = (q == null)
-                            || !sf.unique
-                            || sf.getQueries().add(q);
-                    }
-                    issued = false;
-                }
-            }
             
             public boolean hasNext() {
-                jump();
-                return counter <= nodeList.getLength();
+                return counter < nodeList.getLength();
             }
 
             public XPathEntry next()
                 throws NoSuchElementException {
                 
-                if (counter > nodeList.getLength())
+                if (counter >= nodeList.getLength())
                     throw new NoSuchElementException("");
                 
-                // jump to the next DOM node
-                jump();
-                issued = true;
-                if (q == null)
+                // the DOM node we are working on
+                Node n = nodeList.item(counter++);
+                
+                // attempt to extract its XPath contents
+                String q;
+                switch (n.getNodeType()) {
+                case Node.ATTRIBUTE_NODE:
+                    q = n.getNodeValue().trim();
+                    n = ((Attr)n).getOwnerElement();
+                    break;
+                case Node.TEXT_NODE:
+                    q = n.getNodeValue().trim();
+                    n = n.getParentNode();
+                    break;
+                    
+                case Node.ELEMENT_NODE:
+                    q = n.getTextContent().trim();
+                    break;
+                    
+                default:
                     throw new NoSuchElementException
                         ("Couldn't process node "
                          + n.getTextContent() + " in "
                          + filename);
+                }
                 
                 XPathEntry ret;
                 try {
                     ret = new XMLXPathEntry(filename, sf, n, q);
-                } catch (ParseException|TokenMgrError e) {
+                } catch (TokenMgrError e) {
                     // we have to treat this error here
                     throw new NoSuchElementException
                         (": "+ filename +" line "

@@ -50,46 +50,51 @@ public class XMLXPathEntry extends XPathEntry {
     public XMLXPathEntry(String filename,
                          SourceFactory sf,
                          Node domnode,
-                         String entry) throws ParseException {
+                         String entry) {
         super(filename, sf);
         this.domnode = domnode;
         this.entry = entry;
-
-        // parse `entry' to get an AST
-        Reader r = new StringReader(entry);
-        XParser parser = new XParser(r);
-        this.astnode = parser.START();
-
-        // check that it's correctly identified as an XPath node
-        boolean assertsEnabled = false;
-        assert assertsEnabled = true;
-        if (assertsEnabled) {
-            List<SimpleNode> check = XPathVisitor.visit(astnode);
-            if (check.size() != 1)
-                {
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    PrintStream ps = new PrintStream(os);
-                    astnode.dump("  ", ps);
-                    throw new ParseException("Multiple XPath expressions found: "
-                                             +check.toString()
-                                             +"; AST:"+os.toString());
-                }
-        }
-
-        // recover the namespace information from the DOM
-        String s = (String)domnode.getUserData
-            (PositionalXMLReader.NAMESPACES_KEY_NAME);
-        this.namespaces = new HashMap<String,String>();
-        String[] split = s.substring(1,s.length() - 1).split("=|, ");
-        for (int i = 0; i < split.length - 1; i += 2)
-            this.namespaces.put(split[i], split[i+1]);
+        this.astnode = null;
+        this.namespaces = null;
     }
 
-    public SimpleNode getASTNode() {
+    public SimpleNode getASTNode() throws ParseException {
+        if (astnode == null) {
+            // parse `entry' to get an AST
+            Reader r = new StringReader(entry);
+            XParser parser = new XParser(r);
+            this.astnode = parser.START();
+            
+            // check that it's correctly identified as an XPath node
+            boolean assertsEnabled = false;
+            assert assertsEnabled = true;
+            if (assertsEnabled) {
+                List<SimpleNode> check = XPathVisitor.visit(astnode);
+                if (check.size() != 1)
+                    {
+                        ByteArrayOutputStream os = new ByteArrayOutputStream();
+                        PrintStream ps = new PrintStream(os);
+                        astnode.dump("  ", ps);
+                        throw new ParseException("Multiple XPath expressions found: "
+                                                 +check.toString()
+                                                 +"; AST:"+os.toString());
+                    }
+            }
+        }
         return astnode;
     }        
 
-    public Map<String,String> getNamespaces() {
+    public Map<String,String> getNamespaces() throws ParseException {
+        if (namespaces == null) {
+            getASTNode();
+            // recover the namespace information from the DOM
+            String s = (String)domnode.getUserData
+                (PositionalXMLReader.NAMESPACES_KEY_NAME);
+            this.namespaces = new HashMap<String,String>();
+            String[] split = s.substring(1,s.length() - 1).split("=|, ");
+            for (int i = 0; i < split.length - 1; i += 2)
+                this.namespaces.put(split[i], split[i+1]);
+        }
         return namespaces;
     }
 

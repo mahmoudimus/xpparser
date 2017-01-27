@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.HashSet;
-import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,13 +37,11 @@ public class SourceFactory {
 
     // stuff that is needed by all the sources
     private DocumentBuilder db;
-    protected boolean unique;
 
     // stuff required by XML sources
     private String filter;
     private PositionalXMLReader xmlreader;
     private XPath xpinterpreter;
-    private Set<String> queries;
 
     // XML validation
     private ValidationFarm farm;
@@ -53,7 +49,7 @@ public class SourceFactory {
     // XSLT translation
     private XMLPrinter xslt;
 
-    public SourceFactory(boolean unique)
+    public SourceFactory()
         throws ParserConfigurationException {
         
         this.st = SourceType.XQUERY;
@@ -64,15 +60,12 @@ public class SourceFactory {
         dbf.setNamespaceAware(true);
         dbf.setXIncludeAware(true);
         db = dbf.newDocumentBuilder();
-
-        this.queries = new HashSet<String>(1000);
-        this.unique = unique;
     }
 
-    public SourceFactory(String filter, boolean unique)
+    public SourceFactory(String filter)
         throws ParserConfigurationException {
         
-        this(unique);
+        this();
         this.st = SourceType.XML;
         this.filter = filter;
     }
@@ -103,10 +96,6 @@ public class SourceFactory {
                 return "";
             }
         return "";
-    }
-
-    protected Set<String> getQueries() {
-        return queries;
     }
 
     protected PositionalXMLReader getXMLReader() throws SAXException {

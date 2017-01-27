@@ -22,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.w3c.xqparser.ParseException;
 import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
@@ -45,9 +46,9 @@ public abstract class XPathEntry {
         this.domnode    = null;
     }
 
-    public abstract SimpleNode getASTNode();
+    public abstract SimpleNode getASTNode() throws ParseException;
 
-    public abstract Map<String,String> getNamespaces();
+    public abstract Map<String,String> getNamespaces() throws ParseException;
 
     public abstract String getEntryText();
     
@@ -59,7 +60,7 @@ public abstract class XPathEntry {
         return filename;
     }
     
-    public org.w3c.dom.Node getDOMNode() {
+    public org.w3c.dom.Node getDOMNode() throws ParseException {
         if (domnode == null) {
             Element ast = doc.createElementNS
                 (XMLConstants.DEFAULT_NS_PREFIX, "ast");
@@ -140,5 +141,19 @@ public abstract class XPathEntry {
     public void print() throws Exception {
         this.print(System.out);
     }
-
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        String q = ((XPathEntry) o).getEntryText();
+        // field comparison
+        if (this.getEntryText() != null && q != null)
+            return q.equals(this.getEntryText());
+        return false;
+    }
 }
