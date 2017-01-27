@@ -32,7 +32,11 @@ public class SimpleNode implements Node {
 
     public void jjtOpen() {
         beginLine = parser.token.beginLine;
-        beginColumn = parser.token.beginColumn;
+        int offset = 0;
+        if (parser.token.image != null) {
+            offset = parser.token.image.length() - 1;
+        }
+        beginColumn = parser.token.beginColumn + offset;
     }
 
     public void jjtClose() {
