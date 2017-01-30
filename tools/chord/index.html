@@ -82,81 +82,86 @@ function ready(error, fragments, matrix) {
   layout.n = matrix.length;
   layout.padding = .04;
   // Redefine the chord layout algorithm
-  //function relayout() {
     var subgroups = {}, groupSums = [], groupIndex = d3.range(layout.n),
-    subgroupIndex = [], k, x, x0, i, j;
+        subgroupIndex = [], k, x, x0, i, j, l;
     layout.chords = [];
     layout.groups = [];
     k = 0, i = -1;
     while (++i < layout.n) {
-      x = 0, j = -1;
-      while (++j <  layout.n) {
-        x += layout.matrix[i][j];
-      }
-      groupSums.push(x);
-      subgroupIndex.push(d3.range(layout.n));
-      k += x;
+        x = 0, j = -1;
+        while (++j <  layout.n) {
+            x += layout.matrix[i][j];
+        }
+        groupSums.push(x);
+        subgroupIndex.push(d3.range(layout.n));
+        k += x;
     }
     if (layout.sortGroups) {
-      groupIndex.sort(function(a, b) {
-        return layout.sortGroups(groupSums[a], groupSums[b]);
-      });
+        groupIndex.sort(function(a, b) {
+            return layout.sortGroups(groupSums[a], groupSums[b]);
+        });
     }
     if (layout.sortSubgroups) {
-      subgroupIndex.forEach(function(d, i) {
-        d.sort(function(a, b) {
-          return layout.sortSubgroups(matrix[i][a], matrix[i][b]);
+        subgroupIndex.forEach(function(d, i) {
+            d.sort(function(a, b) {
+                return layout.sortSubgroups(matrix[i][a], matrix[i][b]);
+            });
         });
-      });
     }
     // angle for one entry
     k = (2 * Math.PI - layout.padding * layout.n) / nentries;
+    l = 1, i = -1;
+    while (++i < layout.n) {
+        var di = groupIndex[i], min = k * fragments[di].entries / groupSums[di];
+        l = (min < l)? min: l;
+    }
     x = 0, i = -1;
     while (++i < layout.n) {
-      x0 = x, j = -1;
-      while (++j < layout.n) {
-        var di = groupIndex[i], dj = subgroupIndex[di][j], v = layout.matrix[di][dj],
-        a0 = x, a1 = x += v * k * fragments[di].entries / groupSums[di];
-        subgroups[di + "-" + dj] = {
-          index: di,
-          subindex: dj,
-          startAngle: a0,
-          endAngle: a1,
-          value: v
+        x0 = x, j = -1;
+        while (++j < layout.n) {
+            var di = groupIndex[i],
+                dj = subgroupIndex[di][j],
+                v = layout.matrix[di][dj],
+                a0 = x,
+                a1 = x += v * l;
+            subgroups[di + "-" + dj] = {
+                index: di,
+                subindex: dj,
+                startAngle: a0,
+                endAngle: a1,
+                value: v
+            };
+        }
+        layout.groups[di] = {
+            index: di,
+            startAngle: x0,
+            endAngle: x = x0 + fragments[di].entries * k,
+            value: fragments[di].entries * k
         };
-      }
-      layout.groups[di] = {
-        index: di,
-        startAngle: x0,
-        endAngle: x,
-        value: fragments[di].entries * k //groupSums[di]
-      };
-      x += layout.padding;
+        x += layout.padding;
     }
     i = -1;
     while (++i < layout.n) {
-      j = i - 1;
-      while (++j < layout.n) {
-        var source = subgroups[i + "-" + j], target = subgroups[j + "-" + i];
-        if (source.value || target.value) {
-          layout.chords.push(source.value < target.value ? {
-            source: target,
-            target: source
-          }: {
-            source: source,
-            target: target
-          });
+        j = i - 1;
+        while (++j < layout.n) {
+            var source = subgroups[i + "-" + j],
+                target = subgroups[j + "-" + i];
+            if (source.value || target.value) {
+                layout.chords.push(source.value < target.value ? {
+                    source: target,
+                    target: source
+                }: {
+                    source: source,
+                    target: target
+                });
+            }
         }
-      }
     }
     if (layout.sortChords)
-      layout.chords.sort(function(a, b) {
-          return layout.sortChords((a.source.value + a.target.value) / 2, (b.source.value + b.target.value) / 2);
+        layout.chords.sort(function(a, b) {
+            return layout.sortChords((a.source.value + a.target.value) / 2,
+                                     (b.source.value + b.target.value) / 2);
         });
-  //}
-    
-  // Compute the chord layout.
-  //layout.matrix(matrix);
 
   // Add a group per neighborhood.
   var group = svg.selectAll(".group")
