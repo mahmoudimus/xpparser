@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project name="xpath-benchmark" default="all" basedir="."
+         xmlns:unless="ant:unless">
+
+  <description>Extract data from benchmark results.</description>
+  <!-- apply XSLT stylesheet -->
+  <property name="xml" value="../../benchmark/existdb.xml"/>
+
+  <target name="all" depends="matrix"/>
+  
+  <target name="matrix">
+    <xslt style="matrix.xsl" in="${xml}" out="matrix.json">
+      <classpath>
+        <pathelement path="../../lib/saxon.jar"/>
+      </classpath>
+    </xslt>
+  </target>
+</project>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>Flows Between XPath Fragments</title>
+<style>
+
+#circle circle {
+  fill: none;
+  pointer-events: all;
+}
+
+.group path {
+  fill-opacity: .5;
+}
+
+path.chord {
+  stroke: #000;
+  stroke-width: .25px;
+}
+
+#circle:hover path.fade {
+  display: none;
+}
+
+</style>
+
+<h1>Outflows in XPathMark</h1>
+
+<p>Links represent XPath entries belonging to one fragment but not the
+  other.  Thicker links represent larger flows.  Links are directed;
+  the colour indicates the most important flow.
+
+<p>Built with <a href="http://d3js.org/">D3</a>.</aside>
+
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script>
+
+var width = 720,
+    height = 720,
+    outerRadius = Math.min(width, height) / 2 - 10,
+    innerRadius = outerRadius - 24;
+
+//var formatPercent = d3.format(".1%");
+
+var arc = d3.svg.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius);
+
+var layout = d3.layout.chord()
+    .padding(.04)
+    .sortSubgroups(d3.descending)
+    .sortChords(d3.ascending);
+
+var path = d3.svg.chord()
+    .radius(innerRadius);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("id", "circle")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+svg.append("circle")
+    .attr("r", outerRadius);
+
+queue()
+    .defer(d3.csv, "fragments.csv")
+    .defer(d3.json, "matrix.json")
+    .await(ready);
+
+function ready(error, fragments, matrix) {
+  if (error) throw error;
+
+  // number of entries
+  var nentries = 0;
+  for (let f of fragments)
+    nentries += parseInt(f.entries);
+
+  layout.matrix = matrix;
+  layout.n = matrix.length;
+  layout.padding = .04;
+  // Redefine the chord layout algorithm
+  //function relayout() {
+    var subgroups = {}, groupSums = [], groupIndex = d3.range(layout.n),
+    subgroupIndex = [], k, x, x0, i, j;
+    layout.chords = [];
+    layout.groups = [];
+    k = 0, i = -1;
+    while (++i < layout.n) {
+      x = 0, j = -1;
+      while (++j <  layout.n) {
+        x += layout.matrix[i][j];
+      }
+      groupSums.push(x);
+      subgroupIndex.push(d3.range(layout.n));
+      k += x;
+    }
+    if (layout.sortGroups) {
+      groupIndex.sort(function(a, b) {
+        return layout.sortGroups(groupSums[a], groupSums[b]);
+      });
+    }
+    if (layout.sortSubgroups) {
+      subgroupIndex.forEach(function(d, i) {
+        d.sort(function(a, b) {
+          return layout.sortSubgroups(matrix[i][a], matrix[i][b]);
+        });
+      });
+    }
+    // angle for one entry
+    k = (2 * Math.PI - layout.padding * layout.n) / nentries;
+    x = 0, i = -1;
+    while (++i < layout.n) {
+      x0 = x, j = -1;
+      while (++j < layout.n) {
+        var di = groupIndex[i], dj = subgroupIndex[di][j], v = layout.matrix[di][dj],
+        a0 = x, a1 = x += v * k * fragments[di].entries / groupSums[di];
+        subgroups[di + "-" + dj] = {
+          index: di,
+          subindex: dj,
+          startAngle: a0,
+          endAngle: a1,
+          value: v
+        };
+      }
+      layout.groups[di] = {
+        index: di,
+        startAngle: x0,
+        endAngle: x,
+        value: fragments[di].entries * k //groupSums[di]
+      };
+      x += layout.padding;
+    }
+    i = -1;
+    while (++i < layout.n) {
+      j = i - 1;
+      while (++j < layout.n) {
+        var source = subgroups[i + "-" + j], target = subgroups[j + "-" + i];
+        if (source.value || target.value) {
+          layout.chords.push(source.value < target.value ? {
+            source: target,
+            target: source
+          }: {
+            source: source,
+            target: target
+          });
+        }
+      }
+    }
+    if (layout.sortChords)
+      layout.chords.sort(function(a, b) {
+          return layout.sortChords((a.source.value + a.target.value) / 2, (b.source.value + b.target.value) / 2);
+        });
+  //}
+    
+  // Compute the chord layout.
+  //layout.matrix(matrix);
+
+  // Add a group per neighborhood.
+  var group = svg.selectAll(".group")
+      .data(layout.groups)
+    .enter().append("g")
+      .attr("class", "group")
+      .on("mouseover", mouseover);
+
+  // Add a mouseover title.
+  group.append("title").text(function(d, i) {
+    return fragments[i].name + ": " + fragments[i].entries + " entries";
+  });
+
+  // Add the group arc.
+  var groupPath = group.append("path")
+      .attr("id", function(d, i) { return "group" + i; })
+      .attr("d", arc)
+      .style("fill", function(d, i) { return fragments[i].color; });
+
+  // Add a text label.
+  var groupText = group.append("text")
+      .attr("x", 6)
+      .attr("dy", 15);
+
+  groupText.append("textPath")
+      .attr("xlink:href", function(d, i) { return "#group" + i; })
+      .text(function(d, i) { return fragments[i].name; });
+
+  // Remove the labels that don't fit. :(
+  //groupText.filter(function(d, i) { return groupPath[0][i].getTotalLength() / 2 - 16 < this.getComputedTextLength(); }).remove();
+
+  // Add the chords.
+  var chord = svg.selectAll(".chord")
+      .data(layout.chords)
+    .enter().append("path")
+      .attr("class", "chord")
+      .style("fill", function(d) { return fragments[d.source.index].color; })
+      .attr("d", path);
+
+  // Add an elaborate mouseover title for each chord.
+  chord.append("title").text(function(d) {
+    return "| " + fragments[d.source.index].name
+        + " \\ " + fragments[d.target.index].name
+        + " | = " + d.source.value
+        + "\n| " + fragments[d.target.index].name
+        + " \\ " + fragments[d.source.index].name
+        + " | = " + d.target.value;
+  });
+
+  function mouseover(d, i) {
+    chord.classed("fade", function(p) {
+      return p.source.index != i
+          && p.target.index != i;
+    });
+  }
+}
+
+</script>
