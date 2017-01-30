@@ -41,7 +41,7 @@ var width = 720,
     outerRadius = Math.min(width, height) / 2 - 10,
     innerRadius = outerRadius - 24;
 
-//var formatPercent = d3.format(".1%");
+var formatPercent = d3.format(".1%");
 
 var arc = d3.svg.arc()
     .innerRadius(innerRadius)
@@ -73,10 +73,16 @@ queue()
 function ready(error, fragments, matrix) {
   if (error) throw error;
 
-  // number of entries
+  // total number of entries
   var nentries = 0;
   for (let f of fragments)
     nentries += parseInt(f.entries);
+
+  // maximal number of entries
+  var maxentries = 0;
+  for (let f of fragments)
+    maxentries = (maxentries < parseInt(f.entries))?
+        parseInt(f.entries): maxentries;
 
   layout.matrix = matrix;
   layout.n = matrix.length;
@@ -172,7 +178,9 @@ function ready(error, fragments, matrix) {
 
   // Add a mouseover title.
   group.append("title").text(function(d, i) {
-    return fragments[i].name + ": " + fragments[i].entries + " entries";
+    return fragments[i].name + ": " + fragments[i].entries + " entries" + " ("
+              + formatPercent(parseInt(fragments[i].entries) / maxentries)
+              + ")";
   });
 
   // Add the group arc.
