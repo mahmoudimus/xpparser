@@ -265,7 +265,6 @@ function matrixgraph(fragments, matrix, maxentries) {
     }
     
     d3.select("#order").on("change", function() {
-        clearTimeout(timeout);
         order(this.value);
     });
     
