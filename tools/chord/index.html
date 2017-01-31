@@ -32,11 +32,17 @@ svg {
   stroke-width: .25px;
 }
 
-#circle:hover path.fade {
-  display: none;
+path {
+    transition: opacity 0.1s ease-in-out;
+}    
+
+path.inactive, #circle:hover path.fade {
+    opacity: 0;
 }
 
-#matrix, aside, aside select { font: 10px sans-serif; color: #333; }
+#matrix, aside, aside select { font: 10px sans-serif; }
+#matrix text { fill: #333; }
+#matrix text.active { fill: red }
 #matrix line { stroke: #fff; }
 
 </style>
@@ -226,10 +232,15 @@ function matrixgraph(fragments, matrix, maxentries) {
     function mouseover(p) {
         d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
         d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+        chordsvg.selectAll(".chord").classed("inactive", function(d, i) {
+            return (d.source.index != p.x || d.target.index != p.y)
+                && (d.source.index != p.y || d.target.index != p.x);
+        });
     }
     
     function mouseout() {
         d3.selectAll("text").classed("active", false);
+        chordsvg.selectAll(".chord").classed("inactive", false);
     }
     
     d3.select("#order").on("change", function() {
@@ -386,7 +397,7 @@ function chordgraph(fragments, matrix, maxentries) {
   // Add the chords.
   var chord = chordsvg.selectAll(".chord")
       .data(layout.chords)
-    .enter().append("path")
+      .enter().append("path")
       .attr("class", "chord")
       .style("fill", function(d) { return fragments[d.source.index].color; })
       .attr("d", path);
