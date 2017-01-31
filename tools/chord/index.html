@@ -239,7 +239,7 @@ function matrixgraph(fragments, matrix, maxentries) {
         cell.append("title").text(function(d) {
             return "| " + fragments[d.y].name
                 + " \\ " + fragments[d.x].name
-                + " | = " + d.z;
+                + " | = " + d.z + " entries";
         });
     }
     
@@ -423,9 +423,11 @@ function chordgraph(fragments, matrix, maxentries) {
     return "| " + fragments[d.source.index].name
         + " \\ " + fragments[d.target.index].name
         + " | = " + d.source.value
+        + " entries"
         + "\n| " + fragments[d.target.index].name
         + " \\ " + fragments[d.source.index].name
-        + " | = " + d.target.value;
+        + " | = " + d.target.value
+        + " entries";
   });
 
   function mouseover(d, i) {
