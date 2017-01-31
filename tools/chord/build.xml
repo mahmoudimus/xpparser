@@ -3,16 +3,38 @@
          xmlns:unless="ant:unless">
 
   <description>Extract data from benchmark results.</description>
+  
+  <property name="xml" value="xpathmark"/>
+  <property name="target.dir" value="${user.home}/public_html/chord/"/>
+
   <!-- apply XSLT stylesheet -->
-  <property name="xml" value="../../benchmark/existdb.xml"/>
+  <property name="lib.dir" value="../../lib"/>
 
   <target name="all" depends="matrix"/>
   
-  <target name="matrix">
-    <xslt style="matrix.xsl" in="${xml}" out="matrix.json">
+  <target name="matrix" depends="saxon">
+    <filter token="benchmark" value="${xml}"/>
+    <mkdir dir="${target.dir}/${xml}"/>
+    <xslt style="matrix.xsl"
+          in="../../benchmark/${xml}.xml"
+          out="matrix.json">
       <classpath>
-        <pathelement path="../../lib/saxon.jar"/>
+        <pathelement path="${lib.dir}/saxon9he.jar"/>
       </classpath>
     </xslt>
+    <copy file="index.html" todir="${target.dir}/${xml}" filtering="true"/>
+    <move file="matrix.json" todir="${target.dir}/${xml}"/>
+    <move file="fragments.csv" todir="${target.dir}/${xml}"/>
+  </target>
+  
+  <target name="saxon">
+    <local name="offline"/>
+    <available file="${lib.dir}/saxon9he.jar" property="offline"/>
+    <mkdir unless:set="offline" dir="${lib.dir}"/>
+    <get unless:set="offline"
+         src="https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.7/SaxonHE9-7-0-14J.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fsaxon%2Ffiles%2FSaxon-HE%2F9.7%2F&amp;ts=1485885576&amp;use_mirror=vorboss"
+         dest="${lib.dir}" usetimestamp="true"/>
+    <unzip unless:set="offline" src="${lib.dir}/SaxonHE9-7-0-14J.zip" dest="${lib.dir}"
+           overwrite="no"/>
   </target>
 </project>

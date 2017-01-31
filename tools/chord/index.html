@@ -24,7 +24,7 @@ path.chord {
 
 </style>
 
-<h1>Outflows in XPathMark</h1>
+<h1>Outflows in @benchmark@</h1>
 
 <p>Links represent XPath entries belonging to one fragment but not the
   other.  Thicker links represent larger flows.  Links are directed;
@@ -196,7 +196,7 @@ function ready(error, fragments, matrix) {
 
   groupText.append("textPath")
       .attr("xlink:href", function(d, i) { return "#group" + i; })
-      .text(function(d, i) { return fragments[i].name; });
+      .text(function(d, i) { return "\u2009"+fragments[i].name; });
 
   // Remove the labels that don't fit. :(
   //groupText.filter(function(d, i) { return groupPath[0][i].getTotalLength() / 2 - 16 < this.getComputedTextLength(); }).remove();

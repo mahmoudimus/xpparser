@@ -4,7 +4,7 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="('xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-1.0-data.rnc', 'xpath-1.0-eval.rnc', 'xpath-1.0.rnc', 'xpath-modal.rnc', 'xpath-hybrid.rnc')"/>
+             select="('xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-1.0-data.rnc', 'xpath-1.0-eval.rnc', 'xpath-3.0.rnc', 'xpath-modal.rnc', 'xpath-hybrid.rnc')"/>
 
   <xsl:template match="/">
     <xsl:variable name="root" select="/"/>

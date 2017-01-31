@@ -20,16 +20,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
     <pathelement path="../target/classes"/>
     <pathelement path="../lib/jing.jar"/>
   </path>
-
-  <!-- apply XSLT stylesheet -->
-  <property name="xml" value="docbook.xml"/>
-  <target name="eval">
-    <xslt style="toto.xsl" in="${xml}" out="${xml}.leash">
-      <classpath>
-        <pathelement path="../lib/saxon.jar"/>
-      </classpath>
-    </xslt>
-  </target>
   
   <!-- macro for processing benchmark files -->
   <macrodef name="process">
