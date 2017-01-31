@@ -226,8 +226,7 @@ function chartbars() {
   var y = d3.scaleLinear()
     .rangeRound([height, 0]);
 
-  var z = d3.scaleOrdinal()
-    .range(["#ff7200", "#ffff0a", "#c9ff0a", "#18ba00", "#0093e2", "#1600e2", "#7c13c6", "#9d13c6", "#c6136d", "#c61313"]);
+  var z = d3.scaleOrdinal(d3.schemeCategory20c);
 
   var keys = data.columns.slice(1);
 
