@@ -68,18 +68,18 @@ path.inactive, #circle:hover path.fade {
     <script>
 var N = 9;
 var margin = {top: 80, right: 0, bottom: 10, left: 80}, 
-    matrixw = matrixh = 15*N;
+    matrixh = matrixw = 15*N;
 
 var formatPercent = d3.format(".1%");
 
 var matrixsvg = d3.select("body").append("svg")
     .attr("width", matrixw + margin.left + margin.right)
-    .attr("height", matrixh + margin.top + margin.bottom)
+    .attr("height", matrixh + 100 + margin.top + margin.bottom)
     .attr("id", "matrix")
     .style("margin-left", -margin.left + "px")
     .style("margin-top", 20 - margin.top + "px")
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + (margin.top + 100) + ")");
  
 var width = 720,
     height = 720,
@@ -99,8 +99,8 @@ var path = d3.ribbon()
     .radius(innerRadius);
 
 var chordsvg = d3.select("body").append("svg")
-    .style("margin-top", - matrixh - margin.top + "px")
-    .style("margin-left", matrixw + "px")
+    .style("margin-top", - matrixh - margin.top - 100 + "px")
+    .style("margin-left", 20 + matrixw + "px")
     .attr("id", "chord")
     .attr("width", width)
     .attr("height", height)
@@ -197,12 +197,26 @@ function matrixgraph(fragments, matrix, maxentries) {
     
     column.append("line")
         .attr("x1", -matrixw);
+
+    var cpercent = column.append("rect")
+        .attr("x", 60)
+        .attr("width", function(d, i) { return 100 * parseInt(fragments[i].entries) / maxentries; })
+        .attr("height", x.bandwidth()-2)
+        .style("fill", function(d, i) { return fragments[i].color; })
+        .on("mouseover", mouseoverpercent)
+        .on("mouseout", mouseout)
+        .append("title").text(function(d, i) {
+            return fragments[i].name + ": " + fragments[i].entries + " entries" + " ("
+                + formatPercent(parseInt(fragments[i].entries) / maxentries)
+                + ")"});
     
     var ctext = column.append("text")
         .attr("x", 6)
         .attr("y", x.bandwidth() / 2)
         .attr("dy", ".32em")
         .attr("text-anchor", "start")
+        .on("mouseover", mouseoverpercent)
+        .on("mouseout", mouseout)
         .text(function(d, i) { return fragments[i].name; });
     ctext.append("title").text(function(d, i) {
         return fragments[i].name + ": " + fragments[i].entries + " entries" + " ("
@@ -220,7 +234,7 @@ function matrixgraph(fragments, matrix, maxentries) {
             .attr("height", x.bandwidth())
             .style("fill-opacity", function(d) { return z(d.z); })
             .style("fill", function(d) { return (parseInt(fragments[d.x].entries) > parseInt(fragments[d.y].entries)) ? fragments[d.x].color : fragments[d.y].color; })
-            .on("mouseover", mouseover)
+            .on("mouseover", mouseovercell)
             .on("mouseout", mouseout);
         cell.append("title").text(function(d) {
             return "| " + fragments[d.y].name
@@ -229,7 +243,7 @@ function matrixgraph(fragments, matrix, maxentries) {
         });
     }
     
-    function mouseover(p) {
+    function mouseovercell(p) {
         d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
         d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
         chordsvg.selectAll(".chord").classed("inactive", function(d, i) {
@@ -241,6 +255,13 @@ function matrixgraph(fragments, matrix, maxentries) {
     function mouseout() {
         d3.selectAll("text").classed("active", false);
         chordsvg.selectAll(".chord").classed("inactive", false);
+    }
+    
+    function mouseoverpercent(p) {
+        d3.selectAll(".column text").classed("active", function(d) { return d === p; });
+        chordsvg.selectAll(".chord").classed("inactive", function(d, i) {
+            return (d.source.index != p[0].y && d.target.index != p[0].y);
+        });
     }
     
     d3.select("#order").on("change", function() {
