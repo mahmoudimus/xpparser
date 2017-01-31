@@ -149,5 +149,4 @@ predicates = element predicates { expr* }
 
 #Allowing some use of last()
 include "expr/last.rnc"
-op |= last.op 
-step |= last.step 
+step |= last.step

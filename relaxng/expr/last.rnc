@@ -20,12 +20,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 # To catch equality/order comparison between position() and last()
-last.op = element ( 
-                eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
+last.op = element ( eqOp | equalOp ) {
   element firstOperand  { last.fun },
   element secondOperand { last.fun }
 }
@@ -44,39 +39,19 @@ last.fun = element functionCallExpr {
 # (Should be modified accordingly when including this file) 
 last.axis = element xpathAxis {
   ( string "child"                # Needs 'following-sibling' 
+  | string "attribute"            # Always 
   | string "self"                 # Always 
   | string "parent"               # Always 
   | string "descendant-or-self"   # Needs 'descendant' and 'following' 
   | string "descendant"           # Needs 'descendant' and 'following' 
   | string "following"            # Needs 'descendant' and 'following' 
-  | string "following-sibling"    #Always (needs itself)
+  | string "following-sibling"    # Always (needs itself)
   )
 }
 
 # to catch [last()], equivalent to [position() = last()]
-last.step = element stepExpr {
-  (last.axis, nodetest),
-  element predicates {
-    expr*,
-    element functionCallExpr {
-      element functionName { 
-        attribute xqx:prefix { string "fn" }?,
-        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-        string "last"
-      },
-      element arguments { empty }?
-    },
-    expr*
-  }
+last.predicate = element predicates {
+  expr*, (last.op | last.fun), expr*
 }
 
-# Should add these lines at the end of the proper fragments files : 
-# #Allowing some use of last()
-# include "expr/last.rnc"
-# op |= last.op 
-# step |= last.step
-
-# Should use these lines if the previous lines were 
-# imported from another file but you don't want them : 
-# last.op = notAllowed
-# last.step = notAllowed
+last.step = element stepExpr { (last.axis, nodetest), last.predicate }
