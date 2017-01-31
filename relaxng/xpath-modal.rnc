@@ -1,4 +1,4 @@
-# XPath Data fragment of XQueryX in Relax NG compact syntax
+# Modal fragment of XPath in Relax NG compact syntax
 #
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
@@ -19,28 +19,13 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core.rnc" {
-  op = element ( andOp | orOp | unionOp ) {
-           element firstOperand  { expr },
-           element secondOperand { expr }
-     }
-     | element ( eqOp | neOp | equalOp | notEqualOp ) {  # equality
-         ( element firstOperand  { unnested.path },
-           element secondOperand { local.path } )
-       | ( element firstOperand  { local.path },
-           element secondOperand { unnested.path } )
-     }
-     | element ( eqOp | neOp | equalOp | notEqualOp  # equality
-               | ltOp | leOp | gtOp | geOp           # order
-               | lessThanOp  | lessThanOrEqualOp
-               | greaterThanOp | greaterThanOrEqualOp
-               ) {
-          ( element firstOperand  { expr },
-            element secondOperand { cst.expr })
-        | ( element firstOperand  { cst.expr },
-            element secondOperand { expr } )
-     }
-     | cst.op
+include "xpath-1.0-core.rnc"
+
+op |= element ( eqOp | neOp | equalOp | notEqualOp ) {  # equality
+     ( element firstOperand  { unnested.path },
+       element secondOperand { local.path } )
+   | ( element firstOperand  { local.path },
+       element secondOperand { unnested.path } )
 }
 
 # an attribute step
@@ -75,5 +60,11 @@ unnested.path =
     }
   
 unnested.step = element stepExpr {
-  ((axis, nodetest) | element filterExpr { primary } )
+  (   (axis, nodetest)
+    | element filterExpr {
+        literal
+      | varref
+      | element contextItemExpr { empty }
+      | cst.fun | fun.root | fun.child
+  } )
 }

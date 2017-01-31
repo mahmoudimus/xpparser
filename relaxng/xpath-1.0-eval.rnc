@@ -1,0 +1,47 @@
+# XPath fragment of XQueryX in Relax NG compact syntax
+#
+# This fragment can be evaluated in linear time in the size of the XML
+# document.  It is based on Mikołaj Bojańczyk and Paweł Parys, _XPath
+# evaluation in linear time_, Journal of the ACM, Volume 58(4),
+# Article No. 17, 2011.  doi:10.1145/1989727.1989731
+#
+# Copyright (C) 2017  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-1.0-data.rnc"
+
+op |= element ( ltOp | leOp | gtOp | geOp
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+         element firstOperand  { expr },
+         element secondOperand { expr }
+     }
+
+fun |= element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "string"
+    | string "starts-with"
+    | string "ends-with"
+    | string "contains"
+    )
+  },
+  element arguments { expr* }?
+}
