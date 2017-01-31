@@ -60,8 +60,8 @@ path.inactive, #circle:hover path.fade {
     
 <aside style="margin-top:0px; margin-left:-160px">
 <p>Order: <select id="order">
-<option value="name">by Name</option>
 <option value="count">by Frequency</option>
+<option value="name">by Name</option>
 <option value="group">by Cluster</option>
 </select>
 </aside>
@@ -159,7 +159,7 @@ function matrixgraph(fragments, matrix, maxentries) {
     };
 
     // The default sort order.
-    x.domain(orders.name);
+    x.domain(orders.count);
     
     matrixsvg.append("rect")
         .attr("class", "background")
@@ -285,11 +285,6 @@ function matrixgraph(fragments, matrix, maxentries) {
             .delay(function(d, i) { return x(i) * 4; })
             .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
     }
-    
-    var timeout = setTimeout(function() {
-        order("group");
-        d3.select("#order").property("selectedIndex", 2).node().focus();
-    }, 5000);
 }
     
 function chordgraph(fragments, matrix, maxentries) {
