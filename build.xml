@@ -7,6 +7,18 @@ This buildfile is used to compile the Java sources for the XPath Parser.
   </description>
 
   <target name="all" depends="compile">
+    <path id="classpath">
+      <pathelement path="target/classes"/>
+      <pathelement path="lib/jing.jar"/>
+    </path>
+    <pathconvert property="path" refid="classpath" pathsep=":"/>
+    <copy file="src/main/sh/xpparser" tofile="xpparser">
+      <filterchain>
+        <replacetokens>
+          <token key="CLASSPATH" value="${path}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
   </target>
 
   <property name="lib.dir" value="lib"/>

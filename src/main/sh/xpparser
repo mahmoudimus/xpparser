@@ -1,0 +1,2 @@
+#!/bin/sh
+java -cp @CLASSPATH@ fr.lsv.xpparser.Main $@
