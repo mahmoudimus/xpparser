@@ -69,3 +69,13 @@ op |= element ( intersectOp                         # path intersection
   element firstOperand  { expr },
   element secondOperand { expr }
 }
+
+# UCQs can resolve ID/IDREFs
+fun |= element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "id" | string "idref" | string "element-with-id" )
+  },
+  element arguments { expr* }?
+}
