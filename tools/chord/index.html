@@ -32,6 +32,7 @@ svg {
 }
 
 #chord path.chord {
+  cursor: pointer; 
   stroke: #444;
   stroke-width: .1pt;
 }
@@ -286,7 +287,13 @@ function matrixgraph(fragments, matrix, maxentries) {
         div.append("p")
             .html(text);
         var list = div.append("ul")
-        p.examples.forEach(function (d) { list.append("li").text(d); });
+        p.examples.forEach(function (d) {
+            list.append("li")
+                .attr("class","prettyprint")
+                .append("code")
+                .attr("class", "language-xpath")
+                .text(d);
+        });
     }
     
     function mouseovercell(p) {
@@ -517,7 +524,13 @@ function chordgraph(fragments, matrix, maxentries) {
             div.append("p")
                 .html(text);
             var list = div.append("ul")
-            p.examples.forEach(function (d) { list.append("li").text(d); });
+            p.examples.forEach(function (d) {
+                list.append("li")
+                    .attr("class","prettyprint")
+                    .append("code")
+                    .attr("class", "language-xpath")
+                    .text(d);
+            });
         }
     }
     
