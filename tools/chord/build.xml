@@ -11,9 +11,9 @@
   <property name="lib.dir" value="../../lib"/>
 
   <target name="all" depends="matrix"/>
-  
+
+  <!-- extract benchmark data -->
   <target name="matrix" depends="saxon">
-    <filter token="benchmark" value="${xml}"/>
     <mkdir dir="${target.dir}/${xml}"/>
     <xslt style="matrix.xsl"
           in="../../benchmark/${xml}.xml"
@@ -22,7 +22,28 @@
         <pathelement path="${lib.dir}/saxon9he.jar"/>
       </classpath>
     </xslt>
-    <copy file="index.html" todir="${target.dir}/${xml}" filtering="true"/>
+    <!-- get the number of fragments -->
+    <resourcecount property="fragments">
+      <tokens>
+        <concat>
+          <filterchain>
+            <tokenfilter>
+              <linetokenizer/>
+            </tokenfilter>
+          </filterchain>
+          <fileset file="fragments.csv"/>
+        </concat>
+      </tokens>
+    </resourcecount>
+    <echo message="${fragments}"/>
+    <copy file="index.html" todir="${target.dir}/${xml}">
+      <filterchain>
+        <replacetokens>
+          <token key="FRAGMENTS" value="${fragments}"/>
+          <token key="BENCHMARK" value="${xml}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
     <move file="matrix.json" todir="${target.dir}/${xml}"/>
     <move file="fragments.csv" todir="${target.dir}/${xml}"/>
   </target>
