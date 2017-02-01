@@ -263,6 +263,17 @@ function matrixgraph(fragments, matrix, maxentries) {
     }
 
     function mouseclick(p) {
+        var log = d3.select("#log")
+            .style("opacity", 1);
+        log.selectAll("#log div").each(function (d) { d.remove(); });
+        log.selectAll("#log div").data([p])
+            .enter()
+            .append("div")
+            .each(logexamples);
+    }
+    
+    function logexamples(p) {
+        var div = d3.select(this);
         var text = p.examples.length + " entr"
             +  ((p.examples.length > 1)? "ies": "y");
         if (p.examples.length < p.z)
@@ -270,16 +281,11 @@ function matrixgraph(fragments, matrix, maxentries) {
         text += " in <span class=\"fragment\" style=\"color: "+fragments[p.y].color+"\">"+ fragments[p.y].name
             +"</span> but not in <span class=\"fragment\" style=\"color: "+fragments[p.x].color+"\">"+ fragments[p.x].name
             +"</span>:";
-        var log = d3.select("#log")
-            .style("opacity", 1)
-            .data([p])
-            .on("mouseover", mouseovercell)
+        div.on("mouseover", mouseovercell)
             .on("mouseout", mouseout);
-        log.select("p").remove();
-        log.select("ul").remove();
-        log.append("p")
+        div.append("p")
             .html(text);
-        var list = log.append("ul")
+        var list = div.append("ul")
         p.examples.forEach(function (d) { list.append("li").text(d); });
     }
     
@@ -462,7 +468,8 @@ function chordgraph(fragments, matrix, maxentries) {
       .enter().append("path")
       .attr("class", "chord")
       .style("fill", function(d) { return fragments[d.source.index].color; })
-      .attr("d", path);
+      .attr("d", path)
+      .on("mouseup", mouseclick);
 
   // Add an elaborate mouseover title for each chord.
   chord.append("title").text(function(d) {
@@ -482,6 +489,51 @@ function chordgraph(fragments, matrix, maxentries) {
           && p.target.index != i;
     });
   }
+    
+  function mouseclick(p) {
+      var log = d3.select("#log")
+          .style("opacity", 1);
+      log.selectAll("#log div").remove();
+      log.selectAll("#log div").data([matrix[p.target.index][p.source.index],
+                                      matrix[p.source.index][p.target.index]])
+          .enter()
+          .append("div")
+          .each(logexamples);
+  }
+    function logexamples(p) {
+        var div = d3.select(this);
+        if (p.z > 0) {
+            var text = p.examples.length + " entr"
+                +  ((p.examples.length > 1)? "ies": "y");
+            if (p.examples.length < p.z)
+                text += " out of "+ p.z;
+            text += " in <span class=\"fragment\" style=\"color: "
+                +fragments[p.y].color+"\">"+ fragments[p.y].name
+                +"</span> but not in <span class=\"fragment\" style=\"color: "
+                +fragments[p.x].color+"\">"+ fragments[p.x].name
+                +"</span>:";
+            div.on("mouseover", mouseovercell)
+                .on("mouseout", mouseout);
+            div.append("p")
+                .html(text);
+            var list = div.append("ul")
+            p.examples.forEach(function (d) { list.append("li").text(d); });
+        }
+    }
+    
+    function mouseovercell(p) {
+        d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
+        d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+        chordsvg.selectAll(".chord").classed("inactive", function(d, i) {
+            return (d.source.index != p.x || d.target.index != p.y)
+                && (d.source.index != p.y || d.target.index != p.x);
+        });
+    }
+    
+    function mouseout() {
+        d3.selectAll("text").classed("active", false);
+        chordsvg.selectAll(".chord").classed("inactive", false);
+    }
 }
    
 </script>
