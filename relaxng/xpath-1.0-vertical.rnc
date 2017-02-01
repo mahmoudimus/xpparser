@@ -38,7 +38,8 @@ include "xpath-1.0-data.rnc" {
   }
   
   last.axis = element xpathAxis {
-    ( string "self"                 # Always 
+    ( string "self"                 # Always
+    | string "attribute"
     | string "parent"               # Always 
     )
   }

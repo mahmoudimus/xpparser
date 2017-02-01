@@ -121,21 +121,28 @@ step = element stepExpr {
   predicates?
 }
 
-axis = element xpathAxis {
+axis = forward.axis | backward.axis | deterministic.axis
+
+forward.axis = element xpathAxis {
   ( string "child"
-  | string "attribute"
-  | string "self"
-  | string "parent"
   | string "descendant-or-self"
   | string "descendant"
-  | string "following"
   | string "following-sibling"
+  )
+}
+
+backward.axis = element xpathAxis {
+    string "following" # equivalent to descendant | ancestor/following-sibling/descendant-or-self
   | string "ancestor"
   | string "ancestor-or-self"
   | string "preceding"
   | string "preceding-sibling"
-  | string "namespace" # obtainable using the ancestor axis
-  )
+}
+    
+deterministic.axis = element xpathAxis {
+    string "attribute"
+  | string "self"
+  | string "parent"
 }
 
 nodetest = element nameTest { external "misc/eqname.rnc" }
@@ -149,4 +156,4 @@ predicates = element predicates { expr* }
 
 #Allowing some use of last()
 include "expr/last.rnc"
-step |= last.step
+path |= last.path

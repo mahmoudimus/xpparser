@@ -37,16 +37,8 @@ last.fun = element functionCallExpr {
 
 # Allowed axes before a [last()] predicate 
 # (Should be modified accordingly when including this file) 
-last.axis = element xpathAxis {
-  ( string "child"                # Needs 'following-sibling' 
-  | string "attribute"            # Always 
-  | string "self"                 # Always 
-  | string "parent"               # Always 
-  | string "descendant-or-self"   # Needs 'descendant' and 'following' 
-  | string "descendant"           # Needs 'descendant' and 'following' 
-  | string "following"            # Needs 'descendant' and 'following' 
-  | string "following-sibling"    # Always (needs itself)
-  )
+last.axis = forward.axis | deterministic.axis | element xpathAxis { 
+    string "following"            # Needs 'descendant' and 'following' 
 }
 
 # to catch [last()], equivalent to [position() = last()]
@@ -54,4 +46,17 @@ last.predicate = element predicates {
   expr*, (last.op | last.fun), expr*
 }
 
-last.step = element stepExpr { (last.axis, nodetest), last.predicate }
+last.step = element stepExpr {
+  ((last.axis, nodetest) | element filterExpr { last.primary }),
+  last.predicate?
+}
+
+last.primary = literal
+  |  varref
+  |  element contextItemExpr { empty }
+  |  fun
+  |  element sequenceExpr { last.path* }
+
+last.path = element pathExpr {
+  ( element rootExpr { empty }, last.step* ) | last.step+
+}

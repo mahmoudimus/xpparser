@@ -38,7 +38,20 @@ include "xpath-1.0-vertical.rnc" {
   }
  
   last.axis = element xpathAxis {
-    string "self"                 # Always 
+      string "self"                 # Always
+    | string "attribute"
+  }
+  
+  # everything except numerical literals, operations, and functions
+  predicates = element predicates {
+    ( varref
+    | str
+    | element contextItemExpr { empty }
+    | fun # needs to be refined!
+    | element sequenceExpr { expr* }
+    | op  # needs to be refined!
+    | path
+    | if.expr )*
   }
 
   fun.root = notAllowed
