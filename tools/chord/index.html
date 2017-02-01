@@ -266,7 +266,7 @@ function matrixgraph(fragments, matrix, maxentries) {
     function mouseclick(p) {
         var log = d3.select("#log")
             .style("opacity", 1);
-        log.selectAll("#log div").each(function (d) { d.remove(); });
+        log.selectAll("#log div").remove();
         log.selectAll("#log div").data([p])
             .enter()
             .append("div")
