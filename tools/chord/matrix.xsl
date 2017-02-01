@@ -4,7 +4,7 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="('xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-1.0-data.rnc', 'xpath-1.0-eval.rnc', 'xpath-3.0.rnc', 'xpath-modal.rnc', 'xpath-hybrid.rnc')"/>
+             select="('xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-patterns.rnc', 'xpath-1.0-data.rnc', 'xpath-1.0-eval.rnc', 'xpath-3.0.rnc', 'xpath-modal.rnc', 'xpath-hybrid.rnc')"/>
 
   <xsl:template match="/">
     <xsl:variable name="root" select="/"/>
@@ -84,7 +84,7 @@
       <xsl:when test="matches($f,'.*-core.rnc')">
         <xsl:text>,#ccebc5,</xsl:text>
       </xsl:when>
-      <xsl:when test="matches($f,'.*-(downward|forward|vertical).rnc')">
+      <xsl:when test="matches($f,'.*-(downward|forward|vertical|patterns).rnc')">
         <xsl:text>,#b3cde3,</xsl:text>
       </xsl:when>
       <xsl:when test="matches($f,'.*-(data|eval|leashed).rnc')">
