@@ -64,7 +64,9 @@
     <xsl:if test="$examples">
       <xsl:text>, "examples": [</xsl:text>
       <xsl:for-each select="$examples[position() &lt;= $nexamples]">
-        <xsl:text>"</xsl:text><xsl:value-of select="current()/query"/><xsl:text>"</xsl:text>
+        <xsl:text>"</xsl:text><xsl:value-of 
+        select="replace(normalize-space(current()/query),'&quot;',&quot;'&quot;)"/>
+        <xsl:text>"</xsl:text>
         <xsl:if test="position() != last() and position() &lt; $nexamples">
           <xsl:text>,</xsl:text>
         </xsl:if>

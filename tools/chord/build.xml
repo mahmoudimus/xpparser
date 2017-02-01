@@ -57,6 +57,9 @@
         </replacetokens>
       </filterchain>
     </copy>
+    <copy file="prettify.js" todir="${target.dir}"/>
+    <copy file="prettify.css" todir="${target.dir}"/>
+    <copy file="lang-xpath.js" todir="${target.dir}"/>
     <move file="matrix.json" todir="${target.dir}/${xml}"/>
     <move file="fragments.csv" todir="${target.dir}/${xml}"/>
   </target>

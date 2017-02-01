@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
-<title>Flows Between XPath Fragments</title>
+    <title>Flows Between XPath Fragments</title>
+    <link rel="stylesheet" type="text/css" href="../prettify.css">
+    <script type="text/javascript" src="../prettify.js"></script>
+    <script type="text/javascript" src="../lang-xpath.js"></script>
 <style>
 body {
     margin: 1em auto 4em auto;
@@ -81,7 +84,6 @@ path.inactive, #circle:hover path.fade {
 
 <p>Built with <a href="http://d3js.org/">D3</a>.
 <div id="log" style="opacity: 0;"></div>
-    
 <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
 <script src="https://d3js.org/queue.v1.min.js"></script>
     
@@ -291,8 +293,9 @@ function matrixgraph(fragments, matrix, maxentries) {
             list.append("li")
                 .append("code")
                 .attr("class", "prettyprint lang-xpath")
-                .text(d);
+                .text(d.replace("&quot;","'"));
         });
+        PR.prettyPrint();
     }
     
     function mouseovercell(p) {
@@ -527,8 +530,9 @@ function chordgraph(fragments, matrix, maxentries) {
                 list.append("li")
                     .append("code")
                     .attr("class", "prettyprint lang-xpath")
-                    .text(d);
+                    .text(d.replace("&quot;","'"));
             });
+            PR.prettyPrint();
         }
     }
     
