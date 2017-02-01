@@ -4,7 +4,9 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="('xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-patterns.rnc', 'xpath-1.0-data.rnc', 'xpath-1.0-eval.rnc', 'xpath-3.0.rnc', 'xpath-modal.rnc', 'xpath-hybrid.rnc')"/>
+             select="('xpath-2.0-core.rnc', 'xpath-1.0-core.rnc', 'xpath-1.0-downward.rnc', 'xpath-1.0-forward.rnc', 'xpath-1.0-vertical.rnc', 'xpath-patterns.rnc', 'xpath-1.0.rnc', 'xpath-1.0-eval.rnc', 'xpath-hybrid.rnc')"/>
+
+  <xsl:param name="nexamples" select="15"/>
 
   <xsl:template match="/">
     <xsl:variable name="root" select="/"/>
@@ -47,11 +49,9 @@
       </xsl:call-template>
     </xsl:for-each>
     <xsl:text>]</xsl:text>
-    <xsl:choose>
-      <xsl:when test="$source != $fragments[last()]">
-        <xsl:text>,</xsl:text>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="$source != $fragments[last()]">
+      <xsl:text>,</xsl:text>
+    </xsl:if>
   </xsl:template>
 
   <!-- one entry of the matrix -->
@@ -59,12 +59,22 @@
     <xsl:param name="source"/>
     <xsl:param name="target"/>
     <xsl:param name="root"/>
-    <xsl:value-of select="count($root//xpath[validation[@schema=$source and @valid='yes'] and validation[@schema=$target and @valid='no']])"/>    
-    <xsl:choose>
-      <xsl:when test="$target != $fragments[last()]">
-        <xsl:text>,</xsl:text>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:variable name="examples" select="$root//xpath[validation[@schema=$source and @valid='yes'] and validation[@schema=$target and @valid='no']]"/> 
+    <xsl:text>{ "z": </xsl:text><xsl:value-of select="count($examples)"/>
+    <xsl:if test="$examples">
+      <xsl:text>, "examples": [</xsl:text>
+      <xsl:for-each select="$examples[position() &lt;= $nexamples]">
+        <xsl:text>"</xsl:text><xsl:value-of select="current()/query"/><xsl:text>"</xsl:text>
+        <xsl:if test="position() != last() and position() &lt; $nexamples">
+          <xsl:text>,</xsl:text>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:text>]</xsl:text>
+    </xsl:if>
+    <xsl:text> }</xsl:text>
+    <xsl:if test="$target != $fragments[last()]">
+      <xsl:text>,</xsl:text>
+    </xsl:if>
   </xsl:template>
 
   <!-- one fragment -->
