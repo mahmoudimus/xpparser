@@ -35,12 +35,25 @@
         </concat>
       </tokens>
     </resourcecount>
-    <echo message="${fragments}"/>
+    <!-- get the number of entries -->
+    <resourcecount property="entries">
+      <tokens>
+        <concat>
+          <filterchain>
+            <tokenfilter>
+              <containsstring contains="&lt;query&gt;"/>
+            </tokenfilter>
+          </filterchain>
+          <fileset file="../../benchmark/${xml}.xml"/>
+        </concat>
+      </tokens>
+    </resourcecount>
     <copy file="index.html" todir="${target.dir}/${xml}">
       <filterchain>
         <replacetokens>
           <token key="FRAGMENTS" value="${fragments}"/>
           <token key="BENCHMARK" value="${xml}"/>
+          <token key="ENTRIES" value="${entries}"/>
         </replacetokens>
       </filterchain>
     </copy>

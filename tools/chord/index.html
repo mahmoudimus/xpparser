@@ -25,11 +25,13 @@ svg {
 
 #chord .group path {
   fill-opacity: .5;
+  stroke: #444;
+  stroke-width: .1pt;
 }
 
 #chord path.chord {
-  stroke: #000;
-  stroke-width: .25px;
+  stroke: #444;
+  stroke-width: .1pt;
 }
 
 path {
@@ -44,6 +46,7 @@ path.inactive, #circle:hover path.fade {
 #matrix text { fill: #333; }
 #matrix text.active { fill: red }
 #matrix line { stroke: #fff; }
+#matrix .row rect:hover { stroke: #333; stroke-width: .25pt; }
 
 </style>
 
@@ -118,15 +121,9 @@ queue()
 
 function ready(error, fragments, matrix) {
     if (error) throw error;
-
-    // maximal number of entries
-    var maxentries = 0;
-    for (let f of fragments)
-        maxentries = (maxentries < parseInt(f.entries))?
-        parseInt(f.entries): maxentries;
     
-    matrixgraph(fragments, matrix, maxentries);
-    chordgraph(fragments, matrix, maxentries);
+    matrixgraph(fragments, matrix, @ENTRIES@);
+    chordgraph(fragments, matrix, @ENTRIES@);
 }
 
 function matrixgraph(fragments, matrix, maxentries) {
@@ -182,6 +179,8 @@ function matrixgraph(fragments, matrix, maxentries) {
         .attr("y", x.bandwidth() / 2)
         .attr("dy", ".32em")
         .attr("text-anchor", "end")
+        .on("mouseover", mouseoverrow)
+        .on("mouseout", mouseout)
         .text(function(d, i) { return fragments[i].name; });
     rtext.append("title").text(function(d, i) {
         return fragments[i].name + ": " + fragments[i].entries + " entries" + " ("
@@ -255,6 +254,13 @@ function matrixgraph(fragments, matrix, maxentries) {
     function mouseout() {
         d3.selectAll("text").classed("active", false);
         chordsvg.selectAll(".chord").classed("inactive", false);
+    }
+    
+    function mouseoverrow(p) {
+        d3.selectAll(".row text").classed("active", function(d) { return d === p; });
+        chordsvg.selectAll(".chord").classed("inactive", function(d, i) {
+            return (d.source.index != p[0].y && d.target.index != p[0].y);
+        });
     }
     
     function mouseoverpercent(p) {
