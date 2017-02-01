@@ -289,9 +289,8 @@ function matrixgraph(fragments, matrix, maxentries) {
         var list = div.append("ul")
         p.examples.forEach(function (d) {
             list.append("li")
-                .attr("class","prettyprint")
                 .append("code")
-                .attr("class", "language-xpath")
+                .attr("class", "prettyprint lang-xpath")
                 .text(d);
         });
     }
@@ -526,9 +525,8 @@ function chordgraph(fragments, matrix, maxentries) {
             var list = div.append("ul")
             p.examples.forEach(function (d) {
                 list.append("li")
-                    .attr("class","prettyprint")
                     .append("code")
-                    .attr("class", "language-xpath")
+                    .attr("class", "prettyprint lang-xpath")
                     .text(d);
             });
         }
