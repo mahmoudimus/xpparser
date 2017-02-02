@@ -10,7 +10,7 @@
   <property name="bench.dir" value="${project.root}/benchmark"/>
   <property name="lib.dir" value="${project.root}/lib"/>
 
-  <target name="all" depends="matrix"/>
+  <target name="all" depends="install"/>
 
   <!-- main target -->
   <target name="install" depends="minify,matrix">
@@ -78,8 +78,7 @@
 
   <!-- minify CSS and javascript files -->
   <uptodate property="minified">
-    <srcfiles dir= "./" includes="xpp.css prettify.css"/>
-    <srcfiles dir= "./" includes="lang-xpath.js render.js"/>
+    <srcfiles dir="." includes="xpp.css prettify.css lang-xpath.js render.js"/>
     <regexpmapper from="^(.*)\.(css|js)$$" to="\1.min.\2"/>
   </uptodate>
   <target name="minify" depends="yui" unless="minified">

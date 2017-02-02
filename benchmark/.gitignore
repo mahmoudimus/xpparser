@@ -1,0 +1,11 @@
+*.xml
+*.LICENSE
+basex
+docbook
+existdb
+histei
+htmlbook
+marklogic
+w3c
+xpathmark
+xqjson
