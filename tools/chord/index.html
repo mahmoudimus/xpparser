@@ -9,19 +9,21 @@
 body {
     margin: 1em auto 4em auto;
     position: relative;
-    width: 900px;
+    width: 1000px;
     font-family: sans-serif;
     color: #333;
 }
 
 svg {
     display: block;
-    float: left;
     margin: 1em;
     font-family: sans-serif;
 }
+#links, #left {
+    float: left;
+}
 
-#chord { width: 720px; height: 720px; }
+#links, #chord { width: 650px; height: 650px; }
 
 #circle circle {
   fill: none;
@@ -59,10 +61,11 @@ path.inactive, #circle:hover path.fade {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     width: 200px;
-    top: 450px;
-    left: -60px;
     background-color: white;
-    position: absolute;
+    /*top: 450px;
+    left: -60px;
+    
+    position: absolute;*/
     /*-webkit-border-radius: 20px;-moz-border-radius: 20px;border-radius: 20px;
     border:1px solid #999;
     -webkit-box-shadow: #B3B3B3 2px 2px 2px;-moz-box-shadow: #B3B3B3 2px 2px 2px; box-shadow: #B3B3B3 2px 2px 2px;*/
@@ -84,10 +87,9 @@ the colour indicates the most important flow.  Hover/click on the matrix
 or the links for details.
 <p>XPath extraction and parsing done with <a href="https://git.lsv.fr/schmitz/xpparser">xpparser</a>.
 <p>Vizualisation built with <a href="http://d3js.org/">D3</a>.
-<div id="log" style="opacity: 0;"></div>
 <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
 <script src="https://d3js.org/queue.v1.min.js"></script>
-    
+<div id="left">
 <aside style="margin-top:0px; margin-left:-160px">
 <p>Order: <select id="order">
 <option value="count">by Frequency</option>
@@ -95,6 +97,10 @@ or the links for details.
 <option value="group">by Cluster</option>
 </select>
 </aside>
+    <div id="mx"></div>
+    <div id="log" style="opacity: 0;"></div>
+    </div>
+    <div id="links"></div>
     <script>
 var N = @FRAGMENTS@ - 1;
 var margin = {top: 80, right: 0, bottom: 10, left: 80}, 
@@ -102,7 +108,7 @@ var margin = {top: 80, right: 0, bottom: 10, left: 80},
 
 var formatPercent = d3.format(".1%");
 
-var matrixsvg = d3.select("body").append("svg")
+var matrixsvg = d3.select("#mx").append("svg")
     .attr("width", matrixw + margin.left + margin.right)
     .attr("height", matrixh + 100 + margin.top + margin.bottom)
     .attr("id", "matrix")
@@ -111,8 +117,8 @@ var matrixsvg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + (margin.top + 100) + ")");
  
-var width = 720,
-    height = 720,
+var width = 650,
+    height = 650,
     outerRadius = Math.min(width, height) / 2 - 10,
     innerRadius = outerRadius - 24;
 
@@ -128,9 +134,9 @@ var layout = d3.chord()
 var path = d3.ribbon()
     .radius(innerRadius);
 
-var chordsvg = d3.select("body").append("svg")
-    .style("margin-top", - matrixh - margin.top - 100 + "px")
-    .style("margin-left", 20 + matrixw + "px")
+var chordsvg = d3.select("#links").append("svg")
+    //.style("margin-top", - matrixh - margin.top - 100 + "px")
+    //.style("margin-left", 20 + matrixw + "px")
     .attr("id", "chord")
     .attr("width", width)
     .attr("height", height)
