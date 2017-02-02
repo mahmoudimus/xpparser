@@ -96,7 +96,7 @@
         <pathelement location="${lib.dir}/yuicompressor-2.4.8.jar"/>
       </classpath>
     </java>
-    <move file="prettify.min.css" todir="${target.dir}">
+    <move todir="${target.dir}">
       <fileset dir="."><include name="*.min.*"/></fileset>
     </move>
   </target>
