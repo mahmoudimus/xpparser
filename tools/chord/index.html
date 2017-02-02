@@ -76,13 +76,14 @@ path.inactive, #circle:hover path.fade {
 #log li { margin-bottom: 3px; }
 </style>
 
-<h1>Outflows in @BENCHMARK@</h1>
+<h1>XPath fragments in @BENCHMARK@ (<span style="color:red">preliminary version</span>)</h1>
 
-<p>Links represent XPath entries belonging to one fragment but not the
-  other.  Thicker links represent larger flows.  Links are directed;
-  the colour indicates the most important flow.
-
-<p>Built with <a href="http://d3js.org/">D3</a>.
+<p>Links represent XPath entries in @BENCHMARK@ belonging to one fragment but not the
+other.  Thicker links represent larger flows.  Links are directed;
+the colour indicates the most important flow.  Hover/click on the matrix
+or the links for details.
+<p>XPath extraction and parsing done with <a href="https://git.lsv.fr/schmitz/xpparser">xpparser</a>.
+<p>Vizualisation built with <a href="http://d3js.org/">D3</a>.
 <div id="log" style="opacity: 0;"></div>
 <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
 <script src="https://d3js.org/queue.v1.min.js"></script>
