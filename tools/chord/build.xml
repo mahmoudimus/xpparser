@@ -6,17 +6,30 @@
   
   <property name="xml" value="xpathmark"/>
   <property name="target.dir" value="${user.home}/public_html/chord/"/>
-
-  <!-- apply XSLT stylesheet -->
-  <property name="lib.dir" value="../../lib"/>
+  <property name="project.root" value="../.."/>
+  <property name="bench.dir" value="${project.root}/benchmark"/>
+  <property name="lib.dir" value="${project.root}/lib"/>
 
   <target name="all" depends="matrix"/>
 
+  <!-- main target -->
+  <target name="install" depends="minify,matrix">
+    <copy file="prettify.min.css" todir="${target.dir}"/>
+    <copy file="lang-xpath.min.js" todir="${target.dir}"/>
+    <copy file="xpp.min.css" todir="${target.dir}"/>
+    <copy file="render.min.js" todir="${target.dir}"/>
+  </target>
+  
   <!-- extract benchmark data -->
-  <target name="matrix" depends="saxon">
+  <uptodate property="extracted">
+    <srcfiles dir="./" includes="matrix.xsl"/>
+    <srcfiles dir="${bench.dir}" includes="${xml}.xml"/>
+    <mergemapper to="${target.dir}/${xml}/matrix.json"/>
+  </uptodate>
+  <target name="matrix" depends="saxon" unless="extracted">
     <mkdir dir="${target.dir}/${xml}"/>
     <xslt style="matrix.xsl"
-          in="../../benchmark/${xml}.xml"
+          in="${bench.dir}/${xml}.xml"
           out="matrix.json">
       <classpath>
         <pathelement path="${lib.dir}/saxon9he.jar"/>
@@ -44,7 +57,7 @@
               <containsstring contains="&lt;query&gt;"/>
             </tokenfilter>
           </filterchain>
-          <fileset file="../../benchmark/${xml}.xml"/>
+          <fileset file="${bench.dir}/${xml}.xml"/>
         </concat>
       </tokens>
     </resourcecount>
@@ -57,13 +70,34 @@
         </replacetokens>
       </filterchain>
     </copy>
-    <copy file="prettify.js" todir="${target.dir}"/>
-    <copy file="prettify.css" todir="${target.dir}"/>
-    <copy file="lang-xpath.js" todir="${target.dir}"/>
     <move file="matrix.json" todir="${target.dir}/${xml}"/>
     <move file="fragments.csv" todir="${target.dir}/${xml}"/>
+    <bzip2 src="${bench.dir}/${xml}.xml" destfile="${target.dir}/${xml}/${xml}.xml.bz2"/>
+    <copy file="${bench.dir}/${xml}.LICENSE" todir="${target.dir}/${xml}"/>
   </target>
-  
+
+  <!-- minify CSS and javascript files -->
+  <uptodate property="minified">
+    <srcfiles dir= "./" includes="xpp.css prettify.css"/>
+    <srcfiles dir= "./" includes="lang-xpath.js render.js"/>
+    <regexpmapper from="^(.*)\.(css|js)$$" to="\1.min.\2"/>
+  </uptodate>
+  <target name="minify" depends="yui" unless="minified">
+    <java jar="${lib.dir}/yuicompressor-2.4.8.jar" fork="true">
+      <arg line="--type js -o '.js$:.min.js' lang-xpath.js render.js"/>
+      <classpath>
+        <pathelement location="${lib.dir}/yuicompressor-2.4.8.jar"/>
+      </classpath>
+    </java>
+    <java jar="${lib.dir}/yuicompressor-2.4.8.jar" fork="true">
+      <arg line="--type css -o '.css$:.min.css' xpp.css prettify.css"/>
+      <classpath>
+        <pathelement location="${lib.dir}/yuicompressor-2.4.8.jar"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- download saxon if needed -->
   <target name="saxon">
     <local name="offline"/>
     <available file="${lib.dir}/saxon9he.jar" property="offline"/>
@@ -73,5 +107,14 @@
          dest="${lib.dir}" usetimestamp="true"/>
     <unzip unless:set="offline" src="${lib.dir}/SaxonHE9-7-0-14J.zip" dest="${lib.dir}"
            overwrite="no"/>
+  </target>
+
+  <!-- download YUI if needed -->
+  <target name="yui">
+    <local name="offline"/>
+    <available file="${lib.dir}/yuicompressor-2.4.8.jar" property="offline"/>
+    <get unless:set="offline"
+         src="https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar"
+         dest="${lib.dir}" usetimestamp="true"/>
   </target>
 </project>

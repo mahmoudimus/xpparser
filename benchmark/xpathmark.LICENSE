@@ -1,0 +1,26 @@
+XPathMark was developed by Massimo Franceschet at the University of
+Udine, Italy.
+
+Thanks to the authors of XMark [2] and to those of XCheck [6].
+
+Related publications
+
+[1] M. Franceschet. XPathMark: an XPath benchmark for XMark generated
+    data. International XML Database Symposium (XSYM), 2005.
+[2] A. Schmidt, F. Waas, M. L. Kersten, M. J. Carey, I. Manolescu, and
+    R. Busse. XMark: A Benchmark for XML Data
+    Management. International Conference on Very Large Data Bases
+    (VLDB), 2002.
+[3] M. Benedikt and C. Koch. XPath leashed. Submitted for publication
+    (see authors' web pages).
+[4] M. Marx. Conditional XPath: the first-order complete XPath
+    dialect. International Conference on Principles of Database
+    Systems (PODS), 2005.
+[5] B. ten Cate. The expressivity of XPath with transitive
+    closure. International Conference on Principles of Database
+    Systems (PODS), 2006.
+[6] L. Afanasiev, M. Franceschet, M. Marx, and E. Zimuel. XCheck: a
+    platform for benchmarking XML engines
+    (demonstration). International Conference on Very Large Databases
+    (VLDB), 2006.
+

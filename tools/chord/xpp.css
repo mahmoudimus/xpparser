@@ -1,0 +1,56 @@
+body {
+    margin: 1em auto 10em auto;
+    position: relative;
+    font-family: sans-serif;
+    color: #333;
+}
+
+#links, #left {
+    float: left;
+}
+#left { font-size: 10px; }
+
+#circle circle {
+  fill: none;
+  pointer-events: all;
+}
+#circle textpath { font-size: 11px; }
+
+#chord .group path {
+  fill-opacity: .5;
+  stroke: #444;
+  stroke-width: .1pt;
+}
+
+#chord path.chord {
+  cursor: pointer; 
+  stroke: #444;
+  stroke-width: .1pt;
+}
+
+path {
+    transition: opacity 0.1s ease-in-out;
+}    
+
+path.inactive, #circle:hover path.fade {
+    opacity: 0;
+}
+
+#matrix, aside, aside select { font: 10px sans-serif; }
+#matrix text { fill: #333; }
+#matrix text.active { fill: red }
+#matrix line { stroke: #fff; }
+#matrix .row rect:hover {
+    stroke: #333;
+    stroke-width: .25pt;
+    cursor: pointer;
+    padding: -1px;
+}
+#log {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background-color: white;
+    margin-bottom: 50px;
+}
+#log ul { padding-left: 1em; }
+#log li { margin-bottom: .3ex; }
