@@ -13,12 +13,7 @@
   <target name="all" depends="install"/>
 
   <!-- main target -->
-  <target name="install" depends="minify,matrix">
-    <copy file="prettify.min.css" todir="${target.dir}"/>
-    <copy file="lang-xpath.min.js" todir="${target.dir}"/>
-    <copy file="xpp.min.css" todir="${target.dir}"/>
-    <copy file="render.min.js" todir="${target.dir}"/>
-  </target>
+  <target name="install" depends="minify,matrix"/>
   
   <!-- extract benchmark data -->
   <uptodate property="extracted">
@@ -77,23 +72,33 @@
   </target>
 
   <!-- minify CSS and javascript files -->
+  <fileset dir="." id="css.files"><include name="*.css"/></fileset>
+  <fileset dir="." id="js.files"><include name="*.js"/></fileset>
+  <pathconvert pathsep=" " property="css" refid="css.files"/>
+  <pathconvert pathsep=" " property="js" refid="js.files"/>
   <uptodate property="minified">
-    <srcfiles dir="." includes="xpp.css prettify.css lang-xpath.js render.js"/>
-    <regexpmapper from="^(.*)\.(css|js)$$" to="\1.min.\2"/>
+    <srcresources>
+      <resources refid="css.files"/>
+      <resources refid="js.files"/>
+    </srcresources>
+    <regexpmapper from="^(.*)\.(css|js)$$" to="${target.dir}/\1.min.\2"/>
   </uptodate>
   <target name="minify" depends="yui" unless="minified">
     <java jar="${lib.dir}/yuicompressor-2.4.8.jar" fork="true">
-      <arg line="--type js -o '.js$:.min.js' lang-xpath.js render.js"/>
+      <arg line="--type js -o '.js$:.min.js' ${js}"/>
       <classpath>
         <pathelement location="${lib.dir}/yuicompressor-2.4.8.jar"/>
       </classpath>
     </java>
     <java jar="${lib.dir}/yuicompressor-2.4.8.jar" fork="true">
-      <arg line="--type css -o '.css$:.min.css' xpp.css prettify.css"/>
+      <arg line="--type css -o '.css$:.min.css' ${css}"/>
       <classpath>
         <pathelement location="${lib.dir}/yuicompressor-2.4.8.jar"/>
       </classpath>
     </java>
+    <move file="prettify.min.css" todir="${target.dir}">
+      <fileset dir="."><include name="*.min.*"/></fileset>
+    </move>
   </target>
 
   <!-- download saxon if needed -->
