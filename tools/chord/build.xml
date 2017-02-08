@@ -14,14 +14,31 @@
 
   <!-- main target -->
   <target name="install" depends="minify,matrix"/>
+
+  <!-- xpath ant task -->
+  <available
+      file="${project.root}/target/classes/org/wiztools/ant/xpath/XPathTask.class"
+      property="xtask.offline"/>
+  <target name="xtask">
+    <get unless:set="xtask.offline"
+         src="https://github.com/wiztools/ant-xpath-task/archive/master.zip"
+         dest="${lib.dir}/xtask.zip" usetimestamp="true"/>
+    <unzip unless:set="xtask.offline" src="${lib.dir}/xtask.zip"
+           dest="${lib.dir}" overwrite="no"/>
+    <javac srcdir="${lib.dir}/ant-xpath-task-master/src/main/java/"
+           destdir="${project.root}/target/classes/" includeantruntime="true"/>
+  </target>
+  <taskdef name="xpath" classname="org.wiztools.ant.xpath.XPathTask"
+           classpath="${project.root}/target/classes"/>
   
   <!-- extract benchmark data -->
   <uptodate property="extracted">
-    <srcfiles dir="./" includes="${project.root}/xslt/matrix.xsl"/>
+    <srcfiles dir="${project.root}/xslt/" includes="matrix.xsl"/>
+    <srcfiles dir="./" includes="index.html"/>
     <srcfiles dir="${bench.dir}" includes="${xml}.xml"/>
     <mergemapper to="${target.dir}/${xml}/matrix.json"/>
   </uptodate>
-  <target name="matrix" depends="saxon" unless="extracted">
+  <target name="matrix" depends="saxon,xtask" unless="extracted">
     <mkdir dir="${target.dir}/${xml}"/>
     <xslt style="${project.root}/xslt/matrix.xsl"
           in="${bench.dir}/${xml}.xml"
@@ -31,31 +48,14 @@
       </classpath>
     </xslt>
     <!-- get the number of fragments -->
-    <resourcecount property="fragments">
-      <tokens>
-        <concat>
-          <filterchain>
-            <tokenfilter>
-              <linetokenizer/>
-            </tokenfilter>
-          </filterchain>
-          <fileset file="fragments.csv"/>
-        </concat>
-      </tokens>
-    </resourcecount>
+    <xpath document="${project.root}/relaxng/meta.xml"
+           xpath="count(//schema)"
+           outputproperty="fragments"/>
     <!-- get the number of entries -->
-    <resourcecount property="entries">
-      <tokens>
-        <concat>
-          <filterchain>
-            <tokenfilter>
-              <containsstring contains="&lt;query&gt;"/>
-            </tokenfilter>
-          </filterchain>
-          <fileset file="${bench.dir}/${xml}.xml"/>
-        </concat>
-      </tokens>
-    </resourcecount>
+    <xpath document="${bench.dir}/${xml}.xml"
+           xpath="count(//xpath[ast/descendant::*[local-name() = 'xpathAxis']])"
+           outputproperty="entries"/>
+    <!-- process index.html -->
     <copy file="index.html" todir="${target.dir}/${xml}">
       <filterchain>
         <replacetokens>
@@ -65,10 +65,13 @@
         </replacetokens>
       </filterchain>
     </copy>
+    <!-- copy benchmark information -->
     <move file="matrix.json" todir="${target.dir}/${xml}"/>
     <move file="fragments.csv" todir="${target.dir}/${xml}"/>
-    <bzip2 src="${bench.dir}/${xml}.xml" destfile="${target.dir}/${xml}/${xml}.xml.bz2"/>
-    <copy file="${bench.dir}/${xml}.LICENSE" todir="${target.dir}/${xml}"/>
+    <bzip2 src="${bench.dir}/${xml}.xml"
+           destfile="${target.dir}/${xml}/${xml}.xml.bz2"/>
+    <copy file="${bench.dir}/${xml}.LICENSE"
+          todir="${target.dir}/${xml}"/>
   </target>
 
   <!-- minify CSS and javascript files -->
