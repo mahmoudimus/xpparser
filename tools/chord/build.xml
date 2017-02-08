@@ -17,13 +17,13 @@
   
   <!-- extract benchmark data -->
   <uptodate property="extracted">
-    <srcfiles dir="./" includes="matrix.xsl"/>
+    <srcfiles dir="./" includes="${project.root}/xslt/matrix.xsl"/>
     <srcfiles dir="${bench.dir}" includes="${xml}.xml"/>
     <mergemapper to="${target.dir}/${xml}/matrix.json"/>
   </uptodate>
   <target name="matrix" depends="saxon" unless="extracted">
     <mkdir dir="${target.dir}/${xml}"/>
-    <xslt style="matrix.xsl"
+    <xslt style="${project.root}/xslt/matrix.xsl"
           in="${bench.dir}/${xml}.xml"
           out="matrix.json">
       <classpath>
