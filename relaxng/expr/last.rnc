@@ -19,7 +19,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-# To catch equality/order comparison between position() and last()
+# To catch equality between position() and last()
 last.op = element ( eqOp | equalOp ) {
   element firstOperand  { last.fun },
   element secondOperand { last.fun }
@@ -37,8 +37,10 @@ last.fun = element functionCallExpr {
 
 # Allowed axes before a [last()] predicate 
 # (Should be modified accordingly when including this file) 
-last.axis = forward.axis | deterministic.axis | element xpathAxis { 
-    string "following"            # Needs 'descendant' and 'following' 
+last.axis = deterministic.axis | element xpathAxis {
+    string "child"
+  | string "following-sibling"
+  | string "following"            # Needs 'descendant' and 'following'
 }
 
 # to catch [last()], equivalent to [position() = last()]
