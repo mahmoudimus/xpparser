@@ -33,3 +33,6 @@ op |= element ( intersectOp | exceptOp              # path intersection
   element firstOperand  { expr },
   element secondOperand { expr }
 }
+
+# Allow last() on arbitrary paths
+predicates |= last.predicate
