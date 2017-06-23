@@ -43,9 +43,9 @@ last.axis = deterministic.axis | element xpathAxis {
   | string "following"            # Needs 'descendant' and 'following'
 }
 
-# to catch [last()], equivalent to [position() = last()]
+# to catch [last()] and its equivalent [position() = last()]
 last.predicate = element predicates {
-  expr*, (last.op | last.fun), expr*
+  (expr | last.op | last.fun)*
 }
 
 last.step = element stepExpr {
