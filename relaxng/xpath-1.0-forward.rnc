@@ -26,7 +26,10 @@ include "xpath-1.0-data.rnc" {
   start = element pathExpr { element rootExpr { empty }, step* }
         | expr
 
+  last.path = element pathExpr { last.step+ }
+
   path = element pathExpr { step+ }
+       | last.path
   
   axis = element xpathAxis {
     ( string "child"
