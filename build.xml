@@ -29,7 +29,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
     <mkdir unless:set="offline" dir="${lib.dir}"/>
     <get unless:set="offline"
          src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/jing-trang/jing-20091111.zip"
-         dest="${lib-dir}" usetimestamp="true"/>
+         dest="${lib.dir}" usetimestamp="true"/>
     <unzip unless:set="offline" src="${lib.dir}/jing-20091111.zip" dest="${lib.dir}"
            overwrite="no"/>
     <copy unless:set="offline" file="${lib.dir}/jing-20091111/bin/jing.jar"
