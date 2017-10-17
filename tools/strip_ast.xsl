@@ -11,7 +11,7 @@
        because xsltproc does not support huge XML files.
     -->
 
-  <xsl:output method="xml"/>
+  <xsl:output method="xml" indent="yes"/>
 
   <xsl:template match="/">
     <benchmark>
