@@ -1,0 +1,105 @@
+
+# XPath 3.0 fragment of XQueryX in Relax NG compact syntax
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-3.0.rnc"{
+  start = expr_last
+} 
+
+expr_last = op_last | path_last | primary_last
+
+path_last = element pathExpr {
+  ( element rootExpr { empty }, step*, step_last, step* ) 
+  | ( step*, step_last, step* )
+}
+
+step_last = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } ),
+    element predicates { expr*, expr_last, expr* }
+}
+| element stepExpr {
+    element filterExpr { primary_last },
+    element predicates { expr* }?
+}
+
+primary_last =  element sequenceExpr { expr*, expr_last, expr* }
+        | fun_last 
+
+fun_last = element functionCallExpr {
+  element functionName { external "misc/eqname.rnc" },
+  element arguments { expr*, expr_last, expr* }
+}
+| element functionCallExpr {
+  element functionName { 
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    string "last"
+  },
+  element arguments { empty }?
+} 
+
+op_last |= element ( 
+                   # XPath 1.0
+                     andOp | orOp                        # Boolean
+                   | unionOp                             # path union
+                   | equalOp | notEqualOp                # equality
+                   | lessThanOp    | lessThanOrEqualOp   # order
+                   | greaterThanOp | greaterThanOrEqualOp
+                   | addOp | subtractOp | multiplyOp     # arithmetic
+                   | divOp | modOp
+                   # XPath 2.0 
+                   | eqOp | neOp                         # equality
+                   | ltOp | leOp | gtOp | geOp           # order
+                   | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+                   | intersectOp | exceptOp              # path intersection
+                   | idivOp                              # arithmetic
+                   # XPath 3.0
+                   | stringConcatenateO
+                   ) {(
+  element firstOperand  { expr_last },
+  element secondOperand { expr })
+|(element firstOperand  { expr },
+  element secondOperand { expr_last })
+}
+op_last |= 
+  # XPath 1.0
+  element unaryMinusOp {
+    element operand { expr_last }
+  }
+  # XPath 2.0
+| element ( unaryPlusOp ) {
+  element operand { expr_last }
+}
+
+# XPath 2.0
+expr_last |= element rangeSequenceExpr {
+  ( element startExpr { expr_last },
+    element endExpr   { expr } )
+| ( element startExpr { expr },
+    element endExpr   { expr_last } )
+}
+expr_last |= element ( instanceOfExpr | treatExpr ) {
+  element argExpr { expr_last },
+  element sequenceType { external "misc/types.rnc" }
+}
+
+# XPath 3.0
+expr_last |= element simpleMapExpr { path_last, path+ }
+          |  element simpleMapExpr { path, path*, path_last, path* }
