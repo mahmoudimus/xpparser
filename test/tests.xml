@@ -1,12 +1,217 @@
 <tests>
+
   <test>
     <query>/foo/bar</query>
     <validation schema="xpath-1.0-core.rnc" valid="yes"/>
     <validation schema="xpath-1.0-data.rnc" valid="yes"/>
   </test>
+
   <test>
     <query>/foo/@a = /bar/@b</query>
     <validation schema="xpath-1.0-core.rnc" valid="no"/>
     <validation schema="xpath-1.0-data.rnc" valid="yes"/>
   </test>
+
+  <!-- last() -->
+
+  <test>
+    <query>//descendant::*[last()]</query>
+    <comment>
+      From issue #8: the query should not be in core but should
+      be in forward (since we have the child and next-sibling
+      axes, and regular xpath).
+      Note that this particular query is equivalent to taking
+      the last node in the document. However it is not treated
+      as a particular case in our fragments, but supported
+      only when descendant::*[phi][last()] can be justified
+      more generally.
+    </comment>
+
+    <validation schema="xpath-1.0-core.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+
+    <!-- other expected results, just to be sure -->
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+
+    <validation schema="xpath-modal.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+
+    <validation schema="xpath-modal-id.rnc" valid="no"/>
+    <validation schema="xpath-last.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>self::*[last()]</query>
+    <comment>
+      From issue #8: we could always allow this since it is equivalent to self::*.
+      It is a corner case, and a useless one, so we may drop it though.
+    </comment>
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+
+    <validation schema="xpath-last.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>$x[last()]</query>
+    <comment>
+      From issue #8: we always allow last on a varref (cf. expr/last) which seems abusive.
+    </comment>
+    <!-- TODO change to "no" almost everywhere -->
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core.rnc" valid="todo"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="todo"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="todo"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="todo"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="todo"/>
+
+    <validation schema="xpath-modal-id.rnc" valid="todo"/>
+    <validation schema="xpath-modal.rnc" valid="todo"/>
+
+    <validation schema="xpath-patterns.rnc" valid="todo"/>
+
+    <validation schema="xpath-last.rnc" valid="todo"/>
+  </test>
+
+  <test>
+    <query>ancestor::*[last()]</query>
+    <comment>
+      From issue #8: this path is equivalent to parent and can thus often be
+      allowed. It is a special case that we would not generally cover, but
+      it does appear in the benchmark, so we may want to support it.
+    </comment>
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+
+    <validation schema="xpath-last.rnc" valid="yes"/>
+  </test>    
+
+  <test>
+    <query>*[last()]</query>
+    <comment>
+      From issue #8: this could be accepted in the forward fragment.
+    </comment>
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+
+    <validation schema="xpath-last.rnc" valid="yes"/>
+
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>*[self::ulink|self::doc:ulink][last()]/following-sibling::node()</query>
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+
+    <validation schema="xpath-last.rnc" valid="yes"/>
+
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <!-- Variables -->
+
+  <test>
+    <query>.[$x=a[$y=b]]</query>
+    <comment>
+      In the downward fragment, only some uses of variables can be justified,
+      essentially when the query is equi-satisfiable with a query where all
+      uses of variables in paths are from the root.
+      This query illustrates a case where we cannot reach such a form.
+    </comment>
+
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+  </test>
+
 </tests>
