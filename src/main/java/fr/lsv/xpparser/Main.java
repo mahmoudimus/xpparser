@@ -148,7 +148,7 @@ public class Main {
             System.out.println
                 ("With no MODE, expects XQuery input.  With no FILE, read from standard input.");
 
-            System.exit(legit? 1: 0);
+            System.exit(legit? 0: 1);
         }
         //----------------------------------------------- process input
         try {
@@ -232,7 +232,7 @@ public class Main {
                             (progname +": --xml pattern `"
                              + filter +"`:");
                         System.err.println(e.getMessage());
-                        System.exit(0);
+                        System.exit(1);
                     }
                     else 
                         abort(e);
@@ -248,7 +248,7 @@ public class Main {
             abort(e);
         }
         
-        System.exit(1);
+        System.exit(0);
     }
 
     /**
@@ -363,6 +363,6 @@ public class Main {
         System.err.println(progname +": fatal error!");
         System.err.println(e.toString());
         e.printStackTrace(System.err);
-        System.exit(0);
+        System.exit(1);
     }
 }
