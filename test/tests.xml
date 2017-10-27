@@ -29,7 +29,10 @@
        Checking basic last() uses, with varying
        parenthesizing, for one and two axes.
        Fragments xpath-1.0-{core,data,vertical,downward}
-       should agree on those queries. -->
+       should agree on those queries. The downward fragment
+       should behave similarly but should be tested with
+       other axes since it can express last over descendant,
+       thanks to regular xpath, child and following-sibling. -->
   <test>
     <query>descendant::a[last()]</query>
     <validation schema="xpath-1.0-core.rnc" valid="no"/>
