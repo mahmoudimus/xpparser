@@ -19,7 +19,7 @@
     <validation schema="xpath-1.0-forward.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
   </test>
 
   <!-- last() -->
