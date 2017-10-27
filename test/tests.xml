@@ -177,28 +177,28 @@
     <query>$x[last()]</query>
     <comment>
       From issue #8: we always allow last on a varref (cf. expr/last) which seems abusive.
+      This query is discussed more specifically in issue #14.
     </comment>
-    <!-- TODO change to "no" almost everywhere -->
     <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-core.rnc" valid="todo"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="todo"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="todo"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="todo"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="todo"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
 
-    <validation schema="xpath-modal-id.rnc" valid="todo"/>
-    <validation schema="xpath-modal.rnc" valid="todo"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
 
-    <validation schema="xpath-patterns.rnc" valid="todo"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
 
-    <validation schema="xpath-last.rnc" valid="todo"/>
+    <validation schema="xpath-last.rnc" valid="yes"/>
   </test>
 
   <test>
