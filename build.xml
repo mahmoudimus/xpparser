@@ -59,6 +59,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
   <target name="test" description="Run sanity tests" depends="all" unless="testuptodate" >
     <uptodate property="testuptodate" targetfile="test/failures.xml">
       <srcfiles dir="." includes="test/tests.xml"/>
+      <srcfiles dir="relaxng" includes="xpath*rnc"/>
       <srcfiles dir="." includes="test/failures.xslt"/>
       <srcfiles dir="." includes="xpparser"/>
     </uptodate>
