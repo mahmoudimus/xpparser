@@ -35,13 +35,9 @@ last.fun = element functionCallExpr {
   element arguments { empty }?
 }
 
-# Allowed axes before a [last()] predicate 
-# (Should be modified accordingly when including this file) 
-last.axis = deterministic.axis | element xpathAxis {
-    string "child"
-  | string "following-sibling"
-  | string "following"            # Needs 'descendant' and 'following'
-}
+# Allowed axes before a [last()] predicate.
+# Should be modified to a safe value when including this file.
+last.axis = notAllowed
 
 # to catch [last()] and its equivalent [position() = last()]
 last.predicate = element predicates {
