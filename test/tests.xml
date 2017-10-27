@@ -12,6 +12,16 @@
     <validation schema="xpath-1.0-data.rnc" valid="yes"/>
   </test>
 
+  <!-- root() -->
+
+  <test>
+    <query>//a/root()/b</query>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-patterns.rnc" valid="yes"/>
+  </test>
+
   <!-- last() -->
 
   <test>
