@@ -154,6 +154,7 @@ nodetest = element nameTest { external "misc/eqname.rnc" }
 # which predicates can we handle?
 predicates = element predicates { expr* }
 
-#Allowing some use of last()
+# Allowing some use of last()
+
 include "expr/last.rnc"
-path |= last.path
+step |= last.step

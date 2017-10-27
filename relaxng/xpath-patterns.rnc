@@ -38,8 +38,6 @@ include "xpath-1.0-core.rnc" {
   }
   # root.fun uses negation
   fun |= cst.fun | fun.child
-  # last.path uses negation
-  last.path = notAllowed
 }
 
 # positive equality checks

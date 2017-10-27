@@ -24,6 +24,87 @@
 
   <!-- last() -->
 
+  <!-- Abstract syntax trees may vary surprisingly
+       depending on parenthesizing.
+       Checking basic last() uses, with varying
+       parenthesizing, for one and two axes.
+       Fragments xpath-1.0-{core,data,vertical,downward}
+       should agree on those queries. -->
+  <test>
+    <query>descendant::a[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="no"/>
+    <validation schema="xpath-1.0-data.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>(descendant::a)[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="no"/>
+    <validation schema="xpath-1.0-data.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>self::b[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>(self::b)[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>descendant::a/self::b[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>descendant::a/(self::b[last()])</query>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>descendant::a/(self::b)[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>(descendant::a/self::b)[last()]</query>
+    <validation schema="xpath-1.0-core.rnc" valid="no"/>
+    <validation schema="xpath-1.0-data.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+  </test>
+
+  <!-- Same as above but for the downward fragment. -->
+  <test>
+    <query>descendant::a/self::*[last()]</query>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>descendant::a/(self::*)[last()]</query>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>descendant::a/(self::*[last()])</query>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>(descendant::a/self::*)[last()]</query>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+  </test>
+
   <test>
     <query>//descendant::*[last()]</query>
     <comment>
@@ -138,8 +219,8 @@
     <validation schema="xpath-1.0-forward.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
 
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="?"/>
+    <validation schema="xpath-modal.rnc" valid="?"/>
 
     <validation schema="xpath-patterns.rnc" valid="yes"/>
 
