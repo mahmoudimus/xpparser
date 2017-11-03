@@ -1,0 +1,93 @@
+# XPath fragment of XQueryX in Relax NG compact syntax
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+start = expr
+
+# ----------------------------------------------------------------
+# Expressions
+
+expr = op | path | primary
+
+# ----------------------------------------------------------------
+# Operations
+
+op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+primary =  element contextItemExpr { empty }
+        |  fun
+        |  element sequenceExpr { expr* }
+
+# Boolean functions
+
+fun = element functionCallExpr {
+  element functionName { external "fn/bool.rnc" },
+  element arguments { expr* }?
+}
+
+# ----------------------------------------------------------------
+# Paths
+
+path = element pathExpr {
+  ( element rootExpr { empty }, step* ) | step+
+}
+
+step = element stepExpr {
+  ((axis, nodetest) | element filterExpr { primary } ),
+  predicates?
+}
+
+axis = forward.axis | backward.axis | deterministic.axis
+
+forward.axis = element xpathAxis {
+  ( string "child"
+  | string "descendant-or-self"
+  | string "descendant"
+  | string "following-sibling"
+  )
+}
+
+backward.axis = element xpathAxis {
+    string "following" # equivalent to descendant | ancestor/following-sibling/descendant-or-self
+  | string "ancestor"
+  | string "ancestor-or-self"
+  | string "preceding"
+  | string "preceding-sibling"
+}
+    
+deterministic.axis = element xpathAxis {
+    string "attribute"
+  | string "self"
+  | string "parent"
+}
+
+nodetest = element nameTest { external "misc/eqname.rnc" }
+  | external "misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+# which predicates can we handle?
+predicates = element predicates { expr* }
