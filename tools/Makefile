@@ -15,5 +15,12 @@ benchmarks.js:
 	@echo "var benchmarks = [];" > $@
 	@cd benchmark ; for i in *xml ; do echo "benchmarks.push('$$i');" >> ../$@ ; done
 	@echo "benchmarks = benchmarks.map(function(x){return(x.split('.')[0]);});" >> $@
+
+last: 
+	@echo '<benchmark>' > last.xml
+	@xmlstarlet sel -t -c "/benchmark/xpath[query[following-sibling::validation[@schema='xpath-last.rnc' and @valid='yes']]]" benchmark/*.xml >> last.xml
+	@echo "" >> last.xml
+	@echo '</benchmark>' >> last.xml
+
 clean:
-	rm -rf benchmarks.js benchmark
+	rm -rf benchmarks.js benchmark last.xml
