@@ -20,6 +20,9 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 start = expr
 
+include "expr/literal.rnc"
+include "expr/cst.rnc"
+
 # ----------------------------------------------------------------
 # Expressions
 
@@ -32,6 +35,19 @@ op = element ( andOp | orOp | unionOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
+
+op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { expr } )
+}
+
+op |= cst.op
 
 # ----------------------------------------------------------------
 # Function calls

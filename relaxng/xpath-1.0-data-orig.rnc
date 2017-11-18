@@ -19,11 +19,9 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-orig.rnc" {
-  op = element ( andOp | orOp | unionOp
-               | eqOp  | neOp | equalOp | notEqualOp  # equality
-               ) {
-         element firstOperand  { expr },
-         element secondOperand { expr }
-     }
+include "xpath-1.0-core-orig.rnc" 
+op |= element ( eqOp  | neOp | equalOp | notEqualOp  ) { # equality
+   element firstOperand  { expr },
+   element secondOperand { expr }
 }
+
