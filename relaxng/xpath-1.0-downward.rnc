@@ -42,6 +42,12 @@ include "xpath-1.0-vertical.rnc" {
     | string "attribute"
   }
   
+  # Same as in expr/last.rnc but disallowing varref
+  last.primary = literal
+    |  element contextItemExpr { empty }
+    |  fun
+    |  element sequenceExpr { last.path* }
+
   # everything except numerical literals, operations, and functions
   predicates = element predicates {
     ( varref
