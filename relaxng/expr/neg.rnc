@@ -1,0 +1,153 @@
+# Negative XPath fragment of XQueryX in Relax NG compact syntax
+# Used for the XPath Patterns fragment
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+# ----------------------------------------------------------------
+# Expressions
+
+neg.expr = neg.op | neg.path | neg.primary
+
+# ----------------------------------------------------------------
+# Operations
+
+# Basic operations
+neg.op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { neg.expr },
+  element secondOperand { neg.expr }
+}
+
+neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { neg.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { neg.expr } )
+}
+
+neg.op |= cst.op
+
+# UCQs can do path intersections
+neg.op |= element ( intersectOp                         # path intersection
+              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+              ) {
+  element firstOperand  { neg.expr },
+  element secondOperand { neg.expr }
+}
+
+# negitive equality checks
+neg.op |= element ( neOp | notEqualOp ) {
+  element firstOperand  { neg.expr },
+  element secondOperand { neg.expr }
+}
+
+# existential quantifiers
+neg.expr |= element quantifiedExpr {
+  element quantifier { string "some" | string "every" },
+  element quantifiedExprInClause {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element sourceExpr { neg.expr }
+  }+,
+  element predicateExpr { neg.expr }
+}
+
+# For loops
+neg.expr |= element flworExpr {
+  neg.for+,
+  element returnClause { neg.expr }
+}
+
+neg.for = element forClause {
+  element forClauseItem {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element forExpr { neg.expr }
+  }+
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+neg.primary =  element contextItemExpr { empty }
+        |  neg.fun
+        |  element sequenceExpr { neg.expr* }
+
+# Boolean functions
+
+neg.fun = element functionCallExpr {
+  element functionName {
+      attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "true"
+    | string "false"
+    | string "boolean" )
+  },
+  element arguments { neg.expr* }?
+}
+
+# ----------------------------------------------------------------
+# Paths
+
+neg.path = element pathExpr {
+  ( element rootExpr { empty }, neg.step* ) | neg.step+
+}
+
+neg.step = element stepExpr {
+  ((neg.axis, neg.nodetest) | element filterExpr { neg.primary } ),
+  neg.predicates?
+}
+
+neg.axis = forward.neg.axis | backward.neg.axis | deterministic.neg.axis
+
+forward.neg.axis = element xpathAxis {
+  ( string "child"
+  | string "descendant-or-self"
+  | string "descendant"
+  | string "following-sibling"
+  )
+}
+
+backward.neg.axis = element xpathAxis {
+    string "following" # equivalent to descendant | ancestor/following-sibling/descendant-or-self
+  | string "ancestor"
+  | string "ancestor-or-self"
+  | string "preceding"
+  | string "preceding-sibling"
+}
+    
+deterministic.neg.axis = element xpathAxis {
+    string "attribute"
+  | string "self"
+  | string "parent"
+}
+
+neg.nodetest = element nameTest { external "../misc/eqname.rnc" }
+  | external "../misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+# which predicates can we handle?
+neg.predicates = element predicates { neg.expr* }

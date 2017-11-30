@@ -1,0 +1,153 @@
+# Positive XPath fragment of XQueryX in Relax NG compact syntax
+# Used for the XPath Patterns fragment
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+# ----------------------------------------------------------------
+# Expressions
+
+pos.expr = pos.op | pos.path | pos.primary
+
+# ----------------------------------------------------------------
+# Operations
+
+# Basic operations
+pos.op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { pos.expr },
+  element secondOperand { pos.expr }
+}
+
+pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { pos.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { pos.expr } )
+}
+
+pos.op |= cst.op
+
+# UCQs can do path intersections
+pos.op |= element ( intersectOp                         # path intersection
+              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+              ) {
+  element firstOperand  { pos.expr },
+  element secondOperand { pos.expr }
+}
+
+# positive equality checks
+pos.op |= element ( eqOp | equalOp ) {
+  element firstOperand  { pos.expr },
+  element secondOperand { pos.expr }
+}
+
+# existential quantifiers
+pos.expr |= element quantifiedExpr {
+  element quantifier { string "some" | string "every" },
+  element quantifiedExprInClause {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element sourceExpr { pos.expr }
+  }+,
+  element predicateExpr { pos.expr }
+}
+
+# For loops
+pos.expr |= element flworExpr {
+  pos.for+,
+  element returnClause { pos.expr }
+}
+
+pos.for = element forClause {
+  element forClauseItem {
+    element typedVariableBinding {
+      element varName { external "../misc/eqname.rnc" }
+    },
+    element forExpr { pos.expr }
+  }+
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+pos.primary =  element contextItemExpr { empty }
+        |  pos.fun
+        |  element sequenceExpr { pos.expr* }
+
+# Boolean functions
+
+pos.fun = element functionCallExpr {
+  element functionName {
+      attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "true"
+    | string "false"
+    | string "boolean" )
+  },
+  element arguments { pos.expr* }?
+}
+
+# ----------------------------------------------------------------
+# Paths
+
+pos.path = element pathExpr {
+  ( element rootExpr { empty }, pos.step* ) | pos.step+
+}
+
+pos.step = element stepExpr {
+  ((pos.axis, pos.nodetest) | element filterExpr { pos.primary } ),
+  pos.predicates?
+}
+
+pos.axis = forward.pos.axis | backward.pos.axis | deterministic.pos.axis
+
+forward.pos.axis = element xpathAxis {
+  ( string "child"
+  | string "descendant-or-self"
+  | string "descendant"
+  | string "following-sibling"
+  )
+}
+
+backward.pos.axis = element xpathAxis {
+    string "following" # equivalent to descendant | ancestor/following-sibling/descendant-or-self
+  | string "ancestor"
+  | string "ancestor-or-self"
+  | string "preceding"
+  | string "preceding-sibling"
+}
+    
+deterministic.pos.axis = element xpathAxis {
+    string "attribute"
+  | string "self"
+  | string "parent"
+}
+
+pos.nodetest = element nameTest { external "../misc/eqname.rnc" }
+  | external "../misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+# which predicates can we handle?
+pos.predicates = element predicates { pos.expr* }
