@@ -24,7 +24,7 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-core-orig.rnc"
 
-include "expr/literal.rnc"
+include "expr/varref.rnc"
 primary |= literal
         |  varref
 

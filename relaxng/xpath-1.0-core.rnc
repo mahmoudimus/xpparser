@@ -55,6 +55,7 @@ op |= cst.op
 # Function calls
 
 include "expr/literal.rnc"
+include "expr/varref.rnc"
 
 primary =  literal
         |  varref

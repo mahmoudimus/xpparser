@@ -16,25 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-default namespace = "http://www.w3.org/2005/XQueryX"
+# [56] PrimaryExpr ::=  VarRef
+# [59] VarRef 	   ::=  "$" VarName
+# [60] VarName     ::=  EQName
 
-# [56] PrimaryExpr     ::=  Literal
-# [57] Literal 	       ::=  NumericLiteral | StringLiteral 	
-# [58] NumericLiteral  ::=  IntegerLiteral | DecimalLiteral | DoubleLiteral
-
-literal = num | str
-
-num = int | dec | dbl
-
-int = element integerConstantExpr {
-  element value { xsd:int }
-}
-dec = element decimalConstantExpr {
-  element value { xsd:decimal }
-}
-dbl = element doubleConstantExpr {
-  element value { xsd:double }
-}
-str = element stringConstantExpr {
-  element value { xsd:string }
+varref = element varRef {
+  element name { external "../misc/eqname.rnc" }
 }

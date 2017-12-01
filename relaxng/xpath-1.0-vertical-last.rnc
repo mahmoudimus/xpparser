@@ -21,7 +21,6 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 include "xpath-1.0-vertical-orig.rnc" 
 
 # Allowing some use of last()
-include "expr/literal.rnc"
 include "expr/last.rnc" {
 # Allowed axes before a [last()] predicate.
   last.axis = deterministic.axis | element xpathAxis {

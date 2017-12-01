@@ -90,6 +90,7 @@ op |= element ( unaryPlusOp | unaryMinusOp ) {
 #                      | ContextItemExpr | FunctionCall | FunctionItemExpr
 # [58] ContextItemExpr ::= "."
 include "expr/literal.rnc"
+include "expr/varref.rnc"
 
 primary =  literal
         |  varref

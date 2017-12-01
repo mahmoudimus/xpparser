@@ -37,6 +37,7 @@ op = element ( andOp | orOp | unionOp ) {
 # Function calls
 
 include "expr/literal.rnc"
+include "expr/varref.rnc"
 
 primary =  literal
         |  varref

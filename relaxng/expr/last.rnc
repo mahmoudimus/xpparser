@@ -50,7 +50,6 @@ last.step = element stepExpr {
 }
 
 last.primary = literal
-  |  varref
   |  element contextItemExpr { empty }
   |  fun
   |  element sequenceExpr { last.path* }

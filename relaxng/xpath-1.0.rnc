@@ -46,6 +46,7 @@ op |= element unaryMinusOp {
 # Primary expressions and function calls
 
 include "expr/literal.rnc"
+include "expr/varref.rnc"
 
 primary =  literal
         |  varref
