@@ -46,45 +46,10 @@ pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
 
 pos.op |= cst.op
 
-# UCQs can do path intersections
-pos.op |= element ( intersectOp                         # path intersection
-              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-              ) {
-  element firstOperand  { pos.expr },
-  element secondOperand { pos.expr }
-}
-
 # positive equality checks
 pos.op |= element ( eqOp | equalOp ) {
   element firstOperand  { pos.expr },
   element secondOperand { pos.expr }
-}
-
-# existential quantifiers
-pos.expr |= element quantifiedExpr {
-  element quantifier { string "some" | string "every" },
-  element quantifiedExprInClause {
-    element typedVariableBinding {
-      element varName { external "../misc/eqname.rnc" }
-    },
-    element sourceExpr { pos.expr }
-  }+,
-  element predicateExpr { pos.expr }
-}
-
-# For loops
-pos.expr |= element flworExpr {
-  pos.for+,
-  element returnClause { pos.expr }
-}
-
-pos.for = element forClause {
-  element forClauseItem {
-    element typedVariableBinding {
-      element varName { external "../misc/eqname.rnc" }
-    },
-    element forExpr { pos.expr }
-  }+
 }
 
 # ----------------------------------------------------------------

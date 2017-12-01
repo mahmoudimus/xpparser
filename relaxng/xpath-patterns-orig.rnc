@@ -24,16 +24,18 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "expr/literal.rnc"
-include "expr/cst.rnc"
-
 include "expr/pos.rnc"
 include "expr/neg.rnc"
 
-start = expr
+include "xpath-2.0-core-orig.rnc" {
+    start = pattern.expr
+}
 
-expr = pos.expr | neg.expr 
+pos.expr |= expr
+neg.expr |= expr
+
+pattern.expr = pos.expr | neg.expr 
      | element unionOp {
-        element firstOperand  { expr },
-        element secondOperand { expr }
+        element firstOperand  { pattern.expr },
+        element secondOperand { pattern.expr }
       }

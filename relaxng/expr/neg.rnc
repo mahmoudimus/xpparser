@@ -46,45 +46,10 @@ neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
 
 neg.op |= cst.op
 
-# UCQs can do path intersections
-neg.op |= element ( intersectOp                         # path intersection
-              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-              ) {
-  element firstOperand  { neg.expr },
-  element secondOperand { neg.expr }
-}
-
-# negitive equality checks
+# negative equality checks
 neg.op |= element ( neOp | notEqualOp ) {
   element firstOperand  { neg.expr },
   element secondOperand { neg.expr }
-}
-
-# existential quantifiers
-neg.expr |= element quantifiedExpr {
-  element quantifier { string "some" | string "every" },
-  element quantifiedExprInClause {
-    element typedVariableBinding {
-      element varName { external "../misc/eqname.rnc" }
-    },
-    element sourceExpr { neg.expr }
-  }+,
-  element predicateExpr { neg.expr }
-}
-
-# For loops
-neg.expr |= element flworExpr {
-  neg.for+,
-  element returnClause { neg.expr }
-}
-
-neg.for = element forClause {
-  element forClauseItem {
-    element typedVariableBinding {
-      element varName { external "../misc/eqname.rnc" }
-    },
-    element forExpr { neg.expr }
-  }+
 }
 
 # ----------------------------------------------------------------
