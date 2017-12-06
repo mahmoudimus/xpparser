@@ -27,7 +27,7 @@ include "expr/last.rnc" {
       string "child"                # Can be encoded using 'child' and 'following-sibling'
     | string "following-sibling"    # ... using 'following-sibling'
     | string "following"            # ... using 'descendant' and 'following'
-    | string "descendant"           # We have child and regular XPath
+    | string "descendant"           # With 'child'+'following-sibling' and regular XPath
     | string "descendant-or-self"
   }
   last.primary = element contextItemExpr { empty }
