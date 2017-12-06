@@ -30,8 +30,5 @@ include "expr/last.rnc" {
     | string "descendant"           # With 'child'+'following-sibling' and regular XPath
     | string "descendant-or-self"
   }
-  last.primary = element contextItemExpr { empty }
-    |  fun
-    |  element sequenceExpr { last.path* }
 }
 step |= last.step

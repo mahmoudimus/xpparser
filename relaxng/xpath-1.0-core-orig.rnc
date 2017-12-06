@@ -53,6 +53,7 @@ op |= cst.op
 # Function calls
 
 primary =  element contextItemExpr { empty }
+        |  literal
         |  fun
         |  element sequenceExpr { expr* }
 

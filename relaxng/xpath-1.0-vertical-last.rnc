@@ -26,8 +26,5 @@ include "expr/last.rnc" {
   last.axis = deterministic.axis | element xpathAxis {
       string "ancestor"             # With 'parent' and regular XPath
   }
-  last.primary = element contextItemExpr { empty }
-    |  fun
-    |  element sequenceExpr { last.path* }
 }
 step |= last.step

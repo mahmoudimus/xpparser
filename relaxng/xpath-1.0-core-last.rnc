@@ -23,9 +23,6 @@ include "xpath-1.0-core-orig.rnc"
 # Allowing some use of last()
 include "expr/last.rnc" {
 # Allowed axes before a [last()] predicate.
-  last.axis = axis
-  last.primary = element contextItemExpr { empty }
-    |  fun
-    |  element sequenceExpr { last.path* }
+  last.axis = axis # We have Regular XPath
 }
 step |= last.step

@@ -27,8 +27,5 @@ include "expr/last.rnc" {
       string "self"                 # Always
     | string "attribute"
   }
-  last.primary = element contextItemExpr { empty }
-    |  fun
-    |  element sequenceExpr { last.path* }
 }
 step |= last.step
