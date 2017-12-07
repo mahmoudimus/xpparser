@@ -23,10 +23,11 @@ include "xpath-1.0-forward-orig.rnc"
 # Allowing some use of last()
 include "expr/last.rnc" {
 # Allowed axes before a [last()] predicate.
-  last.axis = deterministic.axis | element xpathAxis {
-      string "child"                # Can be encoded using 'child' and 'following-sibling'
+  last.axis = element xpathAxis {
+      string "self"                 # Deterministic
+    | string "attribute"            # Deterministic
+    | string "child"                # Can be encoded using 'child' and 'following-sibling'
     | string "following-sibling"    # ... using 'following-sibling'
-    | string "following"            # ... using 'descendant' and 'following'
     | string "descendant"           # With 'child'+'following-sibling' and regular XPath
     | string "descendant-or-self"
   }
