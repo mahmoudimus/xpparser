@@ -12,6 +12,248 @@
     <validation schema="xpath-1.0-data.rnc" valid="yes"/>
   </test>
 
+  <!-- navigation -->
+
+  <test>
+    <query>child::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>descendant::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>parent::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>ancestor::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>following-sibling::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>preceding-sibling::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>following::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>preceding::*</query>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+    <validation schema="xpath-modal-id.rnc" valid="yes"/>
+    <validation schema="xpath-modal.rnc" valid="yes"/>
+    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-patterns.rnc" valid="yes"/>
+  </test>
+
   <!-- root() -->
 
   <test>
