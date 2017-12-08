@@ -145,5 +145,4 @@ nodetest = element nameTest { external "misc/eqname.rnc" }
       ( element star { empty } & element NCName { xsd:NCName } )?
   }
 
-# which predicates can we handle?
 predicates = element predicates { expr* }

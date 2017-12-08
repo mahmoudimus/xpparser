@@ -596,7 +596,7 @@
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
   </test>
@@ -606,7 +606,7 @@
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
   </test>
