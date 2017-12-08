@@ -515,18 +515,149 @@
       This query illustrates a case where we cannot reach such a form.
     </comment>
 
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
 
     <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-var.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
 
     <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>$x/$y</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+  </test>
+
+  <!-- Joins -->
+  <test>
+    <query>child::a[*/@b != parent::c] and not(child::b)</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>not(.[@a=@b])</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>child::a[@a=@b][last()]</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>child::a[@a=@b and last()]</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>child::a[@a=@b]/ancestor::b[last()]</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>child::a[@a=@b]/(ancestor::b[last()])</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>$x[@a=@b]</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>some $x in *[@a=@b] satisfies child::c = @d</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>every $x in *[@a=@b] satisfies child::c</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>every $x in *[@a=@b] satisfies child::c = @d</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>child::a[child::b = .] intersect child::b[child::a = .]</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>child::a[child::b = .] except child::b</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>child::a except child::b[child::b = .]</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>for $x in *[@a=.] return $x/child::a</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>for $x in * return $x/child::a[@a=.]</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>for $x in * return $x/child::a</query>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
   </test>
 
 </tests>
