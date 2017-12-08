@@ -1,0 +1,95 @@
+# Join XPath fragment of XQueryX in Relax NG compact syntax
+# Used for the -join fragments
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+# ----------------------------------------------------------------
+# Expressions
+
+join.expr = join.op | join.path | join.primary | expr
+
+# ----------------------------------------------------------------
+# Operations
+
+# Basic operations
+join.op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { join.expr },
+  element secondOperand { join.expr }
+}
+
+join.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { join.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { join.expr } )
+}
+
+join.op |= cst.op
+
+# positive equality checks
+join.op |= element ( eqOp | equalOp | neqOp | notEqualOp ) {
+  element firstOperand  { join.expr },
+  element secondOperand { join.expr }
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+join.primary =  element contextItemExpr { empty }
+        |  join.fun
+        |  element sequenceExpr { join.expr* }
+
+# Boolean functions
+
+join.fun = element functionCallExpr {
+  element functionName {
+      attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "true"
+    | string "false"
+    | string "boolean" )
+  },
+  element arguments { join.expr* }?
+}
+
+# ----------------------------------------------------------------
+# Paths
+
+join.path = element pathExpr {
+  ( element rootExpr { empty }, join.step* ) | join.step+
+}
+
+join.step = element stepExpr {
+  ((join.axis, join.nodetest) | element filterExpr { join.primary } ),
+  join.predicates?
+}
+
+join.axis = axis
+    
+join.nodetest = element nameTest { external "../misc/eqname.rnc" }
+  | external "../misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+join.predicates = element predicates { join.expr* }
