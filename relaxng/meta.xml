@@ -70,11 +70,10 @@
       <author>Diego Figueira</author>
       <author>Luc Segoufin</author>
       <title>Bottom-up automata on data trees and vertical XPath</title>
-      <venue volume="9" series="LIPIcs" pages="93--109"
-      publisher="LZI" abbr="STACS'11">Proceedings of the 28th Annual
-      Symposium on Theoretical Aspects of Computer Science</venue>
-      <year>2011</year>
-      <doi>10.4230/LIPIcs.STACS.2011.93</doi>
+      <venue volume="13" issue="4" article="5" abbr="LMCS">Logical Methods in
+      Computer Science</venue>
+      <year>2012</year>
+      <doi>10.23638/LMCS-13(4:5)2017</doi>
     </bib>
   </schema>
   <schema file="xpath-patterns.rnc"
