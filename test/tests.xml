@@ -717,4 +717,15 @@
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
   </test>
 
+  <!-- id -->
+
+  <test>
+    <query>child::a[id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>id(child::a)[child::b]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
+  </test>
+
 </tests>
