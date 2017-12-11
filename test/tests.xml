@@ -725,6 +725,22 @@
   </test>
   <test>
     <query>id(child::a)[child::b]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>child::a[//id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>child::a[root()/id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
+  </test>
+  <test>
+    <query>//child::a[id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>//id(child::a)[child::b]</query>
     <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
   </test>
 
