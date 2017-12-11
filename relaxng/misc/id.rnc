@@ -1,0 +1,61 @@
+# Id XPath fragment of XQueryX in Relax NG compact syntax
+# Used for the -id fragments
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+# ----------------------------------------------------------------
+# Function calls
+
+id.primary = primary
+           | id.fun
+
+# id function
+id.fun |= element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    string "id" 
+  },
+  element arguments { id.path? }?
+}
+
+# ----------------------------------------------------------------
+# Paths
+
+id.path = element pathExpr {
+  element rootExpr { empty }, id.step* 
+}
+
+id.step = element stepExpr {
+  ((id.axis, id.nodetest) | element filterExpr { id.primary } ),
+  id.predicates?
+}
+
+id.step |= step
+
+id.axis = axis
+    
+id.nodetest = element nameTest { external "eqname.rnc" }
+  | external "tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+# pi_id ::= ... | p_id[phi] 
+id.predicates = element predicates { expr* }
