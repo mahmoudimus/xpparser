@@ -41,7 +41,20 @@ id.fun |= element functionCallExpr {
 id.path = id.rootedpath | id.notrootedpath
 
 id.rootedpath = element pathExpr {
-  element rootExpr { empty }, id.step* 
+  ( element rootExpr { empty } 
+  | element stepExpr { 
+      element filterExpr {
+        element functionCallExpr {
+          element functionName {
+            attribute xqx:prefix { string "fn" }?,
+            attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+            ( string "root")
+          },
+        element arguments { empty }? # Can the root() function have an argument?
+        }
+      }
+    }
+  ), id.step* 
 }
 
 id.notrootedpath = element pathExpr {
