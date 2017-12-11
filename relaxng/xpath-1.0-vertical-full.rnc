@@ -1,0 +1,36 @@
+# Vertical DataXPath fragment with all extensions
+#
+# Based on Diego Figueira and Luc Segoufin, _Bottom-up automata on
+# data trees and vertical XPath_, in the Proceedings of the 28th Annual
+# Symposium on Theoretical Aspects of Computer Science (STACS'11),
+# volume 9 of LIPIcs, pages 93--109, LZI, 2011.
+# doi:10.4230/LIPIcs.STACS.2011.93
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-1.0-vertical-id.rnc"
+
+# Allowing some use of last()
+include "expr/last.rnc" {
+# Allowed axes before a [last()] predicate.
+  last.axis = deterministic.axis | element xpathAxis {
+      string "ancestor"             # With 'parent' and regular XPath
+  }
+}
+step |= last.step
