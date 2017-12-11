@@ -29,3 +29,19 @@ include "expr/last.rnc" {
 }
 last.primary |= varref
 step |= last.step
+
+join.step |= element stepExpr {
+  ((join.axis, join.nodetest) | element filterExpr { primary } ),
+  element predicates {
+    (last.op | last.fun | expr)*,
+    joinlast.expr,
+    join.expr*
+  }
+}
+joinlast.expr = element andOp {
+  (element firstOperand { joinlast.expr },
+   element secondOperand { joinlast.expr }) |
+  (element secondOperand { joinlast.expr },
+   element firstOperand { joinlast.expr })
+}
+joinlast.expr |= last.op | join.expr
