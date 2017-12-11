@@ -38,8 +38,14 @@ id.fun |= element functionCallExpr {
 # ----------------------------------------------------------------
 # Paths
 
-id.path = element pathExpr {
+id.path = id.rootedpath | id.notrootedpath
+
+id.rootedpath = element pathExpr {
   element rootExpr { empty }, id.step* 
+}
+
+id.notrootedpath = element pathExpr {
+  id.step+
 }
 
 id.step = element stepExpr {
