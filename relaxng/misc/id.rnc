@@ -1,4 +1,5 @@
-# Helper for defining *-id XPath fragments, where id() is admissible
+# Id XPath fragment of XQueryX in Relax NG compact syntax
+# Used for the -id fragments
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -19,62 +20,26 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 # ----------------------------------------------------------------
-# Expressions
-
-id.expr = id.op | id.path | id.primary | expr
-
-# ----------------------------------------------------------------
-# Operations
-
-# Basic operations
-id.op = element ( andOp | orOp | unionOp ) {
-  element firstOperand  { id.expr },
-  element secondOperand { id.expr }
-}
-
-id.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { id.expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { id.expr } )
-}
-
-id.op |= cst.op
-
-# ----------------------------------------------------------------
 # Function calls
 
-id.primary =  element contextItemExpr { empty }
-        |  id.fun
-        |  element sequenceExpr { id.expr* }
+id.primary = primary
+           | id.fun
 
-# Boolean functions
-
-id.fun = element functionCallExpr {
-  element functionName { external "../fn/bool.rnc" },
-  element arguments { id.expr* }?
-}
-
-# id()
-
+# id function
 id.fun |= element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "id" | string "idref" | string "element-with-id" )
   },
-  element arguments { id.expr* }?
+  element arguments { id.path? }?
 }
 
 # ----------------------------------------------------------------
 # Paths
 
 id.path = element pathExpr {
-  ( element rootExpr { empty }, id.step* ) | id.step+
+  element rootExpr { empty }, id.step* 
 }
 
 id.step = element stepExpr {
@@ -92,4 +57,5 @@ id.nodetest = element nameTest { external "eqname.rnc" }
       ( element star { empty } & element NCName { xsd:NCName } )?
   }
 
+# pi_id ::= ... | p_id[phi] 
 id.predicates = element predicates { expr* }

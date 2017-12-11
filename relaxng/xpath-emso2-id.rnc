@@ -1,10 +1,4 @@
-# Vertical DataXPath fragment extended with id()
-#
-# Based on Diego Figueira and Luc Segoufin, _Bottom-up automata on
-# data trees and vertical XPath_, in the Proceedings of the 28th Annual
-# Symposium on Theoretical Aspects of Computer Science (STACS'11),
-# volume 9 of LIPIcs, pages 93--109, LZI, 2011.
-# doi:10.4230/LIPIcs.STACS.2011.93
+# EMSO2 XPath fragment with id
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -24,7 +18,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-vertical-var.rnc"
+include "xpath-emso2-orig.rnc"
 include "misc/id.rnc"
 
 path |= id.path 
