@@ -1,4 +1,10 @@
-# XPath 1.0-core fragment with all extensions
+# Vertical DataXPath fragment with all extensions
+#
+# Based on Diego Figueira and Luc Segoufin, _Bottom-up automata on
+# data trees and vertical XPath_, in the Proceedings of the 28th Annual
+# Symposium on Theoretical Aspects of Computer Science (STACS'11),
+# volume 9 of LIPIcs, pages 93--109, LZI, 2011.
+# doi:10.4230/LIPIcs.STACS.2011.93
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -18,30 +24,13 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-join.rnc"
+include "xpath-1.0-vertical-id.rnc"
 
-include "expr/varref.rnc"
-primary |= varref
-join.primary |= varref
-
+# Allowing some use of last()
 include "expr/last.rnc" {
-  last.axis = axis
-}
-last.primary |= varref
-step |= last.step
-
-join.step |= element stepExpr {
-  ((join.axis, join.nodetest) | element filterExpr { primary } ),
-  element predicates {
-    (last.op | last.fun | expr)*,
-    joinlast.expr,
-    join.expr*
+# Allowed axes before a [last()] predicate.
+  last.axis = deterministic.axis | element xpathAxis {
+      string "ancestor"             # With 'parent' and regular XPath
   }
 }
-joinlast.expr = element andOp {
-  (element firstOperand { joinlast.expr },
-   element secondOperand { joinlast.expr }) |
-  (element secondOperand { joinlast.expr },
-   element firstOperand { joinlast.expr })
-}
-joinlast.expr |= last.op | join.expr
+step |= last.step

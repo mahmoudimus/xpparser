@@ -572,6 +572,8 @@
   </test>
   <test>
     <query>child::a[@a=@b][last()]</query>
+    <!-- last and join don't combine well here: our encoding
+         of last would introduce a negation of the join -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
@@ -581,7 +583,8 @@
     <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
   </test>
   <test>
-    <query>child::a[@a=@b and last()]</query>
+    <query>(child::a[@a=@b])[last()]</query>
+    <!-- same as above -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
@@ -589,6 +592,42 @@
     <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>child::a[last()][@a=@b]</query>
+    <!-- here the two encodings can be combined,
+         so we may accept the query in 1.0-core-full -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>child::a[@a=@b and position()=last()]</query>
+    <!-- this is equivalent to the previous query
+         (though the AST differs quite a bit)
+         so we may also accept it -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>(child::a[last()])[@a=@b]</query>
+    <!-- same as above, with yet another AST -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
   </test>
   <test>
     <query>child::a[@a=@b]/ancestor::b[last()]</query>
@@ -676,6 +715,33 @@
     <query>for $x in * return $x/child::a</query>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+  </test>
+
+  <!-- id -->
+
+  <test>
+    <query>child::a[id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>id(child::a)[child::b]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>child::a[//id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>child::a[root()/id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
+  </test>
+  <test>
+    <query>//child::a[id(child::b)]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
+  </test>
+  <test>
+    <query>//id(child::a)[child::b]</query>
+    <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
   </test>
 
 </tests>
