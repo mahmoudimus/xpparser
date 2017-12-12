@@ -27,4 +27,4 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 include "xpath-1.0-vertical-var.rnc"
 include "misc/id.rnc"
 
-path |= id.path 
+path |= id.rootedpath 

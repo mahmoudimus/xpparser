@@ -21,4 +21,4 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 include "xpath-emso2-orig.rnc"
 include "misc/id.rnc"
 
-path |= id.path 
+path |= id.rootedpath 
