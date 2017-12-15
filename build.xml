@@ -77,4 +77,15 @@ This buildfile is used to compile the Java sources for the XPath Parser.
     </exec>
   </target>
 
+  <property name="project.root" value="."/>
+  <target name="xtask">
+    <get unless:set="xtask.offline"
+         src="https://github.com/wiztools/ant-xpath-task/archive/master.zip"
+         dest="${lib.dir}/xtask.zip" usetimestamp="true"/>
+    <unzip unless:set="xtask.offline" src="${lib.dir}/xtask.zip"
+           dest="${lib.dir}" overwrite="no"/>
+    <javac srcdir="${lib.dir}/ant-xpath-task-master/src/main/java/"
+           destdir="${project.root}/target/classes/" includeantruntime="true"/>
+  </target>
+
 </project>
