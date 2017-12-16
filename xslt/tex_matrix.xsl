@@ -15,22 +15,28 @@
   <xsl:template match="/">
     <xsl:variable name="root" select="document(//benchmark/@href)"/>
 
-    <xsl:text>% </xsl:text>
-    <xsl:value-of select="$xml_fragments" />
-    <xsl:text>&#xa;</xsl:text>
-
     <xsl:text>\begin{tabular}[r</xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:text>l</xsl:text>
     </xsl:for-each>
     <xsl:text>]&#xa;</xsl:text>
+
+    <xsl:text></xsl:text>
+    <xsl:for-each select="$fragments">
+      <xsl:text> &amp; </xsl:text>
+      <xsl:value-of select="current()/@name" />
+    </xsl:for-each>
+    <xsl:text> \\ &#xa;</xsl:text>
+
     <xsl:for-each select="$fragments">
       <xsl:call-template name="line">
         <xsl:with-param name="source" select="current()"/>
         <xsl:with-param name="root" select="$root"/>
       </xsl:call-template>
     </xsl:for-each>
+
     <xsl:text>\end{tabular}&#xa;</xsl:text>
+
   </xsl:template>
 
   <!-- one line of the matrix -->
@@ -46,6 +52,10 @@
         <xsl:with-param name="root" select="$root"/>
       </xsl:call-template>
     </xsl:for-each>
+    <xsl:if test="not($source is $fragments[last()])">
+      <xsl:text> \\</xsl:text>
+    </xsl:if>
+    <xsl:text>&#xa;</xsl:text>
   </xsl:template>
 
   <!-- one entry of the matrix -->
@@ -57,9 +67,6 @@
     <xsl:value-of select="count($examples)"/>
     <xsl:if test="not($target is $fragments[last()])">
       <xsl:text> &amp; </xsl:text>
-    </xsl:if>
-    <xsl:if test="$target is $fragments[last()]">
-      <xsl:text> \\ &#xa;</xsl:text>
     </xsl:if>
   </xsl:template>
 
