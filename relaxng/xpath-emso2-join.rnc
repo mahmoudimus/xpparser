@@ -1,0 +1,106 @@
+# EMSO2 XPath fragment extended with joins
+# Used for the XPath Patterns fragment
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-emso2-orig.rnc" {
+  start = emso2.expr
+}
+
+# ----------------------------------------------------------------
+# Expressions
+
+emso2.expr = emso2.op | emso2.path | emso2.primary | expr
+
+# ----------------------------------------------------------------
+# Operations
+
+# Basic operations
+emso2.op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { emso2.expr },
+  element secondOperand { emso2.expr }
+}
+
+emso2.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { emso2.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { emso2.expr } )
+}
+
+emso2.op |= cst.op
+
+# positive occurences of data tests
+emso2.op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
+  element firstOperand  { emso2.expr },
+  element secondOperand { emso2.expr }
+}
+
+# ----------------------------------------------------------------
+# Function calls
+
+emso2.primary =  element contextItemExpr { empty }
+        |  emso2.fun
+        |  element sequenceExpr { emso2.expr* }
+
+# Boolean functions (without not)
+
+emso2.fun = element functionCallExpr {
+  element functionName {
+      attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "true"
+    | string "false"
+    | string "boolean" )
+  },
+  element arguments { emso2.expr* }?
+}
+
+# Other functions
+
+emso2.fun |= cst.fun | fun.root | fun.child
+
+# ----------------------------------------------------------------
+# Paths
+
+emso2.path = element pathExpr {
+  ( element rootExpr { empty }, emso2.step* ) | emso2.step+
+}
+
+emso2.step = element stepExpr {
+  ((emso2.axis, emso2.nodetest) | element filterExpr { emso2.primary } ),
+  emso2.predicates?
+}
+
+emso2.step |= step
+
+emso2.axis = axis
+
+emso2.nodetest = element nameTest { external "misc/eqname.rnc" }
+  | external "misc/tests.rnc"
+  | element Wildcard {
+      ( element star { empty } & element NCName { xsd:NCName } )?
+  }
+
+# which predicates can we handle?
+emso2.predicates = element predicates { emso2.expr* }
