@@ -13,9 +13,13 @@
       <param name="fragments" value="full" />
       <param name="benchmarks" value="xquery" />
     </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="core-1.0" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
   </target>
 
-  <!-- extract benchmark data
+  <!-- extract TeX matrix from benchmark data
        parameters:
          - fragments: name of fragment list
          - benchmarks: name of benchmark list

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- List of XPathCore fragments -->
+<schemas>
+  <schema file="xpath-1.0-core-orig.rnc" name="orig" />
+  <schema file="xpath-1.0-core-var.rnc" name="var" />
+  <schema file="xpath-1.0-core-join.rnc" name="join" />
+  <schema file="xpath-1.0-core-last.rnc" name="last" />
+  <schema file="xpath-1.0-core-full.rnc" name="full" />
+</schemas>
