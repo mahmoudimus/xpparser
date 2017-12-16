@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<project name="xpath-benchmark" default="all" basedir="."
+         xmlns:unless="ant:unless">
+
+  <description>Extract data from benchmark results.</description>
+  
+  <property name="xml" value="xpathmark"/>
+  <property name="project.root" value="../.."/>
+  <property name="bench.dir" value="${project.root}/benchmark"/>
+  <property name="lib.dir" value="${project.root}/lib"/>
+
+  <target name="all" depends="matrix"/>
+
+  <!-- extract benchmark data -->
+  <target name="matrix">
+    <xslt style="${project.root}/xslt/tex_matrix.xsl"
+          in="${bench.dir}/${xml}.xml"
+          out="results.tex">
+      <param
+        name="xml_fragments"
+        expression="../relaxng/meta.xml" />
+      <classpath>
+        <pathelement path="${lib.dir}/saxon9he.jar"/>
+      </classpath>
+    </xslt>
+  </target>
+
+</project>
