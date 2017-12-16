@@ -13,7 +13,7 @@
              select="document($xml_fragments)//schema"/>
 
   <xsl:template match="/">
-    <xsl:variable name="root" select="/"/>
+    <xsl:variable name="root" select="document(//benchmark/@href)"/>
 
     <xsl:text>% </xsl:text>
     <xsl:value-of select="$xml_fragments" />

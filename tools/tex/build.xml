@@ -6,19 +6,30 @@
   
   <property name="xml" value="xpathmark"/>
   <property name="project.root" value="../.."/>
-  <property name="bench.dir" value="${project.root}/benchmark"/>
   <property name="lib.dir" value="${project.root}/lib"/>
 
-  <target name="all" depends="matrix"/>
+  <target name="all">
+    <antcall target="matrix">
+      <param name="fragments" value="full" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
+  </target>
 
-  <!-- extract benchmark data -->
+  <!-- extract benchmark data
+       parameters:
+         - fragments: name of fragment list
+         - benchmarks: name of benchmark list
+       respectively pointing to files
+           ../../relaxng/fragments-${fragments}.xml
+       and ./benchmarks-${benchmarks}.xml
+  -->
   <target name="matrix">
     <xslt style="${project.root}/xslt/tex_matrix.xsl"
-          in="${bench.dir}/${xml}.xml"
-          out="results.tex">
+          in="benchmarks-${benchmarks}.xml"
+          out="${benchmarks}-${fragments}.tex">
       <param
         name="xml_fragments"
-        expression="../relaxng/meta.xml" />
+        expression="../relaxng/fragments-${fragments}.xml" />
       <classpath>
         <pathelement path="${lib.dir}/saxon9he.jar"/>
       </classpath>

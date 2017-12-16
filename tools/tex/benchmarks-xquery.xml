@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<benchmarks>
+  <benchmark href="../../benchmark/existdb.xml" />
+  <benchmark href="../../benchmark/histei.xml" />
+  <benchmark href="../../benchmark/marklogic.xml" />
+  <benchmark href="../../benchmark/xqjson.xml" />
+</benchmarks>
