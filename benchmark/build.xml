@@ -5,14 +5,14 @@
   <description>
 This buildfile is used to retrieve and parse XPath expressions from various sources.
   </description>
-  <target name="all" depends="compile,tests,sources.xslt,sources.xquery"/>
+  <target name="all" depends="compile,saxon,sources.xslt,sources.xquery"/>
 
   <property name="online" value="true"/>
 
   <!-- path to schemas -->  
   <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
   <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
-  <fileset id="fs.relaxng" dir="../relaxng" includes="xpath*.rnc"/>
+  <fileset id="fs.relaxng" dir="../relaxng" includes="xpath-*.rnc"/>
   <pathconvert property="relaxng" refid="fs.relaxng" pathsep=" "/>
 
   <!-- path to classes -->
@@ -36,7 +36,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       <echo message="Parsing ${count.tests} files..."/>
       <java fork="yes" classname="fr.lsv.xpparser.Main"
             classpathref="classpath"
-            output="@{name}.xml" error="@{name}.log">
+            output="@{name}-full.xml" error="@{name}.log">
         <assertions><!-- this is ignored!!! -->
           <enable/>
         </assertions>
@@ -44,6 +44,13 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       </java>
       <copy unless:blank="@{license}"
             file="@{name}/@{license}" tofile="@{name}.LICENSE"/>
+      <xslt style="../xslt/filter.xsl"
+          in="@{name}-full.xml"
+          out="@{name}.xml">
+        <classpath>
+          <pathelement path="${lib.dir}/saxon9he.jar"/>
+        </classpath>
+      </xslt>
     </sequential>
   </macrodef>
 
@@ -172,5 +179,17 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                includes="exist-develop/test/src/xquery/*.xql,exist-develop/test/src/xquery/xquery3/*.xql,exist-develop/webapp/xqts/*.xql,exist-develop/webapp/*.xql,exist-develop/src/org/exist/*/*/*.xq*,exist-develop/extensions/indexes/lucene/test/src/xquery/lucene/*.xql,exist-develop/extensions/indexes/range/test/src/xquery/*.xql,exist-develop/extensions/modules/src/org/exist/xquery/modules/*/*.xq*,exist-develop/extensions/xprocxq/main/src/*/*.xq*"
                arg="--xquery ../xslt/xqx2xql.xsl"
                license="exist-develop/LICENSE"/>
+  </target>
+  
+  <!-- download saxon if needed -->
+  <target name="saxon">
+    <local name="offline"/>
+    <available file="${lib.dir}/saxon9he.jar" property="offline"/>
+    <mkdir unless:set="offline" dir="${lib.dir}"/>
+    <get unless:set="offline"
+         src="https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.7/SaxonHE9-7-0-14J.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fsaxon%2Ffiles%2FSaxon-HE%2F9.7%2F&amp;ts=1485885576&amp;use_mirror=vorboss"
+         dest="${lib.dir}" usetimestamp="true"/>
+    <unzip unless:set="offline" src="${lib.dir}/SaxonHE9-7-0-14J.zip" dest="${lib.dir}"
+           overwrite="no"/>
   </target>
 </project>
