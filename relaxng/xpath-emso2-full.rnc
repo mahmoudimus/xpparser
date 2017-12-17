@@ -1,5 +1,4 @@
-# EMSO2 XPath fragment of XQueryX in Relax NG compact syntax
-# Used for the XPath Patterns fragment
+# EMSO2 XPath fragment with all extensions
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -19,20 +18,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-orig.rnc" 
+include "xpath-emso2-join.rnc"
+include "misc/id.rnc"
 
-# data test using an absolute path on one side 
-op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
-    ( element firstOperand  { expr },
-      element secondOperand {
-        element pathExpr {
-          element rootExpr { empty }, step* 
-        }
-      })
-  | ( element firstOperand {
-        element pathExpr {
-          element rootExpr { empty }, step* 
-        }
-      },
-    element secondOperand { expr })
-}
+path |= id.rootedpath 

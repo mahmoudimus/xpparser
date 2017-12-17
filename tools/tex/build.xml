@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project name="xpath-benchmark" default="all" basedir="."
+         xmlns:unless="ant:unless">
+
+  <description>Extract data from benchmark results.</description>
+  
+  <property name="xml" value="xpathmark"/>
+  <property name="project.root" value="../.."/>
+  <property name="lib.dir" value="${project.root}/lib"/>
+
+  <target name="all">
+    <antcall target="matrix">
+      <param name="fragments" value="full" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="core-1.0" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
+    <antcall target="totals">
+      <param name="fragments" value="full" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
+    <antcall target="totals">
+      <param name="fragments" value="core-1.0" />
+      <param name="benchmarks" value="xquery" />
+    </antcall>
+  </target>
+
+  <!-- extract TeX matrix from benchmark data
+       parameters:
+         - fragments: name of fragment list
+         - benchmarks: name of benchmark list
+       respectively pointing to files
+           ../../relaxng/fragments-${fragments}.xml
+       and ./benchmarks-${benchmarks}.xml
+  -->
+  <target name="matrix">
+    <xslt style="${project.root}/xslt/tex_matrix.xsl"
+          in="benchmarks-${benchmarks}.xml"
+          out="matrix-${benchmarks}-${fragments}.tex">
+      <param
+        name="xml_fragments"
+        expression="../relaxng/fragments-${fragments}.xml" />
+      <classpath>
+        <pathelement path="${lib.dir}/saxon9he.jar"/>
+      </classpath>
+    </xslt>
+  </target>
+
+  <!-- same as "matrix" but for "totals" array -->
+  <target name="totals">
+    <xslt style="${project.root}/xslt/tex_totals.xsl"
+          in="benchmarks-${benchmarks}.xml"
+          out="totals-${benchmarks}-${fragments}.tex">
+      <param
+        name="xml_fragments"
+        expression="../relaxng/fragments-${fragments}.xml" />
+      <classpath>
+        <pathelement path="${lib.dir}/saxon9he.jar"/>
+      </classpath>
+    </xslt>
+  </target>
+
+</project>
