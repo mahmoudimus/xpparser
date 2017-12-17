@@ -27,6 +27,8 @@ import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
 
+    final static int MAX_AST_SIZE = 1000;
+
     /**
      * The name of the file from which this entry was extracted.
      */
@@ -35,6 +37,8 @@ public abstract class XPathEntry {
     private Document doc;
 
     private Node domnode;
+
+    private int astSize;
 
     SourceFactory sf;
     
@@ -69,8 +73,7 @@ public abstract class XPathEntry {
             ElementBuilder eb = new ElementBuilder(ast);
             xxc.transform(getASTNode(), ast, eb);
             domnode = ast.getFirstChild();
-            ast.setAttributeNS(XMLConstants.NULL_NS_URI,
-                               "size", String.valueOf(eb.getCount()));
+            astSize = eb.getCount();
         }
         return domnode;
     }
@@ -88,6 +91,8 @@ public abstract class XPathEntry {
                              "line", getLine());
         xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
                              "column", getColumn());
+        xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
+                             "ast-size", String.valueOf(astSize));
         for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
             if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
                 xpath.setAttributeNS
@@ -100,43 +105,46 @@ public abstract class XPathEntry {
                      XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
                      pair.getValue());      
         }
-        if (!getEntryText().isEmpty()) {
-            Text    text  = doc.createTextNode(getEntryText());
-            Element query = doc.createElementNS
-                (XMLConstants.NULL_NS_URI, "query");
-            query.appendChild(text);
-            xpath.appendChild(query);
-        }
-        xpath.appendChild(ast);
-
-        // validate
-        for (Map.Entry<String,String> result : sf.validate(domnode)) {
-            Element val = doc.createElementNS
-                (XMLConstants.NULL_NS_URI, "validation");
-            val.setAttributeNS
-                (XMLConstants.NULL_NS_URI,
-                 "schema",
-                 Paths.get(result.getKey()).getFileName().toString());
-            if (result.getValue().equals(ValidationFarm.VALID))
-                val.setAttributeNS
-                    (XMLConstants.DEFAULT_NS_PREFIX,
-                     "valid", "yes");
-            else {
-                String msg = result.getValue();
-                int i = msg.indexOf(':');
-                int j = msg.indexOf(';');
-                if (j >= 0 && i < j)
-                    msg = msg.substring(i+2, j);
-                else if (i >= 0 && j < i)
-                    msg = msg.substring(j+2);
-                val.setAttributeNS
-                    (XMLConstants.DEFAULT_NS_PREFIX,
-                     "valid", "no");
-                val.appendChild(doc.createTextNode(msg));
+        if (astSize < MAX_AST_SIZE) {
+            if (!getEntryText().isEmpty()) {
+                Text    text  = doc.createTextNode(getEntryText());
+                Element query = doc.createElementNS
+                    (XMLConstants.NULL_NS_URI, "query");
+                query.appendChild(text);
+                xpath.appendChild(query);
             }
-            xpath.appendChild(val);
+            xpath.appendChild(ast);
+            
+            // validate
+            for (Map.Entry<String,String> result : sf.validate(domnode)) {
+                Element val = doc.createElementNS
+                    (XMLConstants.NULL_NS_URI, "validation");
+                val.setAttributeNS
+                    (XMLConstants.NULL_NS_URI,
+                     "schema",
+                     Paths.get(result.getKey()).getFileName().toString());
+                if (result.getValue().equals(ValidationFarm.VALID))
+                    val.setAttributeNS
+                        (XMLConstants.DEFAULT_NS_PREFIX,
+                         "valid", "yes");
+                else {
+                    String msg = result.getValue();
+                    int i = msg.indexOf(':');
+                    int j = msg.indexOf(';');
+                    if (j >= 0 && i < j)
+                        msg = msg.substring(i+2, j);
+                    else if (i >= 0 && j < i)
+                        msg = msg.substring(j+2);
+                    val.setAttributeNS
+                        (XMLConstants.DEFAULT_NS_PREFIX,
+                         "valid", "no");
+                    val.appendChild(doc.createTextNode(msg));
+                }
+                xpath.appendChild(val);
+            }
         }
-        
+        else 
+            xpath.appendChild(doc.createComment("AST too large for validation!"));    
         // print
         printer.transform(doc, os);
     }
