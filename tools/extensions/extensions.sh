@@ -1,3 +1,4 @@
+echo '<?xml version="1.0"?>'
 echo "<extensions>"
 echo ""
 echo "<!-- Number of queries using last -->"
