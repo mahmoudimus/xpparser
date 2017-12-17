@@ -9,4 +9,4 @@ do
     shift
 done
 
-#echo "& `grep '<query>' $1 | wc -l` & `grep 'xpath-1.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-2.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-3.0.rnc' $1 | grep 'yes' | wc -l`\\\\"
+#echo "& `grep '<schemas>' $1 | wc -l` & `grep 'xpath-1.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-2.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-3.0.rnc' $1 | grep 'yes' | wc -l`\\\\"

@@ -27,7 +27,7 @@ import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
 
-    final static int MAX_AST_SIZE = 1000;
+    final static int MAX_AST_SIZE = 345;
 
     /**
      * The name of the file from which this entry was extracted.
@@ -74,6 +74,8 @@ public abstract class XPathEntry {
             xxc.transform(getASTNode(), ast, eb);
             domnode = ast.getFirstChild();
             astSize = eb.getCount();
+            ast.setAttributeNS(XMLConstants.NULL_NS_URI,
+                               "size", String.valueOf(astSize));
         }
         return domnode;
     }
@@ -91,8 +93,6 @@ public abstract class XPathEntry {
                              "line", getLine());
         xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
                              "column", getColumn());
-        xpath.setAttributeNS(XMLConstants.NULL_NS_URI,
-                             "ast-size", String.valueOf(astSize));
         for (Map.Entry<String,String> pair : getNamespaces().entrySet()) {
             if (pair.getKey().equals(XMLConstants.DEFAULT_NS_PREFIX))
                 xpath.setAttributeNS
@@ -105,16 +105,18 @@ public abstract class XPathEntry {
                      XMLConstants.XMLNS_ATTRIBUTE+":"+pair.getKey(),
                      pair.getValue());      
         }
+        if (!getEntryText().isEmpty()) {
+            Text    text  = doc.createTextNode(getEntryText());
+            Element query = doc.createElementNS
+                (XMLConstants.NULL_NS_URI, "query");
+            query.appendChild(text);
+            xpath.appendChild(query);
+        }
+        xpath.appendChild(ast);
+        
         if (astSize < MAX_AST_SIZE) {
-            if (!getEntryText().isEmpty()) {
-                Text    text  = doc.createTextNode(getEntryText());
-                Element query = doc.createElementNS
-                    (XMLConstants.NULL_NS_URI, "query");
-                query.appendChild(text);
-                xpath.appendChild(query);
-            }
-            xpath.appendChild(ast);
-            
+            Element schemas = doc.createElementNS
+                (XMLConstants.NULL_NS_URI, "schemas");
             // validate
             for (Map.Entry<String,String> result : sf.validate(domnode)) {
                 Element val = doc.createElementNS
@@ -140,11 +142,12 @@ public abstract class XPathEntry {
                          "valid", "no");
                     val.appendChild(doc.createTextNode(msg));
                 }
-                xpath.appendChild(val);
+                schemas.appendChild(val);
             }
+            xpath.appendChild(schemas);
         }
         else 
-            xpath.appendChild(doc.createComment("AST too large for validation!"));    
+            xpath.appendChild(doc.createComment("AST size "+astSize+" exceeds XPathEntry.MAX_AST_SIZE; no validation"));    
         // print
         printer.transform(doc, os);
     }
