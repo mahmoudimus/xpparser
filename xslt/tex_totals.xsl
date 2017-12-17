@@ -61,7 +61,7 @@
       </xsl:call-template>
     </xsl:for-each>
     <!-- total number of entries in the fragment -->
-    <xsl:value-of select="count(document($benchmarks//benchmark/@href)//xpath[validation[@schema=$fragment/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])" />
+    <xsl:value-of select="count(document($benchmarks//benchmark/@href)//xpath[schemas/validation[@schema=$fragment/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])" />
     <xsl:if test="not($fragment is $fragments[last()])">
       <xsl:text> \\</xsl:text>
     </xsl:if>
@@ -72,7 +72,7 @@
   <xsl:template name="entry">
     <xsl:param name="fragment"/>
     <xsl:param name="benchmark"/>
-    <xsl:value-of select="count(document($benchmark/@href)//xpath[validation[@schema=$fragment/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])"/> 
+    <xsl:value-of select="count(document($benchmark/@href)//xpath[schemas/validation[@schema=$fragment/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])"/> 
     <xsl:text> &amp; </xsl:text>
   </xsl:template>
 
