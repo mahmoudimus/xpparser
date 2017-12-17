@@ -66,8 +66,11 @@ public abstract class XPathEntry {
                 (XMLConstants.DEFAULT_NS_PREFIX, "ast");
             // obtain XQueryX DOM tree
             XPathXConverter xxc = new XPathXConverter();
-            xxc.transform(getASTNode(), ast);
+            ElementBuilder eb = new ElementBuilder(ast);
+            xxc.transform(getASTNode(), ast, eb);
             domnode = ast.getFirstChild();
+            ast.setAttributeNS(XMLConstants.NULL_NS_URI,
+                               "size", String.valueOf(eb.getCount()));
         }
         return domnode;
     }

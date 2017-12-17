@@ -98,7 +98,8 @@ public class XPathXConverter implements XParserTreeConstants {
      * XQueryXConverterBase_xquery30.java. */
     protected void transformName(SimpleNode namenode,
                                  Element parent,
-                                 String xname) {
+                                 String xname,
+                                 ElementBuilder eb) {
         Document doc = parent.getOwnerDocument();
         if (   namenode.id != JJTNCNAME
             && namenode.id != JJTQNAME
@@ -115,7 +116,7 @@ public class XPathXConverter implements XParserTreeConstants {
         String qname = namenode.m_value;
         assert qname != null;
         
-        Element e = doc.createElementNS(XQX_NS_URI, xname);
+        Element e = eb.createElementNS(XQX_NS_URI, xname);
         parent.appendChild(e);
             
         String localname;
@@ -136,33 +137,33 @@ public class XPathXConverter implements XParserTreeConstants {
     }
 
     protected void transformName
-        (SimpleNode namenode, Element parent, int id) {
+        (SimpleNode namenode, Element parent, int id, ElementBuilder eb) {
 
-        transformName(namenode, parent, xqxElementName(id));
+        transformName(namenode, parent, xqxElementName(id), eb);
     }
 
     
     protected int transformClauseItem(SimpleNode parent,
                                       Element e,
-                                      boolean is_for, int i) {
+                                      boolean is_for, int i, ElementBuilder eb) {
         Document doc = e.getOwnerDocument();
-        Element ci = doc.createElementNS
+        Element ci = eb.createElementNS
             (XQX_NS_URI, is_for ? "xqx:forClauseItem" : "xqx:letClauseItem");
         e.appendChild(ci);
 
         SimpleNode nextChild = parent.getChild(i);
         assert nextChild.id == JJTVARNAME;
 
-        Element tvb = doc.createElementNS
+        Element tvb = eb.createElementNS
             (XQX_NS_URI, "xqx:typedVariableBinding");
         ci.appendChild(tvb);
 
-        transformName(nextChild.getChild(0), tvb, nextChild.id);
+        transformName(nextChild.getChild(0), tvb, nextChild.id, eb);
         i++;
         nextChild = parent.getChild(i);
         
         if (nextChild.id == JJTTYPEDECLARATION) {
-            transform(nextChild, tvb);
+            transform(nextChild, tvb, eb);
             i++;
             nextChild = parent.getChild(i);
         }
@@ -170,49 +171,49 @@ public class XPathXConverter implements XParserTreeConstants {
 
         if (nextChild.id == JJTALLOWINGEMPTY) {
             assert is_for;
-            transformChildren(parent, ci, i, i);
+            transformChildren(parent, ci, i, i, eb);
             i++;
             nextChild = parent.getChild(i);
         }
 
         if (nextChild.id == JJTPOSITIONALVAR) {
             assert is_for;
-            transformChildren(parent, ci, i, i);
+            transformChildren(parent, ci, i, i, eb);
             i++;
             nextChild = parent.getChild(i);
         }
 
-        Element expr = doc.createElementNS
+        Element expr = eb.createElementNS
             (XQX_NS_URI, is_for ? "xqx:forExpr" : "xqx:letExpr");
         ci.appendChild(expr);
-        transform(nextChild, expr);
+        transform(nextChild, expr, eb);
         i++;
         return i;
     }
 
-    protected void transformChildren(SimpleNode node, Element parent) {
+    protected void transformChildren(SimpleNode node, Element parent, ElementBuilder eb) {
         this.transformChildren
-            (node, parent, 0, node.jjtGetNumChildren() - 1);
+            (node, parent, 0, node.jjtGetNumChildren() - 1, eb);
     }
 
     protected void transformChildren(SimpleNode node, Element parent,
-                                  int start) {
+                                     int start, ElementBuilder eb) {
         this.transformChildren(node, parent, start, 
-                               node.jjtGetNumChildren() - 1);
+                               node.jjtGetNumChildren() - 1, eb);
     }
 
     protected void transformChildren(SimpleNode node, Element parent,
-                                     int start, int end) {
+                                     int start, int end, ElementBuilder eb) {
         assert(end <  node.jjtGetNumChildren());
         for (int i = start; i <= end; i++)
         {
             SimpleNode child = node.getChild(i);
-            this.transform(child, parent);
+            this.transform(child, parent, eb);
         }
     }
 
     protected void filterPredicate(SimpleNode node, Element parent,
-                                   int start, int end) {
+                                   int start, int end, ElementBuilder eb) {
 
         Document doc = parent.getOwnerDocument();
         int predicates = 0;
@@ -220,33 +221,33 @@ public class XPathXConverter implements XParserTreeConstants {
         for (int j = end; node.getChild(j).id == JJTPREDICATE; j--)
             predicates++;
 
-        Element e = doc.createElementNS(XQX_NS_URI, "xqx:filterExpr");
+        Element e = eb.createElementNS(XQX_NS_URI, "xqx:filterExpr");
         parent.appendChild(e);
-        dynamicFunctionInvocation(node, e, start, end - predicates);
+        dynamicFunctionInvocation(node, e, start, end - predicates, eb);
 
         if (predicates != 0) {
-            e = doc.createElementNS(XQX_NS_URI, "xqx:predicates");
+            e = eb.createElementNS(XQX_NS_URI, "xqx:predicates");
             parent.appendChild(e);
-            transformChildren(node, e, end - predicates + 1, end);
+            transformChildren(node, e, end - predicates + 1, end, eb);
         }
     }
 
     protected void dynamicFunctionInvocation(SimpleNode node, 
                                              Element parent,
-                                             int start, int end) {
+                                             int start, int end, ElementBuilder eb) {
 
         Document doc = parent.getOwnerDocument();
         SimpleNode child = node.getChild(start);
 
         if (end == start) {
            if (child.id == JJTPARENTHESIZEDEXPR) {
-               Element e = doc.createElementNS(XQX_NS_URI,
+               Element e = eb.createElementNS(XQX_NS_URI,
                                                "xqx:sequenceExpr");
                parent.appendChild(e);
-               transform(child, e);
+               transform(child, e, eb);
            }
            else
-               transform(child, parent);
+               transform(child, parent, eb);
         }
         else {
             SimpleNode dfi = node.getChild(end--);
@@ -255,25 +256,25 @@ public class XPathXConverter implements XParserTreeConstants {
             for (int j = end; node.getChild(j).id == JJTPREDICATE; j--)
                 predicates++;
 
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:dynamicFunctionInvocationExpr");
             parent.appendChild(e);
             
-            Element e1 = doc.createElementNS
+            Element e1 = eb.createElementNS
                 (XQX_NS_URI, "xqx:functionItem");
             e.appendChild(e1);
-            dynamicFunctionInvocation(node, e1, start, end - predicates);
+            dynamicFunctionInvocation(node, e1, start, end - predicates, eb);
 
            if (predicates != 0) {
-               e1 = doc.createElementNS(XQX_NS_URI, "xqx:predicates");
+               e1 = eb.createElementNS(XQX_NS_URI, "xqx:predicates");
                e.appendChild(e1);
-               transformChildren(node, e1, end - predicates + 1, end);
+               transformChildren(node, e1, end - predicates + 1, end, eb);
            }
            
            if (dfi.jjtGetNumChildren() != 0) {
-               e1 = doc.createElementNS(XQX_NS_URI, "xqx:arguments");
+               e1 = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
                e.appendChild(e1);
-               transformChildren(dfi, e1);
+               transformChildren(dfi, e1, eb);
            }
         }
     }
@@ -369,9 +370,9 @@ public class XPathXConverter implements XParserTreeConstants {
 
     protected Element simpleElement(Element parent,
                                     String qname,
-                                    String text) {
+                                    String text, ElementBuilder eb) {
         Document doc = parent.getOwnerDocument();
-        Element e = doc.createElementNS(XQX_NS_URI, qname);
+        Element e = eb.createElementNS(XQX_NS_URI, qname);
         if (text != null && !text.isEmpty()) {
             e.appendChild(doc.createTextNode(text));
         }
@@ -379,8 +380,8 @@ public class XPathXConverter implements XParserTreeConstants {
         return e;
     }
 
-    protected Element emptyElement(Element parent, String qname) {
-        return simpleElement(parent, qname, null);
+    protected Element emptyElement(Element parent, String qname, ElementBuilder eb) {
+        return simpleElement(parent, qname, null, eb);
     }              
 
     /**
@@ -389,7 +390,7 @@ public class XPathXConverter implements XParserTreeConstants {
      * @param node   The node to be processed.
      * @param parent Where to append the result.
      */
-    public void transform(final SimpleNode node, Element parent) {
+    public void transform(final SimpleNode node, Element parent, ElementBuilder eb) {
         // information that we'll probably need:
         int id = node.id;
         String qname = xqxElementName(id);
@@ -403,11 +404,11 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTMAINMODULE:
         case JJTQUERYLIST:
         case JJTQUERYBODY:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
             
         case JJTVERSIONDECL: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             
             // The children of the VERSIONDECL node are:
             // one for each StringLiteral, and one for Separator.
@@ -417,21 +418,21 @@ public class XPathXConverter implements XParserTreeConstants {
                 // VersionDecl -> "xquery" "encoding" StringLiteral
                 //                Separator
                 simpleElement(e, "xqx:encoding",
-                              undelimitStringLiteral(node.getChild(0)));
+                              undelimitStringLiteral(node.getChild(0)), eb);
                 assert n == 2;
             }
             else if (node.m_value.equals("version")) {
                 // VersionDecl -> "xquery" "version" StringLiteral
                 //                ("encoding" StringLiteral)? Separator
                 simpleElement(e, "xqx:version",
-                              undelimitStringLiteral(node.getChild(0)));
+                              undelimitStringLiteral(node.getChild(0)), eb);
 
                 if (n == 2) {
                     e.appendChild(doc.createComment("encoding: " + "null"));
                 }
                 else if (n == 3) {
                     simpleElement(e, "xqx:encoding",
-                                  undelimitStringLiteral(node.getChild(1)));
+                                  undelimitStringLiteral(node.getChild(1)), eb);
                 }
                 else {
                     assert false;
@@ -451,12 +452,12 @@ public class XPathXConverter implements XParserTreeConstants {
                 if (id == JJTSTRINGLITERAL 
                     && node.getParent().id == JJTOPTIONDECL) {
                     simpleElement(parent, "xqx:optionContents",
-                                  undelimitStringLiteral(node));
+                                  undelimitStringLiteral(node), eb);
                     break;
                 } else if (id == JJTSTRINGLITERAL
                            && node.getParent().id == JJTDECIMALFORMATDECL) {
                     simpleElement(parent, "xqx:decimalFormatParamValue",
-                                  undelimitStringLiteral(node));
+                                  undelimitStringLiteral(node), eb);
                     break;
                 }
 
@@ -483,15 +484,15 @@ public class XPathXConverter implements XParserTreeConstants {
                     ? undelimitStringLiteral(node)
                     : node.m_value;
 
-                Element e = doc.createElementNS(XQX_NS_URI, qname);
+                Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
-                simpleElement(e, "xqx:value", content);
+                simpleElement(e, "xqx:value", content, eb);
                 break;
             }
             
         case JJTBASEURIDECL:
             // handled in JJTBASEURIDECL
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTURILITERAL: {
@@ -514,24 +515,24 @@ public class XPathXConverter implements XParserTreeConstants {
             } else
                 qname = "xqx:uri";
             SimpleNode child = node.getChild(0);
-            simpleElement(parent, qname, undelimitStringLiteral(child));
+            simpleElement(parent, qname, undelimitStringLiteral(child), eb);
             break;
         }
 
         case JJTNAMEDFUNCTIONREF: {
-            Element e = doc.createElementNS(XQX_NS_URI,
+            Element e = eb.createElementNS(XQX_NS_URI,
                                             "xqx:namedFunctionRef");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTPROLOG: {
             if (node.jjtGetNumChildren() > 0) {
-                Element e = doc.createElementNS(XQX_NS_URI,
+                Element e = eb.createElementNS(XQX_NS_URI,
                                                 "xqx:prolog");
                 parent.appendChild(e);
-                transformChildren(node, e);
+                transformChildren(node, e, eb);
             }
             break;
         }
@@ -542,8 +543,8 @@ public class XPathXConverter implements XParserTreeConstants {
             String uri = uri_qualified_star.substring(2, i);
             String star = uri_qualified_star.substring(i + 1);
             assert star.equals("*");
-            simpleElement(parent, "xqx:uri", uri);
-            parent.appendChild(doc.createElementNS(XQX_NS_URI, "xqx:star"));
+            simpleElement(parent, "xqx:uri", uri, eb);
+            parent.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:star"));
             break;
         }
 
@@ -553,8 +554,8 @@ public class XPathXConverter implements XParserTreeConstants {
             String ncname = ncname_colon_star.substring(0, i);
             String star = ncname_colon_star.substring(i + 1);
             assert star.equals("*");
-            simpleElement(parent, "xqx:NCName", ncname);
-            parent.appendChild(doc.createElementNS(XQX_NS_URI, "xqx:star"));
+            simpleElement(parent, "xqx:NCName", ncname, eb);
+            parent.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:star"));
             break;
         }
 
@@ -564,18 +565,18 @@ public class XPathXConverter implements XParserTreeConstants {
             String star = star_colon_ncname.substring(0, i);
             String ncname = star_colon_ncname.substring(i + 1);
             assert star.equals("*");
-            parent.appendChild(doc.createElementNS(XQX_NS_URI, "xqx:star"));
-            simpleElement(parent, "xqx:NCName", ncname);
+            parent.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:star"));
+            simpleElement(parent, "xqx:NCName", ncname, eb);
             break;
         }
 
         case JJTSINGLETYPE: {
             boolean optionality = (node.m_value != null);
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             if (optionality)
-                e.appendChild(doc.createElementNS(XQX_NS_URI, "xqx:optional"));
+                e.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:optional"));
             break;
         }
 
@@ -586,7 +587,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
         case JJTATOMICORUNIONTYPE:
             // handled in JJTQNAME
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
             
         case JJTATTRIBNAMEORWILDCARD:
@@ -596,20 +597,20 @@ public class XPathXConverter implements XParserTreeConstants {
                     ((id == JJTATTRIBNAMEORWILDCARD)
                      ? JJTATTRIBUTENAME
                      : JJTELEMENTNAME);
-                Element e = doc.createElementNS(XQX_NS_URI, qname);
+                Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
-                e.appendChild(doc.createElementNS(XQX_NS_URI, "xqx:star"));
+                e.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:star"));
                 break;
             } else {
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
                 break;
             }
 
         case JJTATTRIBUTENAME:
         case JJTELEMENTNAME: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -665,7 +666,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 qname = "xqx:annotationName";
             else
                 qname = "xqx:QName";
-            transformName(node, parent, qname);
+            transformName(node, parent, qname, eb);
             break;
         }
 
@@ -682,7 +683,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 if(!node.m_value.equals("xmlns")){
                     int i = node.m_value.indexOf(':');
                     String prefix = node.m_value.substring(i + 1);
-                    simpleElement(parent, "xqx:prefix", prefix);
+                    simpleElement(parent, "xqx:prefix", prefix, eb);
                 }
                 break;
             }
@@ -692,53 +693,53 @@ public class XPathXConverter implements XParserTreeConstants {
             } else {
                 qname = "xqx:tagName";
             }
-            transformName(node, parent, qname);
+            transformName(node, parent, qname, eb);
             break;
         }
 
         case JJTFUNCTIONQNAME:
-            transformName(node, parent, "xqx:functionName");
+            transformName(node, parent, "xqx:functionName", eb);
             break;
 
         case JJTWILDCARD: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:Wildcard");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:Wildcard");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTNAMETEST:
             if (node.getChild(0).id == JJTWILDCARD)
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
             else
-                transformName(node.getChild(0), parent, "xqx:nameTest");
+                transformName(node.getChild(0), parent, "xqx:nameTest", eb);
             break;
 
         case JJTVARNAME: {
             int pid = node.getParent().id;
             if (/* pid == JJTCASECLAUSE || */
                 pid == JJTTYPESWITCHEXPR && getNextSibling(node) != null) {
-                transformName(node.getChild(0), parent, "xqx:variableBinding");
+                transformName(node.getChild(0), parent, "xqx:variableBinding", eb);
             } else if (pid == JJTVARDECL || pid == JJTGROUPINGVARIABLE) {
-                transformName(node.getChild(0), parent, "xqx:varName");
+                transformName(node.getChild(0), parent, "xqx:varName", eb);
             } else {
-                Element e = doc.createElementNS(XQX_NS_URI, "xqx:varRef");
+                Element e = eb.createElementNS(XQX_NS_URI, "xqx:varRef");
                 parent.appendChild(e);
-                transformName(node.getChild(0), e, "xqx:name");
+                transformName(node.getChild(0), e, "xqx:name", eb);
             }
             break;
         }
 
         case JJTPOSITIONALVAR:
             transformName(node.getChild(0).getChild(0), parent,
-                           "xqx:positionalVariableBinding");
+                          "xqx:positionalVariableBinding", eb);
             break;
 
         case JJTITEMTYPE:
             if (node.m_value != null && node.m_value.equals("item"))
-                emptyElement(parent, "xqx:anyItemType");
+                emptyElement(parent, "xqx:anyItemType", eb);
             else
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
             break;
 
         case JJTSEQUENCETYPE: {
@@ -747,28 +748,28 @@ public class XPathXConverter implements XParserTreeConstants {
                 (pid == JJTSEQUENCETYPEUNION || pid == JJTTYPEDFUNCTIONTEST);
             Element e = parent;
             if (shouldBeSeqType) {
-                e = doc.createElementNS(XQX_NS_URI, "xqx:sequenceType");
+                e = eb.createElementNS(XQX_NS_URI, "xqx:sequenceType");
                 parent.appendChild(e);                
             }
             else if (pid == JJTFUNCTIONDECL) {
-                e = doc.createElementNS(XQX_NS_URI, "xqx:typeDeclaration");
+                e = eb.createElementNS(XQX_NS_URI, "xqx:typeDeclaration");
                 parent.appendChild(e);
             }
 
             if (node.m_value != null && node.m_value.equals("empty-sequence"))
-                emptyElement(e, "xqx:voidSequenceType");
+                emptyElement(e, "xqx:voidSequenceType", eb);
             else
-                transformChildren(node, e);
+                transformChildren(node, e, eb);
             break;
         }
 
         case JJTEXPR: {
             Element e = parent;
             if (getNumExprChildren(node) > 1) {
-                e = doc.createElementNS(XQX_NS_URI, "xqx:sequenceExpr");
+                e = eb.createElementNS(XQX_NS_URI, "xqx:sequenceExpr");
                 parent.appendChild(e);
             }
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -776,9 +777,9 @@ public class XPathXConverter implements XParserTreeConstants {
             // XQueryConverterBase-xquery30 binarizes this, but the
             // most recent schema for XqueryX allows unboundedly many
             // children.
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:simpleMapExpr");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:simpleMapExpr");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -795,12 +796,12 @@ public class XPathXConverter implements XParserTreeConstants {
                     SimpleNode only_grandchild = only_child.getChild(0);
                     // only_grandchild is some kind of PrimaryExpr node,
                     // so it doesn't need to be in a pathExpr.
-                    transform(only_grandchild, parent);
+                    transform(only_grandchild, parent, eb);
                     break;
                 }
             }
 
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
             qname = "xqx:stepExpr";
@@ -808,75 +809,75 @@ public class XPathXConverter implements XParserTreeConstants {
                 SimpleNode child = node.getChild(i);
                 if (child.id == JJTSLASH) {
                     if (i == 0)
-                        emptyElement(e, "xqx:rootExpr");
+                        emptyElement(e, "xqx:rootExpr", eb);
                 }
                 else if (child.id == JJTSLASHSLASH) {
                     if (i == 0)
-                        emptyElement(e, "xqx:rootExpr");
+                        emptyElement(e, "xqx:rootExpr", eb);
                     Element e1;
-                    e1 = doc.createElementNS(XQX_NS_URI, qname);
+                    e1 = eb.createElementNS(XQX_NS_URI, qname);
                     e.appendChild(e1);
 
-                    simpleElement(e1, "xqx:xpathAxis", "descendant-or-self");
-                    emptyElement(e1, "xqx:anyKindTest");
+                    simpleElement(e1, "xqx:xpathAxis", "descendant-or-self", eb);
+                    emptyElement(e1, "xqx:anyKindTest", eb);
                 }
                 else {
                     assert child.id == JJTAXISSTEP 
                         || child.id == JJTPOSTFIXEXPR;
-                    Element e1 = doc.createElementNS(XQX_NS_URI, qname);
+                    Element e1 = eb.createElementNS(XQX_NS_URI, qname);
                     e.appendChild(e1);
-                    transform(child, e1);
+                    transform(child, e1, eb);
                 }
             }
             break;
         }
             
         case JJTPREDICATELIST: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:predicates");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:predicates");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTFUNCTIONCALL: {
-            Element e = doc.createElementNS(XQX_NS_URI,
+            Element e = eb.createElementNS(XQX_NS_URI,
                                             "xqx:functionCallExpr");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTARGUMENTLIST: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:arguments");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTARGUMENT:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTARGUMENTPLACEHOLDER:
-            emptyElement(parent, "xqx:argumentPlaceholder");
+            emptyElement(parent, "xqx:argumentPlaceholder", eb);
             break;
 
         case JJTPOSTFIXEXPR:
-            filterPredicate(node, parent, 0, n - 1);
+            filterPredicate(node, parent, 0, n - 1, eb);
             break;
 
         case JJTAXISSTEP:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTFORWARDAXIS:
         case JJTREVERSEAXIS:
-            simpleElement(parent, "xqx:xpathAxis", node.m_value);
+            simpleElement(parent, "xqx:xpathAxis", node.m_value, eb);
             break;
 
         case JJTABBREVREVERSESTEP:
-            simpleElement(parent, "xqx:xpathAxis", "parent");
-            emptyElement(parent, "xqx:anyKindTest");
+            simpleElement(parent, "xqx:xpathAxis", "parent", eb);
+            emptyElement(parent, "xqx:anyKindTest", eb);
             break;
 
         case JJTABBREVFORWARDSTEP: {
@@ -886,7 +887,7 @@ public class XPathXConverter implements XParserTreeConstants {
             if (optionalAttribIndicator != null
                 && optionalAttribIndicator.equals("@")) {
                 // "The attribute axis attribute:: can be abbreviated by @."
-                simpleElement(parent, "xqx:xpathAxis", "attribute");
+                simpleElement(parent, "xqx:xpathAxis", "attribute", eb);
             } else {
                 // "If the axis name is omitted from an axis step, the
                 // default axis is child, with two exceptions: if the
@@ -898,133 +899,133 @@ public class XPathXConverter implements XParserTreeConstants {
                 SimpleNode nodeTestChild = nodeTest.getChild(0);
                 if (   nodeTestChild.id == JJTATTRIBUTETEST
                     || nodeTestChild.id == JJTSCHEMAATTRIBUTETEST)
-                    simpleElement(parent, "xqx:xpathAxis", "attribute");
+                    simpleElement(parent, "xqx:xpathAxis", "attribute", eb);
                 else if (nodeTestChild.id == JJTNAMESPACENODETEST)
-                    simpleElement(parent, "xqx:xpathAxis", "namespace");
+                    simpleElement(parent, "xqx:xpathAxis", "namespace", eb);
                 else
-                    simpleElement(parent, "xqx:xpathAxis", "child");
+                    simpleElement(parent, "xqx:xpathAxis", "child", eb);
             }
             // The NodeTest within the AbbrevForwardStep:
-            transform(nodeTest, parent);
+            transform(nodeTest, parent, eb);
             break;
         }
 
         case JJTQUANTIFIEDEXPR: {
-            Element qe = doc.createElementNS(XQX_NS_URI, qname);
+            Element qe = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(qe);
             
-            simpleElement(qe, "xqx:quantifier", node.m_value);
+            simpleElement(qe, "xqx:quantifier", node.m_value, eb);
 
             for (int i = 0; i < n - 1;) {
                 SimpleNode typedVariableBinding = node.getChild(i);
                 i++;
 
-                Element qeic = doc.createElementNS
+                Element qeic = eb.createElementNS
                     (XQX_NS_URI, "xqx:quantifiedExprInClause");
                 qe.appendChild(qeic);
 
-                Element tvb = doc.createElementNS
+                Element tvb = eb.createElementNS
                     (XQX_NS_URI, "xqx:typedVariableBinding");
                 qeic.appendChild(tvb);
 
                 transformName(typedVariableBinding.getChild(0),
-                              tvb, typedVariableBinding.id);
+                              tvb, typedVariableBinding.id, eb);
 
                 SimpleNode nextChild = node.getChild(i);
                 i++;
 
                 if (nextChild.id == JJTTYPEDECLARATION) {
-                    transform(nextChild, tvb);
+                    transform(nextChild, tvb, eb);
                     nextChild = node.getChild(i);
                     i++;
                 }
                 // end typedVariableBinding
 
-                Element se = doc.createElementNS
+                Element se = eb.createElementNS
                     (XQX_NS_URI, "xqx:sourceExpr");
                 qeic.appendChild(se);
-                transform(nextChild, se);
+                transform(nextChild, se, eb);
 
                 // end sourceExpr
                 // end quantifiedExprInClause
 
             }
             
-            Element pe = doc.createElementNS(XQX_NS_URI,
+            Element pe = eb.createElementNS(XQX_NS_URI,
                                              "xqx:predicateExpr");
             qe.appendChild(pe);
-            transformChildren(node, pe, n - 1, n - 1);
+            transformChildren(node, pe, n - 1, n - 1, eb);
             // end predicateExpr
             // quantifierExpr
             break;
         }
 
         case JJTCATCHCLAUSE: {
-            Element cc = doc.createElementNS(XQX_NS_URI, "xqx:catchClause");
+            Element cc = eb.createElementNS(XQX_NS_URI, "xqx:catchClause");
             parent.appendChild(cc);
 
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 if (child.id == JJTEXPR) {
-                    Element ce = doc.createElementNS
+                    Element ce = eb.createElementNS
                         (XQX_NS_URI, "xqx:catchExpr");
                     cc.appendChild(ce);
-                    transform(child, ce);
+                    transform(child, ce, eb);
                 }
                 else
-                    transform(child, cc);
+                    transform(child, cc, eb);
             }
             break;
         }
 
         case JJTIFEXPR: {
-            Element ite = doc.createElementNS
+            Element ite = eb.createElementNS
                 (XQX_NS_URI, "xqx:ifThenElseExpr");
             parent.appendChild(ite);
 
-            Element ic = doc.createElementNS
+            Element ic = eb.createElementNS
                 (XQX_NS_URI, "xqx:ifClause");
             ite.appendChild(ic);
-            transformChildren(node, ic, 0, n-3);
+            transformChildren(node, ic, 0, n-3, eb);
 
-            Element tc = doc.createElementNS
+            Element tc = eb.createElementNS
                 (XQX_NS_URI, "xqx:thenClause");
             ite.appendChild(tc);
-            transformChildren(node, tc, n-2, n-2);
+            transformChildren(node, tc, n-2, n-2, eb);
 
-            Element ec = doc.createElementNS
+            Element ec = eb.createElementNS
                 (XQX_NS_URI, "xqx:elseClause");
             ite.appendChild(ec);
-            transformChildren(node, ec, n-1, n-1);
+            transformChildren(node, ec, n-1, n-1, eb);
             break;
         }
 
         case JJTFLWOREXPR11: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:flworExpr");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:flworExpr");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTINITIALCLAUSE:
         case JJTINTERMEDIATECLAUSE: {
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
         }
 
         case JJTRANGEEXPR: {
-            Element rse = doc.createElementNS
+            Element rse = eb.createElementNS
                 (XQX_NS_URI, "xqx:rangeSequenceExpr");
             parent.appendChild(rse);
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:startExpr");
             rse.appendChild(e);
-            transform(node.getChild(0), e);
+            transform(node.getChild(0), e, eb);
 
-            e = doc.createElementNS
+            e = eb.createElementNS
                 (XQX_NS_URI, "xqx:endExpr");
             rse.appendChild(e);
-            transform(node.getChild(1), e);
+            transform(node.getChild(1), e, eb);
             break;
         }
          
@@ -1033,25 +1034,25 @@ public class XPathXConverter implements XParserTreeConstants {
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 if (child.id == JJTPLUS) {
-                    Element e1 = doc.createElementNS
+                    Element e1 = eb.createElementNS
                         (XQX_NS_URI, "xqx:unaryPlusOp");
                     e.appendChild(e1);
                     e = e1;
-                    e1 = doc.createElementNS
+                    e1 = eb.createElementNS
                         (XQX_NS_URI, "xqx:operand");
                     e.appendChild(e1);
                     e = e1;
                 } else if (child.id == JJTMINUS) {
-                    Element e1 = doc.createElementNS
+                    Element e1 = eb.createElementNS
                         (XQX_NS_URI, "xqx:unaryMinusOp");
                     e.appendChild(e1);
                     e = e1;
-                    e1 = doc.createElementNS
+                    e1 = eb.createElementNS
                         (XQX_NS_URI, "xqx:operand");
                     e.appendChild(e1);
                     e = e1;
                 } else {
-                    transform(child, e);
+                    transform(child, e, eb);
                     break;
                 }
             }
@@ -1162,25 +1163,25 @@ public class XPathXConverter implements XParserTreeConstants {
                 assert false;
                 qname = "xqx:unknownOp";
             }}
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element e1 = doc.createElementNS
+            Element e1 = eb.createElementNS
                 (XQX_NS_URI, "xqx:firstOperand");
             e.appendChild(e1);
-            transform(node.getChild(0), e1);
-            Element e2 = doc.createElementNS
+            transform(node.getChild(0), e1, eb);
+            Element e2 = eb.createElementNS
                 (XQX_NS_URI, "xqx:secondOperand");
             e.appendChild(e2);
-            transform(node.getChild(1), e2);
+            transform(node.getChild(1), e2, eb);
             
             break;
         }
 
         case JJTLETCLAUSE:
         case JJTFORCLAUSE: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -1188,21 +1189,21 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTLETBINDING: {
             boolean is_for = (id == JJTFORBINDING);
 
-            int i = transformClauseItem(node, parent, is_for, 0);
+            int i = transformClauseItem(node, parent, is_for, 0, eb);
             assert i == n;
             break;
         }
 
         case JJTALLOWINGEMPTY:
-            emptyElement(parent, "xqx:allowingEmpty");
+            emptyElement(parent, "xqx:allowingEmpty", eb);
             break;
 
         case JJTGROUPINGSPECLIST:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTGROUPINGSPEC: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
             // GroupingSpec ::=
@@ -1213,29 +1214,29 @@ public class XPathXConverter implements XParserTreeConstants {
             int i = 0;
 
             // chunk 1:  GroupingVariable
-            transformChildren(node, e, i, i); i++;
+            transformChildren(node, e, i, i, eb); i++;
 
             if (i<n && node.getChild(i).id != JJTURILITERAL) {
                 // chunk 2 is present:  TypeDeclaration? ":=" ExprSingle
-                Element gvi = doc.createElementNS
+                Element gvi = eb.createElementNS
                     (XQX_NS_URI, "xqx:groupVarInitialize");
                 e.appendChild(gvi);
 
                 if (node.getChild(i).id == JJTTYPEDECLARATION) {
-                    transformChildren(node, gvi, i, i); i++;
+                    transformChildren(node, gvi, i, i, eb); i++;
                 }
 
-                Element vv = doc.createElementNS
+                Element vv = eb.createElementNS
                     (XQX_NS_URI, "xqx:varValue");
                 gvi.appendChild(vv);
-                transformChildren(node, vv, i, i); i++;
+                transformChildren(node, vv, i, i, eb); i++;
                 // end varValue
                 // end groupVarInitialize
             }
 
             if (i<n) {
                 // chunk 3 is present:  "collation" URILiteral
-                this.transformChildren(node, e, i, i); i++;
+                this.transformChildren(node, e, i, i, eb); i++;
             }
 
             assert i == n;
@@ -1243,27 +1244,27 @@ public class XPathXConverter implements XParserTreeConstants {
         }
 
         case JJTGROUPINGVARIABLE:
-            this.transformChildren(node, parent);
+            this.transformChildren(node, parent, eb);
             break;
 
         case JJTORDERBYCLAUSE: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
             if (node.m_value != null && node.m_value.equals("stable")) {
-                emptyElement(e, "xqx:stable");
+                emptyElement(e, "xqx:stable", eb);
             }
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTORDERSPECLIST: {
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
-                Element e = doc.createElementNS
+                Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:orderBySpec");
                 parent.appendChild(e);
-                transform(child, e);
+                transform(child, e, eb);
 
                 if (child.id == JJTORDERSPEC) {
                     int n2 = child.jjtGetNumChildren();
@@ -1271,7 +1272,7 @@ public class XPathXConverter implements XParserTreeConstants {
                         SimpleNode child2 = child.getChild(j);
                         if (child2.id == JJTORDERMODIFIER) {
                             if (child2.jjtGetNumChildren() > 0)
-                                transform(child2, e);
+                                transform(child2, e, eb);
                         }
                     }
                 }
@@ -1280,13 +1281,13 @@ public class XPathXConverter implements XParserTreeConstants {
         }
 
         case JJTORDERSPEC: {
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:orderByExpr");
             parent.appendChild(e);
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 if (child.id != JJTORDERMODIFIER)
-                    transform(child, e);
+                    transform(child, e, eb);
             }
             break;
         }
@@ -1294,14 +1295,14 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTORDERMODIFIER: {
             if (node.jjtGetNumChildren() == 0)
                 break;
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTPITEST: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:piTest");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:piTest");
             parent.appendChild(e);
 
             if (node.jjtGetNumChildren() > 0) {
@@ -1310,13 +1311,13 @@ public class XPathXConverter implements XParserTreeConstants {
                     (child.id == JJTSTRINGLITERAL)
                     ? undelimitStringLiteral(child)
                     : child.m_value;
-                simpleElement(e, "xqx:piTarget", content);
+                simpleElement(e, "xqx:piTarget", content, eb);
             }
             break;
         }
 
         case JJTSCHEMAIMPORT: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:schemaImport");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:schemaImport");
             parent.appendChild(e);
             
             SimpleNode child = node.getChild(0);
@@ -1326,12 +1327,12 @@ public class XPathXConverter implements XParserTreeConstants {
                 && child.jjtGetNumChildren() > 0) {
                 
                 simpleElement(e, "xqx:namespacePrefix",
-                              child.getChild(0).m_value);
+                              child.getChild(0).m_value, eb);
                 start++;
                 targetNamespace = node.getChild(1);
                 start++;
             } else if (child.id == JJTSCHEMAPREFIX) {
-                emptyElement(e, "xqx:defaultElementNamespace");
+                emptyElement(e, "xqx:defaultElementNamespace", eb);
                 start++;
                 targetNamespace = node.getChild(1);
                 start++;
@@ -1340,12 +1341,12 @@ public class XPathXConverter implements XParserTreeConstants {
                 start++;
             }
             simpleElement(e, "xqx:targetNamespace",
-                          undelimitStringLiteral(targetNamespace.getChild(0)));
+                          undelimitStringLiteral(targetNamespace.getChild(0)), eb);
 
             for (int i = start; i < n; i++) {
                 SimpleNode tl = node.getChild(i);
                 simpleElement(e, "xqx:targetLocation",
-                              undelimitStringLiteral(tl.getChild(0)));
+                              undelimitStringLiteral(tl.getChild(0)), eb);
             }
             
             break;
@@ -1357,7 +1358,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 (id == JJTASCENDING)
                 ? "ascending"
                 : "descending";
-            simpleElement(parent, "xqx:orderingKind", content);
+            simpleElement(parent, "xqx:orderingKind", content, eb);
             break;
         }
 
@@ -1371,23 +1372,23 @@ public class XPathXConverter implements XParserTreeConstants {
                 (id == JJTGREATEST)
                 ? "empty greatest"
                 : "empty least";
-            simpleElement(parent, qname, content);
+            simpleElement(parent, qname, content, eb);
             break;
         }
 
         case JJTPARENTHESIZEDEXPR:
             if (node.jjtGetNumChildren() == 0)
-                emptyElement(parent, "xqx:sequenceExpr");
+                emptyElement(parent, "xqx:sequenceExpr", eb);
             else
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
             break;
 
         case JJTDEFAULTNAMESPACEDECL: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
-            simpleElement(e, "xqx:defaultNamespaceCategory", node.m_value);
-            transformChildren(node, e);
+            simpleElement(e, "xqx:defaultNamespaceCategory", node.m_value, eb);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -1403,7 +1404,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTPRESERVEMODE:
         case JJTINHERITMODE:
         case JJTCONSTRUCTIONDECL:
-            simpleElement(parent, qname, node.m_value);
+            simpleElement(parent, qname, node.m_value, eb);
             break;
 
         case JJTINSTANCEOFEXPR:
@@ -1414,65 +1415,65 @@ public class XPathXConverter implements XParserTreeConstants {
                 (id == JJTINSTANCEOFEXPR)
                 ? "xqx:instanceOfExpr"
                 : qname;
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element ae = doc.createElementNS(XQX_NS_URI, "xqx:argExpr");
+            Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
-            transformChildren(node, ae, 0, 0);
+            transformChildren(node, ae, 0, 0, eb);
             // end argExpr
             if (id != JJTCASTEXPR && id != JJTCASTABLEEXPR) {
-                Element st = doc.createElementNS(XQX_NS_URI,
+                Element st = eb.createElementNS(XQX_NS_URI,
                                                  "xqx:sequenceType");
                 e.appendChild(st);
-                transformChildren(node, st, 1, 1);
+                transformChildren(node, st, 1, 1, eb);
             } else
-                transformChildren(node, e, 1, 1);
+                transformChildren(node, e, 1, 1, eb);
             break;
         }
 
         case JJTORDEREDEXPR:
         case JJTUNORDEREDEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element ae = doc.createElementNS(XQX_NS_URI, "xqx:argExpr");
+            Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
-            transformChildren(node, ae);
+            transformChildren(node, ae, eb);
             break;
         }
 
         case JJTTYPESWITCHEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element ae = doc.createElementNS(XQX_NS_URI, "xqx:argExpr");
+            Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
-            transformChildren(node, ae, 0, 0);
+            transformChildren(node, ae, 0, 0, eb);
             // end argExpr
 
             int startOfDefault = n - 2;
-            transformChildren(node, e, 1, startOfDefault - 1);
+            transformChildren(node, e, 1, startOfDefault - 1, eb);
 
             if (node.getChild(startOfDefault).id != JJTVARNAME) {
-                transformChildren(node, e, startOfDefault, startOfDefault);
+                transformChildren(node, e, startOfDefault, startOfDefault, eb);
                 startOfDefault++;
             }
-            Element tedc = doc.createElementNS
+            Element tedc = eb.createElementNS
                 (XQX_NS_URI, "xqx:typeswitchExprDefaultClause");
             e.appendChild(tedc);
             if (startOfDefault == n - 2) {
-                transformChildren(node, tedc, startOfDefault, startOfDefault);
+                transformChildren(node, tedc, startOfDefault, startOfDefault, eb);
                 startOfDefault++;
             }
-            Element re = doc.createElementNS
+            Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             tedc.appendChild(re);
-            transformChildren(node, re, startOfDefault, startOfDefault);
+            transformChildren(node, re, startOfDefault, startOfDefault, eb);
             // end resultExpr
             // end typeswitchExprDefaultClause
             break;
         }
 
         case JJTCASECLAUSE: {
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:typeswitchExprCaseClause");
             parent.appendChild(e);
 
@@ -1480,147 +1481,147 @@ public class XPathXConverter implements XParserTreeConstants {
             if (n == 3) {
                 currentChild++;
                 transformName(getFirstChildOfFirstChild(node),
-                              e, "xqx:variableBinding");
+                              e, "xqx:variableBinding", eb);
             }
-            transformChildren(node, e, currentChild, currentChild);
+            transformChildren(node, e, currentChild, currentChild, eb);
             currentChild++;
-            Element re = doc.createElementNS
+            Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             e.appendChild(re);
-            transformChildren(node, re, currentChild);
+            transformChildren(node, re, currentChild, eb);
             break;
         }
 
         case JJTSEQUENCETYPEUNION:
             if (node.jjtGetNumChildren() == 1) {
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
                 // It would also be correct to treat this case the
                 // same as the general case. However, doing so would
                 // change the output for all (old) queries involving a
                 // TypeswitchExpr, which would be an annoyance for the
                 // XQTS.
             } else {
-                Element e = doc.createElementNS(XQX_NS_URI, qname);
+                Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
-                transformChildren(node, e);
+                transformChildren(node, e, eb);
             }
             break;
             
         case JJTSWITCHEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element ae = doc.createElementNS(XQX_NS_URI, "xqx:argExpr");
+            Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
-            transformChildren(node, ae, 0, 0);
+            transformChildren(node, ae, 0, 0, eb);
             
             int startOfDefault = n - 1;
-            transformChildren(node, e, 1, startOfDefault - 1);
+            transformChildren(node, e, 1, startOfDefault - 1, eb);
             
-            Element sedc = doc.createElementNS
+            Element sedc = eb.createElementNS
                 (XQX_NS_URI, "xqx:switchExprDefaultClause");
             e.appendChild(sedc);
-            Element re = doc.createElementNS
+            Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             sedc.appendChild(re);
-            transformChildren(node, re, startOfDefault, startOfDefault);
+            transformChildren(node, re, startOfDefault, startOfDefault, eb);
             break;
         }
 
         case JJTSWITCHCASECLAUSE: {
-            Element secc = doc.createElementNS
+            Element secc = eb.createElementNS
                 (XQX_NS_URI, "xqx:switchExprCaseClause");
             parent.appendChild(secc);
 
             for (int i = 0; i < n - 1; i++) {
-                Element sce = doc.createElementNS
+                Element sce = eb.createElementNS
                     (XQX_NS_URI, "xqx:switchCaseExpr");
                 secc.appendChild(sce);
-                transformChildren(node, sce, i, i);
+                transformChildren(node, sce, i, i, eb);
             }
 
-            Element re = doc.createElementNS
+            Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             secc.appendChild(re);
-            transformChildren(node, re, n - 1);
+            transformChildren(node, re, n - 1, eb);
             break;
         }
 
         case JJTANNOTATEDDECL: {
             qname = xqxElementName(node.getChild(n - 1).id);
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
             
         case JJTANNOTATION: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e, 0, 0);
+            transformChildren(node, e, 0, 0, eb);
             if ( n > 1 ) {
-                Element a = doc.createElementNS(XQX_NS_URI, "xqx:arguments");
+                Element a = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
                 e.appendChild(a);
-                transformChildren(node, a, 1);
+                transformChildren(node, a, 1, eb);
             }
             break;
         }
 
         case JJTFUNCTIONDECL: {
             int start = 0;
-            transformChildren(node, parent, start, start);
+            transformChildren(node, parent, start, start, eb);
             start++;
 
             if (node.getChild(start).id == JJTPARAMLIST) {
-                transformChildren(node, parent, start, start);
+                transformChildren(node, parent, start, start, eb);
                 start++;
             } else
-                emptyElement(parent, "xqx:paramList");
+                emptyElement(parent, "xqx:paramList", eb);
 
 
             int end = n - 1;
-            transformChildren(node, parent, start, end - 1);
+            transformChildren(node, parent, start, end - 1, eb);
 
             start = end;
             if (node.getChild(end).id == JJTEXTERNAL)
-                emptyElement(parent, "xqx:externalDefinition");
+                emptyElement(parent, "xqx:externalDefinition", eb);
             else {
-                Element e = doc.createElementNS
+                Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:functionBody");
                 parent.appendChild(e);
-                transformChildren(node, e, start, end);
+                transformChildren(node, e, start, end, eb);
             }
             break;
         }
 
         case JJTINLINEFUNCTIONEXPR: {
-            Element ife = doc.createElementNS
+            Element ife = eb.createElementNS
                 (XQX_NS_URI, "xqx:inlineFunctionExpr");
             parent.appendChild(ife);
             int start = 0;
             int end = n - 1;
 
             while (node.getChild(start).id == JJTANNOTATION) {
-                transformChildren(node, ife, start, start);
+                transformChildren(node, ife, start, start, eb);
                 start++;
             }
 
             if (node.getChild(start).id == JJTPARAMLIST) {
-                transformChildren(node, ife, start, start);
+                transformChildren(node, ife, start, start, eb);
                 start++;
             } else
-                emptyElement(ife, "xqx:paramList");
+                emptyElement(ife, "xqx:paramList", eb);
             
             if (node.getChild(start).id == JJTSEQUENCETYPE) {
-                Element td = doc.createElementNS
+                Element td = eb.createElementNS
                     (XQX_NS_URI, "xqx:typeDeclaration");
                 ife.appendChild(td);
-                transformChildren(node, td, start, start++);
+                transformChildren(node, td, start, start++, eb);
             }
 
-            Element fb = doc.createElementNS
+            Element fb = eb.createElementNS
                 (XQX_NS_URI, "xqx:functionBody");
             ife.appendChild(fb);
-            transformChildren(node, fb, start, end);
+            transformChildren(node, fb, start, end, eb);
             break;
         }
 
@@ -1629,58 +1630,58 @@ public class XPathXConverter implements XParserTreeConstants {
                 SimpleNode child = node.getChild(i);
                 if (child.id == JJTEXTERNAL) {
                     if (i != n - 1) {
-                        Element e = doc.createElementNS
+                        Element e = eb.createElementNS
                             (XQX_NS_URI, "xqx:external");
                         parent.appendChild(e);
-                        transformChildren(node, e, n - 1, n - 1);
+                        transformChildren(node, e, n - 1, n - 1, eb);
                         i++;
                     }
                     else {
-                        emptyElement(parent, "xqx:external");
+                        emptyElement(parent, "xqx:external", eb);
                     }
                 }
-                else transform(child, parent);
+                else transform(child, parent, eb);
             }
             break;
         }
 
         case JJTVARDEFAULTVALUE: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:varValue");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:varValue");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTCONTEXTITEMDECL: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 switch (child.id) {
 
                 case JJTITEMTYPE: {
-                    Element td = doc.createElementNS
+                    Element td = eb.createElementNS
                         (XQX_NS_URI, "xqx:typeDeclaration");
                     e.appendChild(td);
-                    transform(child, td);
+                    transform(child, td, eb);
                     break;
                 }
 
                 case JJTEXTERNAL: {
                     if (i != n - 1) {
-                        Element ex = doc.createElementNS
+                        Element ex = eb.createElementNS
                             (XQX_NS_URI, "xqx:typeDeclaration");
                         e.appendChild(ex);
-                        transformChildren(node, ex, n - 1, n - 1);
+                        transformChildren(node, ex, n - 1, n - 1, eb);
                         i++;
                     } else {
-                        emptyElement(e, "xqx:external");
+                        emptyElement(e, "xqx:external", eb);
                     }
                     break;
                 }
 
                 default:
-                    this.transform(child, parent);
+                    this.transform(child, parent, eb);
                 }
             }
             break;
@@ -1690,11 +1691,11 @@ public class XPathXConverter implements XParserTreeConstants {
             SimpleNode child = null;
             int i = 0;
 
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             child = node.getChild(i);
             if (child.id == JJTQNAME || child.id == JJTURIQUALIFIEDNAME) {
-                transform(child, e);
+                transform(child, e, eb);
                 i++;
             } else {
                 // no QName, so it must be a default declaration
@@ -1704,23 +1705,23 @@ public class XPathXConverter implements XParserTreeConstants {
             for (; i < n; i++) {
                 SimpleNode paramName = node.getChild(i++);
                 SimpleNode paramValue = node.getChild(i);
-                Element dfp = doc.createElementNS
+                Element dfp = eb.createElementNS
                     (XQX_NS_URI, "xqx:decimalFormatParam");
                 e.appendChild(dfp);
-                transform(paramName, dfp);
-                transform(paramValue, dfp);
+                transform(paramName, dfp, eb);
+                transform(paramValue, dfp, eb);
             }
             break;
         }
 
         case JJTDFPROPERTYNAME: {
-            simpleElement(parent, "xqx:decimalFormatParamName", node.m_value);
+            simpleElement(parent, "xqx:decimalFormatParamName", node.m_value, eb);
             break;
         }
 
         case JJTSLIDINGWINDOWCLAUSE:
         case JJTTUMBLINGWINDOWCLAUSE: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             
             int i = 0;
@@ -1730,16 +1731,16 @@ public class XPathXConverter implements XParserTreeConstants {
             // second child may be TypeDeclaration
 
             child = node.getChild(0);
-            Element tvb = doc.createElementNS
+            Element tvb = eb.createElementNS
                 (XQX_NS_URI, "xqx:typedVariableBinding");
             e.appendChild(tvb);
-            transformName(child.getChild(0), tvb, child.id);
+            transformName(child.getChild(0), tvb, child.id, eb);
             i++;
 
             child = node.getChild(1);
 
             if (child.id == JJTTYPEDECLARATION) {
-                transform(child, tvb);
+                transform(child, tvb, eb);
                 i++;
             }
             // end typedVariableBinding
@@ -1748,41 +1749,41 @@ public class XPathXConverter implements XParserTreeConstants {
                 child = node.getChild(i);
                 if (   child.id == JJTWINDOWSTARTCONDITION
                     || child.id == JJTWINDOWENDCONDITION) {
-                    transform(child, e);
+                    transform(child, e, eb);
                 }
                 else {
-                    Element bs = doc.createElementNS
+                    Element bs = eb.createElementNS
                         (XQX_NS_URI, "xqx:bindingSequence");
                     e.appendChild(bs);
-                    transform(child, bs);
+                    transform(child, bs, eb);
                 }
             }
             break;
         }
 
         case JJTWINDOWSTARTCONDITION: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transform(node.getChild(0), e);
-            Element wse = doc.createElementNS
+            transform(node.getChild(0), e, eb);
+            Element wse = eb.createElementNS
                 (XQX_NS_URI, "xqx:winStartExpr");
             e.appendChild(wse);
-            transform(node.getChild(1), wse);
+            transform(node.getChild(1), wse, eb);
             break;
         }
 
         case JJTWINDOWENDCONDITION: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
             if (node.m_value != null && node.m_value.equals("only"))
                 e.setAttributeNS(XQX_NS_URI, "xqx:onlyEnd", "true");
 
-            transform(node.getChild(0), e);
-            Element wee = doc.createElementNS
+            transform(node.getChild(0), e, eb);
+            Element wee = eb.createElementNS
                 (XQX_NS_URI, "xqx:winEndExpr");
             e.appendChild(wee);
-            transform(node.getChild(1), wee);
+            transform(node.getChild(1), wee, eb);
             break;
         }
 
@@ -1791,11 +1792,11 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTCOMMENTTEST:
         case JJTEXTERNAL:
         case JJTCONTEXTITEMEXPR:
-            emptyElement(parent, qname);
+            emptyElement(parent, qname, eb);
             break;
 
         case JJTNAMESPACENODETEST:
-            emptyElement(parent, "xqx:namespaceTest");
+            emptyElement(parent, "xqx:namespaceTest", eb);
             break;
 
         case JJTOPTIONDECL:
@@ -1824,9 +1825,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTELEMENTTEST:
         case JJTWINDOWVARS:
         case JJTVOID: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
             
@@ -1839,7 +1840,7 @@ public class XPathXConverter implements XParserTreeConstants {
              */
             
             SimpleNode qn = node.getChild(0).getChild(0).getChild(0);
-            transformName(qn, parent, "xqx:schemaAttributeTest");
+            transformName(qn, parent, "xqx:schemaAttributeTest", eb);
             break;
         }
 
@@ -1852,16 +1853,16 @@ public class XPathXConverter implements XParserTreeConstants {
              */
             
             SimpleNode qn = node.getChild(0).getChild(0).getChild(0);
-            transformName(qn, parent, "xqx:schemaElementTest");
+            transformName(qn, parent, "xqx:schemaElementTest", eb);
             break;
         }
 
         case JJTFUNCTIONTEST: {
             int lastChildId = node.getChild(n-1).id;
             qname = xqxElementName(lastChildId);
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
@@ -1869,11 +1870,11 @@ public class XPathXConverter implements XParserTreeConstants {
             break;
 
         case JJTTYPEDFUNCTIONTEST: {
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:paramTypeList");
             parent.appendChild(e);
-            transformChildren(node, e, 0, n - 2);
-            transformChildren(node, parent, n - 1);
+            transformChildren(node, e, 0, n - 2, eb);
+            transformChildren(node, parent, n - 1, eb);
             break;
         }
 
@@ -1885,39 +1886,39 @@ public class XPathXConverter implements XParserTreeConstants {
              * |                  StringLiteral "http://example.com"
              * |               Separator
              */
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             SimpleNode ncname = node.getChild(0);
-            simpleElement(e, "xqx:prefix", ncname.m_value);
-            transformChildren(node, e, 1, 1);
+            simpleElement(e, "xqx:prefix", ncname.m_value, eb);
+            transformChildren(node, e, 1, 1, eb);
             break;
         }
 
         case JJTPRAGMA: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             boolean foundPragmaContents = false;
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
-                transform(child, e);
+                transform(child, e, eb);
                 if (child.id == JJTPRAGMACONTENTS)
                     foundPragmaContents = true;
             }
             if (!foundPragmaContents) {
-                emptyElement(e, "xqx:pragmaContents");
+                emptyElement(e, "xqx:pragmaContents", eb);
             }
             break;
         }
 
         case JJTPRAGMACONTENTS: {
-            Element e = doc.createElementNS(XQX_NS_URI, "xqx:pragmaContents");
+            Element e = eb.createElementNS(XQX_NS_URI, "xqx:pragmaContents");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTEXTENSIONEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             
             for (int i = 0; i < n; i++) {
@@ -1925,19 +1926,19 @@ public class XPathXConverter implements XParserTreeConstants {
                 if(i == (n-2)) {
                     if(child.jjtGetNumChildren() == 0)
                         continue;
-                    Element ae = doc.createElementNS
+                    Element ae = eb.createElementNS
                         (XQX_NS_URI, "xqx:argExpr");
                     e.appendChild(ae);
-                    transform(child, ae);
+                    transform(child, ae, eb);
                 } else {
-                    transform(child, e);
+                    transform(child, e, eb);
                 }
             }
             break;
         }
             
         case JJTVALIDATEEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
@@ -1945,14 +1946,14 @@ public class XPathXConverter implements XParserTreeConstants {
                 switch (child.id) {
                 case JJTTYPENAME:
                 case JJTVALIDATIONMODE: {
-                    transform(child, e);
+                    transform(child, e, eb);
                     break;
                 }
                 case JJTEXPR: {
-                    Element ae = doc.createElementNS
+                    Element ae = eb.createElementNS
                         (XQX_NS_URI, "xqx:argExpr");
                     e.appendChild(ae);
-                    transform(child, ae);
+                    transform(child, ae, eb);
                 }
                     
                 }
@@ -1961,7 +1962,7 @@ public class XPathXConverter implements XParserTreeConstants {
         }
 
         case JJTVALIDATIONMODE:
-            simpleElement(parent, qname, node.m_value);
+            simpleElement(parent, qname, node.m_value, eb);
             break;
 
         case JJTFUNCTIONBODY:
@@ -1984,7 +1985,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTTRYTARGETEXPR:
         case JJTFUNCTIONITEMEXPR:
         case JJTSWITCHCASEOPERAND:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTMINUS:
@@ -2005,7 +2006,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
         case JJTSETTER:
             checkDuplicateSetters(node);
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
 
         case JJTPREDEFINEDENTITYREF:
@@ -2032,24 +2033,24 @@ public class XPathXConverter implements XParserTreeConstants {
             break;
 
         case JJTDIRCOMMENTCONSTRUCTOR: {
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedCommentConstructor");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTDIRCOMMENTCONTENTS: {
-            Element ae = doc.createElementNS
+            Element ae = eb.createElementNS
                 (XQX_NS_URI, "xqx:argExpr");
             parent.appendChild(ae);
-            Element sce = doc.createElementNS
+            Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             ae.appendChild(sce);
-            Element v = doc.createElementNS
+            Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
-            transformChildren(node, sce);
+            transformChildren(node, sce, eb);
             break;
         }
 
@@ -2078,7 +2079,7 @@ public class XPathXConverter implements XParserTreeConstants {
         }
 
         case JJTCDATASECTIONCONTENTS:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
             
         case JJTPROCESSINGINSTRUCTIONEND:
@@ -2090,47 +2091,47 @@ public class XPathXConverter implements XParserTreeConstants {
             break;
 
         case JJTCDATASECTION: {
-            Element ctc = doc.createElementNS
+            Element ctc = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedTextConstructor");
             parent.appendChild(ctc);
-            Element ae = doc.createElementNS
+            Element ae = eb.createElementNS
                 (XQX_NS_URI, "xqx:argExpr");
             ctc.appendChild(ae);
-            Element sce = doc.createElementNS
+            Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             ae.appendChild(sce);
-            Element v = doc.createElementNS
+            Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
             v.appendChild(doc.createTextNode("<![CDATA["));
-            transformChildren(node, v);
+            transformChildren(node, v, eb);
             v.appendChild(doc.createTextNode("]]>"));
             break;
         }
 
         case JJTDIRPICONSTRUCTOR: {
-            Element cpc = doc.createElementNS
+            Element cpc = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedPIConstructor");
             parent.appendChild(cpc);
-            transformChildren(node, cpc);
+            transformChildren(node, cpc, eb);
             break;
         }
 
         case JJTPITARGET:
-            simpleElement(parent, "xqx:piTarget", node.m_value);
+            simpleElement(parent, "xqx:piTarget", node.m_value, eb);
             break;
 
         case JJTDIRPICONTENTS: {
-            Element pve = doc.createElementNS
+            Element pve = eb.createElementNS
                 (XQX_NS_URI, "xqx:piValueExpr");
             parent.appendChild(pve);
-            Element sce = doc.createElementNS
+            Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             pve.appendChild(sce);
-            Element v = doc.createElementNS
+            Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
-            transformChildren(node, v);
+            transformChildren(node, v, eb);
             break;
         }
 
@@ -2152,16 +2153,16 @@ public class XPathXConverter implements XParserTreeConstants {
                 qname = "UNKNOWN-" + jjtNodeName[id];
                 break;
             }
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            Element ae = doc.createElementNS(XQX_NS_URI, "xqx:argExpr");
+            Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
-            transformChildren(node, ae);
+            transformChildren(node, ae, eb);
             break;
         }
 
         case JJTCOMPUTEDCONSTRUCTOR:
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
             
         case JJTCOMPPICONSTRUCTOR:
@@ -2172,78 +2173,78 @@ public class XPathXConverter implements XParserTreeConstants {
                 : (id == JJTCOMPPICONSTRUCTOR)
                 ? "xqx:computedPIConstructor"
                 : "xqx:computedElementConstructor";
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
             int start = 0;
             if (node.getChild(0).id == JJTLBRACE) {
                 qname = (id == JJTCOMPPICONSTRUCTOR)
                     ? "xqx:piTargetExpr"
                     : "xqx:tagNameExpr";
-                Element te = doc.createElementNS(XQX_NS_URI, qname);
+                Element te = eb.createElementNS(XQX_NS_URI, qname);
                 e.appendChild(te);
 
-                transformChildren(node, te, 1, 1);
+                transformChildren(node, te, 1, 1, eb);
                 start += 3;
             } else {
-                transformChildren(node, e, 0, 0);
+                transformChildren(node, e, 0, 0, eb);
                 start++;
             }
             if (id == JJTCOMPATTRCONSTRUCTOR 
                 || id == JJTCOMPPICONSTRUCTOR) {
-                Element te = doc.createElementNS
+                Element te = eb.createElementNS
                     (XQX_NS_URI,  
                      (id == JJTCOMPATTRCONSTRUCTOR)
                      ? "xqx:valueExpr" : "xqx:piValueExpr");
                 e.appendChild(te);
                 
                 if (getNumExprChildren(node, start) == 0) {
-                    emptyElement(te, "xqx:sequenceExpr");
+                    emptyElement(te, "xqx:sequenceExpr", eb);
                 } else
-                    transformChildren(node, te, start);
+                    transformChildren(node, te, start, eb);
             } else
-                transformChildren(node, e, start);
+                transformChildren(node, e, start, eb);
 
             break;
         }
 
         case JJTCOMPNAMESPACECONSTRUCTOR: {
-            Element e = doc.createElementNS
+            Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedNamespaceConstructor");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTPREFIX: {
             SimpleNode child = node.getChild(0);
-            simpleElement(parent, qname, child.m_value);
+            simpleElement(parent, qname, child.m_value, eb);
             break;
         }
 
         case JJTPREFIXEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
          
         case JJTURIEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI,"xqx:URIExpr");
+            Element e = eb.createElementNS(XQX_NS_URI,"xqx:URIExpr");
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTCONTENTEXPR: {
-            Element e = doc.createElementNS(XQX_NS_URI, qname);
+            Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
-            transformChildren(node, e);
+            transformChildren(node, e, eb);
             break;
         }
 
         case JJTDIRATTRIBUTELIST:
             if (getNumRealChildren(node) > 0) {
-                Element e = doc.createElementNS
+                Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:attributeList");
                 parent.appendChild(e);
                 Element tn = e;
@@ -2255,11 +2256,11 @@ public class XPathXConverter implements XParserTreeConstants {
                             isNamespaceDecl(child)
                             ? "xqx:namespaceDeclaration"
                             : "xqx:attributeConstructor";
-                        tn = doc.createElementNS
+                        tn = eb.createElementNS
                             (XQX_NS_URI, qname);
                         e.appendChild(tn);
                     }
-                    transform(child, tn);
+                    transform(child, tn, eb);
                 }
                 
             }
@@ -2288,7 +2289,7 @@ public class XPathXConverter implements XParserTreeConstants {
                     
                 }
             } else
-                transformChildren(node, parent);
+                transformChildren(node, parent, eb);
             break;
             
         case JJTDIRELEMCONSTRUCTOR:
@@ -2368,7 +2369,7 @@ public class XPathXConverter implements XParserTreeConstants {
                     + ((context.length() == 0) ? "" : (", " + context));
             }
             System.err.println("Context is " + context);
-            transformChildren(node, parent);
+            transformChildren(node, parent, eb);
             break;
         }
         }
