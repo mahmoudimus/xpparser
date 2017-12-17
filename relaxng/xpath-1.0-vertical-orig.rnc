@@ -23,7 +23,7 @@
 
 default namespace = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-data-orig.rnc" {
+include "data-xpath.rnc" {
   axis = element xpathAxis {
     ( string "child"
     | string "attribute"
