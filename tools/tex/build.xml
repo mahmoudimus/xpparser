@@ -9,21 +9,47 @@
   <property name="lib.dir" value="${project.root}/lib"/>
 
   <target name="all">
-    <antcall target="matrix">
-      <param name="fragments" value="full" />
-      <param name="benchmarks" value="xquery" />
-    </antcall>
+    <!-- matrices -->
     <antcall target="matrix">
       <param name="fragments" value="core-1.0" />
-      <param name="benchmarks" value="xquery" />
+      <param name="benchmarks" value="all-full" />
     </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="core-2.0" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="vertical" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="forward" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="downward" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="non-mixing" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="emso2" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <!-- totals -->
     <antcall target="totals">
       <param name="fragments" value="full" />
-      <param name="benchmarks" value="xquery" />
+      <param name="benchmarks" value="all-full" />
     </antcall>
     <antcall target="totals">
-      <param name="fragments" value="core-1.0" />
-      <param name="benchmarks" value="xquery" />
+      <param name="fragments" value="orig" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="totals">
+      <param name="fragments" value="basic" />
+      <param name="benchmarks" value="all-full" />
     </antcall>
   </target>
 
@@ -38,7 +64,7 @@
   <target name="matrix">
     <xslt style="${project.root}/xslt/tex_matrix.xsl"
           in="benchmarks-${benchmarks}.xml"
-          out="matrix-${benchmarks}-${fragments}.tex">
+          out="matrix_${benchmarks}_${fragments}.tex">
       <param
         name="xml_fragments"
         expression="../relaxng/fragments-${fragments}.xml" />
@@ -52,7 +78,7 @@
   <target name="totals">
     <xslt style="${project.root}/xslt/tex_totals.xsl"
           in="benchmarks-${benchmarks}.xml"
-          out="totals-${benchmarks}-${fragments}.tex">
+          out="totals_${benchmarks}_${fragments}.tex">
       <param
         name="xml_fragments"
         expression="../relaxng/fragments-${fragments}.xml" />

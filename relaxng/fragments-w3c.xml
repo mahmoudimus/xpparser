@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- Meta-data about the implemented RelaxNG schemas:
+     W3C specifications. -->
+<schemas>
+  <schema file="xpath-1.0.rnc"
+          name="1.0"
+          color="#decbe4">
+    <bib>
+      <title>XML Path Language (XPath), Version 1.0</title>
+      <venue>W3C Recommendation</venue>
+      <year>1999</year>
+      <href>https://www.w3.org/TR/xpath/</href>
+    </bib>
+  </schema>
+  <schema file="xpath-2.0.rnc"
+          name="2.0"
+          color="#decbe4">
+    <bib>
+      <title>XML Path Language (XPath), Version 2.0</title>
+      <venue>W3C Recommendation</venue>
+      <year>2010</year>
+      <href>https://www.w3.org/TR/xpath20/</href>
+    </bib>
+  </schema>
+  <schema file="xpath-3.0.rnc"
+          name="3.0"
+          color="#decbe4">
+    <bib>
+      <title>XML Path Language (XPath), Version 3.0</title>
+      <venue>W3C Recommendation</venue>
+      <year>2014</year>
+      <href>https://www.w3.org/TR/xpath30/</href>
+    </bib>
+  </schema>
+</schemas>

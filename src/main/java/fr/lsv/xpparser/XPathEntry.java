@@ -27,7 +27,7 @@ import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
 
-    final static int MAX_AST_SIZE = 345;
+    final static int MAX_AST_SIZE = 330;
 
     /**
      * The name of the file from which this entry was extracted.

@@ -2,7 +2,7 @@
 <!-- Meta-data about the implemented RelaxNG schemas:
      original academic fragments. -->
 <schemas>
-  <schema file="xpath-1.0-core-full.rnc"
+  <schema file="xpath-1.0-core-basic.rnc"
           name="Core 1.0"
           color="#ccebc5">
     <bib>
@@ -14,7 +14,7 @@
       <doi>10.1145/1456650.1456653</doi>
     </bib>
   </schema>
-  <schema file="xpath-2.0-core-full.rnc"
+  <schema file="xpath-2.0-core-basic.rnc"
           name="Core 2.0"
           color="#ccebc5">
     <bib>
@@ -28,7 +28,7 @@
       <doi>10.1145/1568318.1568321</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-downward-full.rnc"
+  <schema file="xpath-1.0-downward-basic.rnc"
           name="Downward"
           color="#b3cde3">
     <bib>
@@ -40,7 +40,7 @@
       <doi>10.1145/2362355.2362362</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-forward-full.rnc"
+  <schema file="xpath-1.0-forward-basic.rnc"
           name="Forward"
           color="#b3cde3">
     <bib>
@@ -52,7 +52,7 @@
       <doi>10.2168/LMCS-8(1:22)2012</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-vertical-full.rnc"
+  <schema file="xpath-1.0-vertical-basic.rnc"
           name="Vertical"
           color="#b3cde3">
     <bib>
@@ -65,7 +65,7 @@
       <doi>10.23638/LMCS-13(4:5)2017</doi>
     </bib>
   </schema>
-  <schema file="xpath-emso2-full.rnc"
+  <schema file="xpath-emso2-basic.rnc"
           name="EMSO2"
           color="#fed9a6">
     <bib>
@@ -80,7 +80,7 @@
       <doi>10.1145/1516512.1516515</doi>
     </bib>
   </schema>
-  <schema file="xpath-non-mixing-full.rnc"
+  <schema file="xpath-non-mixing-basic.rnc"
           name="Non-mixing"
           color="#b3cde3">
     <bib>

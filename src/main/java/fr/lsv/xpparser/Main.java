@@ -174,7 +174,7 @@ public class Main {
             }
             else
                 for (int j = i; j < end; j++)
-                    addInput(args[j], sources);
+                    addInput(new File(args[j]).getAbsolutePath(), sources);
 
             // process validation schemas
             ValidationFarm farm = new ValidationFarm();

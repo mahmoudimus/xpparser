@@ -63,7 +63,7 @@
     <xsl:param name="source"/>
     <xsl:param name="target"/>
     <xsl:param name="root"/>
-    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no'] and ast/descendant::*[local-name() = 'xpathAxis']])"/>
+    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no']])"/>
     <xsl:if test="not($target is $fragments[last()])">
       <xsl:text> &amp; </xsl:text>
     </xsl:if>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<benchmarks>
+  <benchmark href="../../benchmark/existdb-full.xml" name="eXist-db" />
+  <benchmark href="../../benchmark/histei-full.xml" name="HisTEI" />
+  <benchmark href="../../benchmark/marklogic-full.xml" name="MarkLogic" />
+  <benchmark href="../../benchmark/xqjson-full.xml" name="XQJSON" />
+  <benchmark href="../../benchmark/docbook-full.xml" name="DocBook" />
+  <benchmark href="../../benchmark/htmlbook-full.xml" name="HTMLBook" />
+</benchmarks>
