@@ -40,6 +40,7 @@ public class XQuerySource implements Iterable<XPathEntry> {
         // parse the input XQuery
         XParser parser = new XParser(str);
         SimpleNode ast = parser.START();
+        // for debugging the visitor: ast.dump("");
         nodeList = XPathVisitor.visit(ast).iterator();
     }
 

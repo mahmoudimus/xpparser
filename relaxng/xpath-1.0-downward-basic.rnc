@@ -33,12 +33,6 @@ include "expr/cst.rnc"
 op |= cst.op
 
 # ---------------------------------------------------------------------------
-# Allow variables
-
-include "expr/varref.rnc"
-primary |= varref
-
-# ---------------------------------------------------------------------------
 # Allow some functions
 
 fun |= cst.fun | fun.child | fun.name

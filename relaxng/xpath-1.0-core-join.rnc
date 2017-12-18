@@ -20,6 +20,6 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "misc/join.rnc"
 
-include "xpath-1.0-core-basic" {
+include "xpath-1.0-core-basic.rnc" {
   start = join.expr
 }
