@@ -24,7 +24,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 include "../fn/pure.rnc"
 #include "literal.rnc"
 
-cst.expr |= literal | cst.fun | cst.op
+cst.expr = literal | cst.fun | cst.op
   | element sequenceExpr { cst.expr* }
 
 cst.fun = element functionCallExpr {
@@ -55,7 +55,7 @@ cst.fun |= element functionCallExpr {
   }?
 }
 
-cst.op |=  element ( andOp | orOp                    # Boolean
+cst.op =  element ( andOp | orOp                    # Boolean
               | eqOp | neOp | equalOp | notEqualOp  # equality
               | ltOp | leOp | gtOp | geOp           # order
               | lessThanOp  | lessThanOrEqualOp

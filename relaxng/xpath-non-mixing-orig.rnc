@@ -28,6 +28,12 @@ include "xpath-2.0-core-orig.rnc" {
     start = pattern.expr
 }
 
+include "expr/cst.rnc"
+primary |=  element contextItemExpr { empty }
+         |  cst.expr
+         |  fun
+         |  element sequenceExpr { expr* }
+
 pattern.expr = pos.expr | neg.expr 
      | element unionOp {
         element firstOperand  { pattern.expr },
@@ -39,6 +45,3 @@ neg.expr |= expr
 
 include "expr/pos.rnc"
 include "expr/neg.rnc"
-
-cst.op = notAllowed
-cst.expr = notAllowed

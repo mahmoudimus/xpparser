@@ -33,19 +33,6 @@ neg.op = element ( andOp | orOp | unionOp ) {
   element secondOperand { neg.expr }
 }
 
-neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { neg.expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { neg.expr } )
-}
-
-neg.op |= cst.op
-
 # negative equality checks
 neg.op |= element ( neOp | notEqualOp ) {
   element firstOperand  { neg.expr },

@@ -23,12 +23,32 @@ include "xpath-non-mixing-orig.rnc"
 # ---------------------------------------------------------------------------
 # Allow constants
 
-primary |=  element contextItemExpr { empty }
-         |  literal
-         |  fun
-         |  element sequenceExpr { expr* }
+pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { pos.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { pos.expr } )
+}
 
-include "expr/cst.rnc"
+pos.op |= cst.op
+
+neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { neg.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { neg.expr } )
+}
+
+neg.op |= cst.op
+
 
 # ---------------------------------------------------------------------------
 # Allow some functions
