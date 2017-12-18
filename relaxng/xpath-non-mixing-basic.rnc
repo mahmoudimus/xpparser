@@ -1,0 +1,71 @@
+# XPath 1.0-core fragment with variables
+#
+# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-non-mixing-orig.rnc"
+
+# ---------------------------------------------------------------------------
+# Allow constants
+
+primary |=  element contextItemExpr { empty }
+         |  literal
+         |  fun
+         |  element sequenceExpr { expr* }
+
+include "expr/cst.rnc"
+
+# ---------------------------------------------------------------------------
+# Allow some functions
+
+fun |= cst.fun | fun.root | fun.child | fun.name
+
+# root() admissible when both the ancestor and parent axes are available using
+# `ancestor-or-self::*[not(parent::*)]'
+fun.root = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "root")
+  },
+  element arguments { expr* }?
+}
+
+# has-children() admissible when the child axis is available
+fun.child =  element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "has-children" )
+  },
+  element arguments { expr* }?
+}
+
+# various name accessor functions are admissible
+fun.name = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "name"
+    | string "local-name"
+    | string "namespace-uri"
+    | string "node-name"
+    )
+  },
+  element arguments { expr* }?
+}
