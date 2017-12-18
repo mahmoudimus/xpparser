@@ -22,7 +22,21 @@ directory, running `ant javacc` will download the necessary libraries and
 regenerate the parser sources.
 
 
-## Running
+## Benchmark
+
+The benchmark is compiled and checked against fragments by running `ant`
+in the `benchmark` subdirectory. On some machines an "out of memory"
+error may happen while building the benchmark; in that case, it may help
+to tweak `MAX_AST_SIZE` in `src/main/java/fr/lsv/xpparser/XPathEntry.java`.
+
+Fragments are defined in `relaxng/*rnc`. They are briefly described, by
+group, in `relaxng/fragments-*.rnc` files.
+
+The subdirectory `tools` contains utilities for extracting statistics
+from the benchmark results. Check `tools/README.md` for more details.
+
+
+## Running manually
 
 Use the provided [xpparser](xpparser) script.  Typical examples: 
 
