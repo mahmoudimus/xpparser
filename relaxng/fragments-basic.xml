@@ -1,9 +1,21 @@
 <?xml version="1.0"?>
 <!-- Meta-data about the implemented RelaxNG schemas:
-     original academic fragments + basic extensions. -->
+     original academic fragments. -->
 <schemas>
+  <schema file="xpath-1.0-core-basic.rnc"
+          name="Core 1.0"
+          color="#ccebc5">
+    <bib>
+      <author>Michael Benedikt</author>
+      <author>Christoph Koch</author>
+      <title>XPath Leashed</title>
+      <venue volume="41" issue="1" article="3">ACM Computing Surveys</venue>
+      <year>2009</year>
+      <doi>10.1145/1456650.1456653</doi>
+    </bib>
+  </schema>
   <schema file="xpath-2.0-core-basic.rnc"
-          name="core-2.0"
+          name="Core 2.0"
           color="#ccebc5">
     <bib>
       <author>Balder ten Cate</author>
@@ -16,20 +28,8 @@
       <doi>10.1145/1568318.1568321</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-core-basic.rnc"
-          name="core"
-          color="#ccebc5">
-    <bib>
-      <author>Michael Benedikt</author>
-      <author>Christoph Koch</author>
-      <title>XPath Leashed</title>
-      <venue volume="41" issue="1" article="3">ACM Computing Surveys</venue>
-      <year>2009</year>
-      <doi>10.1145/1456650.1456653</doi>
-    </bib>
-  </schema>
   <schema file="xpath-1.0-downward-basic.rnc"
-          name="downward"
+          name="Downward"
           color="#b3cde3">
     <bib>
       <author>Diego Figueira</author>
@@ -41,7 +41,7 @@
     </bib>
   </schema>
   <schema file="xpath-1.0-forward-basic.rnc"
-          name="forward"
+          name="Forward"
           color="#b3cde3">
     <bib>
       <author>Diego Figueira</author>
@@ -53,7 +53,7 @@
     </bib>
   </schema>
   <schema file="xpath-1.0-vertical-basic.rnc"
-          name="vertical"
+          name="Vertical"
           color="#b3cde3">
     <bib>
       <author>Diego Figueira</author>
@@ -65,8 +65,23 @@
       <doi>10.23638/LMCS-13(4:5)2017</doi>
     </bib>
   </schema>
+  <schema file="xpath-emso2-basic.rnc"
+          name="EMSO2"
+          color="#fed9a6">
+    <bib>
+      <author>Mikołaj Bojańczyk</author>
+      <author>Anca Muscholl</author>
+      <author>Thomas Schwentick</author>
+      <author>Luc Segoufin</author>
+      <title>Two-variable Logic on Data Trees and XML Reasoning</title>
+      <venue volume="56" issue="3" article="13" abbr="JACM">Journal of
+      the ACM</venue>
+      <year>2009</year>
+      <doi>10.1145/1516512.1516515</doi>
+    </bib>
+  </schema>
   <schema file="xpath-non-mixing-basic.rnc"
-          name="non-mixing"
+          name="Non-mixing"
           color="#b3cde3">
     <bib>
       <author>Wojciech Czerwinski</author>
@@ -80,21 +95,6 @@
       on Database Theory</venue>
       <year>2016</year>
       <doi>10.4230/LIPIcs.ICDT.2016.20</doi>
-    </bib>
-  </schema>
-  <schema file="xpath-emso2-basic.rnc"
-          name="emso2"
-          color="#fed9a6">
-    <bib>
-      <author>Mikołaj Bojańczyk</author>
-      <author>Anca Muscholl</author>
-      <author>Thomas Schwentick</author>
-      <author>Luc Segoufin</author>
-      <title>Two-variable Logic on Data Trees and XML Reasoning</title>
-      <venue volume="56" issue="3" article="13" abbr="JACM">Journal of
-      the ACM</venue>
-      <year>2009</year>
-      <doi>10.1145/1516512.1516515</doi>
     </bib>
   </schema>
 </schemas>
