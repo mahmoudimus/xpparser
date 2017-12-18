@@ -28,7 +28,6 @@ include "xpath-2.0-core-basic.rnc" {
     start = pattern.expr
 }
 
-include "expr/cst.rnc"
 primary |=  element contextItemExpr { empty }
          |  cst.expr
          |  fun
