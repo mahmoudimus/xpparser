@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- List of Downward XPath fragments -->
+<schemas>
+  <schema file="xpath-1.0-downward-orig.rnc" name="orig" />
+  <schema file="xpath-1.0-downward-basic.rnc" name="basic" />
+  <schema file="xpath-1.0-downward-last.rnc" name="basic+last" />
+  <!-- full = basic+last -->
+</schemas>

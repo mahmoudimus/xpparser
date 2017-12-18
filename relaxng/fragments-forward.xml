@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- List of Forward XPath fragments -->
+<schemas>
+  <schema file="xpath-1.0-forward-orig.rnc" name="orig" />
+  <schema file="xpath-1.0-forward-basic.rnc" name="basic" />
+  <schema file="xpath-1.0-forward-last.rnc" name="basic+last" />
+  <!-- full = basic+last -->
+</schemas>

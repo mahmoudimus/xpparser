@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!-- Meta-data about the implemented RelaxNG schemas:
+     original academic fragments. -->
+<schemas>
+  <schema file="xpath-2.0-core-orig.rnc"
+          name="core-2.0"
+          color="#ccebc5">
+    <bib>
+      <author>Balder ten Cate</author>
+      <author>Carsten Lutz</author>
+      <title>The complexity of query containment in expressive
+      fragments of XPath 2.0</title>
+      <venue volume="56" issue="6" article="31" abbr="JACM">Journal of
+      the ACM</venue>
+      <year>2009</year>
+      <doi>10.1145/1568318.1568321</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-1.0-core-orig.rnc"
+          name="core"
+          color="#ccebc5">
+    <bib>
+      <author>Michael Benedikt</author>
+      <author>Christoph Koch</author>
+      <title>XPath Leashed</title>
+      <venue volume="41" issue="1" article="3">ACM Computing Surveys</venue>
+      <year>2009</year>
+      <doi>10.1145/1456650.1456653</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-1.0-downward-orig.rnc"
+          name="downward"
+          color="#b3cde3">
+    <bib>
+      <author>Diego Figueira</author>
+      <title>Decidability of Downward XPath</title>
+      <venue volume="13" issue="4" article="34" abbr="ToCL">ACM Transactions on
+      Computational Logic</venue>
+      <year>2012</year>
+      <doi>10.1145/2362355.2362362</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-1.0-forward-orig.rnc"
+          name="forward"
+          color="#b3cde3">
+    <bib>
+      <author>Diego Figueira</author>
+      <title>Alternating Register Automata on Finite Data Words and Trees</title>
+      <venue volume="8" issue="1" article="22" abbr="LMCS">Logical Methods in
+      Computer Science</venue>
+      <year>2012</year>
+      <doi>10.2168/LMCS-8(1:22)2012</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-1.0-vertical-orig.rnc"
+          name="vertical"
+          color="#b3cde3">
+    <bib>
+      <author>Diego Figueira</author>
+      <author>Luc Segoufin</author>
+      <title>Bottom-up automata on data trees and vertical XPath</title>
+      <venue volume="13" issue="4" article="5" abbr="LMCS">Logical Methods in
+      Computer Science</venue>
+      <year>2017</year>
+      <doi>10.23638/LMCS-13(4:5)2017</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-non-mixing-orig.rnc"
+          name="non-mixing"
+          color="#b3cde3">
+    <bib>
+      <author>Wojciech Czerwinski</author>
+      <author>Claire David</author>
+      <author>Filip Murlak</author>
+      <author>Paweł Parys</author>
+      <title>Reasoning About Integrity Constraints for Tree-Structured
+      Data</title>
+      <venue volume="48" series="LIPIcs" article="20" publisher="LZI"
+      abbr="ICDT'16">Proceedings of the 19th International Conference
+      on Database Theory</venue>
+      <year>2016</year>
+      <doi>10.4230/LIPIcs.ICDT.2016.20</doi>
+    </bib>
+  </schema>
+  <schema file="xpath-emso2-orig.rnc"
+          name="emso2"
+          color="#fed9a6">
+    <bib>
+      <author>Mikołaj Bojańczyk</author>
+      <author>Anca Muscholl</author>
+      <author>Thomas Schwentick</author>
+      <author>Luc Segoufin</author>
+      <title>Two-variable Logic on Data Trees and XML Reasoning</title>
+      <venue volume="56" issue="3" article="13" abbr="JACM">Journal of
+      the ACM</venue>
+      <year>2009</year>
+      <doi>10.1145/1516512.1516515</doi>
+    </bib>
+  </schema>
+</schemas>

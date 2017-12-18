@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- List of EMSO2 fragments -->
+<schemas>
+  <schema file="xpath-emso2-orig.rnc" name="orig" />
+  <schema file="xpath-emso2-basic.rnc" name="basic" />
+  <schema file="xpath-emso2-id.rnc" name="basic+id" />
+  <schema file="xpath-emso2-join.rnc" name="basic+join" />
+  <schema file="xpath-emso2-full.rnc" name="full" />
+</schemas>

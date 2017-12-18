@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!-- List of XPathCore 2.0 fragments -->
+<schemas>
+  <schema file="xpath-2.0-core-orig.rnc" name="orig" />
+  <schema file="xpath-2.0-core-basic.rnc" name="basic" />
+  <schema file="xpath-2.0-core-join.rnc" name="basic+join" />
+  <!-- full = join -->
+</schemas>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- List of non-mixing fragments -->
+<schemas>
+  <schema file="xpath-non-mixing-orig.rnc" name="orig" />
+  <schema file="xpath-non-mixing-basic.rnc" name="basic" />
+  <schema file="xpath-non-mixing-last.rnc" name="basic+last" />
+  <schema file="xpath-non-mixing-var.rnc" name="basic+var" />
+  <schema file="xpath-non-mixing-full.rnc" name="full" />
+</schemas>

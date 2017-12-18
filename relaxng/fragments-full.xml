@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!-- List of "full" fragments -->
 <schemas>
-  <schema file="xpath-1.0-core-full.rnc" name="core 1.0" />
-  <schema file="xpath-2.0-core-join.rnc" name="core 2.0" />
-  <schema file="xpath-1.0-downward-last.rnc" name="downward" />
-  <schema file="xpath-1.0-forward-last.rnc" name="forward" />
-  <schema file="xpath-1.0-vertical-full.rnc" name="vertical" />
+  <schema file="xpath-1.0-core-full.rnc" name="Core 1.0" />
+  <schema file="xpath-2.0-core-full.rnc" name="Core 2.0" />
+  <schema file="xpath-1.0-downward-full.rnc" name="Downward" />
+  <schema file="xpath-1.0-forward-full.rnc" name="Forward" />
+  <schema file="xpath-1.0-vertical-full.rnc" name="Vertical" />
   <schema file="xpath-1.0-emso2-full.rnc" name="EMSO2" />
-  <schema file="xpath-1.0-patterns-orig.rnc" name="patterns" />
+  <schema file="xpath-1.0-non-mixing-full.rnc" name="Non-mixing" />
 </schemas>

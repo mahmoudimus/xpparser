@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<!-- Meta-data about the implemented RelaxNG schemas. -->
+<!-- Meta-data about the implemented RelaxNG schemas:
+     original academic fragments + basic extensions. -->
 <schemas>
-  <schema file="core-xpath-2.0.rnc"
+  <schema file="xpath-2.0-core-basic.rnc"
           name="core-2.0"
           color="#ccebc5">
     <bib>
@@ -15,7 +16,7 @@
       <doi>10.1145/1568318.1568321</doi>
     </bib>
   </schema>
-  <schema file="core-xpath-1.0.rnc"
+  <schema file="xpath-1.0-core-basic.rnc"
           name="core"
           color="#ccebc5">
     <bib>
@@ -27,7 +28,7 @@
       <doi>10.1145/1456650.1456653</doi>
     </bib>
   </schema>
-  <schema file="downward-xpath.rnc"
+  <schema file="xpath-1.0-downward-basic.rnc"
           name="downward"
           color="#b3cde3">
     <bib>
@@ -39,7 +40,7 @@
       <doi>10.1145/2362355.2362362</doi>
     </bib>
   </schema>
-  <schema file="forward-xpath.rnc"
+  <schema file="xpath-1.0-forward-basic.rnc"
           name="forward"
           color="#b3cde3">
     <bib>
@@ -51,7 +52,7 @@
       <doi>10.2168/LMCS-8(1:22)2012</doi>
     </bib>
   </schema>
-  <schema file="vertical-xpath.rnc"
+  <schema file="xpath-1.0-vertical-basic.rnc"
           name="vertical"
           color="#b3cde3">
     <bib>
@@ -64,7 +65,7 @@
       <doi>10.23638/LMCS-13(4:5)2017</doi>
     </bib>
   </schema>
-  <schema file="non-mixing-xpath.rnc"
+  <schema file="xpath-non-mixing-basic.rnc"
           name="non-mixing"
           color="#b3cde3">
     <bib>
@@ -81,7 +82,7 @@
       <doi>10.4230/LIPIcs.ICDT.2016.20</doi>
     </bib>
   </schema>
-  <schema file="emso2-xpath.rnc"
+  <schema file="xpath-emso2-basic.rnc"
           name="emso2"
           color="#fed9a6">
     <bib>
@@ -94,36 +95,6 @@
       the ACM</venue>
       <year>2009</year>
       <doi>10.1145/1516512.1516515</doi>
-    </bib>
-  </schema>
-  <schema file="xpath-1.0.rnc"
-          name="1.0"
-          color="#decbe4">
-    <bib>
-      <title>XML Path Language (XPath), Version 1.0</title>
-      <venue>W3C Recommendation</venue>
-      <year>1999</year>
-      <href>https://www.w3.org/TR/xpath/</href>
-    </bib>
-  </schema>
-  <schema file="xpath-2.0.rnc"
-          name="2.0"
-          color="#decbe4">
-    <bib>
-      <title>XML Path Language (XPath), Version 2.0</title>
-      <venue>W3C Recommendation</venue>
-      <year>2010</year>
-      <href>https://www.w3.org/TR/xpath20/</href>
-    </bib>
-  </schema>
-  <schema file="xpath-3.0.rnc"
-          name="3.0"
-          color="#decbe4">
-    <bib>
-      <title>XML Path Language (XPath), Version 3.0</title>
-      <venue>W3C Recommendation</venue>
-      <year>2014</year>
-      <href>https://www.w3.org/TR/xpath30/</href>
     </bib>
   </schema>
 </schemas>
