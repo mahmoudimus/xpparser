@@ -5,6 +5,5 @@
   <schema file="xpath-1.0-vertical-basic.rnc" name="basic" />
   <schema file="xpath-1.0-vertical-id.rnc" name="basic+id" />
   <schema file="xpath-1.0-vertical-last.rnc" name="basic+last" />
-  <schema file="xpath-1.0-vertical-var.rnc" name="basic+var" />
   <schema file="xpath-1.0-vertical-full.rnc" name="full" />
 </schemas>
