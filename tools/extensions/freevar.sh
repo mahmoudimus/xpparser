@@ -1,6 +1,7 @@
+#!/bin/bash
 echo "<freevar>"
 sum=0
-for FILE in ../../benchmark/*xml
+for FILE in ../../benchmark/*-full.xml
 do
   filename=$(basename "$FILE")
   value=$(xmlstarlet sel -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='varRef' and not(name = ancestor::*[local-name()='flworExpr']/*/*/*/*[local-name()='varName'])]])" $FILE)

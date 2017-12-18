@@ -1,3 +1,4 @@
+#!/bin/bash
 echo '<?xml version="1.0"?>'
 echo "<extensions>"
 echo ""

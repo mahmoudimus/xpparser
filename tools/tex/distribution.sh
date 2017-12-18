@@ -4,7 +4,7 @@ MAX=`grep 'MAX_AST_SIZE =' ../../src/main/java/fr/lsv/xpparser/XPathEntry.java| 
 
 for ((i = 1; i < $MAX; ++i))
 do
-    C=`grep "ast size=\"$i\"" ../../benchmark/*.xml | wc -l`
+    C=`grep "ast size=\"$i\"" ../../benchmark/*-full.xml | wc -l`
     echo "$i $C"
 done
 

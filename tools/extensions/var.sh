@@ -1,6 +1,7 @@
+#!/bin/bash
 echo "<var>"
 sum=0
-for FILE in ../../benchmark/*xml
+for FILE in ../../benchmark/*-full.xml
 do
   filename=$(basename "$FILE")
   value=$(xmlstarlet sel -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='varRef']])" $FILE)

@@ -112,9 +112,9 @@ public abstract class XPathEntry {
             query.appendChild(text);
             xpath.appendChild(query);
         }
-        xpath.appendChild(ast);
-        
         if (astSize < MAX_AST_SIZE) {
+            xpath.appendChild(ast);
+        
             Element schemas = doc.createElementNS
                 (XMLConstants.NULL_NS_URI, "schemas");
             // validate

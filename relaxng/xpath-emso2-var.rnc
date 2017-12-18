@@ -1,4 +1,4 @@
-# EMSO2 XPath fragment with all extensions
+# EMSO2 fragment with variables
 #
 # Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
 #
@@ -18,9 +18,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-emso2-join.rnc"
-include "misc/id.rnc"
-include "expr/varref.rnc"
+include "xpath-emso2-orig.rnc"
 
-path |= id.rootedpath 
+include "expr/varref.rnc"
 primary |= varref

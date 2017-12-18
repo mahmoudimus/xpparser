@@ -18,7 +18,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-emso2-orig.rnc"
+include "xpath-emso2-var.rnc"
 include "misc/id.rnc"
 
 path |= id.rootedpath 
