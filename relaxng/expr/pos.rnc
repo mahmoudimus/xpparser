@@ -33,19 +33,6 @@ pos.op = element ( andOp | orOp | unionOp ) {
   element secondOperand { pos.expr }
 }
 
-pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { pos.expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { pos.expr } )
-}
-
-pos.op |= cst.op
-
 # positive equality checks
 pos.op |= element ( eqOp | equalOp ) {
   element firstOperand  { pos.expr },

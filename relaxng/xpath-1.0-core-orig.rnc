@@ -21,12 +21,13 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 start = expr
 
 include "expr/literal.rnc"
-include "expr/cst.rnc"
 
 # ----------------------------------------------------------------
 # Expressions
 
 expr = op | path | primary
+
+primary = notAllowed
 
 # ----------------------------------------------------------------
 # Operations
@@ -36,70 +37,13 @@ op = element ( andOp | orOp | unionOp ) {
   element secondOperand { expr }
 }
 
-op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { expr } )
-}
-
-op |= cst.op
-
 # ----------------------------------------------------------------
 # Function calls
-
-primary =  element contextItemExpr { empty }
-        |  literal
-        |  fun
-        |  element sequenceExpr { expr* }
 
 # Boolean functions
 
 fun = element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
-  element arguments { expr* }?
-}
-
-fun |= cst.fun | fun.root | fun.child
-
-# functions that can be implemented via other means
-
-# when both the ancestor and parent axes are available using
-# `ancestor-or-self::*[not(parent::*)]'
-fun.root = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "root")
-  },
-  element arguments { expr* }?
-}
-
-# when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-cst.fun |= fun.name
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
-  },
   element arguments { expr* }?
 }
 

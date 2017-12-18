@@ -24,7 +24,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-vertical-var.rnc"
+include "xpath-1.0-vertical-basic"
 include "misc/id.rnc"
 
 path |= id.rootedpath 
