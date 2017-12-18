@@ -1,5 +1,6 @@
 test/failures.xml
 test/results.xml
 benchmark/*.log
-tools/tex/*.tex
+tools/tex/totals_*.tex
+tools/tex/matrix_*.tex
 ./xpparser

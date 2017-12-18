@@ -15,18 +15,18 @@
   <xsl:template match="/">
     <xsl:variable name="benchmarks" select="/"/>
 
-    <xsl:text>\begin{tabular}[r</xsl:text>
+    <xsl:text>\begin{tabular}{|r|</xsl:text>
     <xsl:for-each select="//benchmark">
       <xsl:text>l</xsl:text>
     </xsl:for-each>
-    <xsl:text>]&#xa;</xsl:text>
+    <xsl:text>|l|}&#xa;\toprule&#xa;</xsl:text>
 
     <!-- line with benchmark names -->
     <xsl:for-each select="//benchmark">
       <xsl:text> &amp; </xsl:text>
       <xsl:value-of select="current()/@name" />
     </xsl:for-each>
-    <xsl:text> &amp; total \\ &#xa;</xsl:text>
+    <xsl:text> &amp; \\ &#xa;\midrule&#xa;</xsl:text>
 
     <!-- line for the size of benchmarks -->
     <xsl:text>size</xsl:text>
@@ -34,7 +34,7 @@
       <xsl:text> &amp; </xsl:text>
       <xsl:value-of select="count(document(current()/@href)//xpath)" />
     </xsl:for-each>
-    <xsl:text> &amp; \\ &#xa;</xsl:text>
+    <xsl:text> &amp; total \\ &#xa;\midrule&#xa;</xsl:text>
 
     <!-- for each benchmark, a line of results -->
     <xsl:for-each select="$fragments">
@@ -44,7 +44,7 @@
       </xsl:call-template>
     </xsl:for-each>
 
-    <xsl:text>\end{tabular}&#xa;</xsl:text>
+    <xsl:text>\bottomrule&#xa;\end{tabular}&#xa;</xsl:text>
 
   </xsl:template>
 
@@ -62,10 +62,7 @@
     </xsl:for-each>
     <!-- total number of entries in the fragment -->
     <xsl:value-of select="count(document($benchmarks//benchmark/@href)//xpath[schemas/validation[@schema=$fragment/@file and @valid='yes']])" />
-    <xsl:if test="not($fragment is $fragments[last()])">
-      <xsl:text> \\</xsl:text>
-    </xsl:if>
-    <xsl:text>&#xa;</xsl:text>
+    <xsl:text> \\</xsl:text>
   </xsl:template>
 
   <!-- one entry of the matrix -->

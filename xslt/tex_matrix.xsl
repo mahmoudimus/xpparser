@@ -15,18 +15,18 @@
   <xsl:template match="/">
     <xsl:variable name="root" select="document(//benchmark/@href)"/>
 
-    <xsl:text>\begin{tabular}[r</xsl:text>
+    <xsl:text>\begin{tabular}{|r|</xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:text>l</xsl:text>
     </xsl:for-each>
-    <xsl:text>]&#xa;</xsl:text>
+    <xsl:text>|}&#xa;\toprule&#xa;</xsl:text>
 
     <xsl:text></xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:text> &amp; </xsl:text>
       <xsl:value-of select="current()/@name" />
     </xsl:for-each>
-    <xsl:text> \\ &#xa;</xsl:text>
+    <xsl:text> \\ &#xa;\midrule&#xa;</xsl:text>
 
     <xsl:for-each select="$fragments">
       <xsl:call-template name="line">
@@ -35,7 +35,7 @@
       </xsl:call-template>
     </xsl:for-each>
 
-    <xsl:text>\end{tabular}&#xa;</xsl:text>
+    <xsl:text>\bottomrule&#xa;\end{tabular}&#xa;</xsl:text>
 
   </xsl:template>
 
@@ -52,10 +52,7 @@
         <xsl:with-param name="root" select="$root"/>
       </xsl:call-template>
     </xsl:for-each>
-    <xsl:if test="not($source is $fragments[last()])">
-      <xsl:text> \\</xsl:text>
-    </xsl:if>
-    <xsl:text>&#xa;</xsl:text>
+    <xsl:text> \\&#xa;</xsl:text>
   </xsl:template>
 
   <!-- one entry of the matrix -->
