@@ -2,266 +2,219 @@
 
   <test>
     <query>/foo/bar</query>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>/foo/@a = /bar/@b</query>
-    <validation schema="xpath-1.0-core.rnc" valid="no"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
   </test>
 
   <!-- navigation -->
 
   <test>
     <query>child::*</query>
-    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>descendant::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>parent::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>ancestor::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>following-sibling::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>preceding-sibling::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>following::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>preceding::*</query>
     <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-eval.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-    <validation schema="xpath-patterns.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
   </test>
 
   <!-- root() -->
 
   <test>
     <query>//a/root()/b</query>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <!-- last() -->
@@ -278,84 +231,84 @@
   <test>
     <query>descendant::a[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="no"/>
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
   </test>
   <test>
     <query>(descendant::a)[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="no"/>
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
   </test>
   <test>
     <query>self::b[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>(self::b)[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/self::b[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::b[last()])</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::b)[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>(descendant::a/self::b)[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core.rnc" valid="no"/>
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
   </test>
 
   <!-- Same as above but for the downward fragment. -->
   <test>
     <query>descendant::a/self::*[last()]</query>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::*)[last()]</query>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::*[last()])</query>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
   </test>
   <test>
     <query>(descendant::a/self::*)[last()]</query>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
   </test>
 
   <test>
@@ -371,8 +324,8 @@
       more generally.
     </comment>
 
-    <validation schema="xpath-1.0-core.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
 
     <!-- other expected results, just to be sure -->
 
@@ -380,19 +333,13 @@
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-modal.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
-
-    <validation schema="xpath-modal-id.rnc" valid="no"/>
-    <validation schema="xpath-last.rnc" valid="yes"/>
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -401,26 +348,19 @@
       From issue #8: we could always allow this since it is equivalent to self::*.
       It is a corner case, and a useless one, so we may drop it though.
     </comment>
-    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-
-    <validation schema="xpath-last.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -429,30 +369,23 @@
       From issue #8: we always allow last on a varref (cf. expr/last) which seems abusive.
       This query is discussed more specifically in issue #14.
     </comment>
-    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
-
-    <validation schema="xpath-last.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -462,50 +395,36 @@
     </comment>
 
     <validation schema="xpath-1.0.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-last.rnc" valid="yes"/>
-
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>*[self::ulink|self::doc:ulink][last()]/following-sibling::node()</query>
 
     <validation schema="xpath-1.0.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-minimal.rnc" valid="no"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-core.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical.rnc" valid="no"/>
+    <validation schema="data-xpath.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-last.rnc" valid="yes"/>
-
-    <validation schema="xpath-modal.rnc" valid="yes"/>
-    <validation schema="xpath-modal-id.rnc" valid="yes"/>
-
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
   </test>
 
   <!-- Variables -->
@@ -521,30 +440,29 @@
 
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
 
-    <validation schema="xpath-1.0-data.rnc" valid="yes"/>
+    <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-vertical-var.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-id.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
 
-    <validation schema="xpath-patterns-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
-    <validation schema="xpath-3.0-leashed.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
   </test>
 
   <test>
     <query>$x/$y</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
@@ -556,7 +474,7 @@
     <query>child::a[*/@b != parent::c] and not(child::b)</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
@@ -565,7 +483,7 @@
     <query>not(.[@a=@b])</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="no"/>
@@ -576,7 +494,7 @@
          of last would introduce a negation of the join -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -587,7 +505,7 @@
     <!-- same as above -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -599,7 +517,7 @@
          so we may accept the query in 1.0-core-full -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -612,7 +530,7 @@
          so we may also accept it -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -623,7 +541,7 @@
     <!-- same as above, with yet another AST -->
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -633,7 +551,7 @@
     <query>child::a[@a=@b]/ancestor::b[last()]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -643,7 +561,7 @@
     <query>child::a[@a=@b]/(ancestor::b[last()])</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -653,7 +571,7 @@
     <query>$x[@a=@b]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
@@ -663,7 +581,7 @@
     <query>$y/$x[@a=@b]/$z[not(child::a)]</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
-    <validation schema="xpath-1.0-core-var.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
