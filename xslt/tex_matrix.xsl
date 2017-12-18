@@ -15,11 +15,11 @@
   <xsl:template match="/">
     <xsl:variable name="root" select="document(//benchmark/@href)"/>
 
-    <xsl:text>\begin{tabular}{|r|</xsl:text>
+    <xsl:text>\begin{tabular}{l</xsl:text>
     <xsl:for-each select="$fragments">
-      <xsl:text>l</xsl:text>
+      <xsl:text>r</xsl:text>
     </xsl:for-each>
-    <xsl:text>|}&#xa;\toprule&#xa;</xsl:text>
+    <xsl:text>}&#xa;\toprule&#xa;</xsl:text>
 
     <xsl:text></xsl:text>
     <xsl:for-each select="$fragments">

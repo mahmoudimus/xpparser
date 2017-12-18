@@ -1,6 +1,12 @@
-# XPath 1.0-core fragment with variables
+# Unions of Conjunctive Queries fragment in Relax NG compact syntax.
 #
-# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+# Based on: Wojciech Czerwinski, Claire David, Filip Murlak, and Pawel
+# Parys, _Reasoning About Integrity Constraints for Tree-Structured
+# Data_, in the Proceedings of the 19th International Conference on
+# Database Theory (ICDT 2016), volume 48 of LIPIcs, article 20, LZI,
+# 2016.  doi:10.4230/LIPIcs.ICDT.2016.20.
+#
+# Copyright (C) 2017  Sylvain Schmitz (ENS Cachan)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,74 +24,23 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-non-mixing-orig.rnc"
-
-# ---------------------------------------------------------------------------
-# Allow constants
-
-pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { pos.expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { pos.expr } )
+include "xpath-2.0-core-basic.rnc" {
+    start = pattern.expr
 }
 
-pos.op |= cst.op
+primary |=  element contextItemExpr { empty }
+         |  cst.expr
+         |  fun
+         |  element sequenceExpr { expr* }
 
-neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
-              | ltOp | leOp | gtOp | geOp           # order
-              | lessThanOp  | lessThanOrEqualOp
-              | greaterThanOp | greaterThanOrEqualOp
-              ) {
-    ( element firstOperand  { neg.expr },
-      element secondOperand { cst.expr })
-  | ( element firstOperand  { cst.expr },
-      element secondOperand { neg.expr } )
-}
+pattern.expr = pos.expr | neg.expr 
+     | element unionOp {
+        element firstOperand  { pattern.expr },
+        element secondOperand { pattern.expr }
+      }
 
-neg.op |= cst.op
+pos.expr |= expr
+neg.expr |= expr
 
-
-# ---------------------------------------------------------------------------
-# Allow some functions
-
-fun |= cst.fun | fun.root | fun.child | fun.name
-
-# root() admissible when both the ancestor and parent axes are available using
-# `ancestor-or-self::*[not(parent::*)]'
-fun.root = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "root")
-  },
-  element arguments { expr* }?
-}
-
-# has-children() admissible when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-# various name accessor functions are admissible
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
-  },
-  element arguments { expr* }?
-}
+include "expr/pos.rnc"
+include "expr/neg.rnc"
