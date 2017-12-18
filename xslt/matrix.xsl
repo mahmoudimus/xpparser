@@ -59,7 +59,7 @@
     <xsl:param name="source"/>
     <xsl:param name="target"/>
     <xsl:param name="root"/>
-    <xsl:variable name="examples" select="$root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no'] and ast/descendant::*[local-name() = 'xpathAxis']]"/> 
+    <xsl:variable name="examples" select="$root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no']]"/> 
     <xsl:text>{ "z": </xsl:text><xsl:value-of select="count($examples)"/>
     <xsl:if test="$examples">
       <xsl:text>, "examples": [</xsl:text>
