@@ -26,17 +26,17 @@
     <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -47,20 +47,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -71,20 +71,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -95,20 +95,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -119,20 +119,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -143,20 +143,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -167,20 +167,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
@@ -191,20 +191,20 @@
     <validation schema="data-xpath.rnc" valid="yes"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <!-- root() -->
@@ -212,10 +212,10 @@
   <test>
     <query>//a/root()/b</query>
 
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0-forward-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
@@ -309,19 +309,19 @@
   <!-- Same as above but for the downward fragment. -->
   <test>
     <query>descendant::a/self::*[last()]</query>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::*)[last()]</query>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::*[last()])</query>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>(descendant::a/self::*)[last()]</query>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
   </test>
 
   <test>
@@ -339,7 +339,7 @@
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
 
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
 
     <!-- other expected results, just to be sure -->
 
@@ -348,10 +348,10 @@
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
     <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
@@ -368,11 +368,11 @@
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
 
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
@@ -393,11 +393,11 @@
     <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-join.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
@@ -414,11 +414,11 @@
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
@@ -432,11 +432,11 @@
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
     <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
-    <validation schema="xpath-2.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
-    <validation schema="xpath-1.0-forward-full.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward-full.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
