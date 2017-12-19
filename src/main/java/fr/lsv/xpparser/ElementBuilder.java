@@ -25,11 +25,17 @@ public class ElementBuilder {
 
     private int count;
 
+    private int maxdepth;
+
+    private int curdepth;
+
     private Document doc;
 
     public ElementBuilder (Element parent) {
         this.doc = parent.getOwnerDocument();
         this.count = 0;
+        this.curdepth = 0;
+        this.maxdepth = 0;
     }
 
     public Element createElementNS (String namespaceURI, String qualifiedName) {
@@ -42,7 +48,20 @@ public class ElementBuilder {
         return doc.createElement(tagName);
     }
 
+    public void enter() {
+        curdepth++;
+        maxdepth = (curdepth > maxdepth)? curdepth: maxdepth;
+    }
+
+    public void leave() {
+        curdepth--;
+    }
+    
     public int getCount() {
         return count;
+    }
+
+    public int getDepth() {
+        return maxdepth;
     }
 }

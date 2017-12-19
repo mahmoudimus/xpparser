@@ -39,6 +39,15 @@ include "expr/varref.rnc"
 primary |= varref
 
 # ---------------------------------------------------------------------------
+# Allow root
+
+fun |= fun.root
+path |= element pathExpr {
+  ( element rootExpr { empty }, step* )
+}
+
+
+# ---------------------------------------------------------------------------
 # Allow some functions
 
 fun |= cst.fun | fun.root | fun.child | fun.name

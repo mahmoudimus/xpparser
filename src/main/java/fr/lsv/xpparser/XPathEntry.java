@@ -27,7 +27,8 @@ import org.w3c.xqparser.SimpleNode;
 
 public abstract class XPathEntry {
 
-    final static int MAX_AST_SIZE = 330;
+    final static int MAX_AST_DEPTH = 100;
+    final static int MAX_AST_SIZE =  500;
 
     /**
      * The name of the file from which this entry was extracted.
@@ -39,6 +40,7 @@ public abstract class XPathEntry {
     private Node domnode;
 
     private int astSize;
+    private int astDepth;
 
     SourceFactory sf;
     
@@ -74,8 +76,11 @@ public abstract class XPathEntry {
             xxc.transform(getASTNode(), ast, eb);
             domnode = ast.getFirstChild();
             astSize = eb.getCount();
+            astDepth = eb.getDepth();
             ast.setAttributeNS(XMLConstants.NULL_NS_URI,
                                "size", String.valueOf(astSize));
+            ast.setAttributeNS(XMLConstants.NULL_NS_URI,
+                               "depth", String.valueOf(astDepth));
         }
         return domnode;
     }
@@ -112,7 +117,7 @@ public abstract class XPathEntry {
             query.appendChild(text);
             xpath.appendChild(query);
         }
-        if (astSize < MAX_AST_SIZE) {
+        if (astSize < MAX_AST_SIZE && astDepth < MAX_AST_DEPTH) {
             xpath.appendChild(ast);
         
             Element schemas = doc.createElementNS
@@ -146,8 +151,12 @@ public abstract class XPathEntry {
             }
             xpath.appendChild(schemas);
         }
-        else 
-            xpath.appendChild(doc.createComment("AST size "+astSize+" exceeds XPathEntry.MAX_AST_SIZE; no validation"));    
+        else {
+            if (astSize >= MAX_AST_SIZE)
+                xpath.appendChild(doc.createComment("AST size "+astSize+" exceeds XPathEntry.MAX_AST_SIZE "+MAX_AST_SIZE+"; no validation"));
+            if (astDepth >= MAX_AST_DEPTH)
+                xpath.appendChild(doc.createComment("AST depth "+astDepth+" exceeds XPathEntry.MAX_AST_DEPTH "+MAX_AST_DEPTH+"; no validation"));
+        }
         // print
         printer.transform(doc, os);
     }

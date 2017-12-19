@@ -20,6 +20,16 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-emso2-orig.rnc"
 
+
+# ---------------------------------------------------------------------------
+# Allow root
+
+path |= element pathExpr {
+  ( element rootExpr { empty }, step* )
+}
+# allow root() function more generally
+fun |= fun.root
+
 # ---------------------------------------------------------------------------
 # Allow constants
 
@@ -52,7 +62,7 @@ primary |= varref
 # ---------------------------------------------------------------------------
 # Allow some functions
 
-fun |= cst.fun | fun.root | fun.child | fun.name
+fun |= cst.fun | fun.child | fun.name
 
 # has-children() admissible when the child axis is available
 fun.child =  element functionCallExpr {

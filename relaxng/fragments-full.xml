@@ -14,7 +14,7 @@
       <doi>10.1145/1456650.1456653</doi>
     </bib>
   </schema>
-  <schema file="xpath-2.0-core-full.rnc"
+  <schema file="xpath-2.0-core-join.rnc"
           name="Core 2.0"
           color="#ccebc5">
     <bib>
@@ -28,7 +28,7 @@
       <doi>10.1145/1568318.1568321</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-downward-full.rnc"
+  <schema file="xpath-1.0-downward-last.rnc"
           name="Downward"
           color="#b3cde3">
     <bib>
@@ -40,7 +40,7 @@
       <doi>10.1145/2362355.2362362</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-forward-full.rnc"
+  <schema file="xpath-1.0-forward-last.rnc"
           name="Forward"
           color="#b3cde3">
     <bib>
@@ -80,8 +80,8 @@
       <doi>10.1145/1516512.1516515</doi>
     </bib>
   </schema>
-  <schema file="xpath-non-mixing-full.rnc"
-          name="Non-mixing"
+  <schema file="xpath-non-mixing-basic.rnc"
+          name="NonMixing"
           color="#b3cde3">
     <bib>
       <author>Wojciech Czerwinski</author>

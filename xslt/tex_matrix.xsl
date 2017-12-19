@@ -24,7 +24,7 @@
     <xsl:text></xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:text> &amp; </xsl:text>
-      <xsl:value-of select="current()/@name" />
+      \textsf{<xsl:value-of select="current()/@name" />}
     </xsl:for-each>
     <xsl:text> \\ &#xa;\midrule&#xa;</xsl:text>
 
@@ -43,7 +43,7 @@
   <xsl:template name="line">
     <xsl:param name="source"/>
     <xsl:param name="root"/>
-    <xsl:value-of select="$source/@name" />
+    \textsf{<xsl:value-of select="$source/@name" />}
     <xsl:text> &amp; </xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:call-template name="entry">

@@ -4,8 +4,8 @@
 
   <description>Extract data from benchmark results.</description>
   
-  <property name="xml" value="xpathmark"/>
-  <property name="target.dir" value="${user.home}/public_html/chord/"/>
+  <property name="xml" value="xpathmark-full"/>
+  <property name="target.dir" value="$./public_html/chord/"/>
   <property name="project.root" value="../.."/>
   <property name="bench.dir" value="${project.root}/benchmark"/>
   <property name="lib.dir" value="${project.root}/lib"/>
@@ -48,13 +48,13 @@
       </classpath>
     </xslt>
     <!-- get the number of fragments -->
-    <xpath document="${project.root}/relaxng/meta.xml"
+    <xpath document="${project.root}/relaxng/fragments-full.xml"
            xpath="count(//schema)"
            outputproperty="fragments"/>
     <!-- get the number of entries -->
     <xpath document="${bench.dir}/${xml}.xml"
-           xpath="count(//xpath[ast/descendant::*[local-name() = 'xpathAxis']])"
-           outputproperty="entries"/>
+           xpath="count(//xpath/ast)" 
+           outputproperty="entries"/><!-- //xpath[ast/descendant::*[local-name() = 'xpathAxis']])" -->
     <!-- process index.html -->
     <copy file="index.html" todir="${target.dir}/${xml}">
       <filterchain>

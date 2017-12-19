@@ -38,6 +38,25 @@ one.path = element contextItemExpr { empty }
        predicates?
      }
    }
+   
+rooted.path
+  = fun.root
+  | element pathExpr {
+      element rootExpr { empty }, step*
+    }
+  | element pathExpr {
+      element stepExpr { element filterExpr { fun.root } },
+      step*
+    }
+    
+fun.root = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "root")
+  },
+  element arguments { expr* }?
+}
 
 # data test using an absolute path on one side
 op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
@@ -51,23 +70,3 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
       element secondOperand { local.path })
 }
 
-rooted.path
-  = fun.root
-  | element pathExpr {
-      element rootExpr { empty }, step*
-    }
-  | element pathExpr {
-      element stepExpr { element filterExpr { fun.root } },
-      step*
-    }
-
-# allow root() function more generally
-primary |= fun.root
-fun.root = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "root")
-  },
-  element arguments { expr* }?
-}
