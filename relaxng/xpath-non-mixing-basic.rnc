@@ -44,3 +44,11 @@ neg.expr |= expr
 
 include "expr/pos.rnc"
 include "expr/neg.rnc"
+
+pos.path |= element pathExpr {
+  element rootExpr { empty }, pos.step*
+}
+
+neg.path |= element pathExpr {
+  element rootExpr { empty }, neg.step*
+}

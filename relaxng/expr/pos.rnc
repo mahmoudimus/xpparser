@@ -63,7 +63,7 @@ pos.fun = element functionCallExpr {
 # Paths
 
 pos.path = element pathExpr {
-  ( element rootExpr { empty }, pos.step* ) | pos.step+
+  pos.step+
 }
 
 pos.step = element stepExpr {

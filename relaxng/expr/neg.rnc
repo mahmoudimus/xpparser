@@ -63,7 +63,7 @@ neg.fun = element functionCallExpr {
 # Paths
 
 neg.path = element pathExpr {
-  ( element rootExpr { empty }, neg.step* ) | neg.step+
+  neg.step+
 }
 
 neg.step = element stepExpr {

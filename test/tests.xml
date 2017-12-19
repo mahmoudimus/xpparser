@@ -251,7 +251,7 @@
     <validation schema="xpath-emso2-orig.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/> <!-- ??? -->
+    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
 
     <validation schema="data-xpath.rnc" valid="no" />
 
@@ -282,7 +282,7 @@
     <validation schema="xpath-emso2-orig.rnc" valid="no"/>
 
     <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/> <!-- ??? -->
+    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
 
     <validation schema="xpath-1.0.rnc" valid="yes"/>
     <validation schema="xpath-2.0.rnc" valid="yes"/>
