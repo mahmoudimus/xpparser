@@ -21,24 +21,34 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 include "xpath-non-mixing-orig.rnc"
 
 # ---------------------------------------------------------------------------
-# Allow constant operations
+# Allow constants
+
+pos.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { pos.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { pos.expr } )
+}
 
 pos.op |= cst.op
 
+neg.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { neg.expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { neg.expr } )
+}
+
 neg.op |= cst.op
 
-# ---------------------------------------------------------------------------
-# Root navigation
-
-pos.path |= element pathExpr {
-  element rootExpr { empty }, pos.step*
-}
-pos.step |= element stepExpr { element filterExpr { fun.root } }
-
-neg.path |= element pathExpr {
-  element rootExpr { empty }, neg.step*
-}
-neg.step |= element stepExpr { element filterExpr { fun.root } }
 
 # ---------------------------------------------------------------------------
 # Allow some functions
