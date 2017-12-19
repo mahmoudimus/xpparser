@@ -4,7 +4,7 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="document('../relaxng/meta.xml')//schema"/>
+             select="document('../relaxng/fragments-core-1.0.xml')//schema"/>
 
   <xsl:param name="nexamples" select="15"/>
 
@@ -87,6 +87,6 @@
     <xsl:text>,</xsl:text>
     <xsl:value-of select="$f/@color"/>
     <xsl:text>,</xsl:text>
-    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$f/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])"/>
+    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$f/@file and @valid='yes']])"/>
   </xsl:template>
 </xsl:stylesheet>

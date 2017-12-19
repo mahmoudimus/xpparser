@@ -46,7 +46,6 @@ path |= element pathExpr {
   ( element rootExpr { empty }, step* )
 }
 
-
 # ---------------------------------------------------------------------------
 # Allow some functions
 

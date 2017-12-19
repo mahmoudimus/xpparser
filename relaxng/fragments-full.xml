@@ -16,7 +16,7 @@
   </schema>
   <schema file="xpath-2.0-core-join.rnc"
           name="Core 2.0"
-          color="#ccebc5">
+          color="#decbe4">
     <bib>
       <author>Balder ten Cate</author>
       <author>Carsten Lutz</author>
@@ -67,7 +67,7 @@
   </schema>
   <schema file="xpath-emso2-full.rnc"
           name="EMSO2"
-          color="#fed9a6">
+          color="#fbb4ae">
     <bib>
       <author>Mikołaj Bojańczyk</author>
       <author>Anca Muscholl</author>
@@ -82,7 +82,7 @@
   </schema>
   <schema file="xpath-non-mixing-basic.rnc"
           name="NonMixing"
-          color="#b3cde3">
+          color="#fed9a6">
     <bib>
       <author>Wojciech Czerwinski</author>
       <author>Claire David</author>

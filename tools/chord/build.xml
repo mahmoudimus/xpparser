@@ -4,8 +4,8 @@
 
   <description>Extract data from benchmark results.</description>
   
-  <property name="xml" value="xpathmark-full"/>
-  <property name="target.dir" value="$./public_html/chord/"/>
+  <property name="xml" value="xpathmark"/>
+  <property name="target.dir" value="./public_html/chord/"/>
   <property name="project.root" value="../.."/>
   <property name="bench.dir" value="${project.root}/benchmark"/>
   <property name="lib.dir" value="${project.root}/lib"/>
@@ -35,7 +35,7 @@
   <uptodate property="extracted">
     <srcfiles dir="${project.root}/xslt/" includes="matrix.xsl"/>
     <srcfiles dir="./" includes="index.html"/>
-    <srcfiles dir="${bench.dir}" includes="${xml}.xml"/>
+    <srcfiles dir="${bench.dir}" includes="${xml}-full.xml"/>
     <mergemapper to="${target.dir}/${xml}/matrix.json"/>
   </uptodate>
   <target name="matrix" depends="saxon,xtask" unless="extracted">
@@ -52,7 +52,7 @@
            xpath="count(//schema)"
            outputproperty="fragments"/>
     <!-- get the number of entries -->
-    <xpath document="${bench.dir}/${xml}.xml"
+    <xpath document="${bench.dir}/${xml}-xml.xml"
            xpath="count(//xpath/ast)" 
            outputproperty="entries"/><!-- //xpath[ast/descendant::*[local-name() = 'xpathAxis']])" -->
     <!-- process index.html -->
