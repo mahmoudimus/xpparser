@@ -289,6 +289,16 @@
     <validation schema="xpath-3.0.rnc" valid="yes"/>
   </test>
 
+  <test>
+    <query>b and not(/c) or root()/d</query>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+  </test>
+
   <!-- last() -->
 
   <!-- Abstract syntax trees may vary surprisingly

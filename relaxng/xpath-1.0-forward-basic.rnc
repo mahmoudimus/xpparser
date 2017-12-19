@@ -20,10 +20,10 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-forward-orig.rnc" {
   start = root.expr
-        | expr
 }
 
-root.expr = element pathExpr { element rootExpr { empty }, step* }
+root.expr = expr
+        | element pathExpr { element rootExpr { empty }, step* }
         | element pathExpr {
             element stepExpr {
               element filterExpr { fun.root }, predicates?
