@@ -229,6 +229,66 @@
     <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
+  <test>
+    <query>/a</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/> <!-- ??? -->
+
+    <validation schema="data-xpath.rnc" valid="no" />
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>b//a</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/> <!-- ??? -->
+
+    <validation schema="xpath-1.0.rnc" valid="yes"/>
+    <validation schema="xpath-2.0.rnc" valid="yes"/>
+    <validation schema="xpath-3.0.rnc" valid="yes"/>
+  </test>
+
   <!-- last() -->
 
   <!-- Abstract syntax trees may vary surprisingly
@@ -331,14 +391,7 @@
   </test>
 
   <test>
-    <query>//descendant::*[last()]</query>
-    <comment>
-      Note that this particular query is equivalent to taking
-      the last node in the document. However it is not treated
-      as a particular case in our fragments, but supported
-      only when descendant::*[phi][last()] can be justified
-      more generally.
-    </comment>
+    <query>descendant::*[last()]</query>
 
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-core-basic.rnc" valid="no"/>
@@ -353,7 +406,7 @@
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
@@ -361,7 +414,7 @@
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
