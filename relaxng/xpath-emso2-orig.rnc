@@ -21,14 +21,24 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-core-orig.rnc"
 
-# data test using an absolute path on one side
-op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
-    ( element firstOperand  { expr },
-      element secondOperand { rooted.path })
-  | ( element firstOperand  { rooted.path },
-      element secondOperand { expr })
-}
+local.path = element contextItemExpr { empty }
+ | element pathExpr {
+     element stepExpr {
+       ((element xpathAxis { string "self" }, nodetest)
+        | element filterExpr { element contextItemExpr { empty }}),
+       predicates?
+     }
+   }
 
+one.path = element contextItemExpr { empty }
+ | element pathExpr {
+     element stepExpr {
+       ((axis, nodetest)
+        | element filterExpr { element contextItemExpr  { empty }}),
+       predicates?
+     }
+   }
+   
 rooted.path
   = fun.root
   | element pathExpr {
@@ -38,9 +48,7 @@ rooted.path
       element stepExpr { element filterExpr { fun.root } },
       step*
     }
-
-# allow root() function more generally
-primary |= fun.root
+    
 fun.root = element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
@@ -49,3 +57,16 @@ fun.root = element functionCallExpr {
   },
   element arguments { expr* }?
 }
+
+# data test using an absolute path on one side
+op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
+    ( element firstOperand  { expr },
+      element secondOperand { rooted.path })
+  | ( element firstOperand  { rooted.path },
+      element secondOperand { expr })
+  | ( element firstOperand  { local.path },
+      element secondOperand { one.path })
+  | ( element firstOperand  { one.path },
+      element secondOperand { local.path })
+}
+

@@ -81,7 +81,7 @@
     </bib>
   </schema>
   <schema file="xpath-non-mixing-basic.rnc"
-          name="Non-mixing"
+          name="NonMixing"
           color="#b3cde3">
     <bib>
       <author>Wojciech Czerwinski</author>

@@ -51,7 +51,7 @@ fun = element functionCallExpr {
 # Paths
 
 path = element pathExpr {
-  ( element rootExpr { empty }, step* ) | step+
+  step+
 }
 
 step = element stepExpr {
@@ -75,6 +75,7 @@ backward.axis = element xpathAxis {
   | string "ancestor-or-self"
   | string "preceding"
   | string "preceding-sibling"
+  | string "namespace" # obtainable using the ancestor axis
 }
     
 deterministic.axis = element xpathAxis {

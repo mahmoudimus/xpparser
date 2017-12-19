@@ -149,6 +149,7 @@ public class XPathXConverter implements XParserTreeConstants {
         Document doc = e.getOwnerDocument();
         Element ci = eb.createElementNS
             (XQX_NS_URI, is_for ? "xqx:forClauseItem" : "xqx:letClauseItem");
+        eb.enter();
         e.appendChild(ci);
 
         SimpleNode nextChild = parent.getChild(i);
@@ -156,6 +157,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
         Element tvb = eb.createElementNS
             (XQX_NS_URI, "xqx:typedVariableBinding");
+        eb.enter();
         ci.appendChild(tvb);
 
         transformName(nextChild.getChild(0), tvb, nextChild.id, eb);
@@ -167,6 +169,7 @@ public class XPathXConverter implements XParserTreeConstants {
             i++;
             nextChild = parent.getChild(i);
         }
+        eb.leave();
         // end typedVariableBinding
 
         if (nextChild.id == JJTALLOWINGEMPTY) {
@@ -186,7 +189,10 @@ public class XPathXConverter implements XParserTreeConstants {
         Element expr = eb.createElementNS
             (XQX_NS_URI, is_for ? "xqx:forExpr" : "xqx:letExpr");
         ci.appendChild(expr);
+        eb.enter();
         transform(nextChild, expr, eb);
+        eb.leave();
+        eb.leave();
         i++;
         return i;
     }
@@ -223,6 +229,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
         Element e = eb.createElementNS(XQX_NS_URI, "xqx:filterExpr");
         parent.appendChild(e);
+        eb.enter();
         dynamicFunctionInvocation(node, e, start, end - predicates, eb);
 
         if (predicates != 0) {
@@ -230,6 +237,7 @@ public class XPathXConverter implements XParserTreeConstants {
             parent.appendChild(e);
             transformChildren(node, e, end - predicates + 1, end, eb);
         }
+        eb.leave();
     }
 
     protected void dynamicFunctionInvocation(SimpleNode node, 
@@ -244,7 +252,9 @@ public class XPathXConverter implements XParserTreeConstants {
                Element e = eb.createElementNS(XQX_NS_URI,
                                                "xqx:sequenceExpr");
                parent.appendChild(e);
+               eb.enter();
                transform(child, e, eb);
+               eb.leave();
            }
            else
                transform(child, parent, eb);
@@ -259,22 +269,29 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:dynamicFunctionInvocationExpr");
             parent.appendChild(e);
+            eb.enter();
             
             Element e1 = eb.createElementNS
                 (XQX_NS_URI, "xqx:functionItem");
             e.appendChild(e1);
+            eb.enter();
             dynamicFunctionInvocation(node, e1, start, end - predicates, eb);
-
+            eb.leave();
+            
            if (predicates != 0) {
+               eb.enter();
                e1 = eb.createElementNS(XQX_NS_URI, "xqx:predicates");
                e.appendChild(e1);
                transformChildren(node, e1, end - predicates + 1, end, eb);
+               eb.leave();
            }
            
            if (dfi.jjtGetNumChildren() != 0) {
+               eb.enter();
                e1 = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
                e.appendChild(e1);
                transformChildren(dfi, e1, eb);
+               eb.leave();
            }
         }
     }
@@ -377,6 +394,8 @@ public class XPathXConverter implements XParserTreeConstants {
             e.appendChild(doc.createTextNode(text));
         }
         parent.appendChild(e);
+        eb.enter();
+        eb.leave();
         return e;
     }
 
@@ -486,7 +505,9 @@ public class XPathXConverter implements XParserTreeConstants {
 
                 Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
+                eb.enter();
                 simpleElement(e, "xqx:value", content, eb);
+                eb.leave();
                 break;
             }
             
@@ -523,7 +544,9 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS(XQX_NS_URI,
                                             "xqx:namedFunctionRef");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -532,7 +555,9 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element e = eb.createElementNS(XQX_NS_URI,
                                                 "xqx:prolog");
                 parent.appendChild(e);
+                eb.enter();
                 transformChildren(node, e, eb);
+                eb.leave();
             }
             break;
         }
@@ -574,9 +599,11 @@ public class XPathXConverter implements XParserTreeConstants {
             boolean optionality = (node.m_value != null);
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
             if (optionality)
                 e.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:optional"));
+            eb.leave();
             break;
         }
 
@@ -599,7 +626,9 @@ public class XPathXConverter implements XParserTreeConstants {
                      : JJTELEMENTNAME);
                 Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
+                eb.enter();
                 e.appendChild(eb.createElementNS(XQX_NS_URI, "xqx:star"));
+                eb.leave();
                 break;
             } else {
                 transformChildren(node, parent, eb);
@@ -610,7 +639,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTELEMENTNAME: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -704,7 +735,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTWILDCARD: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:Wildcard");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -725,7 +758,9 @@ public class XPathXConverter implements XParserTreeConstants {
             } else {
                 Element e = eb.createElementNS(XQX_NS_URI, "xqx:varRef");
                 parent.appendChild(e);
+                eb.enter();
                 transformName(node.getChild(0), e, "xqx:name", eb);
+                eb.leave();
             }
             break;
         }
@@ -755,11 +790,14 @@ public class XPathXConverter implements XParserTreeConstants {
                 e = eb.createElementNS(XQX_NS_URI, "xqx:typeDeclaration");
                 parent.appendChild(e);
             }
-
+            
             if (node.m_value != null && node.m_value.equals("empty-sequence"))
                 emptyElement(e, "xqx:voidSequenceType", eb);
-            else
+            else {
+                eb.enter();
                 transformChildren(node, e, eb);
+                eb.leave();
+            }
             break;
         }
 
@@ -769,7 +807,9 @@ public class XPathXConverter implements XParserTreeConstants {
                 e = eb.createElementNS(XQX_NS_URI, "xqx:sequenceExpr");
                 parent.appendChild(e);
             }
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -779,7 +819,9 @@ public class XPathXConverter implements XParserTreeConstants {
             // children.
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:simpleMapExpr");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -803,6 +845,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
 
             qname = "xqx:stepExpr";
             for (int i = 0; i < n; i++) {
@@ -817,25 +860,32 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element e1;
                     e1 = eb.createElementNS(XQX_NS_URI, qname);
                     e.appendChild(e1);
+                    eb.enter();
 
                     simpleElement(e1, "xqx:xpathAxis", "descendant-or-self", eb);
                     emptyElement(e1, "xqx:anyKindTest", eb);
+                    eb.leave();
                 }
                 else {
                     assert child.id == JJTAXISSTEP 
                         || child.id == JJTPOSTFIXEXPR;
                     Element e1 = eb.createElementNS(XQX_NS_URI, qname);
                     e.appendChild(e1);
+                    eb.enter();
                     transform(child, e1, eb);
+                    eb.leave();
                 }
             }
+            eb.leave();
             break;
         }
             
         case JJTPREDICATELIST: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:predicates");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -843,14 +893,18 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS(XQX_NS_URI,
                                             "xqx:functionCallExpr");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
         case JJTARGUMENTLIST: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -913,6 +967,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTQUANTIFIEDEXPR: {
             Element qe = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(qe);
+            eb.enter();
             
             simpleElement(qe, "xqx:quantifier", node.m_value, eb);
 
@@ -923,10 +978,12 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element qeic = eb.createElementNS
                     (XQX_NS_URI, "xqx:quantifiedExprInClause");
                 qe.appendChild(qeic);
+                eb.enter();
 
                 Element tvb = eb.createElementNS
                     (XQX_NS_URI, "xqx:typedVariableBinding");
                 qeic.appendChild(tvb);
+                eb.enter();
 
                 transformName(typedVariableBinding.getChild(0),
                               tvb, typedVariableBinding.id, eb);
@@ -940,11 +997,15 @@ public class XPathXConverter implements XParserTreeConstants {
                     i++;
                 }
                 // end typedVariableBinding
+                eb.leave();
+                eb.leave();
 
                 Element se = eb.createElementNS
                     (XQX_NS_URI, "xqx:sourceExpr");
                 qeic.appendChild(se);
+                eb.enter();
                 transform(nextChild, se, eb);
+                eb.leave();
 
                 // end sourceExpr
                 // end quantifiedExprInClause
@@ -954,7 +1015,10 @@ public class XPathXConverter implements XParserTreeConstants {
             Element pe = eb.createElementNS(XQX_NS_URI,
                                              "xqx:predicateExpr");
             qe.appendChild(pe);
+            eb.enter();
             transformChildren(node, pe, n - 1, n - 1, eb);
+            eb.leave();
+            eb.leave();
             // end predicateExpr
             // quantifierExpr
             break;
@@ -963,6 +1027,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTCATCHCLAUSE: {
             Element cc = eb.createElementNS(XQX_NS_URI, "xqx:catchClause");
             parent.appendChild(cc);
+            eb.enter();
 
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
@@ -970,11 +1035,14 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element ce = eb.createElementNS
                         (XQX_NS_URI, "xqx:catchExpr");
                     cc.appendChild(ce);
+                    eb.enter();
                     transform(child, ce, eb);
+                    eb.leave();
                 }
                 else
                     transform(child, cc, eb);
             }
+            eb.leave();
             break;
         }
 
@@ -982,28 +1050,37 @@ public class XPathXConverter implements XParserTreeConstants {
             Element ite = eb.createElementNS
                 (XQX_NS_URI, "xqx:ifThenElseExpr");
             parent.appendChild(ite);
+            eb.enter();
 
             Element ic = eb.createElementNS
                 (XQX_NS_URI, "xqx:ifClause");
             ite.appendChild(ic);
+            eb.enter();
             transformChildren(node, ic, 0, n-3, eb);
 
             Element tc = eb.createElementNS
                 (XQX_NS_URI, "xqx:thenClause");
             ite.appendChild(tc);
+            eb.enter();
             transformChildren(node, tc, n-2, n-2, eb);
+            eb.leave();
 
             Element ec = eb.createElementNS
                 (XQX_NS_URI, "xqx:elseClause");
             ite.appendChild(ec);
+            eb.enter();
             transformChildren(node, ec, n-1, n-1, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
         case JJTFLWOREXPR11: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:flworExpr");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -1017,21 +1094,29 @@ public class XPathXConverter implements XParserTreeConstants {
             Element rse = eb.createElementNS
                 (XQX_NS_URI, "xqx:rangeSequenceExpr");
             parent.appendChild(rse);
+            eb.enter();
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:startExpr");
             rse.appendChild(e);
+            eb.enter();
             transform(node.getChild(0), e, eb);
+            eb.leave();
 
             e = eb.createElementNS
                 (XQX_NS_URI, "xqx:endExpr");
             rse.appendChild(e);
+            eb.enter();
             transform(node.getChild(1), e, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
          
         case JJTUNARYEXPR: {
             Element e = parent;
             for (int i = 0; i < n; i++) {
+                eb.enter();
+                eb.enter();
                 SimpleNode child = node.getChild(i);
                 if (child.id == JJTPLUS) {
                     Element e1 = eb.createElementNS
@@ -1055,6 +1140,10 @@ public class XPathXConverter implements XParserTreeConstants {
                     transform(child, e, eb);
                     break;
                 }
+            }
+            for (int i = 0; i < n; i++) {
+                eb.leave();
+                eb.leave();
             }
             break;
         }
@@ -1165,14 +1254,20 @@ public class XPathXConverter implements XParserTreeConstants {
             }}
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element e1 = eb.createElementNS
                 (XQX_NS_URI, "xqx:firstOperand");
             e.appendChild(e1);
+            eb.enter();
             transform(node.getChild(0), e1, eb);
+            eb.leave();
             Element e2 = eb.createElementNS
                 (XQX_NS_URI, "xqx:secondOperand");
             e.appendChild(e2);
+            eb.enter();
             transform(node.getChild(1), e2, eb);
+            eb.leave();
+            eb.leave();
             
             break;
         }
@@ -1181,7 +1276,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTFORCLAUSE: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -1205,6 +1302,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTGROUPINGSPEC: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
 
             // GroupingSpec ::=
             //     GroupingVariable
@@ -1221,6 +1319,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element gvi = eb.createElementNS
                     (XQX_NS_URI, "xqx:groupVarInitialize");
                 e.appendChild(gvi);
+                eb.enter();
 
                 if (node.getChild(i).id == JJTTYPEDECLARATION) {
                     transformChildren(node, gvi, i, i, eb); i++;
@@ -1229,8 +1328,11 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element vv = eb.createElementNS
                     (XQX_NS_URI, "xqx:varValue");
                 gvi.appendChild(vv);
+                eb.enter();
                 transformChildren(node, vv, i, i, eb); i++;
+                eb.leave();
                 // end varValue
+                eb.leave();
                 // end groupVarInitialize
             }
 
@@ -1238,6 +1340,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 // chunk 3 is present:  "collation" URILiteral
                 this.transformChildren(node, e, i, i, eb); i++;
             }
+            eb.leave();
 
             assert i == n;
             break;
@@ -1251,10 +1354,12 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
 
+            eb.enter();
             if (node.m_value != null && node.m_value.equals("stable")) {
                 emptyElement(e, "xqx:stable", eb);
             }
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -1264,6 +1369,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:orderBySpec");
                 parent.appendChild(e);
+                eb.enter();
                 transform(child, e, eb);
 
                 if (child.id == JJTORDERSPEC) {
@@ -1276,6 +1382,7 @@ public class XPathXConverter implements XParserTreeConstants {
                         }
                     }
                 }
+                eb.leave();
             }
             break;
         }
@@ -1284,11 +1391,13 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:orderByExpr");
             parent.appendChild(e);
+            eb.enter();
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 if (child.id != JJTORDERMODIFIER)
                     transform(child, e, eb);
             }
+            eb.leave();
             break;
         }
 
@@ -1297,13 +1406,16 @@ public class XPathXConverter implements XParserTreeConstants {
                 break;
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
         case JJTPITEST: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:piTest");
             parent.appendChild(e);
+            eb.enter();
 
             if (node.jjtGetNumChildren() > 0) {
                 SimpleNode child = node.getChild(0);
@@ -1313,12 +1425,14 @@ public class XPathXConverter implements XParserTreeConstants {
                     : child.m_value;
                 simpleElement(e, "xqx:piTarget", content, eb);
             }
+            eb.leave();
             break;
         }
 
         case JJTSCHEMAIMPORT: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:schemaImport");
             parent.appendChild(e);
+            eb.enter();
             
             SimpleNode child = node.getChild(0);
             SimpleNode targetNamespace;
@@ -1348,6 +1462,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 simpleElement(e, "xqx:targetLocation",
                               undelimitStringLiteral(tl.getChild(0)), eb);
             }
+            eb.leave();
             
             break;
         }
@@ -1386,9 +1501,11 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTDEFAULTNAMESPACEDECL: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
 
             simpleElement(e, "xqx:defaultNamespaceCategory", node.m_value, eb);
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -1417,17 +1534,23 @@ public class XPathXConverter implements XParserTreeConstants {
                 : qname;
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
+            eb.enter();
             transformChildren(node, ae, 0, 0, eb);
+            eb.leave();
             // end argExpr
             if (id != JJTCASTEXPR && id != JJTCASTABLEEXPR) {
                 Element st = eb.createElementNS(XQX_NS_URI,
                                                  "xqx:sequenceType");
                 e.appendChild(st);
+                eb.enter();
                 transformChildren(node, st, 1, 1, eb);
+                eb.leave();
             } else
                 transformChildren(node, e, 1, 1, eb);
+            eb.leave();
             break;
         }
 
@@ -1435,18 +1558,25 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTUNORDEREDEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
+            eb.enter();
             transformChildren(node, ae, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
         case JJTTYPESWITCHEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
+            eb.enter();
             transformChildren(node, ae, 0, 0, eb);
+            eb.leave();
             // end argExpr
 
             int startOfDefault = n - 2;
@@ -1459,15 +1589,20 @@ public class XPathXConverter implements XParserTreeConstants {
             Element tedc = eb.createElementNS
                 (XQX_NS_URI, "xqx:typeswitchExprDefaultClause");
             e.appendChild(tedc);
+            eb.enter();
             if (startOfDefault == n - 2) {
                 transformChildren(node, tedc, startOfDefault, startOfDefault, eb);
                 startOfDefault++;
             }
+            eb.leave();
             Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             tedc.appendChild(re);
+            eb.enter();
             transformChildren(node, re, startOfDefault, startOfDefault, eb);
+            eb.leave();
             // end resultExpr
+            eb.leave();
             // end typeswitchExprDefaultClause
             break;
         }
@@ -1476,6 +1611,7 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:typeswitchExprCaseClause");
             parent.appendChild(e);
+            eb.enter();
 
             int currentChild = 0;
             if (n == 3) {
@@ -1488,7 +1624,10 @@ public class XPathXConverter implements XParserTreeConstants {
             Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             e.appendChild(re);
+            eb.enter();
             transformChildren(node, re, currentChild, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -1503,16 +1642,21 @@ public class XPathXConverter implements XParserTreeConstants {
             } else {
                 Element e = eb.createElementNS(XQX_NS_URI, qname);
                 parent.appendChild(e);
+                eb.enter();
                 transformChildren(node, e, eb);
+                eb.leave();
             }
             break;
             
         case JJTSWITCHEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
+            eb.enter();
             transformChildren(node, ae, 0, 0, eb);
+            eb.leave();
             
             int startOfDefault = n - 1;
             transformChildren(node, e, 1, startOfDefault - 1, eb);
@@ -1520,10 +1664,15 @@ public class XPathXConverter implements XParserTreeConstants {
             Element sedc = eb.createElementNS
                 (XQX_NS_URI, "xqx:switchExprDefaultClause");
             e.appendChild(sedc);
+            eb.enter();
             Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             sedc.appendChild(re);
+            eb.enter();
             transformChildren(node, re, startOfDefault, startOfDefault, eb);
+            eb.leave();
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -1531,18 +1680,24 @@ public class XPathXConverter implements XParserTreeConstants {
             Element secc = eb.createElementNS
                 (XQX_NS_URI, "xqx:switchExprCaseClause");
             parent.appendChild(secc);
+            eb.enter();
 
             for (int i = 0; i < n - 1; i++) {
                 Element sce = eb.createElementNS
                     (XQX_NS_URI, "xqx:switchCaseExpr");
                 secc.appendChild(sce);
+                eb.enter();
                 transformChildren(node, sce, i, i, eb);
+                eb.leave();
             }
 
             Element re = eb.createElementNS
                 (XQX_NS_URI, "xqx:resultExpr");
             secc.appendChild(re);
+            eb.enter();
             transformChildren(node, re, n - 1, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -1550,19 +1705,25 @@ public class XPathXConverter implements XParserTreeConstants {
             qname = xqxElementName(node.getChild(n - 1).id);
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
             
         case JJTANNOTATION: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, 0, 0, eb);
             if ( n > 1 ) {
                 Element a = eb.createElementNS(XQX_NS_URI, "xqx:arguments");
                 e.appendChild(a);
+                eb.enter();
                 transformChildren(node, a, 1, eb);
+                eb.leave();
             }
+            eb.leave();
             break;
         }
 
@@ -1588,7 +1749,9 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:functionBody");
                 parent.appendChild(e);
+                eb.enter();
                 transformChildren(node, e, start, end, eb);
+                eb.leave();
             }
             break;
         }
@@ -1597,6 +1760,7 @@ public class XPathXConverter implements XParserTreeConstants {
             Element ife = eb.createElementNS
                 (XQX_NS_URI, "xqx:inlineFunctionExpr");
             parent.appendChild(ife);
+            eb.enter();
             int start = 0;
             int end = n - 1;
 
@@ -1615,13 +1779,18 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element td = eb.createElementNS
                     (XQX_NS_URI, "xqx:typeDeclaration");
                 ife.appendChild(td);
+                eb.enter();
                 transformChildren(node, td, start, start++, eb);
+                eb.leave();
             }
 
             Element fb = eb.createElementNS
                 (XQX_NS_URI, "xqx:functionBody");
             ife.appendChild(fb);
+            eb.enter();
             transformChildren(node, fb, start, end, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -1633,7 +1802,9 @@ public class XPathXConverter implements XParserTreeConstants {
                         Element e = eb.createElementNS
                             (XQX_NS_URI, "xqx:external");
                         parent.appendChild(e);
+                        eb.enter();
                         transformChildren(node, e, n - 1, n - 1, eb);
+                        eb.leave();
                         i++;
                     }
                     else {
@@ -1648,13 +1819,16 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTVARDEFAULTVALUE: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:varValue");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
         case JJTCONTEXTITEMDECL: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
                 switch (child.id) {
@@ -1663,7 +1837,9 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element td = eb.createElementNS
                         (XQX_NS_URI, "xqx:typeDeclaration");
                     e.appendChild(td);
+                    eb.enter();
                     transform(child, td, eb);
+                    eb.leave();
                     break;
                 }
 
@@ -1672,7 +1848,9 @@ public class XPathXConverter implements XParserTreeConstants {
                         Element ex = eb.createElementNS
                             (XQX_NS_URI, "xqx:typeDeclaration");
                         e.appendChild(ex);
+                        eb.enter();
                         transformChildren(node, ex, n - 1, n - 1, eb);
+                        eb.leave();
                         i++;
                     } else {
                         emptyElement(e, "xqx:external", eb);
@@ -1680,10 +1858,14 @@ public class XPathXConverter implements XParserTreeConstants {
                     break;
                 }
 
-                default:
+                default:  {
+                    eb.leave();
                     this.transform(child, parent, eb);
+                    eb.enter();
+                }
                 }
             }
+            eb.leave();
             break;
         }
 
@@ -1693,6 +1875,7 @@ public class XPathXConverter implements XParserTreeConstants {
 
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             child = node.getChild(i);
             if (child.id == JJTQNAME || child.id == JJTURIQUALIFIEDNAME) {
                 transform(child, e, eb);
@@ -1708,9 +1891,12 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element dfp = eb.createElementNS
                     (XQX_NS_URI, "xqx:decimalFormatParam");
                 e.appendChild(dfp);
+                eb.enter();
                 transform(paramName, dfp, eb);
                 transform(paramValue, dfp, eb);
+                eb.leave();
             }
+            eb.leave();
             break;
         }
 
@@ -1723,6 +1909,7 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTTUMBLINGWINDOWCLAUSE: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             
             int i = 0;
             SimpleNode child = null;
@@ -1734,6 +1921,7 @@ public class XPathXConverter implements XParserTreeConstants {
             Element tvb = eb.createElementNS
                 (XQX_NS_URI, "xqx:typedVariableBinding");
             e.appendChild(tvb);
+            eb.enter();
             transformName(child.getChild(0), tvb, child.id, eb);
             i++;
 
@@ -1743,6 +1931,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 transform(child, tvb, eb);
                 i++;
             }
+            eb.leave();
             // end typedVariableBinding
 
             for (; i < n; i++) {
@@ -1755,26 +1944,34 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element bs = eb.createElementNS
                         (XQX_NS_URI, "xqx:bindingSequence");
                     e.appendChild(bs);
+                    eb.enter();
                     transform(child, bs, eb);
+                    eb.leave();
                 }
             }
+            eb.leave();
             break;
         }
 
         case JJTWINDOWSTARTCONDITION: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transform(node.getChild(0), e, eb);
             Element wse = eb.createElementNS
                 (XQX_NS_URI, "xqx:winStartExpr");
             e.appendChild(wse);
+            eb.enter();
             transform(node.getChild(1), wse, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
         case JJTWINDOWENDCONDITION: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
 
             if (node.m_value != null && node.m_value.equals("only"))
                 e.setAttributeNS(XQX_NS_URI, "xqx:onlyEnd", "true");
@@ -1783,7 +1980,10 @@ public class XPathXConverter implements XParserTreeConstants {
             Element wee = eb.createElementNS
                 (XQX_NS_URI, "xqx:winEndExpr");
             e.appendChild(wee);
+            eb.enter();
             transform(node.getChild(1), wee, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -1827,7 +2027,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTVOID: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
             
@@ -1862,7 +2064,9 @@ public class XPathXConverter implements XParserTreeConstants {
             qname = xqxElementName(lastChildId);
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -1873,7 +2077,9 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:paramTypeList");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, 0, n - 2, eb);
+            eb.leave();
             transformChildren(node, parent, n - 1, eb);
             break;
         }
@@ -1888,15 +2094,18 @@ public class XPathXConverter implements XParserTreeConstants {
              */
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             SimpleNode ncname = node.getChild(0);
             simpleElement(e, "xqx:prefix", ncname.m_value, eb);
             transformChildren(node, e, 1, 1, eb);
+            eb.leave();
             break;
         }
 
         case JJTPRAGMA: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             boolean foundPragmaContents = false;
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
@@ -1907,19 +2116,23 @@ public class XPathXConverter implements XParserTreeConstants {
             if (!foundPragmaContents) {
                 emptyElement(e, "xqx:pragmaContents", eb);
             }
+            eb.leave();
             break;
         }
 
         case JJTPRAGMACONTENTS: {
             Element e = eb.createElementNS(XQX_NS_URI, "xqx:pragmaContents");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
         case JJTEXTENSIONEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
@@ -1929,17 +2142,21 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element ae = eb.createElementNS
                         (XQX_NS_URI, "xqx:argExpr");
                     e.appendChild(ae);
+                    eb.enter();
                     transform(child, ae, eb);
+                    eb.leave();
                 } else {
                     transform(child, e, eb);
                 }
             }
+            eb.leave();
             break;
         }
             
         case JJTVALIDATEEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             for (int i = 0; i < n; i++) {
                 SimpleNode child = node.getChild(i);
 
@@ -1953,11 +2170,14 @@ public class XPathXConverter implements XParserTreeConstants {
                     Element ae = eb.createElementNS
                         (XQX_NS_URI, "xqx:argExpr");
                     e.appendChild(ae);
+                    eb.enter();
                     transform(child, ae, eb);
+                    eb.leave();
                 }
                     
                 }
             }
+            eb.leave();
             break;
         }
 
@@ -2036,7 +2256,9 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedCommentConstructor");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -2044,13 +2266,19 @@ public class XPathXConverter implements XParserTreeConstants {
             Element ae = eb.createElementNS
                 (XQX_NS_URI, "xqx:argExpr");
             parent.appendChild(ae);
+            eb.enter();
             Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             ae.appendChild(sce);
+            eb.enter();
             Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
+            eb.enter();
+            eb.leave();
             transformChildren(node, sce, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -2094,18 +2322,26 @@ public class XPathXConverter implements XParserTreeConstants {
             Element ctc = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedTextConstructor");
             parent.appendChild(ctc);
+            eb.enter();
             Element ae = eb.createElementNS
                 (XQX_NS_URI, "xqx:argExpr");
             ctc.appendChild(ae);
+            eb.enter();
             Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             ae.appendChild(sce);
+            eb.enter();
             Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
+            eb.enter();
             v.appendChild(doc.createTextNode("<![CDATA["));
             transformChildren(node, v, eb);
             v.appendChild(doc.createTextNode("]]>"));
+            eb.leave();
+            eb.leave();
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -2113,7 +2349,9 @@ public class XPathXConverter implements XParserTreeConstants {
             Element cpc = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedPIConstructor");
             parent.appendChild(cpc);
+            eb.enter();
             transformChildren(node, cpc, eb);
+            eb.leave();
             break;
         }
 
@@ -2125,13 +2363,19 @@ public class XPathXConverter implements XParserTreeConstants {
             Element pve = eb.createElementNS
                 (XQX_NS_URI, "xqx:piValueExpr");
             parent.appendChild(pve);
+            eb.enter();
             Element sce = eb.createElementNS
                 (XQX_NS_URI, "xqx:stringConstantExpr");
             pve.appendChild(sce);
+            eb.enter();
             Element v = eb.createElementNS
                 (XQX_NS_URI, "xqx:value");
             sce.appendChild(v);
+            eb.enter();
             transformChildren(node, v, eb);
+            eb.leave();
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -2155,9 +2399,13 @@ public class XPathXConverter implements XParserTreeConstants {
             }
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             Element ae = eb.createElementNS(XQX_NS_URI, "xqx:argExpr");
             e.appendChild(ae);
+            eb.enter();
             transformChildren(node, ae, eb);
+            eb.leave();
+            eb.leave();
             break;
         }
 
@@ -2175,6 +2423,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 : "xqx:computedElementConstructor";
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             int start = 0;
             if (node.getChild(0).id == JJTLBRACE) {
                 qname = (id == JJTCOMPPICONSTRUCTOR)
@@ -2182,8 +2431,10 @@ public class XPathXConverter implements XParserTreeConstants {
                     : "xqx:tagNameExpr";
                 Element te = eb.createElementNS(XQX_NS_URI, qname);
                 e.appendChild(te);
+                eb.enter();
 
                 transformChildren(node, te, 1, 1, eb);
+                eb.leave();
                 start += 3;
             } else {
                 transformChildren(node, e, 0, 0, eb);
@@ -2196,14 +2447,17 @@ public class XPathXConverter implements XParserTreeConstants {
                      (id == JJTCOMPATTRCONSTRUCTOR)
                      ? "xqx:valueExpr" : "xqx:piValueExpr");
                 e.appendChild(te);
+                eb.enter();
                 
                 if (getNumExprChildren(node, start) == 0) {
                     emptyElement(te, "xqx:sequenceExpr", eb);
                 } else
                     transformChildren(node, te, start, eb);
+                eb.leave();
             } else
                 transformChildren(node, e, start, eb);
 
+            eb.leave();
             break;
         }
 
@@ -2211,7 +2465,9 @@ public class XPathXConverter implements XParserTreeConstants {
             Element e = eb.createElementNS
                 (XQX_NS_URI, "xqx:computedNamespaceConstructor");
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -2224,7 +2480,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTPREFIXEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
          
@@ -2238,7 +2496,9 @@ public class XPathXConverter implements XParserTreeConstants {
         case JJTCONTENTEXPR: {
             Element e = eb.createElementNS(XQX_NS_URI, qname);
             parent.appendChild(e);
+            eb.enter();
             transformChildren(node, e, eb);
+            eb.leave();
             break;
         }
 
@@ -2247,6 +2507,7 @@ public class XPathXConverter implements XParserTreeConstants {
                 Element e = eb.createElementNS
                     (XQX_NS_URI, "xqx:attributeList");
                 parent.appendChild(e);
+                eb.enter();
                 Element tn = e;
 
                 for (int i = 0; i < n; i++) {
@@ -2262,6 +2523,7 @@ public class XPathXConverter implements XParserTreeConstants {
                     }
                     transform(child, tn, eb);
                 }
+                eb.leave();
                 
             }
             break;

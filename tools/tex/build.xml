@@ -11,6 +11,18 @@
   <target name="all">
     <!-- matrices -->
     <antcall target="matrix">
+      <param name="fragments" value="orig" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="basic" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
+      <param name="fragments" value="full" />
+      <param name="benchmarks" value="all-full" />
+    </antcall>
+    <antcall target="matrix">
       <param name="fragments" value="core-1.0" />
       <param name="benchmarks" value="all-full" />
     </antcall>

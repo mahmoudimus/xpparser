@@ -19,7 +19,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-emso2-basic" {
+include "xpath-emso2-basic.rnc" {
   start = emso2.expr
 }
 

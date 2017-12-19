@@ -13,7 +13,7 @@ echo "\\midrule"
 for ((i = 0; i < ${#xmlarray[@]}; ++i))
 do
     printf "${names[$i]} "
-    echo "`./numbers.sh $path/${xmlarray[$i]}$2.xml 'xpath-1.0-core-join.rnc.*yes' 'xpath-2.0-core-join.rnc.*yes' 'xpath-1.0-downward-orig.rnc.*yes' 'xpath-1.0-vertical-orig.rnc.*yes' 'xpath-1.0-forward-orig.rnc.*yes' 'xpath-emso2-join.rnc.*yes' 'xpath-patterns-orig.rnc.*yes'`\\\\"
+    echo "`./numbers.sh $path/${xmlarray[$i]}$2.xml 'xpath-1.0-core-join.rnc.*yes' 'xpath-2.0-core-join.rnc.*yes' 'xpath-1.0-downward-orig.rnc.*yes' 'xpath-1.0-vertical-orig.rnc.*yes' 'xpath-1.0-forward-orig.rnc.*yes' 'xpath-emso2-join.rnc.*yes' 'xpath-non-mixing-orig.rnc.*yes'`\\\\"
 done
 echo "\\bottomrule"
 

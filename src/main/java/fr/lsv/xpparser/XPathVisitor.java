@@ -566,7 +566,9 @@ public class XPathVisitor implements XParserVisitor, XParserTreeConstants {
             int nChildren = node.jjtGetNumChildren();
             NodeList nl =
                 (NodeList) visit(node.getChild(nChildren - 1), data);
-            return new NodeList(nl.getBool(), nl.getList());
+            // more than two children means a positional variable
+            return new NodeList((nChildren <= 2) && nl.getBool(),
+                                nl.getList());
         }
 
         case JJTTYPEDECLARATION: {

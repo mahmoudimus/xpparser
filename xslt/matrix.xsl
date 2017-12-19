@@ -4,7 +4,7 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="document('../relaxng/meta.xml')//schema"/>
+             select="document('../relaxng/fragments-core-1.0.xml')//schema"/>
 
   <xsl:param name="nexamples" select="15"/>
 
@@ -59,7 +59,7 @@
     <xsl:param name="source"/>
     <xsl:param name="target"/>
     <xsl:param name="root"/>
-    <xsl:variable name="examples" select="$root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no'] and ast/descendant::*[local-name() = 'xpathAxis']]"/> 
+    <xsl:variable name="examples" select="$root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no']]"/> 
     <xsl:text>{ "z": </xsl:text><xsl:value-of select="count($examples)"/>
     <xsl:if test="$examples">
       <xsl:text>, "examples": [</xsl:text>
@@ -87,6 +87,6 @@
     <xsl:text>,</xsl:text>
     <xsl:value-of select="$f/@color"/>
     <xsl:text>,</xsl:text>
-    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$f/@file and @valid='yes'] and ast/descendant::*[local-name() = 'xpathAxis']])"/>
+    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$f/@file and @valid='yes']])"/>
   </xsl:template>
 </xsl:stylesheet>

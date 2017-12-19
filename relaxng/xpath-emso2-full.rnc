@@ -20,7 +20,8 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-emso2-join.rnc"
 include "misc/id.rnc"
-include "expr/varref.rnc"
+
+#include "expr/varref.rnc"
+#primary |= varref
 
 path |= id.rootedpath 
-primary |= varref

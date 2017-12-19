@@ -24,15 +24,15 @@
 		  <xsl:variable name="schema" select="@schema" />
 		  <xsl:variable name="expected" select="@valid" />
 
-		  <xsl:if test="not($results/xpath[query/text()=$query]/validation[@schema=$schema])">
+                  <xsl:if test="not($results/xpath[query/text()=$query]/schemas/validation[@schema = $schema])">
 			<failure text="test result not found">
 			  <xsl:attribute name="schema">
-				<xsl:value-of select="@schema" />
+				<xsl:value-of select="$schema" />
 			  </xsl:attribute>
 			</failure>
 		  </xsl:if>
 
-		  <xsl:if test="$results/xpath[query/text()=$query]/validation[@schema=$schema][@valid!=$expected]">
+                  <xsl:if test="$results/xpath[query/text()=$query]/schemas/validation[@schema=$schema][@valid!=$expected]">
 			<failure text="incorrect validation result">
 			  <xsl:attribute name="schema">
 				<xsl:value-of select="@schema" />

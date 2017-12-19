@@ -20,9 +20,9 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-core-join.rnc"
 
-include "expr/varref.rnc"
-primary |= varref
-join.primary |= varref
+# include "expr/varref.rnc"
+# primary |= varref
+# join.primary |= varref
 
 include "expr/last.rnc" {
   last.axis = axis

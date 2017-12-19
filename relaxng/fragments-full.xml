@@ -14,9 +14,9 @@
       <doi>10.1145/1456650.1456653</doi>
     </bib>
   </schema>
-  <schema file="xpath-2.0-core-full.rnc"
+  <schema file="xpath-2.0-core-join.rnc"
           name="Core 2.0"
-          color="#ccebc5">
+          color="#decbe4">
     <bib>
       <author>Balder ten Cate</author>
       <author>Carsten Lutz</author>
@@ -28,7 +28,7 @@
       <doi>10.1145/1568318.1568321</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-downward-full.rnc"
+  <schema file="xpath-1.0-downward-last.rnc"
           name="Downward"
           color="#b3cde3">
     <bib>
@@ -40,7 +40,7 @@
       <doi>10.1145/2362355.2362362</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-forward-full.rnc"
+  <schema file="xpath-1.0-forward-last.rnc"
           name="Forward"
           color="#b3cde3">
     <bib>
@@ -67,7 +67,7 @@
   </schema>
   <schema file="xpath-emso2-full.rnc"
           name="EMSO2"
-          color="#fed9a6">
+          color="#fbb4ae">
     <bib>
       <author>Mikołaj Bojańczyk</author>
       <author>Anca Muscholl</author>
@@ -80,9 +80,9 @@
       <doi>10.1145/1516512.1516515</doi>
     </bib>
   </schema>
-  <schema file="xpath-non-mixing-full.rnc"
-          name="Non-mixing"
-          color="#b3cde3">
+  <schema file="xpath-non-mixing-basic.rnc"
+          name="NonMixing"
+          color="#fed9a6">
     <bib>
       <author>Wojciech Czerwinski</author>
       <author>Claire David</author>

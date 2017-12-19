@@ -18,7 +18,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-basic" 
+include "xpath-1.0-core-basic.rnc" 
 
 # Allowing some use of last()
 include "expr/last.rnc" {

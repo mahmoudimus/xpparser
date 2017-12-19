@@ -56,12 +56,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
     </subant>
   </target>
 
-  <target name="test">
-    <echo>Tests are currently disabled.</echo>
-    <echo>Expected results should be carefully updated</echo>
-    <echo>following the refactoring of our fragments.</echo>
-  </target>
-  <target name="test_disabled" description="Run sanity tests" depends="all" unless="testuptodate" >
+  <target name="test" description="Run sanity tests" depends="all" unless="testuptodate" >
     <uptodate property="testuptodate" targetfile="test/failures.xml">
       <srcfiles dir="." includes="test/tests.xml"/>
       <srcfiles dir="relaxng" includes="xpath*rnc"/>
@@ -73,7 +68,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
       <arg value="//query" />
       <arg value="test/tests.xml" />
       <arg value="--rnc" />
-      <arg value="relaxng/xpath*rnc" />
+      <arg value="relaxng/xpath*rnc relaxng/data-xpath.rnc" />
     </exec>
     <xslt in="test/tests.xml" out="test/failures.xml" style="test/failures.xslt" />
     <exec executable="sh" failonerror="true">

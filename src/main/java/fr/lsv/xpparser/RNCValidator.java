@@ -55,11 +55,11 @@ public class RNCValidator implements Validator {
             throw new SAXException(e);
         }
 
-        //this.f = TransformerFactory.newInstance();
+        this.f = TransformerFactory.newInstance();
     }
 
     public void validate(Source source) throws IOException, SAXException {
-        this.f = TransformerFactory.newInstance();
+        //this.f = TransformerFactory.newInstance();
         eh.reset();
         try {
             f.newTransformer().transform
