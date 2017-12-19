@@ -2,4 +2,6 @@ test/failures.xml
 test/results.xml
 benchmark/*.log
 tools/tex/*.tex
-./xpparser
+xpparser
+lib/
+target/
