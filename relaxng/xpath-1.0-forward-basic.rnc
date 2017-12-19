@@ -24,7 +24,12 @@ include "xpath-1.0-forward-orig.rnc" {
 }
 
 root.expr = element pathExpr { element rootExpr { empty }, step* }
-        | root.op | root.path | root.primary
+        | element pathExpr {
+            element stepExpr {
+              element filterExpr { fun.root }, predicates?
+            }, step*
+          }
+        | root.op | root.fun
 
 root.op = element ( andOp | orOp | unionOp ) {
   element firstOperand  { root.expr },
@@ -35,17 +40,6 @@ root.fun = fun.root | element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
   element arguments { root.expr* }?
 }
-
-root.path = element pathExpr {
-  root.step+
-}
-
-root.step = element stepExpr {
-  ((axis, nodetest) | element filterExpr { root.primary } ),
-  predicates?
-}
-
-root.primary = root.fun
 
 fun.root = element functionCallExpr {
   element functionName {
