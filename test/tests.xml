@@ -1,15 +1,21 @@
 <tests>
 
   <test>
-    <query>/foo/bar</query>
+    <query>foo/bar</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
     <validation schema="data-xpath.rnc" valid="yes"/>
   </test>
 
   <test>
-    <query>/foo/@a = /bar/@b</query>
+    <query>foo/@a = bar/@b</query>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="data-xpath.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>/foo/bar</query>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
   </test>
 
   <!-- navigation -->
@@ -347,14 +353,16 @@
     <validation schema="xpath-2.0.rnc" valid="yes"/>
     <validation schema="xpath-3.0.rnc" valid="yes"/>
 
-    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
 
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-full.rnc" valid="no"/>
 
-    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
   <test>
