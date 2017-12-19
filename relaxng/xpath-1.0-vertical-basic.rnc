@@ -30,6 +30,17 @@ primary |=  element contextItemExpr { empty }
 
 include "expr/cst.rnc"
 
+op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { expr } )
+}
+
 op |= cst.op
 
 # ---------------------------------------------------------------------------
