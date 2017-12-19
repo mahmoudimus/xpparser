@@ -18,45 +18,12 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-downward-orig.rnc"
-
-# ---------------------------------------------------------------------------
-# Allow constants
-
-primary |=  element contextItemExpr { empty }
-         |  literal
-         |  fun
-         |  element sequenceExpr { expr* }
-
-include "expr/cst.rnc"
-
-op |= cst.op
-
-# ---------------------------------------------------------------------------
-# Allow some functions
-
-fun |= cst.fun | fun.child | fun.name
-
-# has-children() admissible when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-# various name accessor functions are admissible
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
-  },
-  element arguments { expr* }?
+include "xpath-1.0-forward-basic.rnc" {
+  axis = element xpathAxis {
+    ( string "child"
+    | string "attribute"
+    | string "self"
+    | string "descendant-or-self"
+    | string "descendant" )
+  }
 }
