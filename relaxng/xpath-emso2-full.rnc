@@ -24,4 +24,4 @@ include "misc/id.rnc"
 #include "expr/varref.rnc"
 #primary |= varref
 
-path |= id.rootedpath 
+path |= id.path 
