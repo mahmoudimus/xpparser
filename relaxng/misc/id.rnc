@@ -32,13 +32,13 @@ id.fun |= element functionCallExpr {
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "id" | string "idref" | string "element-with-id" )
   },
-  element arguments { id.path? }?
+  element arguments { (id.path | id.primary)? }?
 }
 
 # ----------------------------------------------------------------
 # Paths
 
-id.path = id.rootedpath | id.notrootedpath
+id.path = id.rootedpath | id.notrootedpath | id.fun
 
 id.rootedpath = element pathExpr {
   ( element rootExpr { empty } 
