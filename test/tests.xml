@@ -261,7 +261,7 @@
   </test>
 
   <test>
-    <query>b//a</query>
+    <query>b[//a]</query>
 
     <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
