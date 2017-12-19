@@ -712,7 +712,6 @@
   </test>
 
   <!-- id -->
-
   <test>
     <query>child::a[id(child::b)]</query>
     <validation schema="xpath-1.0-vertical-id.rnc" valid="no" />
@@ -736,6 +735,127 @@
   <test>
     <query>//id(child::a)[child::b]</query>
     <validation schema="xpath-1.0-vertical-id.rnc" valid="yes" />
+  </test>
+
+  <!-- constants -->
+  <test>
+    <query>1 eq foo/@bar</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>1 = foo/@bar</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>1 ne foo/@bar</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>1 lt foo/@bar</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/> <!-- ??? -->
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
+  </test>
+
+  <test>
+    <query>1+1 = foo/@bar</query>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+  </test>
+
+  <test>
+    <query>not("foo" = bar)</query>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="no"/>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="no"/>
   </test>
 
 </tests>
