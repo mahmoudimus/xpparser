@@ -823,7 +823,7 @@
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
     <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
-    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/> <!-- ??? -->
+    <validation schema="xpath-non-mixing-basic.rnc" valid="no"/>
 
     <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
@@ -872,6 +872,26 @@
     <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
     <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
     <validation schema="xpath-non-mixing-basic.rnc" valid="no"/>
+  </test>
+
+  <test>
+    <query>1+1 lt 1 and a/b/c</query>
+
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-basic.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
 </tests>
