@@ -6,7 +6,9 @@
 # Database Theory (ICDT 2016), volume 48 of LIPIcs, article 20, LZI,
 # 2016.  doi:10.4230/LIPIcs.ICDT.2016.20.
 #
-# Copyright (C) 2017  Sylvain Schmitz (ENS Cachan)
+#
+# Copyright (C) 2016-2017
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,23 +26,64 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-2.0-core-basic.rnc" {
-    start = pattern.expr
+include "xpath-non-mixing-orig.rnc"
+
+# ---------------------------------------------------------------------------
+# Allow constant operations
+
+pos.op |= cst.op
+
+neg.op |= cst.op
+
+# ---------------------------------------------------------------------------
+# Root navigation
+
+pos.path |= element pathExpr {
+  element rootExpr { empty }, pos.step*
+}
+pos.step |= element stepExpr { element filterExpr { fun.root } }
+
+neg.path |= element pathExpr {
+  element rootExpr { empty }, neg.step*
+}
+neg.step |= element stepExpr { element filterExpr { fun.root } }
+
+# ---------------------------------------------------------------------------
+# Allow some functions
+
+fun |= cst.fun | fun.root | fun.child | fun.name
+
+# root() admissible when both the ancestor and parent axes are available using
+# `ancestor-or-self::*[not(parent::*)]'
+fun.root = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "root")
+  },
+  element arguments { expr* }?
 }
 
-primary |=  element contextItemExpr { empty }
-         |  cst.expr
-         |  fun
-         |  element sequenceExpr { expr* }
+# has-children() admissible when the child axis is available
+fun.child =  element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "has-children" )
+  },
+  element arguments { expr* }?
+}
 
-pattern.expr = pos.expr | neg.expr 
-     | element unionOp {
-        element firstOperand  { pattern.expr },
-        element secondOperand { pattern.expr }
-      }
-
-pos.expr |= expr
-neg.expr |= expr
-
-include "expr/pos.rnc"
-include "expr/neg.rnc"
+# various name accessor functions are admissible
+fun.name = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "name"
+    | string "local-name"
+    | string "namespace-uri"
+    | string "node-name"
+    )
+  },
+  element arguments { expr* }?
+}

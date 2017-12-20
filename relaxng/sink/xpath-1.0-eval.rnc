@@ -5,7 +5,8 @@
 # evaluation in linear time_, Journal of the ACM, Volume 58(4),
 # Article No. 17, 2011.  doi:10.1145/1989727.1989731
 #
-# Copyright (C) 2017  Sylvain Schmitz (ENS Cachan)
+# Copyright (C) 2016-2017
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -1,6 +1,7 @@
 # XPath 1.0-vertical fragment with variables
 #
-# Copyright (C) 2016  Sylvain Schmitz (ENS Cachan)
+# Copyright (C) 2016-2017
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +19,37 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-forward-orig.rnc"
+include "xpath-1.0-forward-orig.rnc" {
+  start = root.expr
+}
+
+root.expr = expr
+        | element pathExpr { element rootExpr { empty }, step* }
+        | element pathExpr {
+            element stepExpr {
+              element filterExpr { fun.root }, predicates?
+            }, step*
+          }
+        | root.op | root.fun
+
+root.op = element ( andOp | orOp | unionOp ) {
+  element firstOperand  { root.expr },
+  element secondOperand { root.expr }
+}
+
+root.fun = fun.root | element functionCallExpr {
+  element functionName { external "fn/bool.rnc" },
+  element arguments { root.expr* }?
+}
+
+fun.root = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "root")
+  },
+  element arguments { expr* }?
+}
 
 # ---------------------------------------------------------------------------
 # Allow constants
@@ -29,6 +60,17 @@ primary |=  element contextItemExpr { empty }
          |  element sequenceExpr { expr* }
 
 include "expr/cst.rnc"
+
+op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
+              | ltOp | leOp | gtOp | geOp           # order
+              | lessThanOp  | lessThanOrEqualOp
+              | greaterThanOp | greaterThanOrEqualOp
+              ) {
+    ( element firstOperand  { expr },
+      element secondOperand { cst.expr })
+  | ( element firstOperand  { cst.expr },
+      element secondOperand { expr } )
+}
 
 op |= cst.op
 
