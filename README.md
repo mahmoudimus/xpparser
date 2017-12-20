@@ -22,7 +22,7 @@ directory, running `ant javacc` will download the necessary libraries and
 regenerate the parser sources.
 
 
-## Benchmark
+## XPath Benchmark
 
 __XPath Parser__ has been used to construct a benchmark of XPath
 queries extracted from XSLT or XQuery files from several open-source
@@ -35,7 +35,7 @@ some machines an "out of memory" error may happen while building the
 benchmark; in that case, it may help to tweak `MAX_AST_SIZE` in
 `src/main/java/fr/lsv/xpparser/XPathEntry.java`.
 
-The RelaX NG specifications are defined in `relaxng/*rnc`. They are
+The Relax NG specifications are defined in `relaxng/*rnc`. They are
 briefly described, by group, in `relaxng/fragments-*.rnc` files.
 
 The subdirectory `tools` contains utilities for extracting statistics
