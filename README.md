@@ -24,13 +24,19 @@ regenerate the parser sources.
 
 ## Benchmark
 
-The benchmark is compiled and checked against fragments by running `ant`
-in the `benchmark` subdirectory. On some machines an "out of memory"
-error may happen while building the benchmark; in that case, it may help
-to tweak `MAX_AST_SIZE` in `src/main/java/fr/lsv/xpparser/XPathEntry.java`.
+__XPath Parser__ has been used to construct a benchmark of XPath
+queries extracted from XSLT or XQuery files from several open-source
+projects.  The lastest release of this benchmark is
+[xpath-benchmark-1.0](http://www.lsv.fr/~schmitz/code/xpath-benchmark-1.0.tar.bz2).
 
-Fragments are defined in `relaxng/*rnc`. They are briefly described, by
-group, in `relaxng/fragments-*.rnc` files.
+The benchmark can be compiled and checked against Relax NG
+specifications by running `ant` in the `benchmark` subdirectory. On
+some machines an "out of memory" error may happen while building the
+benchmark; in that case, it may help to tweak `MAX_AST_SIZE` in
+`src/main/java/fr/lsv/xpparser/XPathEntry.java`.
+
+The RelaX NG specifications are defined in `relaxng/*rnc`. They are
+briefly described, by group, in `relaxng/fragments-*.rnc` files.
 
 The subdirectory `tools` contains utilities for extracting statistics
 from the benchmark results. Check `tools/README.md` for more details.
