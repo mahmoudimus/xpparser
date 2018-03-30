@@ -1,4 +1,4 @@
-# XPath Parser
+# XPath Parser and XPath Benchmark
 
 __XPath Parser__ extracts [XPath expressions](https://www.w3.org/TR/xpath-30/)
 from within [XQuery](https://www.w3.org/TR/xquery-30/) files or XML files, in
@@ -8,11 +8,16 @@ The program also provides facilities for checking this XQueryX output against
 multiple [XML Schemas](https://www.w3.org/standards/techs/xmlschema) and
 [RelaxNG Compact Schemas](http://relaxng.org/compact.html).
 
+__XPath Parser__ has been used to construct a __benchmark__ of XPath
+queries extracted from XSLT or XQuery files from several open-source
+projects.  The lastest release of this benchmark is
+[xpath-benchmark-1.0](http://www.lsv.fr/~schmitz/code/xpath-benchmark-1.0.tar.bz2).
+
 This software development was funded in part by the
 [ANR PRODAQ](http://projects.lsv.ens-cachan.fr/prodaq/) project.
 
 
-## Building
+## Building the Parser
 
 Build with [Apache Ant](http://ant.apache.org/) by running `ant compile`.
 This will download [Jing](http://www.thaiopensource.com/relaxng/jing.html).
@@ -22,15 +27,16 @@ directory, running `ant javacc` will download the necessary libraries and
 regenerate the parser sources.
 
 
-## Benchmark
+## Building the Benchmark
 
-The benchmark is compiled and checked against fragments by running `ant`
-in the `benchmark` subdirectory. On some machines an "out of memory"
-error may happen while building the benchmark; in that case, it may help
-to tweak `MAX_AST_SIZE` in `src/main/java/fr/lsv/xpparser/XPathEntry.java`.
+The benchmark can be compiled and checked against Relax NG
+specifications by running `ant` in the `benchmark` subdirectory. On
+some machines an "out of memory" error may happen while building the
+benchmark; in that case, it may help to tweak `MAX_AST_SIZE` in
+`src/main/java/fr/lsv/xpparser/XPathEntry.java`.
 
-Fragments are defined in `relaxng/*rnc`. They are briefly described, by
-group, in `relaxng/fragments-*.rnc` files.
+The Relax NG specifications are defined in `relaxng/*rnc`. They are
+briefly described, by group, in `relaxng/fragments-*.rnc` files.
 
 The subdirectory `tools` contains utilities for extracting statistics
 from the benchmark results. Check `tools/README.md` for more details.
