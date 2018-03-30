@@ -27,5 +27,5 @@ include "misc/id.rnc"
 #include "expr/varref.rnc"
 #primary |= varref
 
-newexpr = expr | id.path
+newexpr = emso2.expr | id.path
 path |= id.rootedpath 
