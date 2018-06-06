@@ -1,0 +1,61 @@
+# XPath fragment of XQueryX in Relax NG compact syntax:
+# XPath extra features.
+#
+# Copyright (C) 2016-2017
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+fun.extra =
+element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "count"
+    | string "concat"
+    | string "contains"
+    | string "normalize-space"
+    | string "substring"
+    | string "substring-after"
+    | string "substring-before"
+    | string "starts-with"
+    | string "string-join"
+    | string "string-length"
+    | string "translate"
+    )
+  },
+  element arguments {
+    ( expr | element argumentPlaceholder { empty } )*
+  }?
+}
+
+op.extra =
+element ( andOp | orOp                        # Boolean
+        | unionOp                             # path union
+        | eqOp | neOp | equalOp | notEqualOp  # equality
+        | ltOp | leOp | gtOp | geOp           # order
+        | lessThanOp  | lessThanOrEqualOp
+        | greaterThanOp | greaterThanOrEqualOp
+        | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+        | addOp | subtractOp | multiplyOp     # arithmetic
+        | divOp | idivOp | modOp
+        | intersectOp | exceptOp              # path intersection
+        | stringConcatenateOp                 # string
+        ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
+}
