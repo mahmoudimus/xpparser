@@ -4,6 +4,7 @@
 <schemas>
   <schema file="xpath-1.0-core-full.rnc"
           name="Core 1.0"
+          nametex="Core1.0"
           color="#ccebc5">
     <bib>
       <author>Michael Benedikt</author>
@@ -16,6 +17,7 @@
   </schema>
   <schema file="xpath-2.0-core-join.rnc"
           name="Core 2.0"
+          nametex="Core2.0"
           color="#decbe4">
     <bib>
       <author>Balder ten Cate</author>
@@ -30,6 +32,7 @@
   </schema>
   <schema file="xpath-1.0-downward-last.rnc"
           name="Downward"
+          nametex="Downward"
           color="#b3cde3">
     <bib>
       <author>Diego Figueira</author>
@@ -40,20 +43,9 @@
       <doi>10.1145/2362355.2362362</doi>
     </bib>
   </schema>
-  <schema file="xpath-1.0-forward-last.rnc"
-          name="Forward"
-          color="#b3cde3">
-    <bib>
-      <author>Diego Figueira</author>
-      <title>Alternating Register Automata on Finite Data Words and Trees</title>
-      <venue volume="8" issue="1" article="22" abbr="LMCS">Logical Methods in
-      Computer Science</venue>
-      <year>2012</year>
-      <doi>10.2168/LMCS-8(1:22)2012</doi>
-    </bib>
-  </schema>
   <schema file="xpath-1.0-vertical-full.rnc"
           name="Vertical"
+          nametex="Vertical"
           color="#b3cde3">
     <bib>
       <author>Diego Figueira</author>
@@ -65,8 +57,22 @@
       <doi>10.23638/LMCS-13(4:5)2017</doi>
     </bib>
   </schema>
+  <schema file="xpath-1.0-forward-last.rnc"
+          name="Forward"
+          nametex="Forward"
+          color="#b3cde3">
+    <bib>
+      <author>Diego Figueira</author>
+      <title>Alternating Register Automata on Finite Data Words and Trees</title>
+      <venue volume="8" issue="1" article="22" abbr="LMCS">Logical Methods in
+      Computer Science</venue>
+      <year>2012</year>
+      <doi>10.2168/LMCS-8(1:22)2012</doi>
+    </bib>
+  </schema>
   <schema file="xpath-emso2-full.rnc"
           name="EMSO2"
+          nametex="EMSO$^2$"
           color="#fbb4ae">
     <bib>
       <author>Mikołaj Bojańczyk</author>
@@ -82,6 +88,7 @@
   </schema>
   <schema file="xpath-non-mixing-basic.rnc"
           name="NonMixing"
+          nametex="NonMixing"
           color="#fed9a6">
     <bib>
       <author>Wojciech Czerwinski</author>
