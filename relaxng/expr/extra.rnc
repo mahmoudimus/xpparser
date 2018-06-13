@@ -44,16 +44,8 @@ element functionCallExpr {
 }
 
 op.extra =
-element ( andOp | orOp                        # Boolean
-        | unionOp                             # path union
-        | eqOp | neOp | equalOp | notEqualOp  # equality
-        | ltOp | leOp | gtOp | geOp           # order
-        | lessThanOp  | lessThanOrEqualOp
-        | greaterThanOp | greaterThanOrEqualOp
-        | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
-        | addOp | subtractOp | multiplyOp     # arithmetic
+element ( addOp | subtractOp | multiplyOp     # arithmetic
         | divOp | idivOp | modOp
-        | intersectOp | exceptOp              # path intersection
         | stringConcatenateOp                 # string
         ) {
   element firstOperand  { expr },
