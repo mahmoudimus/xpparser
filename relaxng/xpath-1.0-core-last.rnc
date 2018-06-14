@@ -1,4 +1,4 @@
-# XPath fragment of XQueryX in Relax NG compact syntax
+# XPath 1.0 Core fragment extended with last()
 #
 # Copyright (C) 2016-2017
 #   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)

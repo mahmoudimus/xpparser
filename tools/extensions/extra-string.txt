@@ -1,0 +1,56 @@
+Differences between xpath-1.0-core-full.rnc and xpath-1.0-core-extra.rnc
+    docbook-full.xml: 739
+    existdb-full.xml: 34
+    histei-full.xml: 25
+    htmlbook-full.xml: 155
+    marklogic-full.xml: 8
+    xqjson-full.xml: 1
+Total: 962
+Differences between xpath-2.0-core-join.rnc and xpath-2.0-core-extra.rnc
+    docbook-full.xml: 739
+    existdb-full.xml: 35
+    histei-full.xml: 26
+    htmlbook-full.xml: 156
+    marklogic-full.xml: 8
+    xqjson-full.xml: 2
+Total: 966
+Differences between xpath-1.0-downward-last.rnc and xpath-1.0-downward-extra.rnc
+    docbook-full.xml: 103
+    existdb-full.xml: 10
+    histei-full.xml: 0
+    htmlbook-full.xml: 30
+    marklogic-full.xml: 0
+    xqjson-full.xml: 0
+Total: 143
+Differences between xpath-1.0-forward-last.rnc and xpath-1.0-forward-extra.rnc
+    docbook-full.xml: 103
+    existdb-full.xml: 10
+    histei-full.xml: 0
+    htmlbook-full.xml: 30
+    marklogic-full.xml: 0
+    xqjson-full.xml: 0
+Total: 143
+Differences between xpath-1.0-vertical-full.rnc and xpath-1.0-vertical-extra.rnc
+    docbook-full.xml: 736
+    existdb-full.xml: 35
+    histei-full.xml: 25
+    htmlbook-full.xml: 155
+    marklogic-full.xml: 8
+    xqjson-full.xml: 1
+Total: 960
+Differences between xpath-emso2-full.rnc and xpath-emso2-extra.rnc
+    docbook-full.xml: 736
+    existdb-full.xml: 34
+    histei-full.xml: 24
+    htmlbook-full.xml: 155
+    marklogic-full.xml: 8
+    xqjson-full.xml: 1
+Total: 958
+Differences between xpath-non-mixing-basic.rnc and xpath-non-mixing-extra.rnc
+    docbook-full.xml: 687
+    existdb-full.xml: 33
+    histei-full.xml: 22
+    htmlbook-full.xml: 155
+    marklogic-full.xml: 8
+    xqjson-full.xml: 2
+Total: 907
