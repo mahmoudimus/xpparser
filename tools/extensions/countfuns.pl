@@ -10,13 +10,12 @@ for (@ARGV) {
     if (defined $table{$_}) {
       $table{$_}++;
     } else {
-      $table{$_}=0;
+      $table{$_}=1;
     }
   }
 }
 
-$n=100;
-print "Results above $n:\n";
-for (keys %table) {
-  print "$_: $table{$_}\n" if $table{$_}>$n;
+print "Results in ascending number of occurrences:\n";
+for (sort { $table{$a} <=> $table{$b} } keys %table) {
+  print "$_: $table{$_}\n";
 }
