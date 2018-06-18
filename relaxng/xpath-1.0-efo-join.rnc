@@ -26,9 +26,9 @@ include "xpath-1.0-core-join.rnc" {
         attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
       ( string "true"
       | string "false"
-      | string "boolean" ) # removed not()
+      | string "boolean" )
     },
     element arguments { expr* }?
-    
+  }  
   fun |= cst.fun | fun.child | fun.name
 }
