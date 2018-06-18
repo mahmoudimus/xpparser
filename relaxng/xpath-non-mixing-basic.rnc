@@ -1,4 +1,4 @@
-# Unions of Conjunctive Queries fragment in Relax NG compact syntax.
+# Unions of Conjunctive Queries fragment with basic extensions.
 #
 # Based on: Wojciech Czerwinski, Claire David, Filip Murlak, and Pawel
 # Parys, _Reasoning About Integrity Constraints for Tree-Structured

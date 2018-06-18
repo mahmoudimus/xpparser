@@ -6,3 +6,4 @@ lib/
 target/
 tools/tex/totals_*.tex
 tools/tex/matrix_*.tex
+*.swp

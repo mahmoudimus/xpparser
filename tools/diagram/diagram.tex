@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{gnuplottex}
+
+\begin{document}
+
+\begin{figure}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size 11.0cm,7.0cm}]
+    set style data histogram
+    set style histogram columnstacked
+    set style fill solid border -1
+    set xtics rotate by 40 right
+    set boxwidth 0.95
+    set key off auto columnheader
+    plot for [COL=2:8] 'diff-full.txt' using COL title columnhead
+  \end{gnuplot}
+\end{figure}
+
+\begin{figure}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size 11.0cm,7.0cm}]
+    set style data histogram
+    set style histogram columnstacked
+    set style fill solid border -1
+    set xtics rotate by 40 right
+    set boxwidth 0.95
+    set key off auto columnheader
+    plot for [COL=2:8] 'diff-extra.txt' using COL title columnhead
+  \end{gnuplot}
+\end{figure}
+
+\end{document}
