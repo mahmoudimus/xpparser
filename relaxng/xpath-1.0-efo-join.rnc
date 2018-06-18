@@ -1,6 +1,8 @@
 # Positive existential FO fragment of XPath in Relax NG compact
-# syntax.  See Benedikt, Fan, and Geerts, XPath Satisfiability in the
-# Presence of DTDs, _Journal of the ACM_ 55(2):8, 2008, Theorem 4.4.
+# syntax.  See Geerts and Fan, Satisfiability of XPath Queries with
+# Sibling Axes, _International Workshop on Database Programming
+# Languages_ (DBPL 2005), Lect. Notes in Comput. Sci. 3774:122-137,
+# Springer 2005, Theorem 4.
 #
 # Copyright (C) 2016-2018
 #   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
