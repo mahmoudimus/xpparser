@@ -3,8 +3,8 @@
 # path to benchmark files
 path=$1
 full=$2
-xmlarray=(docbook htmlbook existdb histei marklogic xqjson)
-names=(DocBook HTMLBook eXist-db HisTEI MarkLogic XQJSON)
+xmlarray=(docbook teixsl htmlbook existdb histei xquerydoc marklogic xqjson guidomatic)
+names=(DocBook TEI HTMLBook eXist-db HisTEI xquerydoc MarkLogic XQJSON guid-o-matic)
 
 echo "\\toprule"
 echo "Source & queries & XPath~1.0 & XPath~2.0 & XPath~3.0\\\\"

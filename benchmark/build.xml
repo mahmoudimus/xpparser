@@ -12,7 +12,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <!-- path to schemas -->  
   <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
   <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
-  <fileset id="fs.relaxng" dir="../relaxng" includes="xpath-*-*.rnc"/>
+  <fileset id="fs.relaxng" dir="../relaxng" includes="xpath-*.rnc"/>
   <pathconvert property="relaxng" refid="fs.relaxng" pathsep=" "/>
 
   <!-- path to classes -->
@@ -40,6 +40,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
         <assertions><!-- this is ignored!!! -->
           <enable/>
         </assertions>
+        <jvmarg value="-Xmx7000M"/>
         <arg line="@{arg} --unique ${tests} --rnc ${relaxng}"/>
       </java>
       <copy unless:blank="@{license}"
