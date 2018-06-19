@@ -2,11 +2,17 @@
 
 file=$1
 shift
+total=`grep "$1" $file | wc -l`
+#printf "& $total "
+shift
+
 
 while test ${#} -gt 0
 do
-    printf "& `grep \"$1\" $file | wc -l` "
+    count=`grep "$1" $file | wc -l`
+    percent=`bc <<< "100*$count/$total"`
+    printf "& $percent\\%% "
+    #printf "& $count "
     shift
 done
 
-#echo "& `grep '<schemas>' $1 | wc -l` & `grep 'xpath-1.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-2.0.rnc' $1 | grep 'yes' | wc -l` & `grep 'xpath-3.0.rnc' $1 | grep 'yes' | wc -l`\\\\"
