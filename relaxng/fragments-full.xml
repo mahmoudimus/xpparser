@@ -2,6 +2,20 @@
 <!-- Meta-data about the implemented RelaxNG schemas:
      original academic fragments. -->
 <schemas>
+  <schema file="xpath-efo-basic.rnc"
+          name="Core~1.0"
+          color="#ccebc5">
+    <bib>
+      <author>Floris Geerts</author>
+      <author>Weifei Fan</author>
+      <title>Satisfiability of XPath Queries with Sibling Axes</title>
+      <venue volume="3774" series="LNCS" article="122--137"
+             abbr="DBLP'05">Proceedings of the 10th International
+      Workshop on Database Programming Languages</venue>
+      <year>2005</year>
+      <doi>10.1007/11601524_8</doi>
+    </bib>
+  </schema>
   <schema file="xpath-1.0-core-full.rnc"
           name="Core 1.0"
           nametex="Core1.0"

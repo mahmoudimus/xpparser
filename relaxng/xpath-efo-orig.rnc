@@ -1,0 +1,42 @@
+# Positive existential FO fragment of XPath in Relax NG compact
+# syntax.  See Geerts and Fan, Satisfiability of XPath Queries with
+# Sibling Axes, _International Workshop on Database Programming
+# Languages_ (DBPL 2005), Lect. Notes in Comput. Sci. 3774:122-137,
+# Springer 2005, Theorem 4.
+#
+# Copyright (C) 2016-2018
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+default namespace = "http://www.w3.org/2005/XQueryX"
+namespace xqx = "http://www.w3.org/2005/XQueryX"
+
+include "xpath-1.0-core-orig.rnc" {
+  fun =  element functionCallExpr {
+    element functionName {
+        attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+      ( string "true"
+      | string "false"
+      | string "boolean" )
+    },
+    element arguments { expr* }?
+  }
+}
+
+op |= element ( intersectOp | neOp | equalOp | notEqualOp  ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
+}

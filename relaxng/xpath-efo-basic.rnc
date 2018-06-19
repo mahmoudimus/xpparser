@@ -23,7 +23,7 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-join.rnc" {
+include "xpath-1.0-core-basic.rnc" {
   fun =  element functionCallExpr {
     element functionName {
         attribute xqx:prefix { string "fn" }?,
@@ -35,4 +35,9 @@ include "xpath-1.0-core-join.rnc" {
     element arguments { expr* }?
   }  
   fun |= cst.fun | fun.child | fun.name
+}
+
+op |= element ( intersectOp | neOp | equalOp | notEqualOp  ) {
+  element firstOperand  { expr },
+  element secondOperand { expr }
 }
