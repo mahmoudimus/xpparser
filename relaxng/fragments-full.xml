@@ -2,11 +2,6 @@
 <!-- Meta-data about the implemented RelaxNG schemas:
      original academic fragments. -->
 <schemas>
-  <schema file="xpath-3.0-simplified.rnc"
-          name="Full"
-          nametex="Full"
-          color="#ccebc5">
-  </schema>
   <schema file="xpath-efo-basic.rnc"
           name="Positive"
           nametex="Positive"
@@ -24,7 +19,7 @@
   </schema>
   <schema file="xpath-1.0-core-full.rnc"
           name="Core 1.0"
-          nametex="Core1.0"
+          nametex="Core~1.0"
           color="#ccebc5">
     <bib>
       <author>Michael Benedikt</author>
@@ -37,7 +32,7 @@
   </schema>
   <schema file="xpath-2.0-core-join.rnc"
           name="Core 2.0"
-          nametex="Core2.0"
+          nametex="Core~2.0"
           color="#decbe4">
     <bib>
       <author>Balder ten Cate</author>
