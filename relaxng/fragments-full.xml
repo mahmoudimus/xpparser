@@ -4,6 +4,7 @@
 <schemas>
   <schema file="xpath-efo-basic.rnc"
           name="Core~1.0"
+          nametex="EFO"
           color="#ccebc5">
     <bib>
       <author>Floris Geerts</author>
