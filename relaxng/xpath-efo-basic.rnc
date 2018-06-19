@@ -33,9 +33,10 @@ include "xpath-1.0-core-basic.rnc" {
       | string "boolean" )
     },
     element arguments { expr* }?
-  }  
-  fun |= cst.fun | fun.child | fun.name | fun.root
+  }
 }
+
+fun |= cst.fun | fun.child | fun.name | fun.root
 
 op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  ) {
   element firstOperand  { expr },
