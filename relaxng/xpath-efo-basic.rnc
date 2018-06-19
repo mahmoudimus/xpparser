@@ -34,6 +34,19 @@ include "xpath-1.0-core-basic.rnc" {
     },
     element arguments { expr* }?
   }
+  | element functionCallExpr {
+      element functionName {
+        attribute xqx:prefix { string "fn" }?,
+        attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+        string "not"
+      },
+      element arguments {
+        element ( eqOp | neOp | equalOp | notEqualOp ) {
+          element firstOperand { cst.expr | fun.name },
+          element secondOperand { cst.expr | fun.name }
+        }
+      }
+  }
 }
 
 fun |= cst.fun | fun.child | fun.name | fun.root
