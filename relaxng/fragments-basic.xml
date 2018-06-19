@@ -3,7 +3,7 @@
      original academic fragments. -->
 <schemas>
   <schema file="xpath-efo-basic.rnc"
-          name="Core~1.0"
+          name="Positive"
           color="#ccebc5">
     <bib>
       <author>Floris Geerts</author>

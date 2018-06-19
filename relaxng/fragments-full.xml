@@ -2,9 +2,14 @@
 <!-- Meta-data about the implemented RelaxNG schemas:
      original academic fragments. -->
 <schemas>
+  <schema file="xpath-3.0-simplified.rnc"
+          name="Full"
+          nametex="Full"
+          color="#ccebc5">
+  </schema>
   <schema file="xpath-efo-basic.rnc"
-          name="Core~1.0"
-          nametex="EFO"
+          name="Positive"
+          nametex="Positive"
           color="#ccebc5">
     <bib>
       <author>Floris Geerts</author>

@@ -33,14 +33,14 @@ include "expr/if.rnc"
 expr |= op
 
 # [20] RangeExpr        ::=  AdditiveExpr ("to" AdditiveExpr)*
-expr |= element rangeSequenceExpr {
-  element startExpr { expr },
-  element endExpr   { expr }
-}
+#expr |= element rangeSequenceExpr {
+#  element startExpr { expr },
+#  element endExpr   { expr }
+#}
 
 # [30] ValueExpr        ::= SimpleMapExpr
 # [34] SimpleMapExpr    ::= PathExpr ("!" PathExpr)*
-expr |= element simpleMapExpr { path, path+ }
+#expr |= element simpleMapExpr { path, path+ }
 expr |= path
 expr |= primary
 

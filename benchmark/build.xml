@@ -45,9 +45,16 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       </java>
       <copy unless:blank="@{license}"
             file="@{name}/@{license}" tofile="@{name}.LICENSE"/>
-      <xslt style="../xslt/filter.xsl"
+      <xslt style="../xslt/filter-axis-step.xsl"
           in="@{name}-full.xml"
-          out="@{name}.xml">
+          out="@{name}-axis-step.xml">
+        <classpath>
+          <pathelement path="../lib/saxon9he.jar"/>
+        </classpath>
+      </xslt>
+      <xslt style="../xslt/filter-size-gt-7.xsl"
+          in="@{name}-full.xml"
+          out="@{name}-size-gt-7.xml">
         <classpath>
           <pathelement path="../lib/saxon9he.jar"/>
         </classpath>
@@ -141,8 +148,8 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <!-- DocBook XSL -->
   <target name="docbook">
     <mkdir dir="docbook"/>
-    <get src="https://freefr.dl.sourceforge.net/project/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
-         dest="docbook/" usetimestamp="true"/>
+    <!--get src="https://freefr.dl.sourceforge.net/project/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
+         dest="docbook/" usetimestamp="true"/-->
     <bunzip2 src="docbook/docbook-xsl-1.79.1.tar.bz2"/>
     <untar src="docbook/docbook-xsl-1.79.1.tar" dest="docbook"
            overwrite="no"/>

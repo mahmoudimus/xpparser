@@ -1,5 +1,5 @@
 latex:
-	latexmk -pdf -pvc -pdflatex="pdflatex --shell-escape" -synctex=1 diagram.tex
+	latexmk -pdf -pdflatex="pdflatex --shell-escape" -synctex=1 diagram.tex
 
 clean:
 	latexmk -c diagram.tex
