@@ -1,118 +1,127 @@
 <?xml version="1.0"?>
 <extensions>
 
+<!-- Number of queries using root -->
+<root>
+  <source @name='docbook-full.xml'>117</source>
+  <source @name='existdb-full.xml'>12</source>
+  <source @name='guidomatic-full.xml'>0</source>
+  <source @name='histei-full.xml'>4</source>
+  <source @name='htmlbook-full.xml'>30</source>
+  <source @name='marklogic-full.xml'>5</source>
+  <source @name='teixsl-full.xml'>86</source>
+  <source @name='xqjson-full.xml'>0</source>
+  <source @name='xquerydoc-full.xml'>0</source>
+  <total>254</total>
+</root>
+
+<!-- Number of queries using free variables -->
+<freevar>
+  <source @name='docbook-full.xml'>4271</source>
+  <source @name='existdb-full.xml'>870</source>
+  <source @name='guidomatic-full.xml'>37</source>
+  <source @name='histei-full.xml'>451</source>
+  <source @name='htmlbook-full.xml'>507</source>
+  <source @name='marklogic-full.xml'>183</source>
+  <source @name='teixsl-full.xml'>2118</source>
+  <source @name='xqjson-full.xml'>75</source>
+  <source @name='xquerydoc-full.xml'>246</source>
+  <total>8758</total>
+</freevar>
+
+<!-- Number of queries with joins against a constant -->
+<constantJoin>
+  <source @name='docbook-full.xml'>2040</source>
+  <source @name='existdb-full.xml'>114</source>
+  <source @name='guidomatic-full.xml'>6</source>
+  <source @name='histei-full.xml'>31</source>
+  <source @name='htmlbook-full.xml'>238</source>
+  <source @name='marklogic-full.xml'>24</source>
+  <source @name='teixsl-full.xml'>1516</source>
+  <source @name='xqjson-full.xml'>30</source>
+  <source @name='xquerydoc-full.xml'>21</source>
+  <total>4020</total>
+</constantJoin>
+
+<!-- Number of queries with arbitrary joins -->
+<pureJoin>
+  <source @name='docbook-full.xml'>9</source>
+  <source @name='existdb-full.xml'>11</source>
+  <source @name='guidomatic-full.xml'>0</source>
+  <source @name='histei-full.xml'>2</source>
+  <source @name='htmlbook-full.xml'>1</source>
+  <source @name='marklogic-full.xml'>0</source>
+  <source @name='teixsl-full.xml'>26</source>
+  <source @name='xqjson-full.xml'>0</source>
+  <source @name='xquerydoc-full.xml'>5</source>
+  <total>54</total>
+</pureJoin>
+<fullJoin>
+  <source @name='docbook-full.xml'>292</source>
+  <source @name='existdb-full.xml'>97</source>
+  <source @name='guidomatic-full.xml'>1</source>
+  <source @name='histei-full.xml'>35</source>
+  <source @name='htmlbook-full.xml'>51</source>
+  <source @name='marklogic-full.xml'>7</source>
+  <source @name='teixsl-full.xml'>202</source>
+  <source @name='xqjson-full.xml'>0</source>
+  <source @name='xquerydoc-full.xml'>47</source>
+  <total>732</total>
+</fullJoin>
+
 <!-- Number of queries using last -->
 <last>
-  <source @name='docbook-full.xml'>572</source>
-  <source @name='existdb-full.xml'>36</source>
+  <source @name='docbook-full.xml'>578</source>
+  <source @name='existdb-full.xml'>35</source>
+  <source @name='guidomatic-full.xml'>0</source>
   <source @name='histei-full.xml'>27</source>
   <source @name='htmlbook-full.xml'>71</source>
   <source @name='marklogic-full.xml'>7</source>
+  <source @name='teixsl-full.xml'>327</source>
   <source @name='xqjson-full.xml'>6</source>
-  <total>719</total>
+  <source @name='xquerydoc-full.xml'>18</source>
+  <total>1069</total>
 </last>
 
 <!-- Number of queries using id -->
 <id>
   <source @name='docbook-full.xml'>1</source>
   <source @name='existdb-full.xml'>0</source>
+  <source @name='guidomatic-full.xml'>0</source>
   <source @name='histei-full.xml'>1</source>
   <source @name='htmlbook-full.xml'>0</source>
   <source @name='marklogic-full.xml'>0</source>
+  <source @name='teixsl-full.xml'>29</source>
   <source @name='xqjson-full.xml'>0</source>
-  <total>2</total>
+  <source @name='xquerydoc-full.xml'>0</source>
+  <total>31</total>
 </id>
-
-<!-- Number of queries using root -->
-<root>
-  <source @name='docbook-full.xml'>116</source>
-  <source @name='existdb-full.xml'>19</source>
-  <source @name='histei-full.xml'>4</source>
-  <source @name='htmlbook-full.xml'>30</source>
-  <source @name='marklogic-full.xml'>5</source>
-  <source @name='xqjson-full.xml'>0</source>
-  <total>174</total>
-</root>
 
 <!-- Number of queries with arbitrary use of variables -->
 <var>
-  <source @name='docbook-full.xml'>4264</source>
-  <source @name='existdb-full.xml'>978</source>
+  <source @name='docbook-full.xml'>4271</source>
+  <source @name='existdb-full.xml'>885</source>
+  <source @name='guidomatic-full.xml'>37</source>
   <source @name='histei-full.xml'>451</source>
   <source @name='htmlbook-full.xml'>507</source>
   <source @name='marklogic-full.xml'>183</source>
+  <source @name='teixsl-full.xml'>2119</source>
   <source @name='xqjson-full.xml'>75</source>
-  <total>6458</total>
+  <source @name='xquerydoc-full.xml'>247</source>
+  <total>8775</total>
 </var>
-
-<!-- Number of queries using free variables -->
-<freevar>
-  <source @name='docbook-full.xml'>4264</source>
-  <source @name='existdb-full.xml'>963</source>
-  <source @name='histei-full.xml'>451</source>
-  <source @name='htmlbook-full.xml'>507</source>
-  <source @name='marklogic-full.xml'>183</source>
-  <source @name='xqjson-full.xml'>75</source>
-  <total>6443</total>
-</freevar>
-
-<!-- Number of queries with arbitrary joins -->
-<pureJoin>
-  <source @name='docbook-full.xml'>9</source>
-  <source @name='existdb-full.xml'>11</source>
-  <source @name='histei-full.xml'>2</source>
-  <source @name='htmlbook-full.xml'>1</source>
-  <source @name='marklogic-full.xml'>0</source>
-  <source @name='xqjson-full.xml'>0</source>
-  <total>23</total>
-</pureJoin>
-<fullJoin>
-  <source @name='docbook-full.xml'>293</source>
-  <source @name='existdb-full.xml'>101</source>
-  <source @name='histei-full.xml'>35</source>
-  <source @name='htmlbook-full.xml'>51</source>
-  <source @name='marklogic-full.xml'>7</source>
-  <source @name='xqjson-full.xml'>0</source>
-  <total>487</total>
-</fullJoin>
-<attrJoin>
-  <source @name='docbook-full.xml'>287</source>
-  <source @name='existdb-full.xml'>53</source>
-  <source @name='histei-full.xml'>32</source>
-  <source @name='htmlbook-full.xml'>50</source>
-  <source @name='marklogic-full.xml'>6</source>
-  <source @name='xqjson-full.xml'>0</source>
-  <total>428</total>
-</attrJoin>
-<attrCst>
-  <source @name='docbook-full.xml'>2034</source>
-  <source @name='existdb-full.xml'>123</source>
-  <source @name='histei-full.xml'>31</source>
-  <source @name='htmlbook-full.xml'>238</source>
-  <source @name='marklogic-full.xml'>24</source>
-  <source @name='xqjson-full.xml'>30</source>
-  <total>2480</total>
-</attrCst>
 
 <!-- Number of queries with positive joins -->
 <positiveJoin>
-  <source @name='docbook-full.xml'>2118</source>
-  <source @name='existdb-full.xml'>209</source>
+  <source @name='docbook-full.xml'>2119</source>
+  <source @name='existdb-full.xml'>199</source>
+  <source @name='guidomatic-full.xml'>7</source>
   <source @name='histei-full.xml'>60</source>
   <source @name='htmlbook-full.xml'>252</source>
   <source @name='marklogic-full.xml'>30</source>
+  <source @name='teixsl-full.xml'>1487</source>
   <source @name='xqjson-full.xml'>28</source>
-  <total>2697</total>
+  <source @name='xquerydoc-full.xml'>67</source>
+  <total>4249</total>
 </positiveJoin>
-
-<!-- Number of queries with joins against a constant -->
-<constantJoin>
-  <source @name='docbook-full.xml'>2034</source>
-  <source @name='existdb-full.xml'>123</source>
-  <source @name='histei-full.xml'>31</source>
-  <source @name='htmlbook-full.xml'>238</source>
-  <source @name='marklogic-full.xml'>24</source>
-  <source @name='xqjson-full.xml'>30</source>
-  <total>2480</total>
-</constantJoin>
 </extensions>

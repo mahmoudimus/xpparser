@@ -12,3 +12,5 @@ do
 done
 echo "  <total>$sum</total>"
 echo "</constantJoin>"
+
+printf " %'.0f &" $sum >> occurrences-ext.tex

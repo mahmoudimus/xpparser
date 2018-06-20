@@ -12,6 +12,9 @@ do
 done
 echo "  <total>$sum</total>"
 echo "</pureJoin>"
+
+printf "%'.0f" $sum > occurrences-pure-joins.tex
+
 echo "<fullJoin>"
 sum=0
 for FILE in ../../benchmark/*-full.xml
@@ -25,3 +28,5 @@ do
 done
 echo "  <total>$sum</total>"
 echo "</fullJoin>"
+
+printf " %'.0f &" $sum >> occurrences-ext.tex

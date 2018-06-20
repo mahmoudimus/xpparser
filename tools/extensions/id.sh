@@ -12,3 +12,5 @@ do
 done
 echo "  <total>$sum</total>"
 echo "</id>"
+
+printf " %'.0f \\\\\\\\\n" $sum >> occurrences-ext.tex
