@@ -301,6 +301,19 @@
 
   <!-- last() -->
 
+  <!-- last() should not be allowed in orig fragments, except core-2.0 and non-mixing -->
+  <test>
+    <query>child::a[last()]</query>
+    <validation schema="xpath-efo-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="no"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+  </test>
+
   <!-- Abstract syntax trees may vary surprisingly
        depending on parenthesizing.
        Checking basic last() uses, with varying
@@ -317,6 +330,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
   </test>
   <test>
     <query>(descendant::a)[last()]</query>
@@ -325,6 +342,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
   </test>
   <test>
     <query>self::b[last()]</query>
@@ -333,13 +354,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
-    <!-- XXX we might want to get this back
-             (and similarly for the next queries)
-    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
-    <validation schema="data-xpath.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-vertical-basic.rnc" valid="yes"/>
-    <validation schema="xpath-1.0-downward-basic.rnc" valid="yes"/>
-    -->
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>(self::b)[last()]</query>
@@ -348,6 +366,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/self::b[last()]</query>
@@ -356,6 +378,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::b[last()])</query>
@@ -364,6 +390,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>descendant::a/(self::b)[last()]</query>
@@ -372,6 +402,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
   </test>
   <test>
     <query>(descendant::a/self::b)[last()]</query>
@@ -380,6 +414,10 @@
     <validation schema="data-xpath.rnc" valid="no"/>
     <validation schema="xpath-1.0-vertical-basic.rnc" valid="no"/>
     <validation schema="xpath-1.0-downward-basic.rnc" valid="no"/>
+    <!-- extensions with last() -->
+    <validation schema="xpath-1.0-core-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
   </test>
 
   <!-- Same as above but for the downward fragment. -->
