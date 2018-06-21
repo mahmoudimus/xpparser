@@ -11,12 +11,7 @@ names=( `grep 'nametex=' ../../relaxng/fragments-full.xml | sed 's/.*nametex=\"\
 variants=( "extra" "full" "orig" )
 
 # the coverage of XPath 3.0
-printf "\"\\\\\\\textsf{XPath 3.0}\"\t`grep 'xpath-3.0.rnc.*yes' $files | wc -l`\t"
-for ((v=0; v<${#variants[@]}; ++v))
-do
-    printf "0\t"
-done
-echo
+total=`grep 'xpath-3.0.rnc.*yes' $files | wc -l`
 
 # main loop on every fragment
 for ((f=0; f<${#fragments[@]}; ++f))
@@ -27,7 +22,7 @@ do
     then
         printf "\t"
     fi
-    printf "0\t"             # empty column against simplified XPath 3.0
+
     for ((v=0; v<${#variants[@]}; ++v))
     do
         name=$(echo ${fragments[f]} | sed s/[a-z]*.rnc/${variants[v]}.rnc/)
@@ -45,7 +40,9 @@ do
                 name="thisisadummy"
             fi
         fi
-        printf "`grep $name.*yes $files | wc -l`\t"
+        count=`grep $name.*yes $files | wc -l`
+        percent=`echo "scale=2; 100*$count/$total" | bc`
+        printf "$percent\t"
     done
     echo
 done
