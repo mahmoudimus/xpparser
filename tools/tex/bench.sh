@@ -10,8 +10,8 @@ names=( `grep 'nametex=' ../../relaxng/fragments-full.xml | sed 's/.*nametex=\"\
 # which variants of each fragment (full variant is implicit)
 variants=( "extra" "full" "orig" )
 
-# the coverage of the simplified XPath 3.0 syntax provided in the paper
-printf "\"\\\\\\\textsf{Full}\"\t`grep 'xpath-3.0-simplified.rnc.*yes' $files | wc -l`\t"
+# the coverage of XPath 3.0
+printf "\"\\\\\\\textsf{XPath 3.0}\"\t`grep 'xpath-3.0.rnc.*yes' $files | wc -l`\t"
 for ((v=0; v<${#variants[@]}; ++v))
 do
     printf "0\t"
@@ -35,10 +35,15 @@ do
         then
             name=${fragments[f]}
         fi
-        # reserve `extras' to the positive fragment
-        if [ "${variants[v]}" = "extra" -a "${names[f]}" != "Positive" ]
+        # reserve `extras' to the positive and core 1.0 fragments
+        if [ "${variants[v]}" = "extra" ]
         then
-            name="thisisadummy"
+            if [ "${names[f]}" = "Positive" -o "${names[f]}" = "Core~1.0" ]
+            then
+                :
+            else
+                name="thisisadummy"
+            fi
         fi
         printf "`grep $name.*yes $files | wc -l`\t"
     done
