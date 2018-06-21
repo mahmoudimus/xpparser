@@ -19,7 +19,9 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-basic.rnc" 
+include "xpath-1.0-core-basic.rnc" {
+  start = newexpr
+}
 
 # Allowing some use of last()
 include "expr/last.rnc" {
@@ -27,3 +29,4 @@ include "expr/last.rnc" {
   last.axis = axis # We have Regular XPath
 }
 step |= last.step
+newexpr = expr | last.dummy

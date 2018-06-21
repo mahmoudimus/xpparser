@@ -7,3 +7,8 @@ target/
 tools/tex/totals_*.tex
 tools/tex/matrix_*.tex
 *.swp
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*gnuplot*
