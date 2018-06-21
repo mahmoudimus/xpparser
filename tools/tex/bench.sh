@@ -1,5 +1,10 @@
 #!/bin/bash
 
+coverage_full=`cat $1`
+shift
+coverage_orig=`cat $1`
+shift
+
 # which files to take into account
 files="$@"
 
@@ -46,3 +51,10 @@ do
     done
     echo
 done
+
+printf '"\\\\textit{Combined}"'
+printf "\t0\t"
+percent=`echo "scale=2; 100*$coverage_full/$total" | bc`
+printf "$percent\t"
+percent=`echo "scale=2; 100*$coverage_orig/$total" | bc`
+printf "$percent\n"

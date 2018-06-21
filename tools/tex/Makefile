@@ -32,11 +32,24 @@ captured_dist.dat: $(wildcard ../../benchmark/*-full.xml)
 	./captured_distr.sh > captured_dist.dat
 captured_dist.pdf: captured_dist.dat captured_dist.tex
 	pdflatex --shell-escape captured_dist.tex
-xslt.dat: bench.sh $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
-	./bench.sh `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat
 
-xqy.dat: bench.sh $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
-	./bench.sh `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat
+xslt-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
+	./coverage.sh xslt "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xslt-full.cov
+
+xslt-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
+	./coverage.sh xslt "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xslt-orig.cov
+
+xquery-full.cov: coverage.sh full-frags.xpath
+	./coverage.sh xquery "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xquery-full.cov
+
+xquery-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
+	./coverage.sh xquery "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xquery-orig.cov
+
+xslt.dat: bench.sh xslt-full.cov xslt-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench.sh  xslt-full.cov xslt-orig.cov `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat
+
+xqy.dat: bench.sh xquery-full.cov xquery-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat
 
 test.pdf: xslt.dat xqy.dat test.tex
 	pdflatex --shell-escape test.tex
