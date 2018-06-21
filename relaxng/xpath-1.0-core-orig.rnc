@@ -28,7 +28,9 @@ include "expr/literal.rnc"
 
 expr = op | path | primary
 
-primary = notAllowed
+primary =  element contextItemExpr { empty }
+        |  fun
+        |  element sequenceExpr { expr* }
 
 # ----------------------------------------------------------------
 # Operations
@@ -38,6 +40,13 @@ op = element ( andOp | orOp | unionOp ) {
   element secondOperand { expr }
 }
 
+# Allow test between a fun.name and a constant
+include "expr/cst.rnc"
+op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
+  element firstOperand { cst.expr | fun.name },
+  element secondOperand { cst.expr | fun.name }
+}
+
 # ----------------------------------------------------------------
 # Function calls
 
@@ -45,6 +54,21 @@ op = element ( andOp | orOp | unionOp ) {
 
 fun = element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
+  element arguments { expr* }?
+}
+| fun.name
+
+# various name accessor functions are admissible
+fun.name = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "name"
+    | string "local-name"
+    | string "namespace-uri"
+    | string "node-name"
+    )
+  },
   element arguments { expr* }?
 }
 
