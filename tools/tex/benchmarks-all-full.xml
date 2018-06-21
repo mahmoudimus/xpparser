@@ -2,11 +2,11 @@
 <benchmarks>
   <benchmark href="../../benchmark/docbook-full.xml" type="xslt" name="DocBook" />
   <benchmark href="../../benchmark/htmlbook-full.xml" type="xslt" name="HTMLBook" />
-  <benchmark href="../../benchmark/teixsl-full.xml" type="xslt" name="TEI" />
+  <benchmark href="../../benchmark/teixsl-full.xml" type="xslt" name="TEIXSL" />
   <benchmark href="../../benchmark/existdb-full.xml" type="xquery" name="eXist-db" />
   <benchmark href="../../benchmark/guidomatic-full.xml" type="xquery" name="Guid-O-Matic" />
   <benchmark href="../../benchmark/histei-full.xml" type="xquery" name="HisTEI" />
   <benchmark href="../../benchmark/marklogic-full.xml" type="xquery" name="MarkLogic" />
   <benchmark href="../../benchmark/xqjson-full.xml" type="xquery" name="XQJSON" />
-  <benchmark href="../../benchmark/xquerydoc-full.xml" type="xquery" name="XQueryDoc" />
+  <benchmark href="../../benchmark/xquerydoc-full.xml" type="xquery" name="xquerydoc" />
 </benchmarks>
