@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo '\begin{tabular}{lcccc}'
+echo '\begin{tabular}{lrrrr}'
 echo '\toprule'
 #echo '& \multicolumn{3}{c}{basic} & \multicolumn{3}{c}{advanced}\\'
 echo '& basic & $\pi\mathbin\triangle\pi$ & $\last()$ & $\texttt{id}()$\\'
