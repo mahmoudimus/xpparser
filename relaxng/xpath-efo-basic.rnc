@@ -34,6 +34,7 @@ include "xpath-1.0-core-basic.rnc" {
     },
     element arguments { expr* }?
   }
+  | fun.name
   | element functionCallExpr {
       element functionName {
         attribute xqx:prefix { string "fn" }?,
@@ -49,7 +50,7 @@ include "xpath-1.0-core-basic.rnc" {
   }
 }
 
-fun |= cst.fun | fun.child | fun.name | fun.root
+fun |= cst.fun | fun.child | fun.root
 
 op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  ) {
   element firstOperand  { expr },

@@ -24,12 +24,7 @@ include "xpath-2.0-core-orig.rnc"
 # ---------------------------------------------------------------------------
 # Allow constants
 
-primary |=  element contextItemExpr { empty }
-         |  literal
-         |  fun
-         |  element sequenceExpr { expr* }
-
-include "expr/cst.rnc"
+primary |=  literal
 
 op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
               | ltOp | leOp | gtOp | geOp           # order
@@ -74,20 +69,6 @@ fun.child =  element functionCallExpr {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-# various name accessor functions are admissible
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
   },
   element arguments { expr* }?
 }

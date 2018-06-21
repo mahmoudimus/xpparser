@@ -24,12 +24,7 @@ include "xpath-1.0-vertical-orig.rnc"
 # ---------------------------------------------------------------------------
 # Allow constants
 
-primary |=  element contextItemExpr { empty }
-         |  literal
-         |  fun
-         |  element sequenceExpr { expr* }
-
-include "expr/cst.rnc"
+primary |=  literal
 
 op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
               | ltOp | leOp | gtOp | geOp           # order
@@ -61,7 +56,7 @@ path |= element pathExpr {
 # ---------------------------------------------------------------------------
 # Allow some functions
 
-fun |= cst.fun | fun.root | fun.child | fun.name
+fun |= cst.fun | fun.root | fun.child
 
 # root() admissible when both the ancestor and parent axes are available using
 # `ancestor-or-self::*[not(parent::*)]'
@@ -80,20 +75,6 @@ fun.child =  element functionCallExpr {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
-
-# various name accessor functions are admissible
-fun.name = element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "name"
-    | string "local-name"
-    | string "namespace-uri"
-    | string "node-name"
-    )
   },
   element arguments { expr* }?
 }
