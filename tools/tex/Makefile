@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat
 
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
@@ -32,6 +32,14 @@ captured_dist.dat: $(wildcard ../../benchmark/*-full.xml)
 	./captured_distr.sh > captured_dist.dat
 captured_dist.pdf: captured_dist.dat captured_dist.tex
 	pdflatex --shell-escape captured_dist.tex
+xslt.dat: bench.sh $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench.sh `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat
+
+xqy.dat: bench.sh $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench.sh `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat
+
+test.pdf: xslt.dat xqy.dat test.tex
+	pdflatex --shell-escape test.tex
 
 %.xml: %-full.xml
 	cat $< | sed -e 's/-full.xml/.xml/' > $@
