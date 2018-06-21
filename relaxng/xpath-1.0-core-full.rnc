@@ -32,7 +32,7 @@ include "expr/last.rnc" {
 }
 last.primary |= varref
 step |= last.step
-newexpr = expr | last.dummy
+newexpr = join.expr | last.dummy
 
 join.step |= element stepExpr {
   ((join.axis, join.nodetest) | element filterExpr { primary } ),
