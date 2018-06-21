@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<benchmarks>
-  <benchmark href="../../benchmark/docbook.xml" name="DocBook" />
-  <benchmark href="../../benchmark/htmlbook.xml" name="HTMLBook" />
-</benchmarks>
