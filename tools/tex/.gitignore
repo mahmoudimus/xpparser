@@ -1,0 +1,12 @@
+*gnuplottex-fig*eps
+*gnuplottex-fig*gnuplot
+*gnuplottex-fig*tex
+*gnuplottex-fig*pdf
+*.aux
+*.log
+*.gnuploterrors
+benchmarks-xquery-full.xml
+benchmarks-xslt-full.xml
+benchmarks-xquery.xml
+benchmarks-xslt.xml
+benchmarks-all.xml

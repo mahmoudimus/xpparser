@@ -1,0 +1,65 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,vmargin=.5cm]{geometry}
+\usepackage{gnuplottex}
+
+\begin{document}
+\enlargethispage{5cm}
+
+\begin{figure*}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        11.0cm,6.0cm}]
+set logscale y
+plot "captured_dist.dat" using 1:2 title "nb of requests"
+  \end{gnuplot}
+  \caption{Distribution of request sizes (all requests).}
+\end{figure*}
+
+\begin{figure*}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        11.0cm,6.0cm}]
+set logscale y
+plot "captured_dist.dat" using 1:3 title "nb of captured requests"
+  \end{gnuplot}
+  \caption{Distribution of request sizes (captured only).}
+\end{figure*}
+
+\begin{figure*}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        11.0cm,6.0cm}]
+set logscale y
+plot "captured_dist.dat" using 1:($2-$3) title "nb of uncaptured requests"
+  \end{gnuplot}
+  \caption{Distribution of request sizes (not captured).}
+\end{figure*}
+
+\begin{figure*}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        11.0cm,6.0cm}]
+set logscale y
+plot "captured_dist.dat" using 1:2 title "nb of requests",\
+     "captured_dist.dat" using 1:3 title "nb of captured requests"
+  \end{gnuplot}
+  \caption{Distribution of request sizes (both).}
+\end{figure*}
+
+\begin{figure*}[htp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        11.0cm,6.0cm}]
+set yrange [-0.5:1.5]
+plot "captured_dist.dat" using 1:($3/$2) title "proportion of captured 
+requests"
+  \end{gnuplot}
+  \caption{Proportion of captured requests by size}
+\end{figure*}
+
+\end{document}
