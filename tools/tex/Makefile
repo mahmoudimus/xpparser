@@ -1,14 +1,24 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices captured_dist.dat
+all: dist.dat axis-count.tex size-gte-100.tex matrices
 
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
 		   benchmarks-xquery-full.xml benchmarks-xquery.xml 
 matrices: $(BENCHMARKS)
 	ant
-clean:
+
+# Remove generated files
+clean: miniclean
 	rm -f dist.dat axis-count.tex size-gte-100.tex captured_dist.dat
 	rm -f $(BENCHMARKS)
 	rm -f matrix_*_*.tex totals_*_*.tex
+
+# Remove some generated files that are not useful as end products
+miniclean:
+	rm -f *gnuplottex-fig*.eps
+	rm -f *gnuplottex-fig*.gnuplot
+	rm -f *gnuplottex-fig*.tex
+	rm -f *gnuplottex-fig*.pdf
+	rm -f *.aux *.gnuploterrors *.log
 
 size-gte-100.tex: $(wildcard ../../benchmark/*-full.xml)
 	./size-gte.sh ../../benchmark/*-full.xml > size-gte-100.tex
