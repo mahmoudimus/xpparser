@@ -57,7 +57,7 @@ last.primary = literal
   |  element sequenceExpr { last.path* }
 
 last.path = element pathExpr {
-  ( element rootExpr { empty }, last.step* ) | last.step+
+  ( element rootExpr { empty }, last.step? ) | last.step
 }
 
 last.dummy = last.op
