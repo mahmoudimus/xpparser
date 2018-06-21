@@ -71,14 +71,4 @@ op |= cst.op
 # ---------------------------------------------------------------------------
 # Allow some functions
 
-fun |= cst.fun | fun.child
-
-# has-children() admissible when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
-  },
-  element arguments { expr* }?
-}
+fun |= cst.fun

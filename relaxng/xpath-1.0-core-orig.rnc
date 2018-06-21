@@ -56,7 +56,7 @@ fun = element functionCallExpr {
   element functionName { external "fn/bool.rnc" },
   element arguments { expr* }?
 }
-| fun.name
+| fun.name | fun.child
 
 # various name accessor functions are admissible
 fun.name = element functionCallExpr {
@@ -68,6 +68,16 @@ fun.name = element functionCallExpr {
     | string "namespace-uri"
     | string "node-name"
     )
+  },
+  element arguments { expr* }?
+}
+
+# has-children() admissible when the child axis is available
+fun.child =  element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "has-children" )
   },
   element arguments { expr* }?
 }

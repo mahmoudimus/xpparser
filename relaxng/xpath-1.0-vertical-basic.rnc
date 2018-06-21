@@ -56,7 +56,7 @@ path |= element pathExpr {
 # ---------------------------------------------------------------------------
 # Allow some functions
 
-fun |= cst.fun | fun.root | fun.child
+fun |= cst.fun | fun.root
 
 # root() admissible when both the ancestor and parent axes are available using
 # `ancestor-or-self::*[not(parent::*)]'
@@ -65,16 +65,6 @@ fun.root = element functionCallExpr {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "root")
-  },
-  element arguments { expr* }?
-}
-
-# has-children() admissible when the child axis is available
-fun.child =  element functionCallExpr {
-  element functionName {
-    attribute xqx:prefix { string "fn" }?,
-    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "has-children" )
   },
   element arguments { expr* }?
 }

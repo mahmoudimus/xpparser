@@ -34,7 +34,7 @@ include "xpath-1.0-core-orig.rnc" {
     },
     element arguments { expr* }?
   }
-  | fun.name
+  | fun.name | fun.child
 }
 
 op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  ) {
