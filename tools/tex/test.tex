@@ -10,11 +10,11 @@
 
 \begin{document}
 \enlargethispage{5cm}
-\begin{figure*}[htp]
+\begin{figure}[tbp]
   \centering
   % you need to compile with `pdflatex --shell-escape`
   \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
-        11.0cm,6.0cm}]
+        \linewidth,6.0cm}]
     set yrange [0:100]
     set decimal locale
     set format y "%'g"
@@ -32,12 +32,12 @@
     "" using 4 title "baseline" lt rgb "#636369"
   \end{gnuplot}
   \caption{Coverage of the XSLT sources.}
-\end{figure*}
-\begin{figure*}[htp]
+\end{figure}
+\begin{figure}[tbp]
   \centering
   % you need to compile with `pdflatex --shell-escape`
   \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
-        11.0cm,6.0cm}]
+        \linewidth,6.0cm}]
     set yrange [0:100]
     set decimal locale
     set format y "%'g"
@@ -55,7 +55,7 @@
     "" using 4 title "baseline" lt rgb "#636369"
   \end{gnuplot}
   \caption{Coverage of the XQuery sources.}
-\end{figure*}
+\end{figure}
 %% \begin{figure*}[htp]
 %%   \centering
 %%   % you need to compile with `pdflatex --shell-escape`
