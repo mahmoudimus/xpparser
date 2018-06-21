@@ -59,3 +59,13 @@ last.primary = literal
 last.path = element pathExpr {
   ( element rootExpr { empty }, last.step* ) | last.step+
 }
+
+last.dummy = last.op
+  | element functionCallExpr {
+    element functionName { 
+      attribute xqx:prefix { string "fn" }?,
+      attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+      string "not"
+    },
+    element arguments { last.op }
+ }
