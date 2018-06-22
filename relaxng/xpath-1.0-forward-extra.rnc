@@ -20,7 +20,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-forward-last.rnc"
-
+include "expr/varref.rnc"
 include "expr/extra.rnc"
 
 fun |= fun.extra

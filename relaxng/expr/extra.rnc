@@ -20,21 +20,33 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-fun.extra =
-element functionCallExpr {
+fun.extra = fun.arith | fun.string
+
+fun.arith = element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "count"
-    | string "concat"
-    | string "contains"
-    | string "ends-with"
     | string "max"
     | string "min"
+    | string "string-length"
+    )
+  },
+  element arguments {
+    ( expr | element argumentPlaceholder { empty } )*
+  }?
+}# BUG? try validating 'substring($base.dir, 1, string-length($base.dir)-1)'
+
+fun.string = element functionCallExpr {
+  element functionName {
+    attribute xqx:prefix { string "fn" }?,
+    attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
+    ( string "concat"
+    | string "contains"
+    | string "ends-with"
     | string "normalize-space"
     | string "starts-with"
     | string "string-join"
-    | string "string-length"
     | string "substring"
     | string "substring-after"
     | string "substring-before"
@@ -46,11 +58,24 @@ element functionCallExpr {
   }?
 }
 
-op.extra =
-element ( addOp | subtractOp | multiplyOp     # arithmetic
-        | divOp | idivOp | modOp
-        | stringConcatenateOp                 # string
-        ) {
-  element firstOperand  { expr },
-  element secondOperand { expr }
+op.extra = element ( eqOp | neOp | equalOp | notEqualOp
+         | ltOp | leOp | gtOp | geOp
+         | lessThanOp  | lessThanOrEqualOp
+         | greaterThanOp | greaterThanOrEqualOp ) {
+  element firstOperand { op.arith },
+  element secondOperand { op.arith }
 }
+ |  element ( eqOp | neOp | equalOp | notEqualOp ) {
+  element firstOperand { op.string },
+  element secondOperand { op.string }
+}
+
+op.arith = element ( addOp | subtractOp | multiplyOp | divOp | idivOp | modOp) {
+  element firstOperand  { op.arith },
+  element secondOperand { op.arith }
+} | fun.arith | varref | num
+
+op.string = element stringConcatenateOp {
+  element firstOperand  { op.string },
+  element secondOperand { op.string }
+} | fun.string | varref | str
