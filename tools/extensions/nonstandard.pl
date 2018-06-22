@@ -230,54 +230,57 @@ die "Usage: $0 <XML files>\n" unless @ARGV;
   "zero-or-one"
 );
 
-$query = "";
+$query = '(@xqx:prefix != \'fn\') or (true()';
 foreach (@functions) {
   $query = "$query and text() != '$_'";
 }
+$query = "$query)";
 
-$nonstandard = "ast/descendant::*[local-name()='functionName' $query]";
+$nonstandardquery = "ast//xqx:functionName[$query]";
 $inextras = 'schemas/validation[@schema=\'xpath-1.0-core-extra.rnc\' or @schema=\'xpath-efo-extra.rnc\' or @schema=\'xpath-1.0-vertical-extra.rnc\' or @schema=\'xpath-2.0-core-extra.rnc\' or @schema=\'xpath-emso2-extra.rnc\' or @schema=\'xpath-non-mixing-extra.rnc\' or @schema=\'xpath-1.0.forward-extra.rnc\'][@valid=\'yes\']';
 
 $total=0;
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -t -v \"count(//xpath[schemas])\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas])\" -n $file |");
   while(<STARLET>) {
     chomp;
     $total+=$_;
   }
   close STARLET;
 }
-print "Counting only validated queries...\n";
-print "$total queries in total\n";
+print STDERR "Counting only validated queries...\n";
+print STDERR "$total queries in total\n";
 
 $nonstd=0;
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -t -v \"count(//xpath[schemas][$nonstandard])\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][$nonstandardquery])\" -n $file |");
   while(<STARLET>) {
     chomp;
     $nonstd+=$_;
   }
   close STARLET;
 }
-print "$nonstd queries with non-standard functions\n";
+print STDERR "$nonstd queries with non-standard functions\n";
 
 $extras=0;
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -t -v \"count(//xpath[schemas][$inextras])\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][$inextras])\" -n $file |");
   while(<STARLET>) {
     chomp;
     $extras+=$_;
   }
   close STARLET;
 }
-print "$extras queries captured in extra fragments\n";
+print STDERR "$extras queries captured in extra fragments\n";
 
-$remaining = $total-$extras-$nonstandard;
-print "$remaining remaining queries:\n\n";
+$remaining = $total-$extras-$nonstd;
+print STDERR "$remaining remaining queries:\n";
+print "<?xml version=\"1.0\"?>\n<benchmark>\n";
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -t -v \"//xpath[schemas][not($nonstandard) and not($inextras)]/query\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and not($inextras)]\" -n $file |");
   while(<STARLET>) {
-    print " * $_\n";
+    print "$_";
   }
   close STARLET;
 }
+print "</benchmark>\n";
