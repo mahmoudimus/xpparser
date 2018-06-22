@@ -39,7 +39,7 @@ xslt-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
 xslt-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
 	./coverage.sh xslt "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xslt-orig.cov
 
-xquery-full.cov: coverage.sh full-frags.xpath
+xquery-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
 	./coverage.sh xquery "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xquery-full.cov
 
 xquery-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
