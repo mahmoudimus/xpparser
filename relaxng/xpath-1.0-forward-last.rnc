@@ -20,7 +20,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-forward-basic.rnc" {
-  start = newexpr
+  start = root.expr | last.dummy
 }
 
 # Allowing some use of last()
@@ -36,4 +36,3 @@ include "expr/last.rnc" {
   }
 }
 step |= last.step
-newexpr = root.expr | last.dummy

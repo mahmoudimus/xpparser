@@ -20,7 +20,7 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 include "xpath-1.0-core-join.rnc" {
-  start = newexpr
+  start = join.expr | last.dummy
 }
 
 # include "expr/varref.rnc"
@@ -32,7 +32,6 @@ include "expr/last.rnc" {
 }
 last.primary |= varref
 step |= last.step
-newexpr = join.expr | last.dummy
 
 join.step |= element stepExpr {
   ((join.axis, join.nodetest) | element filterExpr { primary } ),
