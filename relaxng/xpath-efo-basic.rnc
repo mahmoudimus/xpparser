@@ -48,6 +48,7 @@ include "xpath-1.0-core-basic.rnc" {
         }
       }
   }
+  if.expr = notAllowed
 }
 
 fun |= cst.fun | fun.root

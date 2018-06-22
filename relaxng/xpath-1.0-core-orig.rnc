@@ -22,6 +22,7 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 start = expr
 
 include "expr/literal.rnc"
+include "expr/if.rnc"
 
 # ----------------------------------------------------------------
 # Expressions
