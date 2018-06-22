@@ -26,17 +26,18 @@ element functionCallExpr {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
     ( string "count"
-    | string "max" | string "min"
     | string "concat"
     | string "contains"
+    | string "ends-with"
+    | string "max"
+    | string "min"
     | string "normalize-space"
+    | string "starts-with"
+    | string "string-join"
+    | string "string-length"
     | string "substring"
     | string "substring-after"
     | string "substring-before"
-    | string "starts-with"
-    | string "ends-with"
-    | string "string-join"
-    | string "string-length"
     | string "translate"
     )
   },
