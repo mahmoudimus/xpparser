@@ -12,8 +12,11 @@ non-standard-xquery.xml: nonstandard.pl ../../benchmark/*-full.xml
 non-standard-xslt.xml: nonstandard.pl ../../benchmark/*-full.xml
 	./nonstandard.pl ../../benchmark/docbook-full.xml ../../benchmark/teixsl-full.xml ../../benchmark/htmlbook-full.xml > non-standard-xslt.xml
 
-non-standard-xquery.reasons: non-standard-xquery.xml
-	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "1.0-core-extra")]/text()' -n non-standard-xquery.xml | sort | uniq -c > non-standard-xquery.reasons
+%.reasons: %.xml
+	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "1.0-core-extra")]/text()' -n $*.xml | sort | uniq -c > $*.reasons
 
-non-standard-xslt.reasons: non-standard-xslt.xml
-	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "1.0-core-extra")]/text()' -n non-standard-xslt.xml | sort | uniq -c > non-standard-xslt.reasons
+non-standard-no-last-no-position-xslt.xml: non-standard-xslt.xml
+	echo "<?xml version=\"1.0\"?>" > $@
+	echo "<benchmark>" >> $@
+	xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "//xpath[schemas][not(ast//xqx:functionName[text()='last' or text()='position'])]" -n $< >> $@
+	echo "</benchmark>" >> $@

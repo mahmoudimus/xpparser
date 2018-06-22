@@ -124,7 +124,6 @@ die "Usage: $0 <XML files>\n" unless @ARGV;
   "nilled",
   "node-after",
   "node-before",
-  "node-name",
   "normalize-unicode",
   "NOTATION-equal",
   "number",
@@ -164,7 +163,6 @@ die "Usage: $0 <XML files>\n" unless @ARGV;
   "sqrt",
   "static-base-uri",
   "string",
-  "string-join",
   "string-to-codepoints",
   "subsequence",
   "subtract-dates",
@@ -204,7 +202,7 @@ die "Usage: $0 <XML files>\n" unless @ARGV;
   "zero-or-one"
 );
 
-$query = '(false()';
+$query = '(not(@xqx:prefix != \'fn\')) and (false()';
 foreach (@unsupported) {
   $query = "$query or text() = '$_'";
 }
@@ -472,14 +470,14 @@ print STDERR "$nonstd queries with non-standard functions\n";
 
 $nonsup=0;
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][$nonsupportedquery])\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][not($nonstandardquery) and not($inextras) and ($nonsupportedquery)])\" -n $file |");
   while(<STARLET>) {
     chomp;
     $nonsup+=$_;
   }
   close STARLET;
 }
-print STDERR "$nonsup queries with unsupported standard functions\n";
+print STDERR "$nonsup queries with unsupported standard functions but no non-standard ones\n";
 
 $extras=0;
 for my $file (@files) {
@@ -496,10 +494,18 @@ $remaining = $total-$extras-$nonstd-$nonsup;
 print STDERR "$remaining remaining queries\n";
 print "<?xml version=\"1.0\"?>\n<benchmark>\n";
 for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and not($inextras) and not($nonstandardquery)]\" -n $file |");
+  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and not($inextras) and not($nonsupportedquery)]\" -n $file |");
   while(<STARLET>) {
     print "$_";
   }
   close STARLET;
 }
 print "</benchmark>\n";
+
+# for my $file (@files) {
+#   open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and ($inextras) and ($nonsupportedquery)]\" -n $file |");
+#   while(<STARLET>) {
+#     print "$_";
+#   }
+#   close STARLET;
+# }
