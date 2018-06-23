@@ -63,22 +63,24 @@ op.extra = op.arith | op.string |
             | ltOp | leOp | gtOp | geOp
             | lessThanOp  | lessThanOrEqualOp
             | greaterThanOp | greaterThanOrEqualOp ) {
-       element firstOperand { op.arith },
-       element secondOperand { op.arith }
+      ( element firstOperand  { op.arith }, element secondOperand { op.arith } )
+    | ( element firstOperand  { op.arith }, element secondOperand { path } )
+    | ( element firstOperand  { path }, element secondOperand { op.arith } )
   }
   | element ( eqOp | neOp | equalOp | notEqualOp ) {
-       element firstOperand { op.string },
-       element secondOperand { op.string }
+      ( element firstOperand  { op.string }, element secondOperand { op.string } )
+    | ( element firstOperand  { op.string }, element secondOperand { path } )
+    | ( element firstOperand  { path }, element secondOperand { op.string } )
   }
 
 op.arith = fun.arith | varref | num
-         | element ( addOp | subtractOp | modOp ) {
-             element firstOperand  { op.arith },
-             element secondOperand { op.arith }
-         }
+  | element ( addOp | subtractOp | modOp ) {
+       element firstOperand { op.arith },
+       element secondOperand { op.arith }
+  }
 
-op.string = fun.string | varref | str
-          | element stringConcatenateOp {
+op.string = fun.string | varref | str | path
+  | element stringConcatenateOp {
               element firstOperand  { op.string },
               element secondOperand { op.string }
           }
