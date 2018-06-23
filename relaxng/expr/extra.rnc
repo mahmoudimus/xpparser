@@ -35,7 +35,7 @@ fun.arith = element functionCallExpr {
   element arguments {
     ( expr | element argumentPlaceholder { empty } )*
   }?
-}# BUG? try validating 'substring($base.dir, 1, string-length($base.dir)-1)'
+}
 
 fun.string = element functionCallExpr {
   element functionName {
@@ -58,24 +58,27 @@ fun.string = element functionCallExpr {
   }?
 }
 
-op.extra = element ( eqOp | neOp | equalOp | notEqualOp
-         | ltOp | leOp | gtOp | geOp
-         | lessThanOp  | lessThanOrEqualOp
-         | greaterThanOp | greaterThanOrEqualOp ) {
-  element firstOperand { op.arith },
-  element secondOperand { op.arith }
-}
- |  element ( eqOp | neOp | equalOp | notEqualOp ) {
-  element firstOperand { op.string },
-  element secondOperand { op.string }
-}
+op.extra = op.arith | op.string |
+    element ( eqOp | neOp | equalOp | notEqualOp
+            | ltOp | leOp | gtOp | geOp
+            | lessThanOp  | lessThanOrEqualOp
+            | greaterThanOp | greaterThanOrEqualOp ) {
+       element firstOperand { op.arith },
+       element secondOperand { op.arith }
+  }
+  | element ( eqOp | neOp | equalOp | notEqualOp ) {
+       element firstOperand { op.string },
+       element secondOperand { op.string }
+  }
 
-op.arith = element ( addOp | subtractOp | multiplyOp | divOp | idivOp | modOp) {
-  element firstOperand  { op.arith },
-  element secondOperand { op.arith }
-} | fun.arith | varref | num
+op.arith = fun.arith | varref | num
+         | element ( addOp | subtractOp | modOp ) {
+             element firstOperand  { op.arith },
+             element secondOperand { op.arith }
+         }
 
-op.string = element stringConcatenateOp {
-  element firstOperand  { op.string },
-  element secondOperand { op.string }
-} | fun.string | varref | str
+op.string = fun.string | varref | str
+          | element stringConcatenateOp {
+              element firstOperand  { op.string },
+              element secondOperand { op.string }
+          }
