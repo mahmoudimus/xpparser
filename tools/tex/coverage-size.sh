@@ -43,7 +43,7 @@ do
         value=$((count + value))
     done
     array[$i]=$value
-    printf "& ${array[i]} "
+    printf "& %'.0f " ${array[i]}
 done
 value=0
 for file in $@
@@ -52,7 +52,7 @@ do
     value=$((count + value))
 done
 array[$i]=$value
-printf "& $value"
+printf "& %'.0f" $value
 printf '\\\\\n'
 
 # first row: accepted
@@ -65,7 +65,7 @@ do
         count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $i and @size < ($i+$step)]) and (schemas/validation[($full) and @valid=\"yes\"])])" $file`
         value=$((count + value))
     done
-    percent=`echo "scale=2; 100*$value/${array[i]}" | bc`
+    percent=`echo "scale=1; 100*$value/${array[i]}" | bc`
     printf "& $percent\\%% "
 done
 value=0
@@ -74,7 +74,7 @@ do
     count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $i]) and (schemas/validation[($full) and @valid=\"yes\"])])" $file`
     value=$((count + value))
 done
-percent=`echo "scale=2; 100*$value/${array[i]}" | bc`
+percent=`echo "scale=1; 100*$value/${array[i]}" | bc`
 printf "& $percent\\%% "
 printf '\\\\\n'
 printf '\\bottomrule\n'

@@ -31,7 +31,7 @@ do
     count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast//xqx:xpathAxis)])" $file`
     total=$((count + total))
 done
-percent=`echo "scale=2; 100*$value/$total" | bc`
+percent=`echo "scale=1; 100*$value/$total" | bc`
 printf "& $percent\\%% "
 
 # no axis step
@@ -47,7 +47,7 @@ do
     count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[not(ast//xqx:xpathAxis)])" $file`
     total=$((count + total))
 done
-percent=`echo "scale=2; 100*$value/$total" | bc`
+percent=`echo "scale=1; 100*$value/$total" | bc`
 printf "& $percent\\%%"
 printf '\\\\\n'
 printf '\\bottomrule\n'
