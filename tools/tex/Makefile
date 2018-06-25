@@ -4,6 +4,7 @@ BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
 		   benchmarks-xquery-full.xml benchmarks-xquery.xml 
 matrices: $(BENCHMARKS)
+	rm -f matrix_*_*.tex
 	ant
 
 # Remove generated files

@@ -1,4 +1,7 @@
-all: extensions.xml gains-ext.tex
+all: extensions.xml gains-ext.tex countfuns_dist.dat
+
+countfuns_dist.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
+	./countfuns.pl ../../benchmark/*-full.xml > /dev/null
 
 extensions.xml: extensions.sh $(wildcard ../../benchmark/*-full.xml)
 	@bash extensions.sh > extensions.xml
