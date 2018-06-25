@@ -22,7 +22,7 @@ for ((i = 1; i < $cutoff; i+=$step))
 do
     printf 'r'
 done
-printf 'r}\n\\topline'
+printf 'r}\n\\topline\n'
 printf 'sizes '
 for ((i = 1; i < $cutoff; i+=$step))
 do
