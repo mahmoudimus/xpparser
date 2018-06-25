@@ -143,7 +143,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   -->
   
   <target name="sources.xslt" depends="docbook,htmlbook,tei"/>
-  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,xquerydoc,guidomatic"/>
+  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,xquerydoc,guidomatic,functional,openinfoman,transform,rbtree"/>
   
   <!-- DocBook XSL -->
   <target name="docbook">
@@ -188,14 +188,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                includes="guid-o-matic-master/*.xq,guid-o-matic-master/*.xqm" 
                arg="--xquery ../xslt/xqx2xql.xsl"
                license="guid-o-matic-master/LICENSE"/>
-  </target>
-
-  <!-- no open source license -->
-  <target name="xquerrail">
-    <benchmark name="xquerrail"
-               src="https://github.com/garyvidal/xquerrail/archive/master.zip"
-               includes="xquerrail-master/bin/lib/xqdoc-display.xqy,xquerrail-master/src/application/controller/default-controller.xqy,xquerrail-master/src/application/controller/demo-controller.xqy,xquerrail-master/src/application/views/default/default.index.html.xqy,xquerrail-master/src/application/views/default/default.login.html.xqy,xquerrail-master/src/application/views/demo/demo.accordion.html.xqy,xquerrail-master/src/application/views/demo/demo.portlet.html.xqy,xquerrail-master/src/application/views/demo/demo.editinplace.html.xqy,xquerrail-master/src/application/views/demo/demo.page-left-sidebar.html.xqy,xquerrail-master/src/application/views/demo/demo.form.html.xqy,xquerrail-master/src/application/views/demo/demo.forms.html.xqy,xquerrail-master/src/application/views/demo/demo.tinymce.html.xqy,xquerrail-master/src/application/views/demo/demo.dialog.html.xqy,xquerrail-master/src/application/views/demo/demo.msg.html.xqy,xquerrail-master/src/application/views/demo/demo.icons.html.xqy,xquerrail-master/src/application/views/demo/demo.two-column-layout.html.xqy,xquerrail-master/src/application/views/demo/demo.search.html.xqy,xquerrail-master/src/application/views/demo/demo.slider.html.xqy,xquerrail-master/src/application/views/demo/demo.flexigrid.html.xqy,xquerrail-master/src/application/views/demo/demo.three-column-layout.html.xqy,xquerrail-master/src/application/views/demo/demo.gallery.html.xqy,xquerrail-master/src/application/views/demo/demo.charts.html.xqy,xquerrail-master/src/application/views/demo/demo.validate.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.visualizations.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.navigation.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.controls.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.grids.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.index.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.containers.html.xqy,xquerrail-master/src/application/views/wijmo/wijmo.javascript.html.xqy,xquerrail-master/src/application/views/article/article.index.html.xqy,xquerrail-master/src/application/tags/pagination-tag.xqy,xquerrail-master/src/application/tags/echo-tag.xqy,xquerrail-master/src/application/tags/linkto-tag.xqy,xquerrail-master/src/application/tags/eval-tag.xqy,xquerrail-master/src/application/tags/breadcrumb-tag.xqy,xquerrail-master/src/application/tags/widget-x-tag.xqy,xquerrail-master/src/application/templates/footer.html.xqy,xquerrail-master/src/application/templates/header.html.xqy,xquerrail-master/src/application/templates/index.html.xqy,xquerrail-master/src/application/templates/fields.html.xqy,xquerrail-master/src/application/templates/two-columns.html.xqy,xquerrail-master/src/application/templates/head.html.xqy,xquerrail-master/src/application/templates/sidebar.html.xqy,xquerrail-master/src/application/templates/wijmo-theme.html.xqy,xquerrail-master/src/application/templates/top_buttons.html.xqy,xquerrail-master/src/application/templates/wijmo-main.html.xqy,xquerrail-master/src/application/templates/navigation.html.xqy,xquerrail-master/src/application/templates/main.html.xqy,xquerrail-master/src/application/templates/subnavigation.html.xqy,xquerrail-master/src/application/templates/toolbar.html.xqy,xquerrail-master/src/application/templates/login.html.xqy,xquerrail-master/src/testsuites/app/controller-tests.xqy,xquerrail-master/src/testsuites/framework/interceptor-tests.xqy,xquerrail-master/src/testsuites/framework/routing-tests.xqy,xquerrail-master/src/testsuites/framework/model-tests.xqy,xquerrail-master/src/testsuites/framework/config-tests.xqy,xquerrail-master/src/testsuites/framework/request-tests.xqy,xquerrail-master/src/testsuites/framework/base/model-tests.xqy,xquerrail-master/src/testsuites/framework/domain-tests.xqy,xquerrail-master/src/plugins/backbone/controller/default-controller.xqy,xquerrail-master/src/plugins/backbone/plugin.xqy,xquerrail-master/src/plugins/wijmo/controller/default-controller.xqy,xquerrail-master/src/plugins/wijmo/plugin.xqy,xquerrail-master/src/plugins/wijmo/lib/wijmo-lib.xqy,xquerrail-master/src/_framework/builders/controller-builder.xqy,xquerrail-master/src/_framework/dispatchers/dispatcher.web.xqy,xquerrail-master/src/_framework/dispatchers/dispatcher.xcc.xqy,xquerrail-master/src/_framework/interceptors/interceptor.ml-security.xqy,xquerrail-master/src/_framework/interceptors/interceptor.base.xqy,xquerrail-master/src/_framework/interceptors/interceptor.mocks.xqy,xquerrail-master/src/_framework/interceptors/interceptor.logging.xqy,xquerrail-master/src/_framework/interceptors/interceptor.profiler.xqy,xquerrail-master/src/_framework/rewriter.xqy,xquerrail-master/src/_framework/interceptor.xqy,xquerrail-master/src/_framework/config.xqy,xquerrail-master/src/_framework/helpers/wijmo.xqy,xquerrail-master/src/_framework/helpers/formbuilder-lists.xqy,xquerrail-master/src/_framework/helpers/form-builder.xqy,xquerrail-master/src/_framework/helpers/wijmo-lib.xqy,xquerrail-master/src/_framework/helpers/javascript.xqy,xquerrail-master/src/_framework/helpers/wijmo-builder.xqy,xquerrail-master/src/_framework/helpers/jquery.xqy,xquerrail-master/src/_framework/base/base-controller.xqy,xquerrail-master/src/_framework/base/views/base.error.html.xqy,xquerrail-master/src/_framework/base/views/base.remove.html.xqy,xquerrail-master/src/_framework/base/views/base.export.html.xqy,xquerrail-master/src/_framework/base/views/base.import.html.xqy,xquerrail-master/src/_framework/base/views/base.error.json.xqy,xquerrail-master/src/_framework/base/views/base.fields.html.xqy,xquerrail-master/src/_framework/base/views/base.save.html.xqy,xquerrail-master/src/_framework/base/views/base.find.html.xqy,xquerrail-master/src/_framework/base/views/base.edit.html.xqy,xquerrail-master/src/_framework/base/views/base.index.html.xqy,xquerrail-master/src/_framework/base/views/base.info.html.xqy,xquerrail-master/src/_framework/base/views/base.show.html.xqy,xquerrail-master/src/_framework/base/views/base.new.html.xqy,xquerrail-master/src/_framework/base/base-model.xqy,xquerrail-master/src/_framework/base/templates/footer.html.xqy,xquerrail-master/src/_framework/base/templates/header.html.xqy,xquerrail-master/src/_framework/base/templates/index.html.xqy,xquerrail-master/src/_framework/base/templates/head.html.xqy,xquerrail-master/src/_framework/base/templates/sidebar.html.xqy,xquerrail-master/src/_framework/base/templates/navigation.html.xqy,xquerrail-master/src/_framework/base/templates/main.html.xqy,xquerrail-master/src/_framework/base/templates/subnavigation.html.xqy,xquerrail-master/src/_framework/base/templates/login.html.xqy,xquerrail-master/src/_framework/engines/engine.json.xqy,xquerrail-master/src/_framework/engines/engine.html.xqy,xquerrail-master/src/_framework/engines/engine.xml.xqy,xquerrail-master/src/_framework/engines/engine.base.xqy,xquerrail-master/src/_framework/routing.xqy,xquerrail-master/src/_framework/response.xqy,xquerrail-master/src/_framework/model.xqy,xquerrail-master/src/_framework/request.xqy,xquerrail-master/src/_framework/domain.xqy,xquerrail-master/src/_framework/lib/mljson.xqy,xquerrail-master/src/_framework/lib/json.xqy,xquerrail-master/src/_framework/lib/reflection.xqy,xquerrail-master/src/_framework/lib/xray/index.xqy,xquerrail-master/src/_framework/lib/xray/src/xray.xqy,xquerrail-master/src/_framework/lib/xray/src/assertions.xqy,xquerrail-master/src/_framework/lib/xray/src/utils.xqy,xquerrail-master/src/_framework/lib/cprof/cprof.xqy,xquerrail-master/src/_framework/transpilers/parsers/CSS3Selectors.xqy,xquerrail-master/src/_framework/transpilers/parsers/relaxng-compact.xqy,xquerrail-master/src/_framework/transpilers/asts/CSS3Selectors-ast.xqy,xquerrail-master/src/_framework/transpilers/asts/relaxng-compact-ast.xqy,xquerrail-master/src/_framework/error.xqy,xquerrail-master/sandbox/wijmo.xqy,xquerrail-master/sandbox/wijmo-lib.xqy,xquerrail-master/sandbox/wijmo-builder.xqy,xquerrail-master/sandbox/jquery.xqy" 
-               arg="--xquery ../xslt/xqx2xql.xsl"/>
   </target>
 
   <target name="marklogic">
@@ -248,7 +240,47 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                arg="--xquery ../xslt/xqx2xql.xsl"
                license="exist-develop/LICENSE"/>
   </target>
+
+  <target name="functional">
+    <benchmark name="functional"
+               src="https://github.com/jpcs/functional.xq/archive/master.zip"
+               includes="functional.xq-master/*.xq,functional.xq-master/samples/*.xq"
+               license="functional.xq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+             
+  <target name="openinfoman">
+    <benchmark name="openinfoman"
+               src="https://github.com/openhie/openinfoman/archive/master.zip"
+               includes="openinfoman-master/*/*.xq*,openinfoman-master/*/*/*.xq*"
+               license="openinfoman-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>  
+             
+  <target name="transform">
+    <benchmark name="transform"
+               src="https://github.com/jpcs/transform.xq/archive/master.zip"
+               includes="transform.xq-master/*/*.xq,transform.xq-master/*.xq"
+               license="transform.xq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target> 
+             
+  <target name="xqueryparser">
+    <benchmark name="xqueryparser"
+               src="https://github.com/jpcs/xqueryparser.xq/archive/master.zip"
+               includes="xqueryparser.xq-master/*/*.xq,xqueryparser.xq-master/*.xq"
+               license="xqueryparser.xq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
   
+  <target name="rbtree">
+    <benchmark name="rbtree"
+               src="https://github.com/jpcs/rbtree.xq/archive/master.zip"
+               includes="rbtree.xq-master/*.xq,rbtree.xq-master/*/*.xq"
+               license="rbtree.xq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+               
   <!-- download saxon if needed -->
   <target name="saxon">
     <local name="offline"/>
