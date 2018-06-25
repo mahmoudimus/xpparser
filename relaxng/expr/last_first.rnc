@@ -1,4 +1,5 @@
-# Vertical DataXPath fragment extended with last()
+# XPath fragment of XQueryX in Relax NG compact syntax
+# Xpath expressions involving the function last() and intergers.
 #
 # Copyright (C) 2016-2017
 #   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
@@ -19,15 +20,5 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-vertical-basic.rnc" {
-  start = expr | last.dummy
-}
-
-# Allowing some use of last()
-include "expr/last_first.rnc" {
-# Allowed axes before a [last()] predicate.
-  last.axis = deterministic.axis | element xpathAxis {
-      string "ancestor"             # With 'parent' and regular XPath
-  }
-}
-step |= last.step
+include "last.rnc"
+last.fun |= int

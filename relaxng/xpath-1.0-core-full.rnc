@@ -27,7 +27,7 @@ include "xpath-1.0-core-join.rnc" {
 # primary |= varref
 # join.primary |= varref
 
-include "expr/last.rnc" {
+include "expr/last_first.rnc" {
   last.axis = axis
 }
 last.primary |= varref

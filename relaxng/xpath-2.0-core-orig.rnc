@@ -23,7 +23,9 @@
 default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
-include "xpath-1.0-core-orig.rnc"
+include "xpath-1.0-core-orig.rnc" {
+  start = expr | last.dummy
+}
 
 include "expr/varref.rnc"
 primary |= varref
@@ -40,5 +42,5 @@ op |= element ( intersectOp | exceptOp              # path intersection
 }
 
 # Allow last() on arbitrary paths
-include "expr/last.rnc"
+include "expr/last_first.rnc"
 predicates |= last.predicate
