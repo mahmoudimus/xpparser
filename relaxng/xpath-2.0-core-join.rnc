@@ -22,7 +22,7 @@ namespace xqx = "http://www.w3.org/2005/XQueryX"
 include "misc/join.rnc"
 
 include "xpath-2.0-core-basic.rnc" {
-  start = join.expr
+  start = join.expr | last.dummy
 }
 
 join.op |= element ( intersectOp | isOp | nodeBeforeOp | nodeAfterOp ) {
