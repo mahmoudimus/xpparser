@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex
 
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
@@ -64,13 +64,19 @@ benchmarks-xquery-full.xml: benchmarks-all-full.xml
 	grep -v 'type="xslt"' $< > $@
 
 contingency-size.dat: contingency-size.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
-	./contingency-size.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > contingency-size.dat
+	./contingency-size.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 chisquare-size: contingency-size.dat chisquare.R
 	./chisquare.R contingency-size.dat
 
 contingency-axis-step.dat: contingency-axis-step.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
-	./contingency-axis-step.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > contingency-axis-step.dat
+	./contingency-axis-step.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 chisquare-axis-step: contingency-axis-step.dat chisquare.R
 	./chisquare.R contingency-axis-step.dat
+
+coverage-size.tex: coverage-size.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
+
+coverage-axis-step.tex: coverage-axis-step.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
