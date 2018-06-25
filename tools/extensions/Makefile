@@ -16,7 +16,7 @@ non-standard-xslt.xml: nonstandard.pl ../../benchmark/*-full.xml
 	./nonstandard.pl `grep 'type="xslt"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > non-standard-xslt.xml
 
 %.reasons: %.xml
-	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "1.0-core-extra")]/text()' -n $*.xml | sort | uniq -c > $*.reasons
+	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "efo-extra")]/text()' -n $*.xml | sort | uniq -c > $*.reasons
 
 non-standard-no-last-no-position-xslt.xml: non-standard-xslt.xml
 	echo "<?xml version=\"1.0\"?>" > $@
