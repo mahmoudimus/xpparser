@@ -35,7 +35,6 @@ last.fun = element functionCallExpr {
   },
   element arguments { empty }?
 }
-  | int
 
 # Allowed axes before a [last()] predicate.
 # Should be modified to a safe value when including this file.

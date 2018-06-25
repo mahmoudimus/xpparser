@@ -30,7 +30,7 @@ include "xpath-1.0-vertical-id.rnc" {
 }
 
 # Allowing some use of last()
-include "expr/last.rnc" {
+include "expr/last_first.rnc" {
 # Allowed axes before a [last()] predicate.
   last.axis = deterministic.axis | element xpathAxis {
       string "ancestor"             # With 'parent' and regular XPath
