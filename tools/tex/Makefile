@@ -60,3 +60,15 @@ benchmarks-xslt-full.xml: benchmarks-all-full.xml
 	grep -v 'type="xquery"' $< > $@
 benchmarks-xquery-full.xml: benchmarks-all-full.xml
 	grep -v 'type="xslt"' $< > $@
+
+contingency-size.dat: contingency-size.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./contingency-size.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > contingency-size.dat
+
+chisquare-size: contingency-size.dat chisquare.R
+	./chisquare.R contingency-size.dat
+
+contingency-axis-step.dat: contingency-axis-step.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./contingency-axis-step.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > contingency-axis-step.dat
+
+chisquare-axis-step: contingency-axis-step.dat chisquare.R
+	./chisquare.R contingency-axis-step.dat
