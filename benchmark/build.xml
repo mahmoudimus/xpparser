@@ -143,7 +143,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   -->
   
   <target name="sources.xslt" depends="docbook,htmlbook,tei"/>
-  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,xquerydoc,guidomatic,functional,openinfoman,transform,rbtree"/>
+  <target name="sources.xquery" depends="existdb,marklogic,xqjson,histei,xquerydoc,guidomatic,functional,openinfoman,transform,xqueryparser,rbtree,semanticweb,adt,annotationstore,graphviz,mlinvoker,treedown,datascience,fots,oxfdict,linkmgmt,geospatial,mlenrich,xqtest,libs"/>
   
   <!-- DocBook XSL -->
   <target name="docbook">
@@ -181,7 +181,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                license="xquerydoc-master/LICENCE"/>
   </target>
 
-  <!-- only 51 extracted queries? -->
   <target name="guidomatic">
     <benchmark name="guidomatic"
                src="https://github.com/baskaufs/guid-o-matic/archive/master.zip"
@@ -212,7 +211,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                license="HisTEI-master/LICENSE"/>
   </target>
 
-  <!-- part of eXist-db -->
+  <!-- part of eXist-db, so no point in including it -->
   <target name="xprocxq">
     <benchmark name="xprocxq"
                src="https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/xprocxq/source-archive.zip"
@@ -280,7 +279,172 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
                license="rbtree.xq-master/LICENSE"
                arg="--xquery ../xslt/xqx2xql.xsl"/>
   </target>
-               
+  
+  <target name="semanticweb">
+    <benchmark name="semanticweb"
+               src="https://github.com/HeardLibrary/semantic-web/archive/master.zip"
+               includes="semantic-web-master/*/*.xq*,semantic-web-master/*/*/*.xq*"
+               license="semantic-web-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="adt">
+    <benchmark name="adt"
+               src="https://github.com/jpcs/data.xq/archive/master.zip"
+               includes="data.xq-master/*/*.xq*,data.xq-master/*.xq*"
+               license="data.xq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="annotationstore">
+    <benchmark name="annotationstore"
+               src="https://github.com/telic/exist-annotation-store/archive/master.zip"
+               includes="exist-annotation-store-master/*/*.xq*,exist-annotation-store-master/*.xq*"
+               license="exist-annotation-store-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="graphviz">
+    <benchmark name="graphviz"
+               src="https://github.com/apb2006/graphxq/archive/master.zip"
+               includes="graphxq-master/src/graphxq/*.xq*,graphxq-master/src/graphxq/*/*.xq*"
+               license="graphxq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+
+  <!-- only 43 queries, so not included -->
+  <target name="d3js">
+    <benchmark name="d3js"
+               src="https://github.com/wsalesky/d3xquery/archive/master.zip"
+               includes="d3xquery-master/*.xq*"
+               license="d3xquery-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  <!-- only 21 queries, so not included -->
+  <target name="stats">
+    <benchmark name="stats"
+               src="https://github.com/timathom/simple-statsxq/archive/master.zip"
+               includes="simple-statsxq-master/*/*.xq*"
+               license="simple-statsxq-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="mlinvoker">
+    <benchmark name="mlinvoker"
+               src="https://github.com/fgeorges/ml-invoker/archive/master.zip"
+               includes="ml-invoker-master/*.xq*,ml-invoker-master/test/*/*.xq*,ml-invoker-master/test/*/*/*.xq*"
+               license="ml-invoker-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="treedown">
+    <benchmark name="treedown"
+               src="https://github.com/biblicalhumanities/treedown/archive/master.zip"
+               includes="treedown-master/xquery/*.xq*"
+               license="treedown-master/LICENSE.md"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="datascience">
+    <benchmark name="datascience"
+               src="https://github.com/adamfowleruk/datascience/archive/master.zip"
+               includes="datascience-master/*/*/*.xq*,datascience-master/*/*/*/*.xq*"
+               license="datascience-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+
+  <!-- only 53 queries??? lots of non-standard XQuery content, I'll discard this for the moment -->
+  <target name="entityservices">
+    <benchmark name="entityservices"
+               src="https://github.com/marklogic/entity-services/archive/master.zip"
+               includes="entity-services-master/*/*/*/*/*/*/*/*/*.xq*,entity-services-master/*/*/*/*/*/*.xq*,entity-services-master/*/*/*/*/*.xq*,entity-services-master/*/*/*/*.xq*"
+               license="entity-services-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="fots">
+    <benchmark name="fots"
+               src="https://github.com/LeoWoerteler/fots-basex/archive/master.zip"
+               includes="fots-basex-master/*.xq*"
+               license="fots-basex-master/license.txt"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="oxfdict">
+    <benchmark name="oxfdict"
+               src="https://github.com/AdamSteffanick/od-api-xquery/archive/master.zip"
+               includes="od-api-xquery-master/*.xq*"
+               license="od-api-xquery-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+
+  <!-- Only 34 queries; not included -->
+  <target name="pivr">
+    <benchmark name="pivr"
+               src="https://github.com/CliffordAnderson/Personal-IVR/archive/master.zip"
+               includes="Personal-IVR-master/*.xq*"
+               license="Personal-IVR-master/license.MD"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="linkmgmt">
+    <benchmark name="linkmgmt"
+               src="https://github.com/dita-for-small-teams/dfst-linkmgmt-basex/archive/develop.zip"
+               includes="dfst-linkmgmt-basex-develop/*/*.xq*,dfst-linkmgmt-basex-develop/*/*/*.xq*,dfst-linkmgmt-basex-develop/*/*/*/*.xq*,dfst-linkmgmt-basex-develop/*/*/*/*/*/*.xq*"
+               license="dfst-linkmgmt-basex-develop/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <!-- Only 20 queries; not included -->
+  <target name="mysec">
+    <benchmark name="mysec"
+               src="https://github.com/lcahlander/mysec/archive/master.zip"
+               includes="mysec-master/*/*.xq*,mysec-master/*.xq*"
+               license="mysec-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="geospatial">
+    <benchmark name="geospatial"
+               src="https://github.com/dret/GPXQuery/archive/master.zip"
+               includes="GPXQuery-master/*.xq*"
+               license="GPXQuery-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <!-- Only 27 queries; not included -->
+  <target name="async">
+    <benchmark name="async"
+               src="https://github.com/Quodatum/async/archive/master.zip"
+               includes="async-master/*.xq*,async-master/*/*.xq*,async-master/*/*/*.xq*"
+               license="async-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="mlenrich">
+    <benchmark name="mlenrich"
+               src="https://github.com/freshie/ml-enrich/archive/master.zip"
+               includes="ml-enrich-master/*.xq*,ml-enrich-master/*/*.xq*,ml-enrich-master/*/*/*.xq*,,ml-enrich-master/*/*/*/*.xq*"
+               license="ml-enrich-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="xqtest">
+    <benchmark name="xqtest"
+               src="https://github.com/irinc/xqtest/archive/master.zip"
+               includes="xqtest-master/src/*.xq*,xqtest-master/src/test/*.xq*,xqtest-master/src/test/tests/*.xq*"
+               license="xqtest-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
+  <target name="libs">
+    <benchmark name="libs"
+               src="https://github.com/adamretter/xquery-libs/archive/master.zip"
+               includes="xquery-libs-master/*.xq*"
+               license="xquery-libs-master/LICENSE"
+               arg="--xquery ../xslt/xqx2xql.xsl"/>
+  </target>
+  
   <!-- download saxon if needed -->
   <target name="saxon">
     <local name="offline"/>
