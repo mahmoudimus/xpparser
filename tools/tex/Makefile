@@ -3,14 +3,16 @@ all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
 		   benchmarks-xquery-full.xml benchmarks-xquery.xml 
-matrices: $(BENCHMARKS)
+matrices: $(BENCHMARKS) $(wildcard ../../relaxng/fragments-*.xml)
+	rm -f matrix_*_*.tex
 	ant
+	touch $@
 
 # Remove generated files
 clean: miniclean
 	rm -f dist.dat axis-count.tex size-gte-100.tex captured_dist.dat
 	rm -f $(BENCHMARKS)
-	rm -f matrix_*_*.tex totals_*_*.tex
+	rm -f matrix_*_*.tex totals_*_*.tex matrices
 
 # Remove some generated files that are not useful as end products
 miniclean:

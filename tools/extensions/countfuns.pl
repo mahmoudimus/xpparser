@@ -1,5 +1,233 @@
 #!/usr/bin/perl
 
+# Standard XPATH functions
+@stdfuns = (
+  "abs",
+  "acos",
+  "add-dayTimeDurations",
+  "add-dayTimeDuration-to-date",
+  "add-dayTimeDuration-to-dateTime",
+  "add-dayTimeDuration-to-time",
+  "add-yearMonthDurations",
+  "add-yearMonthDuration-to-date",
+  "add-yearMonthDuration-to-dateTime",
+  "adjust-dateTime-to-timezone",
+  "adjust-date-to-timezone",
+  "adjust-time-to-timezone",
+  "analyze-string",
+  "asin",
+  "atan",
+  "atan2",
+  "available-environment-variables",
+  "avg",
+  "base64Binary-equal",
+  "base-uri",
+  "boolean",
+  "boolean-equal",
+  "boolean-greater-than",
+  "boolean-less-than",
+  "ceiling",
+  "codepoint-equal",
+  "codepoints-to-string",
+  "collection",
+  "compare",
+  "concat",
+  "concatenate",
+  "contains",
+  "cos",
+  "count",
+  "current-date",
+  "current-dateTime",
+  "current-time",
+  "data",
+  "date-equal",
+  "date-greater-than",
+  "date-less-than",
+  "dateTime",
+  "dateTime-equal",
+  "dateTime-greater-than",
+  "dateTime-less-than",
+  "day-from-date",
+  "day-from-dateTime",
+  "days-from-duration",
+  "dayTimeDuration-greater-than",
+  "dayTimeDuration-less-than",
+  "deep-equal",
+  "default-collation",
+  "distinct-values",
+  "divide-dayTimeDuration",
+  "divide-dayTimeDuration-by-dayTimeDuration",
+  "divide-yearMonthDuration",
+  "divide-yearMonthDuration-by-yearMonthDuration",
+  "doc",
+  "doc-available",
+  "document-uri",
+  "duration-equal",
+  "element-with-id",
+  "empty",
+  "encode-for-uri",
+  "ends-with",
+  "environment-variable",
+  "error",
+  "escape-html-uri",
+  "exactly-one",
+  "except",
+  "exists",
+  "exp",
+  "exp10",
+  "false",
+  "filter",
+  "floor",
+  "fold-left",
+  "fold-right",
+  "for-each",
+  "for-each-pair",
+  "format-date",
+  "format-dateTime",
+  "format-integer",
+  "format-number",
+  "format-time",
+  "function-arity",
+  "function-lookup",
+  "function-name",
+  "gDay-equal",
+  "generate-id",
+  "gMonthDay-equal",
+  "gMonth-equal",
+  "gYear-equal",
+  "gYearMonth-equal",
+  "has-children",
+  "head",
+  "hexBinary-equal",
+  "hours-from-dateTime",
+  "hours-from-duration",
+  "hours-from-time",
+  "id",
+  "idref",
+  "implicit-timezone",
+  "index-of",
+  "innermost",
+  "in-scope-prefixes",
+  "insert-before",
+  "intersect",
+  "iri-to-uri",
+  "is-same-node",
+  "lang",
+  "last",
+  "local-name",
+  "local-name-from-QName",
+  "log",
+  "log10",
+  "lower-case",
+  "matches",
+  "max",
+  "min",
+  "minutes-from-dateTime",
+  "minutes-from-duration",
+  "minutes-from-time",
+  "month-from-date",
+  "month-from-dateTime",
+  "months-from-duration",
+  "multiply-dayTimeDuration",
+  "multiply-yearMonthDuration",
+  "name",
+  "namespace-uri",
+  "namespace-uri-for-prefix",
+  "namespace-uri-from-QName",
+  "nilled",
+  "node-after",
+  "node-before",
+  "node-name",
+  "normalize-space",
+  "normalize-unicode",
+  "not",
+  "NOTATION-equal",
+  "number",
+  "numeric-add",
+  "numeric-divide",
+  "numeric-equal",
+  "numeric-greater-than",
+  "numeric-integer-divide",
+  "numeric-less-than",
+  "numeric-mod",
+  "numeric-multiply",
+  "numeric-subtract",
+  "numeric-unary-minus",
+  "numeric-unary-plus",
+  "one-or-more",
+  "outermost",
+  "parse-xml",
+  "parse-xml-fragment",
+  "path",
+  "pi",
+  "position",
+  "pow",
+  "prefix-from-QName",
+  "QName",
+  "QName-equal",
+  "remove",
+  "replace",
+  "resolve-QName",
+  "resolve-uri",
+  "reverse",
+  "root",
+  "round",
+  "round-half-to-even",
+  "seconds-from-dateTime",
+  "seconds-from-duration",
+  "seconds-from-time",
+  "serialize",
+  "sin",
+  "sqrt",
+  "starts-with",
+  "static-base-uri",
+  "string",
+  "string-join",
+  "string-length",
+  "string-to-codepoints",
+  "subsequence",
+  "substring",
+  "substring-after",
+  "substring-before",
+  "subtract-dates",
+  "subtract-dateTimes",
+  "subtract-dayTimeDuration-from-date",
+  "subtract-dayTimeDuration-from-dateTime",
+  "subtract-dayTimeDuration-from-time",
+  "subtract-dayTimeDurations",
+  "subtract-times",
+  "subtract-yearMonthDuration-from-date",
+  "subtract-yearMonthDuration-from-dateTime",
+  "subtract-yearMonthDurations",
+  "sum",
+  "tail",
+  "tan",
+  "time-equal",
+  "time-greater-than",
+  "time-less-than",
+  "timezone-from-date",
+  "timezone-from-dateTime",
+  "timezone-from-time",
+  "to",
+  "tokenize",
+  "trace",
+  "translate",
+  "true",
+  "union",
+  "unordered",
+  "unparsed-text",
+  "unparsed-text-available",
+  "unparsed-text-lines",
+  "upper-case",
+  "uri-collection",
+  "year-from-date",
+  "year-from-dateTime",
+  "yearMonthDuration-greater-than",
+  "yearMonthDuration-less-than",
+  "years-from-duration",
+  "zero-or-one"
+);
+
 die "Usage: $0 <XML files>\n" unless @ARGV;
 
 %table=();
@@ -25,24 +253,39 @@ for (sort { $table{$a} <=> $table{$b} } keys %table) {
   print "$_: $table{$_}\n";
 }
 
-print "Generating countfuns_dist.dat...\n";
-open DAT,">","countfuns_dist.dat" or die "Cannot open countfuns_dist.dat!\n";
-$n=0;
-$sofar=0;
-$threshold=100;
-for (sort { $table{$b} <=> $table{$a} } keys %table) {
-  if ($table{$_}<$threshold) {
+print "Generating countfuns_dist{,std,nonstd}.dat...\n";
+open DAT,">","countfuns_dist.dat"
+  or die "Cannot open countfuns_dist.dat!\n";
+open STD,">","countfuns_dist_std.dat"
+  or die "Cannot open countfuns_dist_std.dat!\n";
+open NONSTD,">","countfuns_dist_nonstd.dat"
+  or die "Cannot open countfuns_dist_nonstd.dat!\n";
+$n=0;             # rank of current function (decr. order)
+$sofar=0;         # total nb of occ. so far
+$sofar_std=0;     # total nb of occ. of std funs so far
+$target=0.7;      # display nb fun. needed to reach this % of total
+$threshold=100;   # display stats about fun. with >$threshold occ.
+for $fname (sort { $table{$b} <=> $table{$a} } keys %table) {
+  if ($table{$fname}<$threshold) {
     print "* There are $n functions with >=$threshold occurrences,\n";
     printf("  together they account for %.2f%% of occurrences.\n",
       100*($sofar/$total));
     $threshold=0;
   }
   $n++;
-  $sofar+=$table{$_};
-  if ($sofar >= 0.7*$total) {
-    $sofar=0;
+  $sofar+=$table{$fname};
+  if ($sofar >= $target*$total) {
+    $target=2;
     print
       "* $n functions (out of $nbfuns) needed to cover 70% of occurrences.\n";
   }
-  print DAT "$n $table{$_}\n";
+  $percent = 100*$sofar/$total;
+  print DAT "$n $table{$fname} $percent\n";
+  if (grep { $fname eq $_ } @stdfuns) {
+    $sofar_std+=$table{$fname};
+    $percent = 100*$sofar_std/$total;
+    print STD "$n $table{$fname} $percent\n";
+  } else {
+    print NONSTD "$n $table{$fname}\n";
+  }
 }

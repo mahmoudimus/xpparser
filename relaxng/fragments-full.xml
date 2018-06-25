@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- Meta-data about the implemented RelaxNG schemas:
-     original academic fragments. -->
+     academic fragments with all extensions. -->
 <schemas>
   <schema file="xpath-efo-basic.rnc"
           name="Positive"

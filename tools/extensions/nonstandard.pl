@@ -443,7 +443,7 @@ foreach (@functions) {
 $query = "$query)";
 $nonstandardquery = "ast//xqx:functionName[$query]";
 
-$inextras = 'schemas/validation[@schema=\'xpath-1.0-core-extra.rnc\' or @schema=\'xpath-efo-extra.rnc\' or @schema=\'xpath-1.0-vertical-extra.rnc\' or @schema=\'xpath-2.0-core-extra.rnc\' or @schema=\'xpath-emso2-extra.rnc\' or @schema=\'xpath-non-mixing-extra.rnc\' or @schema=\'xpath-1.0.forward-extra.rnc\'][@valid=\'yes\']';
+$inextras = 'schemas/validation[@schema=\'xpath-efo-extra.rnc\'][@valid=\'yes\']';
 
 $total=0;
 for my $file (@files) {
