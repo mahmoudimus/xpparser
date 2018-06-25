@@ -42,5 +42,5 @@ op |= element ( intersectOp | exceptOp              # path intersection
 }
 
 # Allow last() on arbitrary paths
-include "expr/last.rnc"
+include "expr/last_first.rnc"
 predicates |= last.predicate
