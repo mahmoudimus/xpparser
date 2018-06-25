@@ -27,7 +27,7 @@ axis-count.tex: $(wildcard ../../benchmark/*-axis-step.xml)
 	./axis-count.sh > axis-count.tex
 
 dist.dat: $(wildcard ../../benchmark/*-full.xml)
-	./distribution.sh > dist.dat
+	./distribution.sh 1 > dist.dat
 captured_dist.dat: $(wildcard ../../benchmark/*-full.xml)
 	./captured_distr.sh > captured_dist.dat
 captured_dist.pdf: captured_dist.dat captured_dist.tex

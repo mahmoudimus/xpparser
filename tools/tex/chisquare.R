@@ -6,6 +6,8 @@ contingency = read.table(args[1])
 
 library(MASS)
 
-chisq.test(contingency)
+res <- chisq.test(contingency)
+
+res
 
 q(status=0)

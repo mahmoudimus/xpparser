@@ -6,24 +6,50 @@
 
 MAX=`grep 'MAX_AST_SIZE =' ../../src/main/java/fr/lsv/xpparser/XPathEntry.java| sed -e 's/[^0-9]*\([0-9]*\).*/\1/'`
 fragments=( `grep 'file=' ../../relaxng/fragments-full.xml | sed 's/.*file=\"\([\.a-zA-Z0-9\-]*.rnc\).*/\1/g'` )
+step=4
+cutoff=48
 
-accepted="@schema=\"${fragments[0]}\""
+full="(@schema=\"${fragments[0]}\")"
 for ((f = 1; f < ${#fragments[@]}; ++f))
 do
-    accepted="$accepted or @schema=\"${fragments[f]}\""
+    full="$full or (@schema=\"${fragments[f]}\")"
 done
 
 # first row: accepted
-for ((i = 1; i < $MAX; ++i))
+for ((i = 1; i < $cutoff; i+=$step))
 do
-    value=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[ast/@size=\"$i\" and schemas/validation[$accepted and @valid=\"yes\"]])" $@`
+    value=0
+    for file in $@
+    do
+        count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $i and @size < ($i+$step)]) and (schemas/validation[($full) and @valid=\"yes\"])])" $file`
+        value=$((count + value))
+    done
     printf "$value\t"
 done
+value=0
+for file in $@
+do
+    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $cutoff]) and (schemas/validation[($full) and @valid=\"yes\"])])" $file`
+    value=$((count + value))
+done
+printf "$value\t"
 echo
 # second row: not accepted
-for ((i = 1; i < $MAX; ++i))
+for ((i = 1; i < $cutoff; i+=$step))
 do
-    value=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[ast/@size=\"$i\" and not(schemas/validation[$accepted and @valid=\"yes\"])])" $@`
+    value=0
+    for file in $@
+    do
+        count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $i and @size < ($i+$step)]) and not(schemas/validation[($full) and @valid=\"yes\"])])" $file`
+        value=$((count + value))
+    done
     printf "$value\t"
 done
+value=0
+for file in $@
+do
+    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast[@size >= $cutoff]) and not(schemas/validation[($full) and @valid=\"yes\"])])" $file`
+    value=$((count + value))
+done
+printf "$value\t"
 echo
