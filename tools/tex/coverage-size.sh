@@ -22,7 +22,7 @@ for ((i = 1; i < $cutoff; i+=$step))
 do
     printf 'r'
 done
-printf 'r}\n\\topline\n'
+printf 'r}\n\\toprule\n'
 printf 'sizes '
 for ((i = 1; i < $cutoff; i+=$step))
 do
@@ -30,7 +30,7 @@ do
 done
 printf "& $\ge $i$"
 printf '\\\\\n'
-printf '\\medline\n'
+printf '\\midrule\n'
 
 # number of queries of each size
 printf 'queries '
@@ -77,5 +77,5 @@ done
 percent=`echo "scale=2; 100*$value/${array[i]}" | bc`
 printf "& $percent\\%% "
 printf '\\\\\n'
-printf '\\bottomline\n'
+printf '\\bottomrule\n'
 printf '\\end{tabular}\n'
