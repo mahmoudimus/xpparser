@@ -1,4 +1,6 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex
+
+SHELL := /bin/bash
 
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
@@ -22,11 +24,17 @@ miniclean:
 	rm -f *gnuplottex-fig*.pdf
 	rm -f *.aux *.gnuploterrors *.log
 
+numqueries: $(wildcard ../../benchmark/*-axis-step.xml)
+	grep '<ast' `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` | wc -l > $@
+
+numqueries.tex: numqueries
+	printf "%'.0f" `cat numqueries` > $@
+
 size-gte-100.tex: $(wildcard ../../benchmark/*-full.xml)
-	./size-gte.sh ../../benchmark/*-full.xml > size-gte-100.tex
+	./size-gte.sh `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 axis-count.tex: $(wildcard ../../benchmark/*-axis-step.xml)
-	./axis-count.sh > axis-count.tex
+	./axis-count.sh > $@
 
 dist.dat: $(wildcard ../../benchmark/*-full.xml)
 	./distribution.sh 1 > dist.dat
