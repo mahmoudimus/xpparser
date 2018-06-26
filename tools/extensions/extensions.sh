@@ -1,7 +1,7 @@
 #!/bin/bash
 echo '\begin{tabular}{cccccc}'   > occurrences-ext.tex
 echo '\toprule'                 >> occurrences-ext.tex
-echo '$/\pi$ & $\$x$ & $\pi\mathbin\triangle^+ d$ & $\pi\mathbin\triangle\pi$ & $\last()$ & $\texttt{id}()$\\'  >> occurrences-ext.tex
+echo '$/\pi$ & $\$x$ & $\pi\mathbin\trianglep d$ & $\pi\mathbin\triangle\pi$ & $\last()$ & $\texttt{id}()$\\'  >> occurrences-ext.tex
 echo '\midrule'                 >> occurrences-ext.tex
 
 echo '<?xml version="1.0"?>'
