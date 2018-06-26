@@ -38,7 +38,7 @@ do
         # reserve `extras' to the positive and core 1.0 fragments
         if [ "${variants[v]}" = "extra" ]
         then
-            if [ "${names[f]}" = "Positive" -o "${names[f]}" = "Core~1.0" ]
+            if [ "${names[f]}" = "Positive" ] #-o "${names[f]}" = "Core~1.0" ]
             then
                 :
             else
@@ -52,9 +52,9 @@ do
     echo
 done
 
-printf '"\\\\textit{Combined}"'
-printf "\t0\t"
-percent=`echo "scale=2; 100*$coverage_full/$total" | bc`
-printf "$percent\t"
-percent=`echo "scale=2; 100*$coverage_orig/$total" | bc`
-printf "$percent\n"
+# printf '"\\\\textit{Combined}"'
+# printf "\t0\t"
+# percent=`echo "scale=2; 100*$coverage_full/$total" | bc`
+# printf "$percent\t"
+# percent=`echo "scale=2; 100*$coverage_orig/$total" | bc`
+# printf "$percent\n"
