@@ -48,7 +48,7 @@ join.op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
 join.op |= cst.op
 
 # positive equality checks
-join.op |= element ( eqOp | equalOp | neqOp | notEqualOp ) {
+join.op |= element ( eqOp | equalOp | neOp | notEqualOp ) {
   element firstOperand  { join.expr },
   element secondOperand { join.expr }
 }
