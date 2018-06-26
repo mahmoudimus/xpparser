@@ -202,7 +202,7 @@ die "Usage: $0 <XML files>\n" unless @ARGV;
   "zero-or-one"
 );
 
-$query = '(not(@xqx:prefix != \'fn\')) and (false()';
+$query = '(not(@xqx:prefix != \'fn\' and @xqx:prefix != \'math\')) and (false()';
 foreach (@unsupported) {
   $query = "$query or text() = '$_'";
 }
