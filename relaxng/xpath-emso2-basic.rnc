@@ -50,12 +50,6 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp  # equality
 op |= cst.op
 
 # ---------------------------------------------------------------------------
-# Allow variables
-
-include "expr/varref.rnc"
-primary |= varref
-
-# ---------------------------------------------------------------------------
 # Allow some functions
 
 fun |= cst.fun

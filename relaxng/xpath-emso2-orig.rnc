@@ -71,3 +71,8 @@ op |= element ( eqOp | neOp | equalOp | notEqualOp ) {
       element secondOperand { local.path })
 }
 
+# ---------------------------------------------------------------------------
+# Allow variables
+
+include "expr/varref.rnc"
+primary |= varref
