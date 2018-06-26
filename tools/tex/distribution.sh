@@ -11,6 +11,9 @@ fi
 fragments=`grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 MAX=`grep 'MAX_AST_SIZE =' ../../src/main/java/fr/lsv/xpparser/XPathEntry.java| sed -e 's/[^0-9]*\([0-9]*\).*/\1/'`
 
+numqueries=`cat numqueries`
+half=$((numqueries / 2))
+total=0
 for ((i = 1; i < $MAX; i+=$step))
 do
     C=0
@@ -19,6 +22,12 @@ do
         G=`grep "ast depth=.* size=\"$j\"" $fragments | wc -l`
         C=$((C + G))
     done
-    echo "$i $C"
+    total=$((C + total))
+    if [ "$total" -gt "$half" ]
+    then
+        printf "%'.0f" $i > median.tex
+        half=$numqueries
+    fi
+    echo "$i $C $total"
 done
 
