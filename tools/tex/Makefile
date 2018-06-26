@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex
 
 SHELL := /bin/bash
 
@@ -95,3 +95,6 @@ coverage-size.tex: coverage-size.sh benchmarks-all-full.xml $(wildcard ../../ben
 
 coverage-axis-step.tex: coverage-axis-step.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
 	./$<  `grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
+
+composition.tex: composition.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  > $@
