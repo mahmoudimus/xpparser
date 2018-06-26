@@ -4,8 +4,7 @@
 
   <description>Extract data from benchmark results.</description>
   
-  <property name="xml" value="xpathmark"/>
-  <property name="target.dir" value="./public_html/chord/"/>
+  <property name="target.dir" value="./site"/>
   <property name="project.root" value="../.."/>
   <property name="bench.dir" value="${project.root}/benchmark"/>
   <property name="lib.dir" value="${project.root}/lib"/>
@@ -36,12 +35,12 @@
     <srcfiles dir="${project.root}/xslt/" includes="matrix.xsl"/>
     <srcfiles dir="./" includes="index.html"/>
     <srcfiles dir="${bench.dir}" includes="${xml}-full.xml"/>
-    <mergemapper to="${target.dir}/${xml}/matrix.json"/>
+    <mergemapper to="${target.dir}/matrix.json"/>
   </uptodate>
   <target name="matrix" depends="saxon,xtask" unless="extracted">
-    <mkdir dir="${target.dir}/${xml}"/>
+    <mkdir dir="${target.dir}/"/>
     <xslt style="${project.root}/xslt/matrix.xsl"
-          in="${bench.dir}/${xml}.xml"
+          in="${project.root}/tools/tex/benchmarks-all-full.xml"
           out="matrix.json">
       <classpath>
         <pathelement path="${lib.dir}/saxon9he.jar"/>
@@ -49,29 +48,28 @@
     </xslt>
     <!-- get the number of fragments -->
     <xpath document="${project.root}/relaxng/fragments-full.xml"
-           xpath="count(//schema)"
+           xpath="count(//schema)-2"
            outputproperty="fragments"/>
     <!-- get the number of entries -->
-    <xpath document="${bench.dir}/${xml}-xml.xml"
-           xpath="count(//xpath/ast)" 
-           outputproperty="entries"/><!-- //xpath[ast/descendant::*[local-name() = 'xpathAxis']])" -->
+    <loadfile srcFile="numqueries"
+           property="entries"/><!-- //xpath[ast/descendant::*[local-name() = 'xpathAxis']])" -->
     <!-- process index.html -->
-    <copy file="index.html" todir="${target.dir}/${xml}">
+    <copy file="index.html" todir="${target.dir}/">
       <filterchain>
         <replacetokens>
           <token key="FRAGMENTS" value="${fragments}"/>
-          <token key="BENCHMARK" value="${xml}"/>
+          <!--token key="BENCHMARK" value="${xml}"/-->
           <token key="ENTRIES" value="${entries}"/>
         </replacetokens>
       </filterchain>
     </copy>
     <!-- copy benchmark information -->
-    <move file="matrix.json" todir="${target.dir}/${xml}"/>
-    <move file="fragments.csv" todir="${target.dir}/${xml}"/>
-    <bzip2 src="${bench.dir}/${xml}.xml"
+    <move file="matrix.json" todir="${target.dir}/"/>
+    <move file="fragments.csv" todir="${target.dir}/"/>
+    <!--bzip2 src="${bench.dir}/${xml}-full.xml"
            destfile="${target.dir}/${xml}/${xml}.xml.bz2"/>
     <copy file="${bench.dir}/${xml}.LICENSE"
-          todir="${target.dir}/${xml}"/>
+          todir="${target.dir}/${xml}"/-->
   </target>
 
   <!-- minify CSS and javascript files -->

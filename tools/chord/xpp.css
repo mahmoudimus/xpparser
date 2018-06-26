@@ -13,32 +13,6 @@ a:hover { color: #666; text-decoration: underline; }
 }
 #left { font-size: 10px; }
 
-#circle circle {
-  fill: none;
-  pointer-events: all;
-}
-#circle textpath { font-size: 11px; }
-
-#chord .group path {
-  fill-opacity: .5;
-  stroke: #444;
-  stroke-width: .1pt;
-}
-
-#chord path.chord {
-  cursor: pointer; 
-  stroke: #444;
-  stroke-width: .1pt;
-}
-
-path {
-    transition: opacity 0.1s ease-in-out;
-}    
-
-path.inactive, #circle:hover path.fade {
-    opacity: 0;
-}
-
 #matrix, aside, aside select { font: 10px sans-serif; }
 #matrix text { fill: #333; }
 #matrix text.active { fill: red }

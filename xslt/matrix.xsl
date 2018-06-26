@@ -4,12 +4,13 @@
   <xsl:output method="text"/>
 
   <xsl:param name="fragments"
-             select="document('../relaxng/fragments-core-1.0.xml')//schema"/>
+             select="document('../relaxng/fragments-full.xml')//schema[@name
+                     != 'Downward' and @name != 'Forward']"/>
 
   <xsl:param name="nexamples" select="15"/>
 
   <xsl:template match="/">
-    <xsl:variable name="root" select="/"/>
+    <xsl:variable name="benchmarks" select="document(//benchmark/@href)"/>
     <!-- fragments -->
     <xsl:result-document method="text" href="fragments.csv">
       <xsl:text>name,color,entries
@@ -17,7 +18,7 @@
       <xsl:for-each select="$fragments">
         <xsl:call-template name="fragment">
           <xsl:with-param name="f" select="current()"/>
-          <xsl:with-param name="root" select="$root"/>
+          <xsl:with-param name="benchmarks" select="$benchmarks"/>
         </xsl:call-template>
         <xsl:text>
 </xsl:text>
@@ -29,7 +30,7 @@
       <xsl:for-each select="$fragments">
         <xsl:call-template name="line">
           <xsl:with-param name="source" select="current()"/>
-          <xsl:with-param name="root" select="$root"/>
+          <xsl:with-param name="benchmarks" select="$benchmarks"/>
         </xsl:call-template>
       </xsl:for-each>
       <xsl:text>]</xsl:text>
@@ -39,17 +40,18 @@
   <!-- one line of the matrix -->
   <xsl:template name="line">
     <xsl:param name="source"/>
-    <xsl:param name="root"/>
+    <xsl:param name="benchmarks"/>
     <xsl:text>[</xsl:text>
     <xsl:for-each select="$fragments">
       <xsl:call-template name="entry">
         <xsl:with-param name="source" select="$source"/>
         <xsl:with-param name="target" select="current()"/>
-        <xsl:with-param name="root" select="$root"/>
+        <xsl:with-param name="benchmarks" select="$benchmarks"/>
+        <xsl:with-param name="fragments" select="$fragments"/>
       </xsl:call-template>
     </xsl:for-each>
     <xsl:text>]</xsl:text>
-    <xsl:if test="$source != $fragments[last()]">
+    <xsl:if test="$source ne $fragments[last()]">
       <xsl:text>,</xsl:text>
     </xsl:if>
   </xsl:template>
@@ -58,8 +60,9 @@
   <xsl:template name="entry">
     <xsl:param name="source"/>
     <xsl:param name="target"/>
-    <xsl:param name="root"/>
-    <xsl:variable name="examples" select="$root//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no']]"/> 
+    <xsl:param name="benchmarks"/>
+    <xsl:param name="fragments"/>
+    <xsl:variable name="examples" select="$benchmarks//xpath[schemas/validation[@schema=$source/@file and @valid='yes'] and schemas/validation[@schema=$target/@file and @valid='no']]"/> 
     <xsl:text>{ "z": </xsl:text><xsl:value-of select="count($examples)"/>
     <xsl:if test="$examples">
       <xsl:text>, "examples": [</xsl:text>
@@ -82,11 +85,11 @@
   <!-- one fragment -->
   <xsl:template name="fragment">
     <xsl:param name="f"/>
-    <xsl:param name="root"/>
+    <xsl:param name="benchmarks"/>
     <xsl:value-of select="$f/@name"/>
     <xsl:text>,</xsl:text>
     <xsl:value-of select="$f/@color"/>
     <xsl:text>,</xsl:text>
-    <xsl:value-of select="count($root//xpath[schemas/validation[@schema=$f/@file and @valid='yes']])"/>
+    <xsl:value-of select="count($benchmarks//xpath[schemas/validation[@schema=$f/@file and @valid='yes']])"/>
   </xsl:template>
 </xsl:stylesheet>

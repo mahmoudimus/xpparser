@@ -2,12 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>XPath fragments in @BENCHMARK@</title>
-    <link rel="stylesheet" type="text/css" href="../prettify.min.css">
-    <link rel="stylesheet" type="text/css" href="../xpp.min.css">
+    <title>XPath fragments in the benchmark</title>
+    <link rel="stylesheet" type="text/css" href="prettify.min.css">
+    <link rel="stylesheet" type="text/css" href="xpp.min.css">
+    <link rel="stylesheet" type="text/css" href="chord.min.css">
     <script type="text/javascript"
             src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
-    <script type="text/javascript" src="../lang-xpath.min.js"></script>
+    <script type="text/javascript" src="lang-xpath.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
 <body>
@@ -15,13 +16,11 @@
   <h2>(<span style="color:red">preliminary version</span>)</h2>
   
   <p>We extracted <a href="@BENCHMARK@.xml.bz2">@ENTRIES@ XPath
-  entries</a> from @BENCHMARK@
+  entries</a>
   using <a href="https://git.lsv.fr/schmitz/xpparser">xpparser</a>,
   and checked those entries against various XPath fragments. The
   following rendering of the results was built
-  with <a href="http://d3js.org/">D3</a>.  See also
-  @BENCHMARK@'s <a href="@BENCHMARK@.LICENSE">license</a> for
-  conditions of use.
+  with <a href="http://d3js.org/">D3</a>.
 
   <p> We are mostly interested in XPath entries belonging to one
   fragment but not another, which yields the matrix on the left and
@@ -44,7 +43,7 @@
     <div id="log" style="opacity: 0;"></div>
   </div>
   <div id="links"></div>
-  <script type="text/javascript" src="../render.min.js"></script>
+  <script type="text/javascript" src="render.min.js"></script>
   <script type="text/javascript">
 var N = @FRAGMENTS@ - 1;
 var margin = {top: 80, right: 0, bottom: 10, left: 80}, 
