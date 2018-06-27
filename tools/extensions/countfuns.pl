@@ -289,6 +289,12 @@ for $fname (sort { $table{$b} <=> $table{$a} } keys %table) {
     print "* There are $n functions with >=$threshold occurrences,\n";
     printf("  together they account for %.2f%% of occurrences.\n",
       100*($sofar/$total));
+	open THR,">","countfuns_${suffix}_${threshold}nb.tex";
+	printf THR "$n";
+	close THR;
+	open THR,">","countfuns_${suffix}_${threshold}pc.tex";
+	printf THR "%.2f\\%%", 100*$sofar/$total;
+	close THR;
     $threshold=0;
   }
   $n++;
@@ -298,15 +304,14 @@ for $fname (sort { $table{$b} <=> $table{$a} } keys %table) {
     print
       "* $n functions (out of $nbfuns) needed to cover 70% of occurrences.\n";
   }
-  $percent = 100*$sofar/$total;
-  print DAT "$n $table{$fname} $percent\n";
+  printf DAT "$n $table{$fname} %.2f\n", 100*$sofar/$total;
   if (grep { $fname eq $_ } @stdfuns) {
     $sofar_std+=$table{$fname};
-    $percent = 100*$sofar_std/$total;
-    print STD "$n $table{$fname} $percent\n";
+    printf STD "$n $table{$fname} %.2f\n",100*$sofar_std/$total;
   } else {
     print NONSTD "$n $table{$fname}\n";
   }
 }
 $locale_nbfuns = reverse join ',', unpack '(A3)*', reverse $nbfuns;
 print TOTAL ("$locale_nbfuns");
+printf COV "%.2f", 100*$sofar_std/$total;
