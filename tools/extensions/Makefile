@@ -1,7 +1,17 @@
-all: extensions.xml gains-ext.tex countfuns_dist.dat
+all: extensions.xml gains-ext.tex countfuns_all.dat countfuns_xslt.dat countfuns_xquery.dat
 
-countfuns_dist.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
-	./countfuns.pl ../../benchmark/*-full.xml > /dev/null
+countfuns_all.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
+	XPPSUF="all" ./countfuns.pl ../../benchmark/*-full.xml
+
+countfuns_xslt.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
+	grep 'type="xslt"' ../tex/benchmarks-all-full.xml | \
+	  sed -e 's/.*href="\(.*\.xml\)".*/\1/' | \
+	  XPPSUF="xslt" xargs ./countfuns.pl
+
+countfuns_xquery.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
+	grep 'type="xquery"' ../tex/benchmarks-all-full.xml | \
+	  sed -e 's/.*href="\(.*\.xml\)".*/\1/' | \
+	  XPPSUF="xquery" xargs ./countfuns.pl
 
 extensions.xml: extensions.sh $(wildcard ../../benchmark/*-full.xml)
 	@bash extensions.sh > extensions.xml

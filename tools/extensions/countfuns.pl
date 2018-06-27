@@ -228,11 +228,24 @@
   "zero-or-one"
 );
 
-die "Usage: $0 <XML files>\n" unless @ARGV;
+unless (@ARGV) {
+  print <<HELP;
+Usage: $0 <XML files>
 
-%table=();
-$total=0;
-$nbfuns=0;
+Produces gnuplot data files countfuns_<XPPSUF>{,_std,_nonstd}.dat,
+where XPPSUF is set as an env variable.
+
+Issues a detailed output with function names if env variable VERBOSE is set.
+HELP
+  exit 1;
+}
+
+$suffix = $ENV{'XPPSUF'};
+$verbose = $ENV{'VERBOSE'};
+
+%table=(); # maps function names to occurrence count
+$total=0;  # total nb of occurrences of functions
+$nbfuns=0; # nb of functions i.e. size of %table
 for (@ARGV) {
   open(STARLET,"xmlstarlet sel -t -n -v \"//*[local-name()='functionName']\" $_ |");
   while(<STARLET>) {
@@ -248,18 +261,20 @@ for (@ARGV) {
   }
 }
 
-print "Results in ascending number of occurrences:\n";
-for (sort { $table{$a} <=> $table{$b} } keys %table) {
-  print "$_: $table{$_}\n";
+if ($verbose ne "") {
+  print "Results in ascending number of occurrences:\n";
+  for (sort { $table{$a} <=> $table{$b} } keys %table) {
+	print "$_: $table{$_}\n";
+  }
 }
 
-print "Generating countfuns_dist{,std,nonstd}.dat...\n";
-open DAT,">","countfuns_dist.dat"
-  or die "Cannot open countfuns_dist.dat!\n";
-open STD,">","countfuns_dist_std.dat"
-  or die "Cannot open countfuns_dist_std.dat!\n";
-open NONSTD,">","countfuns_dist_nonstd.dat"
-  or die "Cannot open countfuns_dist_nonstd.dat!\n";
+print "Generating countfuns_${suffix}{,_std,_nonstd}.dat...\n";
+open DAT,">","countfuns_${suffix}.dat"
+  or die "Cannot open countfuns_${suffix}.dat!\n";
+open STD,">","countfuns_${suffix}_std.dat"
+  or die "Cannot open countfuns_${suffix}_std.dat!\n";
+open NONSTD,">","countfuns_${suffix}_nonstd.dat"
+  or die "Cannot open countfuns_${suffix}_nonstd.dat!\n";
 $n=0;             # rank of current function (decr. order)
 $sofar=0;         # total nb of occ. so far
 $sofar_std=0;     # total nb of occ. of std funs so far
