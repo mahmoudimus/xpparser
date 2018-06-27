@@ -275,6 +275,8 @@ open STD,">","countfuns_${suffix}_std.dat"
   or die "Cannot open countfuns_${suffix}_std.dat!\n";
 open NONSTD,">","countfuns_${suffix}_nonstd.dat"
   or die "Cannot open countfuns_${suffix}_nonstd.dat!\n";
+open TOTAL,">","countfuns_${suffix}_total.tex"
+  or die "Cannot open countfuns_${suffix}_total.tex!\n";
 $n=0;             # rank of current function (decr. order)
 $sofar=0;         # total nb of occ. so far
 $sofar_std=0;     # total nb of occ. of std funs so far
@@ -304,3 +306,5 @@ for $fname (sort { $table{$b} <=> $table{$a} } keys %table) {
     print NONSTD "$n $table{$fname}\n";
   }
 }
+$locale_nbfuns = reverse join ',', unpack '(A3)*', reverse $nbfuns;
+print TOTAL ("$locale_nbfuns");
