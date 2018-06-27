@@ -12,11 +12,11 @@ do
 done
 
 # head
-printf '\\begin{tabular}{lrr}\n'
-printf '\\toprule\n'
-printf '& $\\geq 1$ axis step & no axis step\\\\\n'
-printf '\\midrule\n'
-printf 'coverage '
+# printf '\\begin{tabular}{lrr}\n'
+# printf '\\toprule\n'
+# printf '& $\\geq 1$ axis step & no axis step\\\\\n'
+# printf '\\midrule\n'
+# printf 'coverage '
 
 # at least one axis step
 value=0
@@ -31,8 +31,9 @@ do
     count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[(ast//xqx:xpathAxis)])" $file`
     total=$((count + total))
 done
-percent=`echo "scale=1; 100*$value/$total" | bc`
-printf "& $percent\\%% "
+percent=`echo "scale=2; 100*$value/$total" | bc`
+#printf "& $percent\\%% "
+printf "$percent\\%%, but only " 
 
 # no axis step
 value=0
@@ -47,8 +48,9 @@ do
     count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[not(ast//xqx:xpathAxis)])" $file`
     total=$((count + total))
 done
-percent=`echo "scale=1; 100*$value/$total" | bc`
-printf "& $percent\\%%"
-printf '\\\\\n'
-printf '\\bottomrule\n'
-printf '\\end{tabular}\n'
+percent=`echo "scale=2; 100*$value/$total" | bc`
+# printf "& $percent\\%%"
+# printf '\\\\\n'
+# printf '\\bottomrule\n'
+# printf '\\end{tabular}\n'
+printf "$percent\\%%"

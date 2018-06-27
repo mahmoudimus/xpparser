@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex
 
 SHELL := /bin/bash
 
@@ -50,17 +50,26 @@ captured_dist.dat: $(wildcard ../../benchmark/*-full.xml)
 captured_dist.pdf: captured_dist.dat captured_dist.tex
 	pdflatex --shell-escape captured_dist.tex
 
+all-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
+	./coverage.sh "href" "`./full-frags.sh ../../relaxng/fragments-full.xml`" > $@
+
+all-full-cov.tex: all-full.cov
+	printf "%'.0f" `cat $<` > $@
+
+all-full-cov-pc.tex: all-full.cov numqueries
+	echo "scale=2; 100*`cat all-full.cov`/`cat numqueries`" | bc > $@
+
 xslt-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
-	./coverage.sh xslt "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xslt-full.cov
+	./coverage.sh 'type="xslt"' "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xslt-full.cov
 
 xslt-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
-	./coverage.sh xslt "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xslt-orig.cov
+	./coverage.sh 'type="xslt"' "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xslt-orig.cov
 
 xquery-full.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
-	./coverage.sh xquery "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xquery-full.cov
+	./coverage.sh 'type="xquery"' "`./full-frags.sh ../../relaxng/fragments-full.xml`" > xquery-full.cov
 
 xquery-orig.cov: coverage.sh full-frags.sh ../../relaxng/fragments-full.xml
-	./coverage.sh xquery "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xquery-orig.cov
+	./coverage.sh 'type="xquery"' "`./full-frags.sh ../../relaxng/fragments-orig.xml`" > xquery-orig.cov
 
 xslt.dat: bench.sh xslt-full.cov xslt-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
 	./bench.sh  xslt-full.cov xslt-orig.cov `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat 2> minmax-xslt.tex

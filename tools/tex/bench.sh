@@ -94,6 +94,6 @@ printf "}" >&2
 # printf '"\\\\textit{Combined}"'
 # printf "\t0\t"
 # percent=`echo "scale=2; 100*$coverage_full/$total" | bc`
-# printf "$percent\t"
+# printf "$percent" > ext-overall-cov.tex
 # percent=`echo "scale=2; 100*$coverage_orig/$total" | bc`
 # printf "$percent\n"
