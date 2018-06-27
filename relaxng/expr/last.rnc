@@ -21,7 +21,10 @@ default namespace = "http://www.w3.org/2005/XQueryX"
 namespace xqx = "http://www.w3.org/2005/XQueryX"
 
 # To catch equality between position() and last()
-last.op = element ( eqOp | equalOp | neOp | notEqualOp ) {
+last.op = element ( eqOp | equalOp | neOp | notEqualOp
+                  | ltOp | leOp | gtOp | geOp
+                  | lessThanOp  | lessThanOrEqualOp
+                  | greaterThanOp | greaterThanOrEqualOp ) {
   element firstOperand  { last.fun },
   element secondOperand { last.fun }
 }
@@ -34,6 +37,10 @@ last.fun = element functionCallExpr {
     ( string "last" | string "position" )
   },
   element arguments { empty }?
+}
+| element ( addOp | subtractOp ) {
+       element firstOperand { last.fun },
+       element secondOperand { last.fun }
 }
 
 # Allowed axes before a [last()] predicate.
