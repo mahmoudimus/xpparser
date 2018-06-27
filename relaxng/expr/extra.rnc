@@ -26,10 +26,7 @@ fun.arith = element functionCallExpr {
   element functionName {
     attribute xqx:prefix { string "fn" }?,
     attribute xqx:URI { string "http://www.w3.org/2005/xpath-functions" }?,
-    ( string "count"
-    | string "max"
-    | string "min"
-    | string "string-length"
+    ( string "string-length"
     )
   },
   element arguments {
@@ -44,7 +41,6 @@ fun.string = element functionCallExpr {
     ( string "concat"
     | string "contains"
     | string "ends-with"
-    | string "normalize-space"
     | string "starts-with"
     | string "string-join"
     | string "substring"
