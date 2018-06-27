@@ -23,7 +23,7 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
   done
-  printf "& \\url{$url}"
+  printf "& \\\\url{$url}"
   printf '\\\\\n'
 done
 
@@ -65,7 +65,7 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
   done
-  printf "& \\url{$url}"
+  printf "& \\\\url{$url}"
   printf '\\\\\n'
 done
 
