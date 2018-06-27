@@ -2,6 +2,7 @@
 // example usage: phantomjs phantom.js 'http://www.lsv.fr/~schmitz/xpparser/xpathmark/' > chord.svg
 "use strict";
 var system = require('system');
+var fs = require('fs');
 var args = system.args;
 
 var page = require('webpage').create();
@@ -17,7 +18,7 @@ page.open(args[1], function (status) {
                 var markup = page.evaluate(function(){
                     return document.getElementById('links').innerHTML;
                 });
-                console.log(markup);
+                fs.write(args[2],markup,'w');
                 phantom.exit();
             }, 400)
     }
