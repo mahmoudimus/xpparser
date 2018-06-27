@@ -3,13 +3,33 @@
 xslt=`grep 'xslt' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 xquery=`grep 'xquery' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 
-printf '\\begin{tabular}{lrrrr}\n'
+printf '\\begin{tabular}{lrrrrl}\n'
 printf '\\toprule\n'
-printf 'Source & \\!\\!queries & \\!\\!XPath\\,1.0 & \\!\\!XPath\\,2.0 & \\!\\!XPath\,3.0\\\\\n'
+printf 'Source & queries & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0 & Url\\\\\n'
 printf '\\midrule\n'
 
+# XSLT files
+for file in $xslt
+do
+  name=`grep $file benchmarks-all-full.xml | sed -e 's/.*name="\([^"]*\).*/\1/'`
+  url=`grep $file benchmarks-all-full.xml | sed -e 's/.*url="\([^"]*\).*/\1/'`
+  printf "$name"
+  n=`grep '<ast' $file | wc -l`
+  printf "& %'.0f " $n
+  #coverage of standard XPath languages
+  for ((i=1; i < 4; ++i))
+  do
+    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-$i.0.rnc\" and @valid=\"yes\"]])" $file`
+    percent=`echo "scale=1; 100*$count/$n" | bc`
+    printf "& $percent\\\\%% "
+  done
+  printf "& \\url{$url}"
+  printf '\\\\\n'
+done
+
 # total number of XSLT queries
-printf 'XSLT '
+printf '\\midrule\n'
+printf 'Total (XSLT) '
 n=`grep '<ast' $xslt | wc -l`
 printf "& %'.0f " $n
 #coverage of standard XPath languages
@@ -25,11 +45,33 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
-printf '\\\\\n'
+printf '& \\\\\n'
+printf '\\midrule\n'
 
 N=$n
+
+# XQuery files
+for file in $xquery
+do
+  name=`grep $file benchmarks-all-full.xml | sed -e 's/.*name="\([^"]*\).*/\1/'`
+  url=`grep $file benchmarks-all-full.xml | sed -e 's/.*url="\([^"]*\).*/\1/'`
+  printf "$name"
+  n=`grep '<ast' $file | wc -l`
+  printf "& %'.0f " $n
+  #coverage of standard XPath languages
+  for ((i=1; i < 4; ++i))
+  do
+    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-$i.0.rnc\" and @valid=\"yes\"]])" $file`
+    percent=`echo "scale=1; 100*$count/$n" | bc`
+    printf "& $percent\\\\%% "
+  done
+  printf "& \\url{$url}"
+  printf '\\\\\n'
+done
+
 # total number of XQuery queries
-printf 'XQuery '
+printf '\\midrule\n'
+printf 'Total (XQuery) '
 n=`grep '<ast' $xquery | wc -l`
 printf "& %'.0f " $n
 # coverage of standard XPath languages
@@ -45,7 +87,7 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
-printf '\\\\\n'
+printf '& \\\\\n'
 
 N=$((N + n))
 printf '\\midrule\n'
@@ -57,7 +99,7 @@ do
     percent=`echo "scale=1; 100*$count/$N" | bc`
     printf "& $percent\\\\%% "
 done
-printf '\\\\\n'
+printf '& \\\\\n'
 
 printf '\\bottomrule\n'
 printf '\\end{tabular}\n'

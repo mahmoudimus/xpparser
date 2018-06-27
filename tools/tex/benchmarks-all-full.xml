@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <benchmarks>
-  <benchmark href="../../benchmark/docbook-full.xml" type="xslt" name="DocBook" />
-  <benchmark href="../../benchmark/teixsl-full.xml" type="xslt" name="TEIXSL" />
-  <benchmark href="../../benchmark/htmlbook-full.xml" type="xslt" name="HTMLBook" />
-  <benchmark href="../../benchmark/xqueryparser-full.xml" type="xquery" name="XQuery parser" />
-  <benchmark href="../../benchmark/existdb-full.xml" type="xquery" name="eXist-db" />
-  <benchmark href="../../benchmark/histei-full.xml" type="xquery" name="HisTEI" />
-  <benchmark href="../../benchmark/transform-full.xml" type="xquery" name="transform.xq" />
-  <benchmark href="../../benchmark/mlenrich-full.xml" type="xquery" name="ml-enrich" />
-  <benchmark href="../../benchmark/xquerydoc-full.xml" type="xquery" name="xquerydoc" />
-  <benchmark href="../../benchmark/openinfoman-full.xml" type="xquery" name="openinfoman" />
-  <benchmark href="../../benchmark/oxfdict-full.xml" type="xquery"  name="Oxford Dict API" />
-  <benchmark href="../../benchmark/marklogic-full.xml" type="xquery" name="MarkLogic" />
-  <benchmark href="../../benchmark/datascience-full.xml" type="xquery" name="datascience" />
-  <benchmark href="../../benchmark/linkmgmt-full.xml" type="xquery" name="Link Management BaseX" />
-  <benchmark href="../../benchmark/semanticweb-full.xml" type="xquery" name="Semantic Web" />
-  <benchmark href="../../benchmark/annotationstore-full.xml" type="xquery" name="eXist annotation store" />
-  <benchmark href="../../benchmark/xqtest-full.xml" type="xquery" name="xqtest" />
-  <benchmark href="../../benchmark/adt-full.xml" type="xquery" name="data.xq" />
-  <benchmark href="../../benchmark/graphviz-full.xml" type="xquery" name="graphxq" />
-  <benchmark href="../../benchmark/mlinvoker-full.xml" type="xquery" name="ml-invoker" />
-  <benchmark href="../../benchmark/treedown-full.xml" type="xquery" name="treedown" />
-  <benchmark href="../../benchmark/xqjson-full.xml" type="xquery" name="XQJSON" />
-  <benchmark href="../../benchmark/fots-full.xml" type="xquery" name="fots BaseX" />
-  <benchmark href="../../benchmark/geospatial-full.xml" type="xquery" name="GPXQuery" />
-  <benchmark href="../../benchmark/rbtree-full.xml" type="xquery" name="rbtree.qx" />
-  <benchmark href="../../benchmark/libs-full.xml" type="xquery" name="libs" />
-  <benchmark href="../../benchmark/guidomatic-full.xml" type="xquery" name="Guid-O-Matic" />
-  <benchmark href="../../benchmark/functional-full.xml" type="xquery" name="functional.xq" />
+  <benchmark href="../../benchmark/docbook-full.xml" type="xslt" name="DocBook" url="http://docbook.sourceforge.net/" />
+  <benchmark href="../../benchmark/teixsl-full.xml" type="xslt" name="TEIXSL" url="https://github.com/TEIC/Stylesheets" />
+  <benchmark href="../../benchmark/htmlbook-full.xml" type="xslt" name="HTMLBook" url="https://github.com/oreillymedia/HTMLBook" />
+  <benchmark href="../../benchmark/xqueryparser-full.xml" type="xquery" name="XQuery parser" url="https://github.com/jpcs/xqueryparser.xq" />
+  <benchmark href="../../benchmark/existdb-full.xml" type="xquery" name="eXist-db" url="https://github.com/eXist-db" />
+  <benchmark href="../../benchmark/histei-full.xml" type="xquery" name="HisTEI" url="https://github.com/odaata/HisTEI" />
+  <benchmark href="../../benchmark/transform-full.xml" type="xquery" name="transform.xq" url="https://github.com/jpcs/transform.xq" />
+  <benchmark href="../../benchmark/mlenrich-full.xml" type="xquery" name="ml-enrich" url="https://github.com/freshie/ml-enrich" />
+  <benchmark href="../../benchmark/xquerydoc-full.xml" type="xquery" name="xquerydoc" url="https://github.com/xquery/xquerydoc" />
+  <benchmark href="../../benchmark/openinfoman-full.xml" type="xquery" name="openinfoman" url="https://github.com/openhie/openinfoman" />
+  <benchmark href="../../benchmark/oxfdict-full.xml" type="xquery"  name="Oxford Dict API" url="https://github.com/AdamSteffanick/od-api-xquery" />
+  <benchmark href="../../benchmark/marklogic-full.xml" type="xquery" name="MarkLogic" url="https://github.com/marklogic/commons" />
+  <benchmark href="../../benchmark/datascience-full.xml" type="xquery" name="datascience" url="https://github.com/adamfowleruk/datascience" />
+  <benchmark href="../../benchmark/linkmgmt-full.xml" type="xquery" name="Link Management BaseX" url="https://github.com/dita-for-small-teams/dfst-linkmgmt-basex/" />
+  <benchmark href="../../benchmark/semanticweb-full.xml" type="xquery" name="Semantic Web" url="https://github.com/HeardLibrary/semantic-web/" />
+  <benchmark href="../../benchmark/annotationstore-full.xml" type="xquery" name="eXist annotation store" url="https://github.com/telic/exist-annotation-store/" />
+  <benchmark href="../../benchmark/xqtest-full.xml" type="xquery" name="xqtest" url="https://github.com/irinc/xqtest/" />
+  <benchmark href="../../benchmark/adt-full.xml" type="xquery" name="data.xq" url="https://github.com/jpcs/data.xq/" />
+  <benchmark href="../../benchmark/graphviz-full.xml" type="xquery" name="graphxq" url="https://github.com/apb2006/graphxq/" />
+  <benchmark href="../../benchmark/mlinvoker-full.xml" type="xquery" name="ml-invoker" url="https://github.com/fgeorges/ml-invoker/" />
+  <benchmark href="../../benchmark/treedown-full.xml" type="xquery" name="treedown" url="https://github.com/biblicalhumanities/treedown/" />
+  <benchmark href="../../benchmark/xqjson-full.xml" type="xquery" name="XQJSON" url="https://github.com/joewiz/xqjson/" />
+  <benchmark href="../../benchmark/fots-full.xml" type="xquery" name="fots BaseX" url="https://github.com/LeoWoerteler/fots-basex/" />
+  <benchmark href="../../benchmark/geospatial-full.xml" type="xquery" name="GPXQuery" url="https://github.com/dret/GPXQuery/" />
+  <benchmark href="../../benchmark/rbtree-full.xml" type="xquery" name="rbtree.qx" url="https://github.com/jpcs/rbtree.xq/" />
+  <benchmark href="../../benchmark/libs-full.xml" type="xquery" name="libs" url="https://github.com/adamretter/xquery-libs/" />
+  <benchmark href="../../benchmark/guidomatic-full.xml" type="xquery" name="Guid-O-Matic" url="https://github.com/baskaufs/guid-o-matic/" />
+  <benchmark href="../../benchmark/functional-full.xml" type="xquery" name="functional.xq" url="https://github.com/jpcs/functional.xq/" />
 </benchmarks>
