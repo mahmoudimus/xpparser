@@ -11,7 +11,7 @@
   <benchmark href="../../benchmark/xquerydoc-full.xml" type="xquery" name="xquerydoc" url="https://github.com/xquery/xquerydoc" />
   <benchmark href="../../benchmark/openinfoman-full.xml" type="xquery" name="openinfoman" url="https://github.com/openhie/openinfoman" />
   <benchmark href="../../benchmark/oxfdict-full.xml" type="xquery"  name="Oxford Dict API" url="https://github.com/AdamSteffanick/od-api-xquery" />
-  <benchmark href="../../benchmark/marklogic-full.xml" type="xquery" name="MarkLogic" url="https://github.com/marklogic/commons" />
+  <benchmark href="../../benchmark/marklogic-full.xml" type="xquery" name="MarkLogic Commons" url="https://github.com/marklogic/commons" />
   <benchmark href="../../benchmark/datascience-full.xml" type="xquery" name="datascience" url="https://github.com/adamfowleruk/datascience" />
   <benchmark href="../../benchmark/linkmgmt-full.xml" type="xquery" name="Link Management BaseX" url="https://github.com/dita-for-small-teams/dfst-linkmgmt-basex/" />
   <benchmark href="../../benchmark/semanticweb-full.xml" type="xquery" name="Semantic Web" url="https://github.com/HeardLibrary/semantic-web/" />
@@ -25,7 +25,7 @@
   <benchmark href="../../benchmark/fots-full.xml" type="xquery" name="fots BaseX" url="https://github.com/LeoWoerteler/fots-basex/" />
   <benchmark href="../../benchmark/geospatial-full.xml" type="xquery" name="GPXQuery" url="https://github.com/dret/GPXQuery/" />
   <benchmark href="../../benchmark/rbtree-full.xml" type="xquery" name="rbtree.qx" url="https://github.com/jpcs/rbtree.xq/" />
-  <benchmark href="../../benchmark/libs-full.xml" type="xquery" name="libs" url="https://github.com/adamretter/xquery-libs/" />
+  <benchmark href="../../benchmark/libs-full.xml" type="xquery" name="xquery-libs" url="https://github.com/adamretter/xquery-libs/" />
   <benchmark href="../../benchmark/guidomatic-full.xml" type="xquery" name="Guid-O-Matic" url="https://github.com/baskaufs/guid-o-matic/" />
   <benchmark href="../../benchmark/functional-full.xml" type="xquery" name="functional.xq" url="https://github.com/jpcs/functional.xq/" />
 </benchmarks>
