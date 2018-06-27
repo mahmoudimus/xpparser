@@ -277,6 +277,8 @@ open NONSTD,">","countfuns_${suffix}_nonstd.dat"
   or die "Cannot open countfuns_${suffix}_nonstd.dat!\n";
 open TOTAL,">","countfuns_${suffix}_total.tex"
   or die "Cannot open countfuns_${suffix}_total.tex!\n";
+open COV,">","countfuns_${suffix}_std_cov.tex"
+  or die "Cannot open countfuns_${suffix}_std_cov.tex!\n";
 $n=0;             # rank of current function (decr. order)
 $sofar=0;         # total nb of occ. so far
 $sofar_std=0;     # total nb of occ. of std funs so far
