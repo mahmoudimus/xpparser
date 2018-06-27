@@ -18,9 +18,13 @@ variants=( "extra" "full" "orig" )
 # the coverage of XPath 3.0
 total=`grep 'xpath-3.0.rnc.*yes' $files | wc -l`
 
+max=0
+maxf=0
+min=$total
+minf=0
 # main loop on every fragment
 for ((f=0; f<${#fragments[@]}; ++f))
-do
+do    
     fname=`echo ${names[f]} | sed 's/~/ /'`
     printf "\"\\\\\\\textsf{$fname}\"\t" # the fragment's name
     if [ ${#fname} -lt 7 ]
@@ -48,9 +52,38 @@ do
         count=`grep $name.*yes $files | wc -l`
         percent=`echo "scale=2; 100*$count/$total" | bc`
         printf "$percent\t"
+        # update min/max
+        if [ $v -eq 1 ]
+        then
+            if [ $min -gt $count ] && [ "${names[f]}" != "Downward" ] && [ "${names[f]}" != "Forward" ]
+            then
+                min=$count
+                minf=$f
+            fi
+            if [ $max -lt $count ]
+            then
+                max=$count
+                maxf=$f
+            fi
+        fi            
     done
     echo
 done
+
+minpercent=`echo "scale=2; 100*$min/$total" | bc`
+maxpercent=`echo "scale=2; 100*$max/$total" | bc`
+printf "$minpercent\\\\%% for \\\\textsf{${names[minf]}" >&2
+if [ "${names[minf]}" != "Core~1.0" ] && [ "${names[minf]}" != "Core~2.0" ]
+then
+    printf "\\\\-XPath" >&2
+fi
+printf "} and~" >&2
+printf "$maxpercent\\\\%% for \\\\textsf{${names[maxf]}" >&2
+if [ "${names[maxf]}" != "Core~1.0" ] && [ "${names[maxf]}" != "Core~2.0" ]
+then
+    printf "\\\\-XPath" >&2
+fi
+printf "}" >&2
 
 # printf '"\\\\textit{Combined}"'
 # printf "\t0\t"
