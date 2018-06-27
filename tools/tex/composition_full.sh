@@ -13,6 +13,7 @@ for file in $xslt
 do
   name=`grep $file benchmarks-all-full.xml | sed -e 's/.*name="\([^"]*\).*/\1/'`
   url=`grep $file benchmarks-all-full.xml | sed -e 's/.*url="\([^"]*\).*/\1/'`
+  printf '\\vspace{-0.5em} '
   printf "$name"
   n=`grep '<ast' $file | wc -l`
   printf "& %'.0f " $n
@@ -55,6 +56,7 @@ for file in $xquery
 do
   name=`grep $file benchmarks-all-full.xml | sed -e 's/.*name="\([^"]*\).*/\1/'`
   url=`grep $file benchmarks-all-full.xml | sed -e 's/.*url="\([^"]*\).*/\1/'`
+  printf '\\vspace{-0.5em} '
   printf "$name"
   n=`grep '<ast' $file | wc -l`
   printf "& %'.0f " $n
