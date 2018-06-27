@@ -72,8 +72,18 @@ done
 
 minpercent=`echo "scale=2; 100*$min/$total" | bc`
 maxpercent=`echo "scale=2; 100*$max/$total" | bc`
-printf "$minpercent\\\\%% for \\\\textsf{${names[minf]}\\\\-XPath} and~" >&2
-printf "$maxpercent\\\\%% for \\\\textsf{${names[maxf]}\\\\-XPath}" >&2
+printf "$minpercent\\\\%% for \\\\textsf{${names[minf]}" >&2
+if [ "${names[minf]}" != "Core~1.0" ] && [ "${names[minf]}" != "Core~2.0" ]
+then
+    printf "\\\\-XPath" >&2
+fi
+printf "} and~" >&2
+printf "$maxpercent\\\\%% for \\\\textsf{${names[maxf]}" >&2
+if [ "${names[maxf]}" != "Core~1.0" ] && [ "${names[maxf]}" != "Core~2.0" ]
+then
+    printf "\\\\-XPath" >&2
+fi
+printf "}" >&2
 
 # printf '"\\\\textit{Combined}"'
 # printf "\t0\t"
