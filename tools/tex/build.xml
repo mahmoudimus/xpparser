@@ -10,19 +10,19 @@
 
   <target name="all">
     <!-- matrices -->
-    <antcall target="matrix">
+    <!--antcall target="matrix">
       <param name="fragments" value="orig" />
       <param name="benchmarks" value="all-full" />
     </antcall>
     <antcall target="matrix">
       <param name="fragments" value="basic" />
       <param name="benchmarks" value="all-full" />
-    </antcall>
+    </antcall-->
     <antcall target="matrix">
       <param name="fragments" value="full" />
       <param name="benchmarks" value="all-full" />
     </antcall>
-    <antcall target="matrix">
+    <!--antcall target="matrix">
       <param name="fragments" value="core-1.0" />
       <param name="benchmarks" value="all-full" />
     </antcall>
@@ -49,20 +49,20 @@
     <antcall target="matrix">
       <param name="fragments" value="emso2" />
       <param name="benchmarks" value="all-full" />
-    </antcall>
+    </antcall-->
     <!-- totals -->
     <antcall target="totals">
       <param name="fragments" value="full" />
       <param name="benchmarks" value="all-full" />
     </antcall>
-    <antcall target="totals">
+    <!--antcall target="totals">
       <param name="fragments" value="orig" />
       <param name="benchmarks" value="all-full" />
     </antcall>
     <antcall target="totals">
       <param name="fragments" value="basic" />
       <param name="benchmarks" value="all-full" />
-    </antcall>
+    </antcall-->
   </target>
 
   <!-- extract TeX matrix from benchmark data
