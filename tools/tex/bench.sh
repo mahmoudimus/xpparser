@@ -72,16 +72,22 @@ done
 
 minpercent=`echo "scale=2; 100*$min/$total" | bc`
 maxpercent=`echo "scale=2; 100*$max/$total" | bc`
-printf "$minpercent\\\\%% for \\\\textsf{${names[minf]}" >&2
+printf "$minpercent\\\\%% for \\\\textsf{" >&2
 if [ "${names[minf]}" != "Core~1.0" ] && [ "${names[minf]}" != "Core~2.0" ]
 then
-    printf "\\\\-XPath" >&2
+    printf "${names[minf]}\\\\-XPath" >&2
+else
+    mname=`echo "${names[minf]}" | sed -e 's/~/\\\\-XPath~/'`
+    printf "$mname" >&2
 fi
 printf "} and~" >&2
-printf "$maxpercent\\\\%% for \\\\textsf{${names[maxf]}" >&2
+printf "$maxpercent\\\\%% for \\\\textsf{" >&2
 if [ "${names[maxf]}" != "Core~1.0" ] && [ "${names[maxf]}" != "Core~2.0" ]
 then
-    printf "\\\\-XPath" >&2
+    printf "${names[maxf]}\\\\-XPath" >&2
+else
+    mname=`echo "${names[maxf]}" | sed -e 's/~/\\\\-XPath~/'`
+    printf "$mname" >&2
 fi
 printf "}" >&2
 
