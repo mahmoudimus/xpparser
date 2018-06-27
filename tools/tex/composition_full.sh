@@ -3,9 +3,9 @@
 xslt=`grep 'xslt' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 xquery=`grep 'xquery' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 
-printf '\\begin{tabular}{lrrrrl}\n'
+printf '\\begin{tabular}{lrrrr}\n'
 printf '\\toprule\n'
-printf 'Source & queries & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0 & Url\\\\\n'
+printf 'Source & queries & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0\\\\\n'
 printf '\\midrule\n'
 
 # XSLT files
@@ -23,8 +23,8 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
   done
-  printf "& \\\\url{$url}"
   printf '\\\\\n'
+  printf "{\\\\tiny \\\\url{$url}} & & & & \\\\\\\\\n"
 done
 
 # total number of XSLT queries
@@ -45,7 +45,7 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
-printf '& \\\\\n'
+printf '\\\\\n'
 printf '\\midrule\n'
 
 N=$n
@@ -65,8 +65,8 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
   done
-  printf "& \\\\url{$url}"
   printf '\\\\\n'
+  printf "{\\\\tiny \\\\url{$url}} & & & & \\\\\\\\\n"
 done
 
 # total number of XQuery queries
@@ -87,7 +87,7 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
-printf '& \\\\\n'
+printf '\\\\\n'
 
 N=$((N + n))
 printf '\\midrule\n'
@@ -99,7 +99,7 @@ do
     percent=`echo "scale=1; 100*$count/$N" | bc`
     printf "& $percent\\\\%% "
 done
-printf '& \\\\\n'
+printf '\\\\\n'
 
 printf '\\bottomrule\n'
 printf '\\end{tabular}\n'
