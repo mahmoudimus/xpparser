@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex
 
 SHELL := /bin/bash
 
@@ -76,6 +76,12 @@ xslt.dat: bench.sh xslt-full.cov xslt-orig.cov $(wildcard ../../benchmark/*-full
 
 xqy.dat: bench.sh xquery-full.cov xquery-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
 	./bench.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat 2> minmax-xqy.tex
+
+xslt-std.dat: bench-std.sh xslt-full.cov xslt-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench-std.sh  xslt-full.cov xslt-orig.cov `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat 2> minmax-std-xslt.tex
+
+xqy-std.dat: bench-std.sh xquery-full.cov xquery-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
+	./bench-std.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat 2> minmax-std-xqy.tex
 
 test.pdf: xslt.dat xqy.dat test.tex
 	pdflatex --shell-escape test.tex

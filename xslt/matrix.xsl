@@ -66,11 +66,13 @@
     <xsl:text>{ "z": </xsl:text><xsl:value-of select="count($examples)"/>
     <xsl:if test="$examples">
       <xsl:text>, "examples": [</xsl:text>
-      <xsl:for-each select="$examples[position() &lt;= $nexamples]">
+      <!--xsl:for-each select="$examples[position() &lt;= $nexamples]"-->
+      <xsl:for-each select="$examples">
         <xsl:text>"</xsl:text><xsl:value-of 
         select="replace(replace(normalize-space(current()/query),'&quot;',&quot;'&quot;),'\\','\\\\')"/>
         <xsl:text>"</xsl:text>
-        <xsl:if test="position() != last() and position() &lt; $nexamples">
+        <!--xsl:if test="position() != last() and position() &lt; $nexamples"-->
+        <xsl:if test="position() != last()">
           <xsl:text>,</xsl:text>
         </xsl:if>
       </xsl:for-each>

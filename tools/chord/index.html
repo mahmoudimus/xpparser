@@ -2,15 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>XPath fragments in the benchmark</title>
-    <link rel="stylesheet" type="text/css" href="prettify.min.css">
+    <title>XPath Benchmark</title>
+    <!--link rel="stylesheet" type="text/css" href="prettify.min.css"-->
     <link rel="stylesheet" type="text/css" href="xpp.min.css">
     <link rel="stylesheet" type="text/css" href="chord.min.css">
-    <script type="text/javascript"
+    <!--script type="text/javascript"
             src="https://cdn.rawgit.com/google/code-prettify/master/loader/prettify.js"></script>
-    <script type="text/javascript" src="lang-xpath.min.js"></script>
+    <script type="text/javascript" src="lang-xpath.min.js"></script-->
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
+    <!--script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="tinyscrollbar.min.css" type="text/css" media="screen"/>
+    <script type="text/javascript" src="jquery.tinyscrollbar.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            var $scrollbar = $("#scrollbar1");
+            $scrollbar.tinyscrollbar();
+        });
+    </script-->
 <body>
   <h1>XPath fragments in @BENCHMARK@</h1>
   <h2>(<span style="color:red">preliminary version</span>)</h2>
@@ -34,7 +44,7 @@
   <div id="left">
     <aside style="position: relative; top:2px">
       <p>Order: <select id="order">
-        <option value="count" selected>by Frequency</option>
+        <option value="count" selected>by Coverage</option>
         <option value="name">by Name</option>
         <option value="group">by Cluster</option>
       </select>
@@ -53,14 +63,16 @@ var width = 650,
     height = 650,
     outerRadius = Math.min(width, height) / 2 - 10,
     innerRadius = outerRadius - 24;
+    logwidth = 200;
 
 d3.select("body")
-    .style("width", width + matrixw + margin.left + margin.right +"px");
+    .style("width", width + matrixw + margin.left + margin.right + logwidth
+    +"px");
 d3.select("#links")
     .style("width", width + "px")
     .style("height", height + "px");
 d3.select("#log")
-    .style("width", matrixw + margin.left + margin.right +"px");
+    .style("width", matrixw + margin.left + margin.right + logwidth +"px");
 d3.select("aside")
     .style("left", matrixw + margin.left -20 +"px");
 
