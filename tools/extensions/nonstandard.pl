@@ -3,7 +3,11 @@
 use strict;
 require "./XPathStd.pm";
 
-die "Usage: $0 <XML files>\n" unless @ARGV;
+die "Usage: $0 <type> <XML files>\n" unless @ARGV;
+my $type = @ARGV[0];
+shift;
+
+# XML sources
 my @files = @ARGV;
 
 # Standard XPath functions which are well supported in decidable fragments
@@ -140,13 +144,25 @@ sub count_show {
 }
 
 sub count_showcov {
+  open(CF, '>', "non-standard-$type-$_[2].tex") or die $!;
+  open(CFfull, '>', "non-standard-$type-$_[2]-full.tex") or die $!;
+  open(CFextra, '>', "non-standard-$type-$_[2]-extra.tex") or die $!;
+  
   my $n = count_show($_[0],$_[1]);
+  my $d = reverse join ',', unpack '(A3)*', reverse $n;
+  printf CF "$d";
   my $captured = count($_[0]."[$infulls]");
   printf STDERR "  among which %d (%.2f%%) are captured in full\n",
     $captured, 100*$captured/$n;
+  printf CFfull "%.2f%%", 100*$captured/$n;
   my $captured=count($_[0]."[$infulls or $inextras]");
   printf STDERR "  among which %d (%.2f%%) are captured in full+extra\n",
     $captured, 100*$captured/$n;
+  printf CFextra "%.2f%%", 100*$captured/$n;
+  
+  close CF;
+  close CFfull;
+  close CFextra;
   return $n;
 }
 
@@ -154,14 +170,14 @@ sub count_showcov {
 
 print STDERR "Counting only validated queries...\n";
 
-my $total=count_showcov("//xpath[schemas]","in total");
+my $total=count_showcov("//xpath[schemas]","in total","tot");
 
-count_showcov("//xpath[schemas][ast//xqx:functionName]","with functions");
+count_showcov("//xpath[schemas][ast//xqx:functionName]","with functions","fun");
 
-count_showcov("//xpath[schemas][not($nonstandardAST)]","with only standard functions");
+count_showcov("//xpath[schemas][not($nonstandardAST)]","with only standard functions","std");
 
 count_showcov("//xpath[schemas/validation[\@schema='xpath-3.0.rnc'][\@valid='yes']][not($nonstandardAST)]",
-              "that are fully XP3.0 std");
+              "that are fully XP3.0 std","std3");
 
 # This one is irrelevant, as it keeps unsupported operators
 # count_showcov("//xpath[schemas][$wellsupportedAST]","with only well-supported functions");
@@ -171,7 +187,7 @@ my $nonstd=count_show("//xpath[schemas][$nonstandardAST]","with non-std function
 my $nonsup=count_show("//xpath[schemas][not($nonstandardAST) and ($nonsupportedAST)]",
                       "with std but unsupported functions");
 
-count_showcov("//xpath[schemas][not($nonstandardAST) and not($nonsupportedAST)]","without unsupported functions");
+count_showcov("//xpath[schemas][not($nonstandardAST) and not($nonsupportedAST)]","without unsupported functions","wuns");
 
 my $extras=count_show("//xpath[schemas][$inextras]","captured in positive+extra alone");
 
