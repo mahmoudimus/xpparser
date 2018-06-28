@@ -3,9 +3,10 @@
 xslt=`grep 'xslt' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 xquery=`grep 'xquery' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 
-printf '\\begin{tabular}{lrrrr}\n'
+printf '\\begin{tabular}{lrrrrr}\n'
 printf '\\toprule\n'
-printf 'Source & \\!\\!queries & \\!\\!XPath\\,1.0 & \\!\\!XPath\\,2.0 & \\!\\!XPath\,3.0\\\\\n'
+printf 'Sources & Queries & \\multicolumn{4}{c}{Coverage}\\\\\n'
+printf ' & & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0 & XPath\,3.0\,std\\\\\n'
 printf '\\midrule\n'
 
 # total number of XSLT queries
@@ -25,6 +26,15 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
+count=0
+for file in $xslt
+do
+    c=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-3.0-std.rnc\" and @valid=\"yes\"]])" $file`
+    count=$((count+c))
+done
+counts[4]=$count
+percent=`echo "scale=1; 100*$count/$n" | bc`
+printf "& $percent\\\\%% "
 printf '\\\\\n'
 
 N=$n
@@ -45,13 +55,22 @@ do
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
+count=0
+for file in $xquery
+do
+    c=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-3.0-std.rnc\" and @valid=\"yes\"]])" $file`
+    count=$((count+c))
+done
+counts[4]=$((count + counts[4]))
+percent=`echo "scale=1; 100*$count/$n" | bc`
+printf "& $percent\\\\%% "
 printf '\\\\\n'
 
 N=$((N + n))
 printf '\\midrule\n'
 printf 'Total '
 printf "& %'.0f " $N
-for ((i=1; i < 4; ++i))
+for ((i=1; i < 5; ++i))
 do
     count=${counts[i]}
     percent=`echo "scale=1; 100*$count/$N" | bc`
