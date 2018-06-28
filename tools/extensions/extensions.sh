@@ -25,6 +25,9 @@ echo ""
 echo "<!-- Number of queries using id -->"
 bash id.sh
 echo ""
+echo "<!-- Number of queries with counts -->"
+bash aggregation.sh
+echo ""
 echo "<!-- Number of queries with arbitrary use of variables -->"
 bash var.sh
 echo ""
