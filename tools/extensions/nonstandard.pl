@@ -153,7 +153,7 @@ sub count_showcov {
   my $n = count_show($_[0],$_[1]);
   $totals{$_[2]} = $n;
   my $d = reverse join ',', unpack '(A3)*', reverse $n;
-  printf CF "%s queries (%.2f%%)\n", $d, 100*$n/$totals{"tot"};
+  printf CF "%s queries (%.2f\\%%)\n", $d, 100*$n/$totals{"tot"};
   my $captured = count($_[0]."[$infulls]");
   printf STDERR "  among which %d (%.2f%%) are captured in full\n",
     $captured, 100*$captured/$n;

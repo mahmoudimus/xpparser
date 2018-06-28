@@ -1,4 +1,4 @@
-all: extensions.xml gains-ext.tex countfuns_all.dat countfuns_xslt.dat countfuns_xquery.dat
+all: extensions.xml gains-ext.tex countfuns_all.dat countfuns_xslt.dat countfuns_xquery.dat non-standard-xquery.xml non-standard-xslt.xml non-standard-all.xml
 
 countfuns_all.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
 	XPPSUF="all" ./countfuns.pl ../../benchmark/*-full.xml
@@ -20,10 +20,13 @@ gains-ext.tex: gains.sh $(wildcard ../../benchmark/*-full.xml)
 	./gains.sh > gains-ext.tex
 
 non-standard-xquery.xml: nonstandard.pl ../../benchmark/*-full.xml
-	./nonstandard.pl  `grep 'type="xquery"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > non-standard-xquery.xml
+	./nonstandard.pl  xquery `grep 'type="xquery"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 non-standard-xslt.xml: nonstandard.pl ../../benchmark/*-full.xml
-	./nonstandard.pl `grep 'type="xslt"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > non-standard-xslt.xml
+	./nonstandard.pl xslt `grep 'type="xslt"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
+
+non-standard-all.xml: nonstandard.pl ../../benchmark/*-full.xml
+	./nonstandard.pl all `grep 'href' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 %.reasons: %.xml
 	xmlstarlet sel -t -v '//xpath/schemas/validation[@valid="no" and contains(@schema, "efo-extra")]/text()' -n $*.xml | sort | uniq -c > $*.reasons
