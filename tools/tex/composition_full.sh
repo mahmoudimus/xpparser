@@ -8,8 +8,9 @@ xquery=`grep 'xquery' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1
 
 printf '\\begin{tabular}{lrrrrrr}\n'
 printf '\\toprule\n'
-printf 'Source & queries & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0 & XPath\,3.0\,std & \\textsf{Core~2.0}\\\\\n'
-printf ' & & & & & & extended\\\\\n'
+printf 'Source & Queries & \\multicolumn{5}{c}{Coverage}\\\\\n'
+printf '& & XPath\\,1.0 & XPath\\,2.0 & XPath\\,3.0 & XPath\\,3.0 & \\textsf{Core~2.0}\\\\\n'
+printf ' & & & & & std & extended\\\\\n'
 printf '\\midrule\n'
 
 # XSLT files
