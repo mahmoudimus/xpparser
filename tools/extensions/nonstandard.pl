@@ -1,284 +1,187 @@
 #!/usr/bin/perl
 
+use strict;
 require "./XPathStd.pm";
 
 die "Usage: $0 <XML files>\n" unless @ARGV;
-@files = @ARGV;
+my @files = @ARGV;
 
-@unsupported = (
-  "abs",
-  "acos",
-  "add-dayTimeDurations",
-  "add-dayTimeDuration-to-date",
-  "add-dayTimeDuration-to-dateTime",
-  "add-dayTimeDuration-to-time",
-  "add-yearMonthDurations",
-  "add-yearMonthDuration-to-date",
-  "add-yearMonthDuration-to-dateTime",
-  "adjust-dateTime-to-timezone",
-  "adjust-date-to-timezone",
-  "adjust-time-to-timezone",
-  "analyze-string",
-  "asin",
-  "atan",
-  "atan2",
-  "available-environment-variables",
-  "avg",
-  "base64Binary-equal",
-  "base-uri",
-  "boolean-equal",
-  "boolean-greater-than",
-  "boolean-less-than",
-  "ceiling",
-  "codepoint-equal",
-  "codepoints-to-string",
-  "collection",
-  "compare",
-  "concatenate",
-  "cos",
-  "current-date",
-  "current-dateTime",
-  "current-time",
-  "data",
-  "date-equal",
-  "date-greater-than",
-  "date-less-than",
-  "dateTime",
-  "dateTime-equal",
-  "dateTime-greater-than",
-  "dateTime-less-than",
-  "day-from-date",
-  "day-from-dateTime",
-  "days-from-duration",
-  "dayTimeDuration-greater-than",
-  "dayTimeDuration-less-than",
-  "deep-equal",
-  "default-collation",
-  "distinct-values",
-  "divide-dayTimeDuration",
-  "divide-dayTimeDuration-by-dayTimeDuration",
-  "divide-yearMonthDuration",
-  "divide-yearMonthDuration-by-yearMonthDuration",
-  "doc",
-  "doc-available",
-  "document-uri",
-  "duration-equal",
-  "element-with-id",
-  "empty",
-  "encode-for-uri",
-  "environment-variable",
-  "error",
-  "escape-html-uri",
-  "exactly-one",
-  "except",
-  "exists",
-  "exp",
-  "exp10",
-  "filter",
-  "floor",
-  "fold-left",
-  "fold-right",
-  "for-each",
-  "for-each-pair",
-  "format-date",
-  "format-dateTime",
-  "format-integer",
-  "format-number",
-  "format-time",
-  "function-arity",
-  "function-lookup",
-  "function-name",
-  "gDay-equal",
-  "generate-id",
-  "gMonthDay-equal",
-  "gMonth-equal",
-  "gYear-equal",
-  "gYearMonth-equal",
-  "head",
-  "hexBinary-equal",
-  "hours-from-dateTime",
-  "hours-from-duration",
-  "hours-from-time",
-  "implicit-timezone",
-  "index-of",
-  "innermost",
-  "in-scope-prefixes",
-  "insert-before",
-  "intersect",
-  "iri-to-uri",
-  "is-same-node",
-  "lang",
-  "local-name-from-QName",
-  "log",
-  "log10",
-  "lower-case",
-  "matches",
-  "minutes-from-dateTime",
-  "minutes-from-duration",
-  "minutes-from-time",
-  "month-from-date",
-  "month-from-dateTime",
-  "months-from-duration",
-  "multiply-dayTimeDuration",
-  "multiply-yearMonthDuration",
-  "namespace-uri-for-prefix",
-  "namespace-uri-from-QName",
-  "nilled",
-  "node-after",
-  "node-before",
-  "normalize-unicode",
-  "NOTATION-equal",
-  "number",
-  "numeric-add",
-  "numeric-divide",
-  "numeric-equal",
-  "numeric-greater-than",
-  "numeric-integer-divide",
-  "numeric-less-than",
-  "numeric-mod",
-  "numeric-multiply",
-  "numeric-subtract",
-  "numeric-unary-minus",
-  "numeric-unary-plus",
-  "one-or-more",
-  "outermost",
-  "parse-xml",
-  "parse-xml-fragment",
-  "path",
-  "pi",
-  "pow",
-  "prefix-from-QName",
-  "QName",
-  "QName-equal",
-  "remove",
-  "replace",
-  "resolve-QName",
-  "resolve-uri",
-  "reverse",
-  "round",
-  "round-half-to-even",
-  "seconds-from-dateTime",
-  "seconds-from-duration",
-  "seconds-from-time",
-  "serialize",
-  "sin",
-  "sqrt",
-  "static-base-uri",
-  "string",
-  "string-to-codepoints",
-  "subsequence",
-  "subtract-dates",
-  "subtract-dateTimes",
-  "subtract-dayTimeDuration-from-date",
-  "subtract-dayTimeDuration-from-dateTime",
-  "subtract-dayTimeDuration-from-time",
-  "subtract-dayTimeDurations",
-  "subtract-times",
-  "subtract-yearMonthDuration-from-date",
-  "subtract-yearMonthDuration-from-dateTime",
-  "subtract-yearMonthDurations",
-  "sum",
-  "tail",
-  "tan",
-  "time-equal",
-  "time-greater-than",
-  "time-less-than",
-  "timezone-from-date",
-  "timezone-from-dateTime",
-  "timezone-from-time",
-  "to",
-  "tokenize",
-  "trace",
-  "union",
-  "unordered",
-  "unparsed-text",
-  "unparsed-text-available",
-  "unparsed-text-lines",
-  "upper-case",
-  "uri-collection",
-  "year-from-date",
-  "year-from-dateTime",
-  "yearMonthDuration-greater-than",
-  "yearMonthDuration-less-than",
-  "years-from-duration",
-  "zero-or-one"
+# Standard XPath functions which are well supported in decidable fragments
+my @wellsupported = (
+  "boolean",
+  "false",
+  "has-children",
+  "local-name",
+  "name",
+  "namespace-uri",
+  "node-name",
+  "not",
+  "root",
+  "true"
 );
 
-$query = '(not(@xqx:prefix != \'fn\' and @xqx:prefix != \'math\')) and (false()';
-foreach (@unsupported) {
-  $query = "$query or text() = '$_'";
-}
-$query = "$query)";
-$nonsupportedquery = "ast//xqx:functionName[$query]";
+# Standard XPath functions for which there is some amount of support
+# in the decidable fragments
+my @supported = (
+  "boolean",
+  "concat",
+  "contains",
+  # "count",
+  "ends-with",
+  "false",
+  "has-children",
+  "id",
+  "idref",
+  "last",
+  "local-name",
+  # "max",
+  # "min",
+  "name",
+  "namespace-uri",
+  "node-name",
+  # "normalize-space",
+  "not",
+  "position",
+  "root",
+  "starts-with",
+  "string-join",
+  "string-length",
+  "substring",
+  "substring-after",
+  "substring-before",
+  "translate",
+  "true"
+);  
 
-$query = '(@xqx:prefix != \'fn\') or (true()';
+# =============================================================================
+
+# Standard functions
+
+my $standardfun = 'not(@xqx:prefix != \'fn\' and @xqx:prefix != \'math\') and (false()';
 foreach (@XPathStd::functions) {
-  $query = "$query and text() != '$_'";
+  $standardfun = "$standardfun or text() = '$_'";
 }
-$query = "$query)";
-$nonstandardquery = "ast//xqx:functionName[$query]";
+$standardfun = "$standardfun)";
 
-$inextras = 'schemas/validation[@schema=\'xpath-efo-extra.rnc\'][@valid=\'yes\']';
+# Well-supported standard functions
 
-$total=0;
-for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas])\" -n $file |");
-  while(<STARLET>) {
-    chomp;
-    $total+=$_;
+my $wellsupported = 'not(@xqx:prefix != \'fn\' and @xqx:prefix != \'math\') and (false()';
+foreach (@wellsupported) {
+  $wellsupported = "$wellsupported or text() = '$_'";
+}
+$wellsupported = "$wellsupported)";
+
+# Unsupported standard functions
+
+my $unsupportedstdfun = "($standardfun and (true()";
+foreach (@supported) {
+  $unsupportedstdfun = "$unsupportedstdfun and text() != '$_'";
+}
+$unsupportedstdfun = "$unsupportedstdfun))";
+
+# =============================================================================
+
+# AST featuring at least one non-standard function
+
+my $nonstandardAST = "ast//xqx:functionName[not($standardfun)]";
+
+# AST featuring at least one unsupported standard function
+
+my $nonsupportedAST = "ast//xqx:functionName[$unsupportedstdfun]";
+
+# AST featuring only well supported functions
+
+my $wellsupportedAST = "not(ast//xqx:functionName[not($wellsupported)])";
+
+# Captured in Positive +extra
+
+my $inextras = 'schemas/validation[@schema=\'xpath-efo-extra.rnc\'][@valid=\'yes\']';
+
+# Captured in one of the full fragments
+my $infulls = '(schemas/validation[@valid=\'yes\'][false()';
+for my $rnc (split /\n/, `grep file ../../relaxng/fragments-full.xml  | sed -e 's/.*="\\(.*\\)".*/\\1/'`) {
+  $infulls="$infulls or \@schema='$rnc'";
+}
+$infulls = "$infulls])";
+
+# =============================================================================
+
+sub count {
+  my $c=0;
+  my $query=$_[0];
+  for my $file (@files) {
+    open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count($query)\" -n $file |");
+    while(<STARLET>) {
+      chomp;
+      $c+=$_;
+    }
+    close STARLET;
   }
-  close STARLET;
+  return $c;
 }
+
+sub extract_and_print {
+  my $query=$_[0];
+  print "<?xml version=\"1.0\"?>\n<benchmark>\n";
+  for my $file (@files) {
+    open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"$query\" -n $file |");
+    while(<STARLET>) {
+      print "$_";
+    }
+    close STARLET;
+  }
+  print "</benchmark>\n";
+}
+
+sub count_show {
+  my $n = count($_[0]);
+  print STDERR "$n queries $_[1]\n";
+  return $n;
+}
+
+sub count_showcov {
+  my $n = count_show($_[0],$_[1]);
+  my $captured = count($_[0]."[$infulls]");
+  printf STDERR "  among which %d (%.2f%%) are captured in full\n",
+    $captured, 100*$captured/$n;
+  my $captured=count($_[0]."[$infulls or $inextras]");
+  printf STDERR "  among which %d (%.2f%%) are captured in full+extra\n",
+    $captured, 100*$captured/$n;
+  return $n;
+}
+
+# =============================================================================
+
 print STDERR "Counting only validated queries...\n";
-print STDERR "$total queries in total\n";
 
-$nonstd=0;
-for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][$nonstandardquery])\" -n $file |");
-  while(<STARLET>) {
-    chomp;
-    $nonstd+=$_;
-  }
-  close STARLET;
-}
-print STDERR "$nonstd queries with non-standard functions\n";
+my $total=count_showcov("//xpath[schemas]","in total");
 
-$nonsup=0;
-for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][not($nonstandardquery) and not($inextras) and ($nonsupportedquery)])\" -n $file |");
-  while(<STARLET>) {
-    chomp;
-    $nonsup+=$_;
-  }
-  close STARLET;
-}
-print STDERR "$nonsup queries with unsupported standard functions but no non-standard ones\n";
+count_showcov("//xpath[schemas][ast//xqx:functionName]","with functions");
 
-$extras=0;
-for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -v \"count(//xpath[schemas][$inextras])\" -n $file |");
-  while(<STARLET>) {
-    chomp;
-    $extras+=$_;
-  }
-  close STARLET;
-}
-print STDERR "$extras queries captured in extra fragments\n";
+count_showcov("//xpath[schemas][not($nonstandardAST)]","with only standard functions");
 
-$remaining = $total-$extras-$nonstd-$nonsup;
-print STDERR "$remaining remaining queries\n";
-print "<?xml version=\"1.0\"?>\n<benchmark>\n";
-for my $file (@files) {
-  open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and not($inextras) and not($nonsupportedquery)]\" -n $file |");
-  while(<STARLET>) {
-    print "$_";
-  }
-  close STARLET;
-}
-print "</benchmark>\n";
+count_showcov("//xpath[schemas/validation[\@schema='xpath-3.0.rnc'][\@valid='yes']][not($nonstandardAST)]",
+              "that are fully XP3.0 std");
+
+count_showcov("//xpath[schemas][$wellsupportedAST]","with only well-supported functions");
+
+my $nonstd=count_show("//xpath[schemas][$nonstandardAST]","with non-std functions");
+
+my $nonsup=count_show("//xpath[schemas][not($nonstandardAST) and ($nonsupportedAST)]",
+                      "with std but unsupported functions");
+
+count_showcov("//xpath[schemas][not($nonstandardAST) and not($nonsupportedAST)]","without unsupported functions");
+
+my $extras=count_show("//xpath[schemas][$inextras]","captured in positive+extra");
+
+# Outdated:
+# my $remaining = $total-$extras-$nonstd-$nonsup;
+# print STDERR "$remaining remaining queries\n";
+
+extract_and_print("//xpath[schemas][not($nonstandardAST) and not($inextras) and not($infulls) and not($nonsupportedAST)]");
 
 # for my $file (@files) {
-#   open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardquery) and ($inextras) and ($nonsupportedquery)]\" -n $file |");
+#   open(STARLET,"xmlstarlet sel -N xqx=\"http://www.w3.org/2005/XQueryX\" -t -c \"//xpath[schemas][not($nonstandardAST) and ($inextras) and ($nonsupportedAST)]\" -n $file |");
 #   while(<STARLET>) {
 #     print "$_";
 #   }
