@@ -163,7 +163,8 @@ count_showcov("//xpath[schemas][not($nonstandardAST)]","with only standard funct
 count_showcov("//xpath[schemas/validation[\@schema='xpath-3.0.rnc'][\@valid='yes']][not($nonstandardAST)]",
               "that are fully XP3.0 std");
 
-count_showcov("//xpath[schemas][$wellsupportedAST]","with only well-supported functions");
+# This one is irrelevant, as it keeps unsupported operators
+# count_showcov("//xpath[schemas][$wellsupportedAST]","with only well-supported functions");
 
 my $nonstd=count_show("//xpath[schemas][$nonstandardAST]","with non-std functions");
 
@@ -172,7 +173,7 @@ my $nonsup=count_show("//xpath[schemas][not($nonstandardAST) and ($nonsupportedA
 
 count_showcov("//xpath[schemas][not($nonstandardAST) and not($nonsupportedAST)]","without unsupported functions");
 
-my $extras=count_show("//xpath[schemas][$inextras]","captured in positive+extra");
+my $extras=count_show("//xpath[schemas][$inextras]","captured in positive+extra alone");
 
 # Outdated:
 # my $remaining = $total-$extras-$nonstd-$nonsup;
