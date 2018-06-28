@@ -78,10 +78,10 @@ xqy.dat: bench.sh xquery-full.cov xquery-orig.cov $(wildcard ../../benchmark/*-f
 	./bench.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat 2> minmax-xqy.tex
 
 xslt-std.dat: bench-std.sh xslt-full.cov xslt-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
-	./bench-std.sh  xslt-full.cov xslt-orig.cov `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xslt.dat 2> minmax-std-xslt.tex
+	./bench-std.sh  xslt-full.cov xslt-orig.cov `grep 'type="xslt"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@ 2> minmax-std-xslt.tex
 
 xqy-std.dat: bench-std.sh xquery-full.cov xquery-orig.cov $(wildcard ../../benchmark/*-full.xml) benchmarks-all-full.xml
-	./bench-std.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > xqy.dat 2> minmax-std-xqy.tex
+	./bench-std.sh xquery-full.cov xquery-orig.cov `grep 'type="xquery"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@ 2> minmax-std-xqy.tex
 
 test.pdf: xslt.dat xqy.dat test.tex
 	pdflatex --shell-escape test.tex
