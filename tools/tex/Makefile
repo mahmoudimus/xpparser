@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex
 
 SHELL := /bin/bash
 
