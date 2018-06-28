@@ -148,6 +148,7 @@ sub count_show {
 sub count_showcov {
   open(CF, '>', "non-standard-$type-$_[2].tex") or die $!;
   open(CFfull, '>', "non-standard-$type-$_[2]-full.tex") or die $!;
+  open(CFcombined, '>', "non-standard-$type-$_[2]-combined.tex") or die $!;
   open(CFextra, '>', "non-standard-$type-$_[2]-extra.tex") or die $!;
   printf STDERR "%s: ", $_[2];
   my $n = count_show($_[0],$_[1]);
@@ -161,6 +162,7 @@ sub count_showcov {
   my $captured=count($_[0]."[$infulls or $inextras]");
   printf STDERR "  among which %d (%.2f%%) are captured in full+extra\n",
     $captured, 100*$captured/$n;
+  printf CFcombined "%.2f\\%%\n", 100*$captured/$n;
   my $captured=count($_[0]."[$inextras]");
   printf STDERR "  among which %d (%.2f%%) are captured in extra\n",
     $captured, 100*$captured/$n;
@@ -168,6 +170,7 @@ sub count_showcov {
   
   close CF;
   close CFfull;
+  close CFcombined;
   close CFextra;
   return $n;
 }
