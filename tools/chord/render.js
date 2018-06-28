@@ -143,7 +143,7 @@ function matrixgraph(fragments, matrix, maxentries) {
                 .attr("class", "prettyprint lang-xpath")
                 .text(d.replace("&quot;","'"));
         });
-        PR.prettyPrint();
+        //PR.prettyPrint();
     }
     
     function mouseovercell(p) {
@@ -381,7 +381,7 @@ function chordgraph(fragments, matrix, maxentries) {
                     .attr("class", "prettyprint lang-xpath")
                     .text(d.replace("&quot;","'"));
             });
-            PR.prettyPrint();
+            //PR.prettyPrint();
         }
     }
     
