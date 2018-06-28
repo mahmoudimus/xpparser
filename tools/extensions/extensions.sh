@@ -1,6 +1,7 @@
 #!/bin/bash
 echo '\begin{tabular}{cccccc}'   > occurrences-ext.tex
 echo '\toprule'                 >> occurrences-ext.tex
+echo '\multicolumn{3}{c}{Basic} & \multicolumn{3}{c}{Advanced}\\' >> occurrences-ext.tex
 echo '$/\pi$ & $\$x$ & $\pi\mathbin\trianglep d$ & $\pi\mathbin\triangle\pi$ & $\last()$ & $\texttt{id}()$\\'  >> occurrences-ext.tex
 echo '\midrule'                 >> occurrences-ext.tex
 
