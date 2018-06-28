@@ -5,8 +5,8 @@ xquery=`grep 'xquery' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1
 
 printf '\\begin{tabular}{lrrrrr}\n'
 printf '\\toprule\n'
-printf 'Sources & Queries & \\multicolumn{4}{c}{Coverage}\\\\\n'
-printf ' & & XPath\\,1.0 & XPath\\,2.0 & XPath\,3.0 & XPath\,3.0\,std\\\\\n'
+printf '\\multicolumn{1}{c}{Sources} & \\multicolumn{1}{c}{Queries} & \\multicolumn{4}{c}{Coverage}\\\\\n'
+printf ' & & \\multicolumn{1}{c}{XPath\\,1.0} & \\multicolumn{1}{c}{XPath\\,2.0} & \\multicolumn{1}{c}{XPath\,3.0} & \\multicolumn{1}{c}{XPath\,3.0\,std}\\\\\n'
 printf '\\midrule\n'
 
 # total number of XSLT queries
