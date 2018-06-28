@@ -59,6 +59,8 @@ my @supported = (
 
 # =============================================================================
 
+my %totals = ();
+
 # Standard functions
 
 my $standardfun = 'not(@xqx:prefix != \'fn\' and @xqx:prefix != \'math\') and (false()';
@@ -147,18 +149,22 @@ sub count_showcov {
   open(CF, '>', "non-standard-$type-$_[2].tex") or die $!;
   open(CFfull, '>', "non-standard-$type-$_[2]-full.tex") or die $!;
   open(CFextra, '>', "non-standard-$type-$_[2]-extra.tex") or die $!;
-  
+  printf STDERR "%s: ", $_[2];
   my $n = count_show($_[0],$_[1]);
+  $totals{$_[2]} = $n;
   my $d = reverse join ',', unpack '(A3)*', reverse $n;
-  printf CF "$d";
+  printf CF "%s queries (%.2f%%)\n", $d, 100*$n/$totals{"tot"};
   my $captured = count($_[0]."[$infulls]");
   printf STDERR "  among which %d (%.2f%%) are captured in full\n",
     $captured, 100*$captured/$n;
-  printf CFfull "%.2f%%", 100*$captured/$n;
+  printf CFfull "%.2f\\%%\n", 100*$captured/$n;
   my $captured=count($_[0]."[$infulls or $inextras]");
   printf STDERR "  among which %d (%.2f%%) are captured in full+extra\n",
     $captured, 100*$captured/$n;
-  printf CFextra "%.2f%%", 100*$captured/$n;
+  my $captured=count($_[0]."[$inextras]");
+  printf STDERR "  among which %d (%.2f%%) are captured in extra\n",
+    $captured, 100*$captured/$n;
+  printf CFextra "%.2f\\%%\n", 100*$captured/$n;
   
   close CF;
   close CFfull;
