@@ -5,7 +5,7 @@ SHELL := /bin/bash
 BENCHMARKS=benchmarks-all.xml \
 		   benchmarks-xslt-full.xml benchmarks-xslt.xml \
 		   benchmarks-xquery-full.xml benchmarks-xquery.xml 
-matrices: $(BENCHMARKS) $(wildcard ../../relaxng/fragments-*.xml)
+matrices: $(BENCHMARKS) $(wildcard ../../benchmark/*-full.xml) $(wildcard ../../relaxng/fragments-*.xml)
 	rm -f matrix_*_*.tex
 	ant
 	touch $@
