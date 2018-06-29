@@ -2,10 +2,10 @@
 all: chord.pdf
 
 
-numqueries: ../tex/benchmarks-all-full.xml $(wildcard ../../benchmark/*-axis-step.xml)
+numqueries: ../tex/benchmarks-all-full.xml $(wildcard ../../benchmark/*-axis-step.xml) $(wildcard ../../benchmark/*-full.xml)
 	grep '<ast' `grep 'href' $< | sed -e 's/.*href="\([^"]*\).*/\1/'` | wc -l > $@
 
-site/matrix.json: ../../xslt/matrix.xsl build.xml index.html numqueries xpp.css render.js lang-xpath.js prettify.css
+site/matrix.json: ../../xslt/matrix.xsl build.xml index.html numqueries xpp.css render.js lang-xpath.js prettify.css $(wildcard ../../benchmark/*-full.xml)
 	ant
 
 chord.inner.svg: site/matrix.json phantom.js chord.css
