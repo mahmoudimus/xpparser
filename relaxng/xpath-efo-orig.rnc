@@ -39,7 +39,9 @@ include "xpath-1.0-core-orig.rnc" {
   if.expr = notAllowed
 }
 
-op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  ) {
+op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  
+              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
