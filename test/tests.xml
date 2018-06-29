@@ -949,4 +949,254 @@
     <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
   </test>
 
+  <!-- name() -->
+
+  <test>
+    <query>local-name()='foo'</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>name()!='bar'</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>not(name()='bar')</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>@*[not(name()='toto')]</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>name(a/b/c)='c'</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>local-name()=12</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>local-name()='foo' and local-name()!=3</query>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+
+  <!-- comparing names -->
+  <test>
+    <query>name(a//b)=name(b//b)</query>
+    <!-- should be doable in all fragments: or_l (a//b[l] and b//b[l]) -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+  <test>
+    <query>name(a//b)=namespace-uri(b//b)</query>
+    <!-- same as above -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-efo-orig.rnc" valid="yes"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="yes"/>
+  </test>
+
+  <!-- name and variables -->
+  <test>
+    <query>local-name()=$x</query>
+    <!-- should be doable in all fragments supported variables: or_a (.[a] and $x[a]) -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-efo-orig.rnc" valid="no"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>name($x/$y)='toto'</query>
+    <!-- support iff variables are supported -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-efo-orig.rnc" valid="no"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+  </test>
+  <test>
+    <query>local-name($x)!='toto'</query>
+    <!-- support iff variables are supported -->
+    <validation schema="xpath-1.0-core-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-core-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-core-full.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-orig.rnc" valid="yes"/>
+    <validation schema="xpath-2.0-core-join.rnc" valid="yes"/>
+    <validation schema="xpath-efo-orig.rnc" valid="no"/>
+    <validation schema="xpath-efo-basic.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-orig.rnc" valid="yes"/>
+    <validation schema="xpath-emso2-full.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-orig.rnc" valid="yes"/>
+    <validation schema="xpath-non-mixing-basic.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-vertical-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-vertical-full.rnc" valid="yes"/>
+    <validation schema="xpath-1.0-forward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-forward-last.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-orig.rnc" valid="no"/>
+    <validation schema="xpath-1.0-downward-last.rnc" valid="no"/>
+  </test>
+
 </tests>
