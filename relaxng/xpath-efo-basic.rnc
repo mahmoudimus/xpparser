@@ -53,9 +53,7 @@ include "xpath-1.0-core-basic.rnc" {
 
 fun |= cst.fun | fun.root
 
-op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  
-              | isOp # node comparisons
-) {
+op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp ) {
   element firstOperand  { expr },
   element secondOperand { expr }
 }
