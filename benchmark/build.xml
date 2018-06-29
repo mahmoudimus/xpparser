@@ -148,8 +148,8 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <!-- DocBook XSL -->
   <target name="docbook">
     <mkdir dir="docbook"/>
-    <!--get src="https://freefr.dl.sourceforge.net/project/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
-         dest="docbook/" usetimestamp="true"/-->
+    <get src="https://freefr.dl.sourceforge.net/project/docbook/docbook-xsl/1.79.1/docbook-xsl-1.79.1.tar.bz2"
+         dest="docbook/" usetimestamp="true"/>
     <bunzip2 src="docbook/docbook-xsl-1.79.1.tar.bz2"/>
     <untar src="docbook/docbook-xsl-1.79.1.tar" dest="docbook"
            overwrite="no"/>
