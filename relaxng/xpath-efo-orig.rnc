@@ -40,7 +40,7 @@ include "xpath-1.0-core-orig.rnc" {
 }
 
 op |= element ( intersectOp | eqOp | neOp | equalOp | notEqualOp  
-              | isOp | nodeBeforeOp | nodeAfterOp   # node comparisons
+              | isOp # node comparisons
 ) {
   element firstOperand  { expr },
   element secondOperand { expr }
