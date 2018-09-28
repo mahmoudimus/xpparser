@@ -93,7 +93,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
        but are useful to test our parser.
   -->
   
-  <target name="tests" depends="w3c,xpathmark-pt,xmark"/>
+  <target name="tests" depends="xpathmark-pt,xpathmark-ft,xmark"/>
 
   <!-- W3C test-suite -->
   <target name="w3c">
