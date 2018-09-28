@@ -8,7 +8,7 @@ then
 else
     step=$1
 fi
-fragments=`grep 'href' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
+fragments=`grep 'type="\(xslt\|xquery\)"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
 MAX=`grep 'MAX_AST_SIZE =' ../../src/main/java/fr/lsv/xpparser/XPathEntry.java| sed -e 's/[^0-9]*\([0-9]*\).*/\1/'`
 
 numqueries=`cat numqueries`

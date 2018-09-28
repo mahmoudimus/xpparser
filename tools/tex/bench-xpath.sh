@@ -3,8 +3,8 @@
 # path to benchmark files
 path=$1
 full=$2
-xmlarray=($(grep href benchmarks-all-full.xml | sed -e 's/.*benchmark\/\(.*\)-full.xml.*/\1/'))
-names=($(grep href benchmarks-all-full.xml | sed -e 's/.*name="\(.*\)".*/\1/'))
+xmlarray=($(grep 'type="\(xslt\|xquery\)"' benchmarks-all-full.xml | sed -e 's/.*benchmark\/\(.*\)-full.xml.*/\1/'))
+names=($(grep 'type="\(xslt\|xquery\)"' benchmarks-all-full.xml | sed -e 's/.*name="\(.*\)".*/\1/'))
 
 echo "\\toprule"
 echo "Source & queries & XPath~1.0 & XPath~2.0 & XPath~3.0\\\\"

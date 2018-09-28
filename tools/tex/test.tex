@@ -56,6 +56,29 @@
   \end{gnuplot}
   \caption{Coverage of the XQuery sources.}
 \end{figure}
+\begin{figure}[tbp]
+  \centering
+  % you need to compile with `pdflatex --shell-escape`
+  \begin{gnuplot}[terminal=cairolatex, terminaloptions={color size
+        10cm,6.0cm}]
+    set yrange [0:100]
+    set decimal locale
+    set format y '%.0f\%%'
+    set style fill solid 1.00 border rgb "#ffffff"
+    set ylabel "percentage of queries"
+    set xtics nomirror rotate by -45
+    set tic scale 0
+    set grid ytics lc rgb "#505050"
+    unset border
+    set style data histograms
+    set boxwidth 1.4
+    set key font ",9"
+    plot "bnch.dat" using 2:xticlabels(1) title "+extras" lt rgb "#fdc711",\
+    "" using 3 title "extended" lt rgb "#5f1d5e",\
+    "" using 4 title "baseline" lt rgb "#636369"
+  \end{gnuplot}
+  \caption{Coverage of the synthetic benchmarks.}
+\end{figure}
 %% \begin{figure*}[htp]
 %%   \centering
 %%   % you need to compile with `pdflatex --shell-escape`
