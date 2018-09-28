@@ -1,4 +1,4 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex
+all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex
 
 SHELL := /bin/bash
 
@@ -115,4 +115,10 @@ composition.tex: composition.sh benchmarks-all-full.xml $(wildcard ../../benchma
 	./$<  > $@
 
 composition_full.tex: composition_full.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  > $@
+
+occurences_axis.tex: occurences_axis.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  > $@
+
+occurences_operators.tex: occurences_operators.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
 	./$<  > $@
