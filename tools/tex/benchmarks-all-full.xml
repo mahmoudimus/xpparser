@@ -28,4 +28,7 @@
   <benchmark href="../../benchmark/libs-full.xml" type="xquery" name="xquery-libs" url="https://github.com/adamretter/xquery-libs/" />
   <benchmark href="../../benchmark/guidomatic-full.xml" type="xquery" name="Guid-O-Matic" url="https://github.com/baskaufs/guid-o-matic/" />
   <benchmark href="../../benchmark/functional-full.xml" type="xquery" name="functional.xq" url="https://github.com/jpcs/functional.xq/" />
+  <benchmark href="../../benchmark/xpathmark-ft-full.xml" type="bench" name="XPathMark-FT" />
+  <benchmark href="../../benchmark/xpathmark-pt-full.xml" type="bench" name="XPathMark-PT" />
+  <benchmark href="../../benchmark/xmark-full.xml" type="bench" name="XMark" />
 </benchmarks>

@@ -23,7 +23,7 @@ do
     #printf '\multicolumn{3}{c}{'
 
     # basic
-    ./diffs.sh $orig $basic ../../benchmark/*-full.xml
+    ./diffs.sh $orig $basic `grep 'type="\(xslt\|xquery\)"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
     #printf '} & '
     printf ' & '
 
@@ -31,7 +31,7 @@ do
     if [ -f ../../relaxng/$join ]
     then
         printf "+"
-        ./diffs.sh $basic $join ../../benchmark/*-full.xml
+        ./diffs.sh $basic $join `grep 'type="\(xslt\|xquery\)"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
     fi
     printf ' & '
 
@@ -39,7 +39,7 @@ do
     if [ -f ../../relaxng/$last ]
     then
         printf "+"
-        ./diffs.sh $basic $last ../../benchmark/*-full.xml
+        ./diffs.sh $basic $last `grep 'type="\(xslt\|xquery\)"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
     fi
     printf ' & '
 
@@ -47,7 +47,7 @@ do
     if [ -f ../../relaxng/$id ]
     then
         printf "+"
-        ./diffs.sh $basic $id ../../benchmark/*-full.xml
+        ./diffs.sh $basic $id `grep 'type="\(xslt\|xquery\)"' ../tex/benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'`
     fi
     echo '\\'
 done
