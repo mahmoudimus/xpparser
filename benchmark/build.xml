@@ -93,7 +93,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
        but are useful to test our parser.
   -->
   
-  <target name="tests" depends="w3c,xpathmark"/>
+  <target name="tests" depends="w3c,xpathmark-pt,xmark"/>
 
   <!-- W3C test-suite -->
   <target name="w3c">
@@ -103,10 +103,61 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   </target>
 
   <!-- XPathMark -->
-  <target name="xpathmark">
-    <benchmark name="xpathmark"
+  <target name="xpathmark-ft">
+        <sequential>
+      <local name="offline"/>
+      <available file="xpathmark-ft" property="offline"/>
+      <mkdir unless:set="offline" dir="xpathmark-ft"/>
+      <!--get unless:set="offline" src="http://users.dimi.uniud.it/~massimo.franceschet/xpathmark/FT/queries.zip"
+           dest="xpathmark-ft/queries.zip" usetimestamp="true"/-->
+      <local name="tests"/>
+      <local name="count.tests"/>
+      <fileset id="fs.tests" dir="xpathmark-ft" includes="*.xsl"/>
+      <pathconvert property="tests" refid="fs.tests" pathsep=" "/>
+      <resourcecount property="count.tests" refid="fs.tests"/>
+      <echo message="Parsing ${count.tests} files..."/>
+      <java fork="yes" classname="fr.lsv.xpparser.Main"
+            classpathref="classpath"
+            output="xpathmark-ft-full.xml" error="xpathmark-ft.log">
+        <assertions><!-- this is ignored!!! -->
+          <enable/>
+        </assertions>
+        <jvmarg value="-Xmx7000M"/>
+        <arg line="--xml '//@select' --unique ${tests} --rnc ${relaxng}"/>
+      </java>
+    </sequential>
+  </target>
+  <target name="xpathmark-pt">
+    <benchmark name="xpathmark-pt"
       src="http://users.dimi.uniud.it/~massimo.franceschet/xpathmark/PT/queries.zip"
-      includes="xpath-pt/xslt/*.xsl" arg="--xml '//@select'"/>
+      includes="xpath-pt/xslt/*.xsl" arg="--xml '//@select'"
+      license=""/>
+  </target>
+  
+  <!-- XMark -->
+  <target name="xmark">
+    <sequential>
+      <local name="offline"/>
+      <available file="xmark" property="offline"/>
+      <mkdir unless:set="offline" dir="xmark"/>
+      <!--get unless:set="offline" src="https://projects.cwi.nl/xmark/Assets/xmlquery.txt"
+           dest="xmark/queries.xql" usetimestamp="true"/-->
+      <local name="tests"/>
+      <local name="count.tests"/>
+      <fileset id="fs.tests" dir="xmark" includes="*.xql"/>
+      <pathconvert property="tests" refid="fs.tests" pathsep=" "/>
+      <resourcecount property="count.tests" refid="fs.tests"/>
+      <echo message="Parsing ${count.tests} files..."/>
+      <java fork="yes" classname="fr.lsv.xpparser.Main"
+            classpathref="classpath"
+            output="xmark-full.xml" error="xmark.log">
+        <assertions><!-- this is ignored!!! -->
+          <enable/>
+        </assertions>
+        <jvmarg value="-Xmx7000M"/>
+        <arg line="--xquery ../xslt/xqx2xql.xsl --unique ${tests} --rnc ${relaxng}"/>
+      </java>
+    </sequential>
   </target>
   
   <!-- PoliticalMashup -->
