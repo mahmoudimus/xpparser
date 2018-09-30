@@ -27,7 +27,7 @@ printf '\\toprule\n'
 printf 'Operator & XSLT & XQuery & Total \\\\\n'
 printf '\\midrule\n'
 
-list=(xpathAxis rootExpr functionCallExpr ifThenElseExpr letExpr forExpr simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef quantifiedExpr rangeSequenceExpr instanceOfExpr treatExpr nameTest piTest castableExpr castExpr)
+list=(xpathAxis rootExpr functionCallExpr ifThenElseExpr letExpr forExpr simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef rangeSequenceExpr instanceOfExpr treatExpr nameTest piTest castableExpr castExpr)
 
 for name in ${list[*]}
 do
@@ -37,7 +37,11 @@ do
   count_xslt=0
   for file in $xslt
   do
-    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
+    if [ $name = "forExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
+    else
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
+    fi
     count_xslt=$(($count_xslt+$count))
   done
   percent=`echo "scale=1; 100*$count_xslt/$total_xslt" | bc`
@@ -47,7 +51,11 @@ do
   count_xquery=0
   for file in $xquery
   do
-    count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
+    if [ $name = "forExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
+    else
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
+    fi
     count_xquery=$(($count_xquery+$count))
   done
   percent=`echo "scale=1; 100*$count_xquery/$total_xquery" | bc`
