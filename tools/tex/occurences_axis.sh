@@ -27,13 +27,16 @@ printf '\\toprule\n'
 printf 'Axis & XSLT & XQuery & Total \\\\\n'
 printf '\\midrule\n'
 
-axis_list=("ancestor" "attribute" "child" "descendant" "following" "following-sibling" "namespace" "parent" "descendant" "preceding" "preceding-sibling" "self")
+axis_list=("ancestor" "attribute" "child" "descendant" "following" "following-sibling" "namespace" "parent" "preceding" "preceding-sibling" "self")
 
 for axis in ${axis_list[*]}
 do
   printf '\\texttt{'
   printf $axis
   printf '}'
+  if [ $axis = "ancestor" ] || [ $axis = "descendant" ]; then
+    printf '(\\texttt{-or-self})'
+  fi
   printf ' & '
   # XSLT files
   count_xslt=0
