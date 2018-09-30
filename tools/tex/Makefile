@@ -1,4 +1,5 @@
-all: dist.dat axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex
+all: dist.dat dist-xquery.dat dist-xslt.dat \
+  axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex
 
 SHELL := /bin/bash
 
@@ -13,6 +14,7 @@ matrices: $(BENCHMARKS) $(wildcard ../../benchmark/*-full.xml) $(wildcard ../../
 # Remove generated files
 clean: miniclean
 	rm -f dist.dat axis-count.tex size-gte-100.tex captured_dist.dat
+	rm -f dist-xquery.dat dist-xslt.dat
 	rm -f $(BENCHMARKS)
 	rm -f matrix_*_*.tex totals_*_*.tex matrices
 
@@ -44,7 +46,11 @@ axis-count.tex: $(wildcard ../../benchmark/*-axis-step.xml)
 	./axis-count.sh > $@
 
 dist.dat: numqueries distribution.sh $(wildcard ../../benchmark/*-full.xml)
-	./distribution.sh 1 > dist.dat
+	./distribution.sh 1 > $@
+dist-xquery.dat: numqueries distribution.sh $(wildcard ../../benchmark/*-full.xml)
+	FRAGTYPE=xquery ./distribution.sh 1 > $@
+dist-xslt.dat: numqueries distribution.sh $(wildcard ../../benchmark/*-full.xml)
+	FRAGTYPE=xslt ./distribution.sh 1 > $@
 captured_dist.dat: $(wildcard ../../benchmark/*-full.xml)
 	./captured_distr.sh > captured_dist.dat
 captured_dist.pdf: captured_dist.dat captured_dist.tex
