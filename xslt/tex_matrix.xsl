@@ -13,7 +13,8 @@
              select="document($xml_fragments)//schema"/>
 
   <xsl:template match="/">
-    <xsl:variable name="root" select="document(//benchmark/@href)"/>
+    <xsl:variable name="root"
+                  select="document(//benchmark[@type='xquery' or @type='xslt']/@href)"/>
 
     <xsl:text>\begin{tabular}{l</xsl:text>
     <xsl:for-each select="$fragments">
