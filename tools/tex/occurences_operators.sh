@@ -27,18 +27,21 @@ printf '\\toprule\n'
 printf 'Operator & XSLT & XQuery & Total \\\\\n'
 printf '\\midrule\n'
 
-list=(xpathAxis rootExpr functionCallExpr ifThenElseExpr letExpr forExpr simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef rangeSequenceExpr instanceOfExpr treatExpr nameTest piTest castableExpr castExpr)
+list=(ifThenElseExpr simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef rangeSequenceExpr instanceOfExpr piTest castExpr)
+legend=('if then else' 'simple map' 'dynamic function invocation' 'inline function' 'named function' 'range sequence' 'instance of' 'proccessing instruction' 'cast related expressions')
 
-for name in ${list[*]}
+n=`echo ${#list[@]}`
+for (( i=0; i<$n; i++))
 do
-  printf $name
+  name=`echo ${list[$i]}`
+  printf '%s' "${legend[$i]}"
   printf ' & '
   # XSLT files
   count_xslt=0
   for file in $xslt
   do
-    if [ $name = "forExpr" ]; then
-      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
+    if [ $name = "castExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:treatExpr or .//xqx:castableExpr or .//xqx:castExpr]])" $file`
     else
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
     fi
@@ -51,8 +54,8 @@ do
   count_xquery=0
   for file in $xquery
   do
-    if [ $name = "forExpr" ]; then
-      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
+    if [ $name = "castExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:treatExpr or .//xqx:castableExpr or .//xqx:castExpr]])" $file`
     else
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:$name])" $file`
     fi
