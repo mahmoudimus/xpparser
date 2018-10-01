@@ -40,14 +40,18 @@ do
   count_xslt=0
   for file in $xslt
   do
-    if [ $name = "stepExpr" ]; then
+    if [ $name = "rootExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='functionName' and .='root']] | /benchmark/xpath[ast/descendant::*[local-name()='rootExpr']])" $file`
+    elif [ $name = "stepExpr" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:stepExpr/following-sibling::*[1 and self::xqx:stepExpr]])" $file`
+    elif [ $name = "varRef" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='varRef' and not(*[local-name()='name'] = ancestor::*[local-name()='flworExpr']/*/*/*/*[local-name()='varName'])]])" $file`
     elif [ $name = "forExpr" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
     elif [ $name = "orOp" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:orOp or .//xqx:andOp]])" $file`
     elif [ $name = "data" ]; then
-      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:eqOp or .//xqx:neOp or .//xqx:equalOp or .//xqx:notEqualOp]])" $file`
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp') and child::*[local-name()='firstOperand']/child::*[local-name()='pathExpr' or local-name()='contextItemExpr'] and child::*[local-name()='secondOperand']/child::*[local-name()='pathExpr' or local-name()='contextItemExpr']] or ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp') and not(child::*[local-name()='firstOperand' or local-name()='secondOperand']/child::*[local-name()='integerConstantExpr' or local-name()='decimalConstantExpr' or local-name()='doubleConstantExpr' or local-name()='stringConstantExpr'])]])" $file`
     elif [ $name = "datap" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp' or local-name()='ltOp' or local-name()='leOp' or local-name()='gtOp' or local-name()='geOp' or local-name()='lessThanOp' or local-name='lessThanOrEqualOp' or local-name()='greaterThanOp' or local-name()='greaterThanOrEqualOp') and child::*[local-name()='firstOperand' or local-name()='secondOperand']/child::*[local-name()='integerConstantExpr' or local-name()='decimalConstantExpr' or local-name()='doubleConstantExpr' or local-name()='stringConstantExpr']]])" $file`
     else
@@ -62,14 +66,18 @@ do
   count_xquery=0
   for file in $xquery
   do
-    if [ $name = "stepExpr" ]; then
+    if [ $name = "rootExpr" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='functionName' and .='root']] | /benchmark/xpath[ast/descendant::*[local-name()='rootExpr']])" $file`
+    elif [ $name = "stepExpr" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast//xqx:stepExpr/following-sibling::*[1 and self::xqx:stepExpr]])" $file`
+    elif [ $name = "varRef" ]; then
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[local-name()='varRef' and not(*[local-name()='name'] = ancestor::*[local-name()='flworExpr']/*/*/*/*[local-name()='varName'])]])" $file`
     elif [ $name = "forExpr" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:forExpr or .//xqx:quantifiedExpr]])" $file`
     elif [ $name = "orOp" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:orOp or .//xqx:andOp]])" $file`
     elif [ $name = "data" ]; then
-      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast[.//xqx:eqOp or .//xqx:neOp or .//xqx:equalOp or .//xqx:notEqualOp]])" $file`
+      count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp') and child::*[local-name()='firstOperand']/child::*[local-name()='pathExpr' or local-name()='contextItemExpr'] and child::*[local-name()='secondOperand']/child::*[local-name()='pathExpr' or local-name()='contextItemExpr']] or ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp') and not(child::*[local-name()='firstOperand' or local-name()='secondOperand']/child::*[local-name()='integerConstantExpr' or local-name()='decimalConstantExpr' or local-name()='doubleConstantExpr' or local-name()='stringConstantExpr'])]])" $file`
     elif [ $name = "datap" ]; then
       count=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(/benchmark/xpath[ast/descendant::*[(local-name()='eqOp' or local-name()='equalOp' or local-name()='neOp' or local-name()='notEqualOp' or local-name()='ltOp' or local-name()='leOp' or local-name()='gtOp' or local-name()='geOp' or local-name()='lessThanOp' or local-name='lessThanOrEqualOp' or local-name()='greaterThanOp' or local-name()='greaterThanOrEqualOp') and child::*[local-name()='firstOperand' or local-name()='secondOperand']/child::*[local-name()='integerConstantExpr' or local-name()='decimalConstantExpr' or local-name()='doubleConstantExpr' or local-name()='stringConstantExpr']]])" $file`
     else
