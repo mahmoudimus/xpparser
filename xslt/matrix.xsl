@@ -10,7 +10,8 @@
   <xsl:param name="nexamples" select="15"/>
 
   <xsl:template match="/">
-    <xsl:variable name="benchmarks" select="document(//benchmark/@href)"/>
+    <xsl:variable name="benchmarks"
+                  select="document(//benchmark[@type='xquery' or @type='xslt']/@href)"/>
     <!-- fragments -->
     <xsl:result-document method="text" href="fragments.csv">
       <xsl:text>name,color,entries
