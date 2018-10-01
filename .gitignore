@@ -27,3 +27,4 @@ tools/chord/site/
 *.fls
 *.fdb_latexmk
 *gnuplot*
+*~
