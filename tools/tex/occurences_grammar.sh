@@ -24,7 +24,7 @@ total=$(($total_xslt+$total_xquery))
 
 printf '\\begin{tabular}{lrrr}\n'
 printf '\\toprule\n'
-printf 'Constructor & XSLT & XQuery & Total \\\\\n'
+printf 'Grammar construct & XSLT & XQuery & Total \\\\\n'
 printf '\\midrule\n'
 
 list=(xpathAxis rootExpr stepExpr predicates unionOp functionCallExpr varRef letExpr forExpr orOp isOp data datap)
