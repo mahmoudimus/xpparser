@@ -1,5 +1,5 @@
 all: dist.dat dist-xquery.dat dist-xslt.dat \
-  axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex occurences_grammar.tex
+  axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition-bench.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex occurences_grammar.tex
 
 SHELL := /bin/bash
 
@@ -129,6 +129,9 @@ coverage-axis-step.tex: coverage-axis-step.sh benchmarks-all-full.xml $(wildcard
 	./$<  `grep 'type="\(xslt\|xquery\)"' benchmarks-all-full.xml | sed -e 's/.*href="\([^"]*\).*/\1/'` > $@
 
 composition.tex: composition.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
+	./$<  > $@
+
+composition-bench.tex: composition-bench.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
 	./$<  > $@
 
 composition_full.tex: composition_full.sh benchmarks-all-full.xml $(wildcard ../../benchmark/*-full.xml)
