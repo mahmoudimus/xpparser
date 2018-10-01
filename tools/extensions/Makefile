@@ -3,7 +3,7 @@ all: extensions.xml gains-ext.tex countfuns_all.dat countfuns_xslt.dat countfuns
 countfuns_all.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
 	grep 'type="\(xslt\|xquery\)"' ../tex/benchmarks-all-full.xml | \
 	  sed -e 's/.*href="\(.*\.xml\)".*/\1/' | \
-	  XPPSUF="xquery" xargs ./countfuns.pl
+	  XPPSUF="all" xargs ./countfuns.pl
 
 countfuns_xslt.dat: countfuns.pl $(wildcard ../../benchmark/*-full.xml)
 	grep 'type="xslt"' ../tex/benchmarks-all-full.xml | \
