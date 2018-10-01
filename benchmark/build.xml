@@ -45,7 +45,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
       </java>
       <copy unless:blank="@{license}"
             file="@{name}/@{license}" tofile="@{name}.LICENSE"/>
-      <!-- xslt style="../xslt/filter-axis-step.xsl"
+      <xslt style="../xslt/filter-axis-step.xsl"
           in="@{name}-full.xml"
           out="@{name}-axis-step.xml">
         <classpath>
@@ -58,7 +58,7 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
         <classpath>
           <pathelement path="../lib/saxon9he.jar"/>
         </classpath>
-      </xslt -->
+      </xslt>
     </sequential>
   </macrodef>
 
