@@ -27,8 +27,8 @@ printf '\\toprule\n'
 printf 'Unsupported construct & \\multicolumn{2}{c}{XSLT} & \\multicolumn{2}{c}{XQuery} & \\multicolumn{2}{c}{Total} \\\\\n'
 printf '\\midrule\n'
 
-list=(ifThenElseExpr simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef rangeSequenceExpr instanceOfExpr piTest castExpr)
-legend=('if then else' 'simple map' 'dynamic function invocation' 'inline function' 'named function' 'range sequence' 'instance of' 'proccessing instruction' 'cast related expressions')
+list=(simpleMapExpr dynamicFunctionInvocationExpr inlineFunctionExpr namedFunctionRef rangeSequenceExpr instanceOfExpr piTest castExpr)
+legend=('simple map' 'dynamic function invocation' 'inline function' 'named function' 'range sequence' 'instance of' 'processing instruction' 'cast-related expressions')
 
 n=`echo ${#list[@]}`
 for (( i=0; i<$n; i++))
