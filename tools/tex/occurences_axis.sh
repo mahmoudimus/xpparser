@@ -22,9 +22,9 @@ done
 # Total queries
 total=$(($total_xslt+$total_xquery))
 
-printf '\\begin{tabular}{lrrr}\n'
+printf '\\begin{tabular}{lr@{\\hspace{1pt}}rr@{\\hspace{1pt}}rr@{\\hspace{1pt}}r}\n'
 printf '\\toprule\n'
-printf 'Axis & XSLT & XQuery & Total \\\\\n'
+printf 'Axis & \\multicolumn{2}{c}{XSLT} & \\multicolumn{2}{c}{XQuery} & \\multicolumn{2}{c}{Total} \\\\\n'
 printf '\\midrule\n'
 
 axis_list=("ancestor" "attribute" "child" "descendant" "following" "following-sibling" "namespace" "parent" "preceding" "preceding-sibling" "self")
@@ -46,7 +46,7 @@ do
     count_xslt=$(($count_xslt+$count))
   done
   percent=`echo "scale=1; 100*$count_xslt/$total_xslt" | bc`
-  printf $count_xslt' ('%.1f'\\%%)' $percent
+  printf "%'.0f & (%.1f\\%%)" $count_xslt $percent
   printf ' & '
   # XQuery files
   count_xquery=0
@@ -56,15 +56,15 @@ do
     count_xquery=$(($count_xquery+$count))
   done
   percent=`echo "scale=1; 100*$count_xquery/$total_xquery" | bc`
-  printf $count_xquery' ('%.1f'\\%%)' $percent
+  printf "%'.0f & (%.1f\\%%)" $count_xquery $percent
   printf ' & '
   count_total=$(($count_xslt+$count_xquery))
   percent=`echo "scale=1; 100*$count_total/$total" | bc`
-  printf $count_total' ('%.1f'\\%%)' $percent
+  printf "%'.0f & (%.1f\\%%)" $count_total $percent
   printf ' \\\\\n'
 done
 printf '\\midrule\n'
-printf 'Any axis & '
+printf 'All axes & '
 # XSLT files
 count_xslt=0
 for file in $xslt
@@ -73,7 +73,7 @@ do
   count_xslt=$(($count_xslt+$count))
 done
 percent=`echo "scale=1; 100*$count_xslt/$total_xslt" | bc`
-printf $count_xslt' ('%.1f'\\%%)' $percent
+printf "%'.0f & (%.1f\\%%)" $count_xslt $percent
 printf ' & '
 # XQuery files
 count_xquery=0
@@ -83,11 +83,11 @@ do
   count_xquery=$(($count_xquery+$count))
 done
 percent=`echo "scale=1; 100*$count_xquery/$total_xquery" | bc`
-printf $count_xquery' ('%.1f'\\%%)' $percent
+printf "%'.0f & (%.1f\\%%)" $count_xquery $percent
 printf ' & '
 count_total=$(($count_xslt+$count_xquery))
 percent=`echo "scale=1; 100*$count_total/$total" | bc`
-printf $count_total' ('%.1f'\\%%)' $percent
+printf "%'.0f & (%.1f\\%%)" $count_total $percent
 printf ' \\\\\n'
 printf '\\bottomrule\n'
 printf '\\end{tabular}\n'
