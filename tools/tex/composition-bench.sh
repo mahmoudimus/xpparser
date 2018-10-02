@@ -52,7 +52,7 @@ do
         c=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-$i.0.rnc\" and @valid=\"yes\"]])" $file`
         count=$((count+c))
     done
-    counts[$i]=$count
+    counts[$i]=$((count + counts[i]))
     percent=`echo "scale=1; 100*$count/$n" | bc`
     printf "& $percent\\\\%% "
 done
@@ -62,7 +62,7 @@ do
     c=`xmlstarlet sel -N xqx="http://www.w3.org/2005/XQueryX" -t -c "count(//xpath[schemas/validation[@schema=\"xpath-3.0-std.rnc\" and @valid=\"yes\"]])" $file`
     count=$((count+c))
 done
-counts[4]=$count
+counts[4]=$((count + counts[4]))
 percent=`echo "scale=1; 100*$count/$n" | bc`
 printf "& $percent\\\\%% "
 printf '\\\\\n'
