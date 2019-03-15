@@ -24,11 +24,11 @@ total=$(($total_xslt+$total_xquery))
 
 printf '\\begin{tabular}{lr@{\\hspace{1pt}}rr@{\\hspace{1pt}}rr@{\\hspace{1pt}}r}\n'
 printf '\\toprule\n'
-printf 'Grammar construct & \\multicolumn{2}{c}{XSLT} & \\multicolumn{2}{c}{XQuery} & \\multicolumn{2}{c}{Total} \\\\\n'
+printf 'Syntactic construct & \\multicolumn{2}{c}{XSLT} & \\multicolumn{2}{c}{XQuery} & \\multicolumn{2}{c}{Total} \\\\\n'
 printf '\\midrule\n'
 
 list=(xpathAxis rootExpr stepExpr predicates unionOp functionCallExpr varRef letExpr forExpr orOp isOp data datap)
-legend=('$\\alpha\\dd$' '$/\\pi$' '$\\pi/\\pi$' '$\\pi[\\varphi]$' '$\\pi\\mathrel\\texttt{union}\\pi$' '$f(\\pi_1,\\dots,\\pi_n)$' '$\\mathtt{\\$x}$' '$\\texttt{let}\\:\\mathtt{\\$x}:=\\pi\\mathbin\\texttt{return}\\pi$' '$\\texttt{for}\\:\\mathtt{\\$x}\\mathrel\\texttt{in}\\pi\\mathrel\\texttt{return}\\pi$' '$\\varphi\\mathrel\\texttt{or}\\varphi,~\\varphi\\mathrel\\texttt{and}\\varphi$' '$\\pi\\mathrel\\texttt{is}\\pi$' '$\\pi\\mathbin\\triangle\\pi$' '$\\pi\\mathbin{\\trianglep}d$')
+legend=('$\\alpha\\dd$' '$/\\pi$' '$\\pi/\\pi$' '$\\pi[\\varphi]$' '$\\pi\\mathrel\\texttt{union}\\pi$' '$f(\\pi_1,\\dots,\\pi_n)$' '$\\mathtt{\\$x}$' '$\\texttt{let}\\:\\mathtt{\\$x}:=\\pi\\mathbin\\texttt{return}\\pi\\!\\!$' '$\\texttt{for}\\:\\mathtt{\\$x}\\mathrel\\texttt{in}\\pi\\mathrel\\texttt{return}\\pi\\!\\!$' '$\\varphi\\mathrel\\texttt{or}\\varphi,~\\varphi\\mathrel\\texttt{and}\\varphi$' '$\\pi\\mathrel\\texttt{is}\\pi$' '$\\pi\\mathbin\\triangle\\pi$' '$\\pi\\mathbin{\\trianglep}d$')
 
 n=`echo ${#list[@]}`
 for (( i=0; i<$n; i++))
