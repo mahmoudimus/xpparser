@@ -1,4 +1,4 @@
-all: dist.dat dist-xquery.dat dist-xslt.dat \
+all: dist.dat dist-xquery.dat dist-xslt.dat bnch.dat \
   axis-count.tex size-gte-100.tex matrices xslt.dat xqy.dat xslt-std.dat xqy-std.dat coverage-size.tex coverage-axis-step.tex numqueries.tex MAXcount.tex composition.tex composition-bench.tex composition_full.tex all-full-cov-pc.tex all-full-cov.tex occurences_axis.tex occurences_operators.tex occurences_grammar.tex
 
 SHELL := /bin/bash
