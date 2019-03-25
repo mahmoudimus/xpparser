@@ -1,8 +1,8 @@
 # XPath 3.0 fragment of XQueryX in Relax NG compact syntax with only
 # standard functions
 #
-# Copyright (C) 2016-2018
-#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan)
+# Copyright (C) 2016-2019
+#   David Baelde, Anthony Lick and Sylvain Schmitz (ENS Paris-Saclay)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
