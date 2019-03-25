@@ -8,7 +8,7 @@
   <property name="project.root" value="../.."/>
   <property name="lib.dir" value="${project.root}/lib"/>
 
-  <target name="all">
+  <target name="all" depends="saxon">
     <!-- matrices -->
     <!--antcall target="matrix">
       <param name="fragments" value="orig" />
@@ -100,4 +100,15 @@
     </xslt>
   </target>
 
+  <!-- download saxon if needed -->
+  <target name="saxon">
+    <local name="offline"/>
+    <available file="../../lib/saxon9he.jar" property="offline"/>
+    <mkdir unless:set="offline" dir="../lib"/>
+    <get unless:set="offline"
+         src="https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.7/SaxonHE9-7-0-14J.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fsaxon%2Ffiles%2FSaxon-HE%2F9.7%2F&amp;ts=1485885576&amp;use_mirror=vorboss"
+         dest="../../lib" usetimestamp="true"/>
+       <unzip unless:set="offline" src="../../lib/SaxonHE9-7-0-14J.zip" dest="../../lib"
+           overwrite="no"/>
+  </target>
 </project>
