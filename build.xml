@@ -19,6 +19,7 @@ This buildfile is used to compile the Java sources for the XPath Parser.
         </replacetokens>
       </filterchain>
     </copy>
+    <chmod file="xpparser" perm="+x"/>
   </target>
 
   <property name="lib.dir" value="lib"/>
