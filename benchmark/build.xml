@@ -10,8 +10,6 @@ This buildfile is used to retrieve and parse XPath expressions from various sour
   <property name="online" value="true"/>
 
   <!-- path to schemas -->  
-  <fileset id="fs.schemas" dir="../xsd" includes="xpath*.xsd"/>
-  <pathconvert property="schemas" refid="fs.schemas" pathsep=" "/>
   <fileset id="fs.relaxng" dir="../relaxng" includes="xpath-*.rnc"/>
   <pathconvert property="relaxng" refid="fs.relaxng" pathsep=" "/>
 
