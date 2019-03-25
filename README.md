@@ -56,8 +56,8 @@ Run `./xpparser -h` for command-line usage.
 
 ## License
 
-Copyright (C) 2016-2017
-  David Baelde, Anthony Lick and Sylvain Schmitz (ENS Cachan).
+Copyright (C) 2016-2019
+  David Baelde, Anthony Lick and Sylvain Schmitz (ENS Paris-Saclay).
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
